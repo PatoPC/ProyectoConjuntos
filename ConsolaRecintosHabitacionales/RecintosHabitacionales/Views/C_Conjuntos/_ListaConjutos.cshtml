@@ -1,0 +1,79 @@
+﻿@model IEnumerable<DTOs.Conjunto.ResultadoBusquedaConjuntos>
+@{
+    Layout = "";
+}
+<div class="card card-flush">
+    <div class="card card-body">
+        @await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+
+        @if (Model.Count() > 0)
+        {
+            <table border="1" id="idTablaConjutos" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <th>
+                            <center>
+                                <span class="badge badge-light text-dark">Nombre</span>
+                            </center>
+                        </th>
+                        <th>
+                            <center>
+                                <span class="badge badge-light text-dark">RUC</span>
+                            </center>
+                        </th>
+                        <th>
+                            <center>
+                                <span class="badge badge-light text-dark">Télefono</span>
+                            </center>
+                        </th>
+                        <th>
+                            <center>
+                                <span class="badge badge-light text-dark">Correo</span>
+                            </center>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">
+                                Acción
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="fw-bold text-gray-600">
+                    @if (Model != null)
+                    {
+                        foreach (var conjuto in Model)
+                        {
+                            <tr>
+                                <td data-title="Documento">
+                                    <span>@conjuto.NombreConjunto</span>
+                                </td>
+                                <td data-title="RUC">
+                                    <span>@conjuto.RucConjunto</span>
+                                </td>
+                                <td data-title="Télefono">
+                                    <span>@conjuto.TelefonoConjunto</span>
+                                </td>
+                                <td data-title="Correo">
+                                    <span>@conjuto.MailConjunto</span>
+                                </td>
+                                <td data-title="Acción">
+                                    <div>
+                                        <a href="~/C_Conjuntos/EditarConjuntos?idConjutos=@conjuto.IdConjunto" target="_self" class="badge badge-light-primary">Editar<i class="far fa-edit" style="color: #009ef7"></i></a>
+                                    </div>
+                                    <div>
+                                        <a href="~/C_Conjuntos/EliminarConjuntos?idConjutos=@conjuto.IdConjunto" target="_self" class="badge badge-light-danger">Eliminar<i class="fas fa-trash-alt" style="color: #ff0000"></i></a>
+                                    </div>
+
+                                </td>
+
+
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

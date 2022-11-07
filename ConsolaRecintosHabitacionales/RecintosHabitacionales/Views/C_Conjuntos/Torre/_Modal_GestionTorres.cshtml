@@ -1,0 +1,73 @@
+﻿@model DTOs.Torre.TorreDTOEditar
+
+@{
+    Layout = "";
+}
+
+<div class="modal fade" id="modal_Gestionar_Torre" tabindex="-1" aria-labelledby="modalHorarios" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="fw-bolder m-0 text-gray-800">
+                    <i class="fas fa-archway text-primary fs-2qx"></i>
+                    Editar Torre
+                </h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModal('modal_Gestionar_Torre')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form method="post" id="formularioGestionarTorreModal">
+                        <input asp-for="IdTorresEditar" type="hidden" />
+                        <input asp-for="IdConjuntoEditar" type="hidden" />                       
+
+                        <div class="row">
+                            <div class="col-md-12 h-100 d-flex flex-column justify-content-between pe-lg-12 mb-lg-0 mb-10">
+                                <div class="row mb-12">
+                                    <div class="col-md-2">
+                                        <div class="fs-6 fw-bold mt-2 mb-3">
+                                            <label asp-for="NombreTorresEditar" class="control-label">
+                                                Torre:
+                                                @await Html.PartialAsync("_AsteriscoObligatorio")
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-5 fv-row">
+                                        <div>
+                                            <input asp-for="NombreTorresEditar"  class="form-control form-control-lg form-control-solid px-15" required="required" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <center>
+                                    <button type="button" class="btn btn-primary me-12" id="btnGestionarTorreoModal">
+                                        @*<button type="button" class="btn btn-primary me-12" id="btnGestionarTorreoModal" onclick="sendFormAjax(this, 'formularioGestionarTorreModal','resultadoListaTorres','/C_Conjuntos/RecuperarListaTorresPorConjutoID?idConjuto=@Model.IdTorresEditar','btnGestionarTorreoModal','idTablaTorres','modal_Gestionar_Torre')">
+*@
+                                        <span class="indicator-label" id="btnGestionarTorreoModalSpan">
+                                            Agregar Torre
+                                        </span>
+                                        <span class="indicator-progress">
+                                            Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </button>
+                                </center>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModal('modal_Gestionar_Torre')"><i class="fas fa-times fs-md-2qx"></i> Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

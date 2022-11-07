@@ -1,0 +1,123 @@
+﻿@model DTOs.Departamento.DepartamentoDTOCrear
+@using Utilitarios;
+
+<div class="modal fade" id="modal_Create_Departamento" tabindex="-1" aria-labelledby="modalHorarios" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="fw-bolder m-0 text-gray-800">
+                    <i class="fas fa-archway text-primary fs-2qx"></i>
+                    Agregar Departamento
+                </h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModal('modal_Create_Departamento')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row p-lg-10">
+
+                        <form asp-action="CrearDepartamento" id="CrearDepartamentoModal">
+                            @*
+                        <form action="@ConstantesAplicacion.pathConsola/C_Departamento/_CrearDepartamentoModal" id="CrearDepartamentoModal">
+*@
+
+                            @Html.HiddenFor(x => x.IdTorresCrearDepartamento)
+                            @Html.HiddenFor(x => x.IdConjuntoCrearDepartamento)
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                                        <div class="row mb-12">
+                                            <div class="col-xl-4">
+                                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                                    <label asp-for="CoigoDepto" class="control-label">
+                                                        # Depart.
+                                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-8 fv-row">
+                                                <input type="text" asp-for="CoigoDepto" class="form-control form-control-solid" placeholder="Nombre" required="required" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-12">
+                                            <div class="col-xl-4">
+                                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                                    <label asp-for="MetrosDepto" class="control-label">
+                                                        Metros Dept.
+                                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-8 fv-row">
+                                                <input asp-for="MetrosDepto" class="form-control form-control-solid" required="required" type="number" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">                                    
+                                    <div class="row mb-12">
+                                        <div class="col-xl-4">
+                                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                                <label asp-for="AliqDepto" class="control-label">
+                                                    Alicuota
+                                                    @await Html.PartialAsync("_AsteriscoObligatorio")
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-8 fv-row">
+                                            <input asp-for="AliqDepto" class="form-control form-control-solid" type="number" required="required" required="required" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-12">
+                                        <div class="col-xl-4">
+                                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                                <label asp-for="SaldoInicialAnual" class="control-label">
+                                                    Saldo Inicial
+                                                    @await Html.PartialAsync("_AsteriscoObligatorio")
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-8 fv-row">
+                                            <input asp-for="SaldoInicialAnual" class="form-control form-control-solid" type="number" required="required" required="required" />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-6 fv-row">
+                                    <center>
+                                        <button type="button" class="btn btn-primary me-12" id="btnCrearTorreoModal" onclick="sendFormAjax(this, 'CrearDepartamentoModal','resultadoListaTorres','/C_Conjuntos/RecuperarListaTorresPorConjutoID?idConjuto=@Model.IdConjuntoCrearDepartamento','btnCrearTorreoModal','idTablaTorres','modal_Create_Departamento')">
+                                            <span class="indicator-label">
+                                                Agregar Departamento
+                                            </span>
+                                            <span class="indicator-progress">
+                                                Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </button>
+                                    </center>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModal('modal_Create_Departamento')"><i class="fas fa-times fs-md-2qx"></i> Cerrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+}

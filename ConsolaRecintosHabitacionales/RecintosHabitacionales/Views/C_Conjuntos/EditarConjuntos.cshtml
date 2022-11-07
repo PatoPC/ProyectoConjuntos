@@ -1,0 +1,175 @@
+﻿@model DTOs.Conjunto.ConjuntoDTOCompleto
+
+<div class="card mb-10 mb-xl-12">
+    <div class="card-header card-header-stretch">
+        <div class="card-title d-flex align-items-center">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3 class="fw-bolder m-0 text-gray-800">
+                        <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                        Editar Conjunto/Edificio
+                    </h3>
+                </div>
+                <div class="col-md-12">
+                    <a class="btn btn-success" asp-action="AdministrarConjuntos"><i class="fas fa-undo-alt"></i><b> Ver lista</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body border-top">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row p-lg-10">
+
+            <form asp-action="EditarConjuntos" id="EditarConjuntos">
+               @Html.HiddenFor(x => x.IdConjunto)
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="NombreConjunto" class="control-label">
+                                            Nombre
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" asp-for="NombreConjunto" class="form-control form-control-solid" placeholder="Conjunto Uno" />
+                                </div>
+                            </div>                         
+
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="TelefonoConjunto" class="control-label">
+                                            Teléfono/Celular
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="TelefonoConjunto" class="form-control form-control-solid" required="required" maxlength="15" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="RucConjunto" class="control-label">
+                                        RUC/CI
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="RucConjunto" class="form-control form-control-solid" type="email" required="required" maxlength="60" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="MailConjunto" class="control-label">
+                                        Email
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="MailConjunto" class="form-control form-control-solid" required="required" maxlength="60" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row mb-12">
+                            <div class="col-xl-12 mt-6">
+                                <div class="fs-6 fw-bold mt-8">
+                                    <label class="control-label" for="DireccionConjunto">
+                                        Dirección:
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-12">
+                            <div class="col-xl-12 fv-row">
+                                <textarea asp-for="DireccionConjunto" class="form-control form-control-solid" required="required"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-12 fv-row">
+                        <center>
+                            <button type="button" onclick="sendFormAjax(this, 'EditarConjuntos', undefined,undefined,'btn_EditarConjunto')" class="btn btn-primary" id="btn_EditarConjunto">
+                                <span class="indicator-label">
+                                    <i class="far fa-save  fs-md-2qx"></i>Guardar Cambios
+                                </span>
+                                <span class="indicator-progress">
+                                    Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </center>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <hr style="color: #009ef7;" />
+            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 mb-5">
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#tab_datos_departamento">
+                        <i class="fas fa-archway"></i> Torres
+                    </a>
+                </li>
+            </ul>
+
+           <div class="col-md-3"> 
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="MostrarModal('modal_Create_Torre')">
+                Añadir Torre
+                <i class="fas fa-plus fs-md-1qx"></i>
+            </button>
+           </div>
+            @await Html.PartialAsync("Departamento/_CrearDepartamentoModal", new DTOs.Departamento.DepartamentoDTOCrear(Model.IdConjunto))
+            @await Html.PartialAsync("Departamento/_GestionarDepartamentoModal", new DTOs.Departamento.DepartamentoDTOEditar(Model.IdConjunto))
+
+        </div>
+
+        <div class="row">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="tab_datos_departamento" role="tabpanel">
+                    @await Html.PartialAsync("Torre/_ModalCrearTorre", new DTOs.Torre.TorreDTOCrear(Model.IdConjunto))
+                </div>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="tab_datos_departamento" role="tabpanel">
+                        @await Html.PartialAsync("Torre/_Modal_GestionTorres", new DTOs.Torre.TorreDTOEditar())
+                    </div>
+                </div>
+
+                <div id="resultadoListaTorres">
+                    @await Html.PartialAsync("Torre/_ListaTorres", Model.Torres)
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+    <script src="~/js/gestiontorres.js"></script>
+}
