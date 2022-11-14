@@ -15,7 +15,6 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioCreacion { get; set; } = null!;
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
-
         public virtual Torre IdTorresNavigation { get; set; } = null!;
     }
 }

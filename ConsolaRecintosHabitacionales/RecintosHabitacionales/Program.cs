@@ -36,9 +36,11 @@ builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddHttpClient<ConexionApi>(client =>
 {
+   //Desarrollo
+    client.BaseAddress = new Uri("http://localhost:5186");
+
     //Producción
-    //client.BaseAddress = new Uri("http://localhost:5186");
-    client.BaseAddress = new Uri("http://localhost");
+    //client.BaseAddress = new Uri("http://localhost");
     //client.BaseAddress = new Uri("http://181.39.23.39");
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
