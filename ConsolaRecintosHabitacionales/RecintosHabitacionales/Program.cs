@@ -1,5 +1,6 @@
 using DTOs.Conjunto;
 using DTOs.Departamento;
+using DTOs.Persona;
 using DTOs.Torre;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -27,6 +28,11 @@ builder.Services.AddScoped(typeof(DepartamentoDTOCrear));
 builder.Services.AddScoped(typeof(DepartamentoDTOCompleto));
 builder.Services.AddScoped(typeof(DepartamentoDTOEditar));
 builder.Services.AddScoped(typeof(DepartamentoBusquedaDTO));
+
+builder.Services.AddScoped(typeof(PersonaDTOCrear));
+builder.Services.AddScoped(typeof(PersonaDTOEditar));
+builder.Services.AddScoped(typeof(PersonaDTOCompleto));
+builder.Services.AddScoped(typeof(ObjetoBusquedaPersona));
 //builder.Services.AddScoped(typeof(ConexionApi));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -61,6 +67,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=C_Conjuntos}/{action=AdministrarConjuntos}/{id?}");
+    pattern: "{controller=C_Persona}/{action=AdministrarPersona}/{id?}");
 
 app.Run();

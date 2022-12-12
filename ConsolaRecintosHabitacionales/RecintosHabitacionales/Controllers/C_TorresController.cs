@@ -12,15 +12,15 @@ namespace RecintosHabitacionales.Controllers
         private const string controladorActual = "C_Torres";
         private const string accionActual = "AdministrarTorres";
 
-        private readonly IServicioConsumoAPI<TorreDTOCrear> _servicioConsumoAPIConjunto;
-        private readonly IServicioConsumoAPI<TorreDTOEditar> _servicioConsumoAPIConjuntoEditar;
+        private readonly IServicioConsumoAPI<TorreDTOCrear> _servicioConsumoAPICrear;
+        private readonly IServicioConsumoAPI<TorreDTOEditar> _servicioConsumoAPICrearEditar;
         private readonly IServicioConsumoAPI<BusquedaTorres> _servicioConsumoAPIBusqueda;
 
         public C_TorresController(IServicioConsumoAPI<TorreDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusqueda, IServicioConsumoAPI<TorreDTOEditar> servicioConsumoAPIConjuntoEditar)
         {
-            _servicioConsumoAPIConjunto = servicioConsumoAPIConjunto;
+            _servicioConsumoAPICrear = servicioConsumoAPIConjunto;
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
-            _servicioConsumoAPIConjuntoEditar = servicioConsumoAPIConjuntoEditar;
+            _servicioConsumoAPICrearEditar = servicioConsumoAPIConjuntoEditar;
         }
 
         #region CRUD
@@ -36,7 +36,7 @@ namespace RecintosHabitacionales.Controllers
         {
             objDTO.UsuarioCreacion = "prueba";
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPIConjunto.consumoAPI(ConstantesConsumoAPI.GestionarTorres, HttpMethod.Post, objDTO);
+            HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.GestionarTorres, HttpMethod.Post, objDTO);
 
             if (respuesta.IsSuccessStatusCode)
             {
@@ -77,7 +77,7 @@ namespace RecintosHabitacionales.Controllers
                 IdTorre = objDTO.IdTorresEditar;
             }
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPIConjuntoEditar.consumoAPI(ConstantesConsumoAPI.TorresPorIDEditar + IdTorre, HttpMethod.Post, objDTO);
+            HttpResponseMessage respuesta = await _servicioConsumoAPICrearEditar.consumoAPI(ConstantesConsumoAPI.TorresPorIDEditar + IdTorre, HttpMethod.Post, objDTO);
 
             if (respuesta.IsSuccessStatusCode)
             {
@@ -100,7 +100,7 @@ namespace RecintosHabitacionales.Controllers
         public async Task<ActionResult> EliminarTorres(Guid IdTorresEditar, bool eliminar)
         {
            
-            HttpResponseMessage respuesta = await _servicioConsumoAPIConjuntoEditar.consumoAPI(ConstantesConsumoAPI.TorresPorIDEliminar+ IdTorresEditar, HttpMethod.Post);
+            HttpResponseMessage respuesta = await _servicioConsumoAPICrearEditar.consumoAPI(ConstantesConsumoAPI.TorresPorIDEliminar+ IdTorresEditar, HttpMethod.Post);
 
             if (respuesta.IsSuccessStatusCode)
             {

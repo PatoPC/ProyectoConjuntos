@@ -1,0 +1,75 @@
+﻿@model DTOs.Persona.ObjetoBusquedaPersona;
+@using Utilitarios;
+
+
+<form action="@ConstantesAplicacion.pathConsola/C_Persona/BusquedaAvanzadaPersona"
+      data-ajax="true"
+      data-ajax-method="Get"
+      data-ajax-loading="#imagenCargando"
+      data-ajax-update="#resultSearch"
+      data-ajax-begin="emptyLastResults('resultSearch')"
+      data-ajax-success="ordenarTabla('idTablaConjutos')"
+      id="AjaxFormSend"
+      method="post">
+    <div class="card">
+        <div class="card-header card-header-stretch">
+            <div class="card-title d-flex align-items-center">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3 class="fw-bolder m-0 text-gray-800">
+                            <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                            Personas
+                        </h3>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-success" asp-action="CrearPersona">Nuevo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body border-top">
+            <div class="col-md-12">
+                <div class="row">
+                    <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
+                    <div class="col-md-2">
+                        <input asp-for="NombrePersona" type="text" class="form-control form-control-solid" placeholder="Nombres Apellidos" />
+                    </div>
+                    <div class="col-md-2">
+                        <input asp-for="IdentificacionPersona" type="text" class="form-control form-control-solid" placeholder="Identificación" />
+                    </div>
+                    <div class="col-md-2">
+                        <input asp-for="EmailPersona" type="text" class="form-control form-control-solid" placeholder="email" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <center><img src="~/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
+
+</form>
+
+<div id="resultSearch">
+</div>
+
+@section scripts{
+
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+    <script src="~/js/JSBusquedaDocumentos.js"></script>
+    <script src="~/js/cargadatosdocumentospersona.js"></script>
+
+
+    <script type="text/javascript">
+
+
+    </script>
+}

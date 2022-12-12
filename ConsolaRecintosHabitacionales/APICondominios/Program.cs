@@ -21,6 +21,8 @@ builder.Services.TryAddScoped(typeof(IManageConjuntosCRUD<>), typeof(ManageConju
 builder.Services.AddScoped<IManageConjuntos, ManageConjuntos>();
 builder.Services.AddScoped<IManageTorre, ManageTorre>();
 builder.Services.AddScoped<IManageDepartamento, ManageDepartamento>();
+builder.Services.AddScoped<IManagePersona, ManagePersona>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //services.AddAutoMapper(typeof(Startup));
 

@@ -25,9 +25,16 @@ namespace RepositorioConjuntos.Implementacion
         {
             try
             {
-                var conjuntos = await _context.Departamentos.Where(x => x.IdDepto == objBusquedaDepartamento.IdDepto).ToListAsync();
+                var listaRepositorio = await _context.Departamentos.Where(x => x.IdTorres == objBusquedaDepartamento.IdTorres).ToListAsync();
 
-                return conjuntos;
+                if(!string.IsNullOrEmpty(objBusquedaDepartamento.CoigoDepto))
+                    listaRepositorio = listaRepositorio.Where(x => x.CodigoDepartamento == objBusquedaDepartamento.CoigoDepto).ToList();
+
+                if(objBusquedaDepartamento.IdDepto!=Guid.NewGuid())
+                    listaRepositorio = listaRepositorio.Where(x => x.IdDepartamento==objBusquedaDepartamento.IdDepto).ToList();
+
+
+                return listaRepositorio;
             }
             catch (Exception ex)
             {
@@ -39,33 +46,14 @@ namespace RepositorioConjuntos.Implementacion
 
         public async Task<List<Departamento>> obtenerDepartamentoPorNombre(string nombreDepartamento)
         {
-            try
-            {
-                var departamento = await _context.Departamentos.Where(x => x.CoigoDepto.ToUpper().Trim().Contains(nombreDepartamento.ToUpper().Trim())).ToListAsync();
-
-                return departamento;
-            }
-            catch (Exception ex)
-            {
-            }
-
-            return default;
+            throw new NotImplementedException();
         }
 
         public async Task<Departamento> obtenerPorIDDepartamento(Guid idDepartamento)
         {
-            try
-            {
-                var departamento = await _context.Departamentos.Where(x => x.IdDepto == idDepartamento).FirstOrDefaultAsync();
+            var objRepositorio = await _context.Departamentos.Where(x => x.IdDepartamento == idDepartamento).FirstOrDefaultAsync();
 
-                return departamento;
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            return default;
+            return objRepositorio;
         }
     }
 }

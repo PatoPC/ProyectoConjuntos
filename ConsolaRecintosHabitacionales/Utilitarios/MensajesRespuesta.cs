@@ -85,7 +85,10 @@ namespace Utilitarios
         {
 
         }
-
+        public static MensajesRespuesta errorMensajePersonalizado(string mensaje)
+        {
+            return new MensajesRespuesta(mensaje, false, "¡error!", "error");
+        }
 
         public static MensajesRespuesta noSePermiteObjNulos()
         {

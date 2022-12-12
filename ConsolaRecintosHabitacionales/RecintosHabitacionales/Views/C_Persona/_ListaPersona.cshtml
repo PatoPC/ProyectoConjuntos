@@ -1,0 +1,81 @@
+﻿@model IEnumerable<DTOs.Persona.PersonaDTOCompleto>
+@using Utilitarios;
+@{
+    Layout = "";
+}
+<div class="card card-flush">
+    <div class="card card-body">
+        @await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+
+        @if (Model.Count() > 0)
+        {
+            <table border="1" id="idTablaTorres" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <th>
+                            <span class="badge badge-light text-dark">Nombre</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Identificación</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Teléfono</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Correo</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Acción</span>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody class="fw-bold text-gray-600">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td data-title="Nombre">
+                                    @item.NombrePersona
+                                </td>
+                                <td data-title="Identificación">
+                                    @item.IdentificacionPersona
+                                </td>
+                                <td data-title="Teléfono">
+                                    @item.TelefonoPersona
+                                </td>
+                                <td data-title="Correo">
+                                    @item.EmailPersona
+                                </td>
+                                <td data-title="Acción">
+                                    @item.EmailPersona
+                                </td>
+                                <td data-title="Acción">
+                                    @* @if (edicion)
+                        {*@
+                                    <div>
+                                        <a href="~/C_Persona/EditarPersona?IdPersona=@item.IdPersona" target="_self" class="badge badge-light-primary">Editar<i class="far fa-edit" style="color: #009ef7; cursor:pointer"></i></a>
+                                    </div>
+                                    @* }
+                        @if (lectura)
+                        {*@
+                                    <div>
+                                        <a href="~/C_Persona/DetallePersona?IdPersona=@item.IdPersona" target="_self" class="badge badge-light-dark">Detalle<i class="far fa-eye" style="color: black"></i></a>
+                                    </div>
+                                    @* }
+                        @if (eliminar)
+                        {*@
+                                    <div>
+                                        <a href="~/C_Persona/EliminarPersona?IdPersona=@item.IdPersona" target="_self" class="badge badge-light-danger">Eliminar<i class="fas fa-trash-alt" style="color: #f1416c"></i></a>
+                                    </div>
+                                    @*}*@
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

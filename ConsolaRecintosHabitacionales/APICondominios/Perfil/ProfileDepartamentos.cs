@@ -17,9 +17,10 @@ namespace APICondominios.Perfil
 
 
             CreateMap<DepartamentoDTOEditar, Departamento>().
-            ForMember(x => x.CoigoDepto, y => y.MapFrom(fuente => fuente.CoigoDeptoEditar)).
-            ForMember(x => x.MetrosDepto, y => y.MapFrom(fuente => fuente.MetrosDeptoEditar)).
-            ForMember(x => x.AliqDepto, y => y.MapFrom(fuente => fuente.AliqDeptoEditar)).
+            ForMember(x => x.IdDepartamento, y => y.MapFrom(fuente => fuente.IdDeptoEditar)).
+            ForMember(x => x.CodigoDepartamento, y => y.MapFrom(fuente => fuente.CoigoDeptoEditar)).
+            ForMember(x => x.MetrosDepartamento, y => y.MapFrom(fuente => fuente.MetrosDeptoEditar)).
+            ForMember(x => x.AliqDepartamento, y => y.MapFrom(fuente => fuente.AliqDeptoEditar)).
             ForMember(x => x.SaldoInicialAnual, y => y.MapFrom(fuente => fuente.SaldoInicialAnualEditar));
         }
        

@@ -29,9 +29,16 @@ namespace Utilitarios
         public const string gestionarDepartamentoAPIEditar = ConstantesAplicacion.pathAPI + "/api/API_Departamento/Editar?id=";
         public const string gestionarDepartamentoAPIEliminar = ConstantesAplicacion.pathAPI + "/api/API_Departamento/Eliminar?id=";
         public const string buscarDepartamentoAvanzado = ConstantesAplicacion.pathAPI + "/api/ API_Departamento/ObtenerTorresAvanzado";
-      
+
         #endregion
 
+        #region Persona
+        public const string gestionarPersonaAPI = ConstantesAplicacion.pathAPI + "/api/persona/";
+        public const string gestionarPersonaAPIEditar = ConstantesAplicacion.pathAPI + "/api/persona/Editar?id=";
+        public const string gestionarPersonaAPIEliminar = ConstantesAplicacion.pathAPI + "/api/persona/Eliminar?id=";
+        public const string buscarPersonaoAvanzado = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaAvanzado";
+
+        #endregion
 
     }
 }

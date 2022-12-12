@@ -1,0 +1,133 @@
+﻿@model DTOs.Persona.PersonaDTOCompleto
+
+<div class="card mb-10 mb-xl-12">
+    <div class="card-header card-header-stretch">
+        <div class="card-title d-flex align-items-center">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3 class="fw-bolder m-0 text-gray-800">
+                        <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                        Persona
+                    </h3>
+                </div>
+                <div class="col-md-12">
+                    <a class="btn btn-success" asp-action="AdministrarPersona"><i class="fas fa-undo-alt"></i><b> Ver lista</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body border-top">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row p-lg-10">
+
+            <form asp-action="EditarPersona" id="CrearFormPersona">
+               @Html.HiddenFor(x => x.IdPersona)
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="NombrePersona" class="control-label">
+                                            Nombre
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" asp-for="NombrePersona" class="form-control form-control-solid" placeholder="Nombre" required="required" maxlength="80" />
+                                </div>
+                            </div>                         
+
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="TelefonoConjunto" class="control-label">
+                                            Número Identificación
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="IdentificacionPersona" class="form-control form-control-solid" required="required" maxlength="13" required="required" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="RucConjunto" class="control-label">
+                                        Teléfono
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="TelefonoPersona" class="form-control form-control-solid" type="email" required="required" maxlength="50" required="required" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="MailConjunto" class="control-label">
+                                        Email
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="EmailPersona" class="form-control form-control-solid" required="required" maxlength="80" required="required" />
+                            </div>
+                        </div>
+                    </div>
+              
+                    <div class="col-md-12">
+                        <div class="row mb-12">
+                            <div class="col-xl-12 mt-6">
+                                <div class="fs-6 fw-bold mt-8">
+                                    <label class="control-label" for="ObservacionPersona">
+                                        Dirección:
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-12">
+                            <div class="col-xl-12 fv-row">
+                                <textarea asp-for="ObservacionPersona" class="form-control form-control-solid" required="required"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-12 fv-row">
+                    <center>
+                            <button type="button" onclick="sendFormAjax(this, 'CrearFormPersona', undefined,undefined,'btn_CrearConjunto')" class="btn btn-primary" id="btn_CrearConjunto">
+                                <span class="indicator-label">
+                                    <i class="far fa-save  fs-md-2qx"></i>Guardar Cambios
+                                </span>
+                                <span class="indicator-progress">
+                                    Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                    </center>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+}

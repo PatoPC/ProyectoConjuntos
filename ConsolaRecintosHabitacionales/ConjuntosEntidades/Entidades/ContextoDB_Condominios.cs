@@ -18,6 +18,7 @@ namespace ConjuntosEntidades.Entidades
 
         public virtual DbSet<Adeudo> Adeudos { get; set; } = null!;
         public virtual DbSet<Banco> Bancos { get; set; } = null!;
+        public virtual DbSet<Catalogo> Catalogos { get; set; } = null!;
         public virtual DbSet<Condomino> Condominos { get; set; } = null!;
         public virtual DbSet<Conjunto> Conjuntos { get; set; } = null!;
         public virtual DbSet<Copropietario> Copropietarios { get; set; } = null!;
@@ -25,9 +26,11 @@ namespace ConjuntosEntidades.Entidades
         public virtual DbSet<DetalleContabilidad> DetalleContabilidads { get; set; } = null!;
         public virtual DbSet<EncabezadoContabilidad> EncabezadoContabilidads { get; set; } = null!;
         public virtual DbSet<FacturaCompra> FacturaCompras { get; set; } = null!;
+        public virtual DbSet<Persona> Personas { get; set; } = null!;
         public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
         public virtual DbSet<ReciboCabecera> ReciboCabeceras { get; set; } = null!;
         public virtual DbSet<ReciboDetalle> ReciboDetalles { get; set; } = null!;
+        public virtual DbSet<TipoPersona> TipoPersonas { get; set; } = null!;
         public virtual DbSet<Torre> Torres { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -101,6 +104,54 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("NOMBRE_BANCOS");
 
                 entity.Property(e => e.StatusBancos).HasColumnName("STATUS_BANCOS");
+            });
+
+            modelBuilder.Entity<Catalogo>(entity =>
+            {
+                entity.HasKey(e => e.IdCatalogos);
+
+                entity.ToTable("CATALOGOS");
+
+                entity.Property(e => e.IdCatalogos)
+                    .HasColumnName("ID_CATALOGOS")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.CodigoCatalogo)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("CODIGO_CATALOGO");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.IdCatalogoPadre)
+                    .HasColumnName("ID_CATALOGO_PADRE")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.NombreCatalogo)
+                    .HasMaxLength(35)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE_CATALOGO");
+
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_CREACION");
+
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.HasOne(d => d.IdCatalogoPadreNavigation)
+                    .WithMany(p => p.InverseIdCatalogoPadreNavigation)
+                    .HasForeignKey(d => d.IdCatalogoPadre)
+                    .HasConstraintName("FK_CATALOGO_REFERENCE_CATALOGO");
             });
 
             modelBuilder.Entity<Condomino>(entity =>
@@ -285,22 +336,22 @@ namespace ConjuntosEntidades.Entidades
 
             modelBuilder.Entity<Departamento>(entity =>
             {
-                entity.HasKey(e => e.IdDepto);
+                entity.HasKey(e => e.IdDepartamento);
 
                 entity.ToTable("DEPARTAMENTOS");
 
-                entity.Property(e => e.IdDepto)
-                    .HasColumnName("ID_DEPTO")
+                entity.Property(e => e.IdDepartamento)
+                    .HasColumnName("ID_DEPARTAMENTO")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.AliqDepto)
+                entity.Property(e => e.AliqDepartamento)
                     .HasColumnType("money")
-                    .HasColumnName("ALIQ_DEPTO");
+                    .HasColumnName("ALIQ_DEPARTAMENTO");
 
-                entity.Property(e => e.CoigoDepto)
+                entity.Property(e => e.CodigoDepartamento)
                     .HasMaxLength(10)
                     .IsUnicode(false)
-                    .HasColumnName("COIGO_DEPTO");
+                    .HasColumnName("CODIGO_DEPARTAMENTO");
 
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
@@ -314,9 +365,9 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("ID_TORRES")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.MetrosDepto)
+                entity.Property(e => e.MetrosDepartamento)
                     .HasColumnType("numeric(6, 2)")
-                    .HasColumnName("METROS_DEPTO");
+                    .HasColumnName("METROS_DEPARTAMENTO");
 
                 entity.Property(e => e.SaldoInicialAnual)
                     .HasColumnType("money")
@@ -621,6 +672,59 @@ namespace ConjuntosEntidades.Entidades
                     .HasConstraintName("FK_FACTURA__REFERENCE_PROVEEDO");
             });
 
+            modelBuilder.Entity<Persona>(entity =>
+            {
+                entity.HasKey(e => e.IdPersona);
+
+                entity.ToTable("PERSONA");
+
+                entity.Property(e => e.IdPersona)
+                    .HasColumnName("ID_PERSONA")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.EmailPersona)
+                    .HasMaxLength(80)
+                    .IsUnicode(false)
+                    .HasColumnName("EMAIL_PERSONA");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.IdentificacionPersona)
+                    .HasMaxLength(13)
+                    .IsUnicode(false)
+                    .HasColumnName("IDENTIFICACION_PERSONA");
+
+                entity.Property(e => e.NombrePersona)
+                    .HasMaxLength(80)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE_PERSONA");
+
+                entity.Property(e => e.ObservacionPersona)
+                    .HasColumnType("text")
+                    .HasColumnName("OBSERVACION_PERSONA");
+
+                entity.Property(e => e.TelefonoPersona)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("TELEFONO_PERSONA");
+
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_CREACION");
+
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
+            });
+
             modelBuilder.Entity<Proveedore>(entity =>
             {
                 entity.HasKey(e => e.IdProvee);
@@ -779,6 +883,44 @@ namespace ConjuntosEntidades.Entidades
                     .WithMany(p => p.ReciboDetalles)
                     .HasForeignKey(d => new { d.IdReciboCab, d.NroReciboReciboCab })
                     .HasConstraintName("FK_RECIBO_D_REFERENCE_RECIBO_C");
+            });
+
+            modelBuilder.Entity<TipoPersona>(entity =>
+            {
+                entity.HasKey(e => e.IdTipoPersona);
+
+                entity.ToTable("TIPO_PERSONA");
+
+                entity.Property(e => e.IdTipoPersona)
+                    .HasColumnName("ID_TIPO_PERSONA")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdCatalogos)
+                    .HasColumnName("ID_CATALOGOS")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdDepartamento)
+                    .HasColumnName("ID_DEPARTAMENTO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdPersona)
+                    .HasColumnName("ID_PERSONA")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.HasOne(d => d.IdCatalogosNavigation)
+                    .WithMany(p => p.TipoPersonas)
+                    .HasForeignKey(d => d.IdCatalogos)
+                    .HasConstraintName("FK_TIPO_PER_REFERENCE_CATALOGO");
+
+                entity.HasOne(d => d.IdDepartamentoNavigation)
+                    .WithMany(p => p.TipoPersonas)
+                    .HasForeignKey(d => d.IdDepartamento)
+                    .HasConstraintName("FK_TIPO_PER_REFERENCE_DEPARTAM");
+
+                entity.HasOne(d => d.IdPersonaNavigation)
+                    .WithMany(p => p.TipoPersonas)
+                    .HasForeignKey(d => d.IdPersona)
+                    .HasConstraintName("FK_TIPO_PER_REFERENCE_PERSONA");
             });
 
             modelBuilder.Entity<Torre>(entity =>
