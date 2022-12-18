@@ -165,5 +165,35 @@ namespace APICondominios.Controllers
         }
 
 
+
+        [HttpGet("ObtenerTodosConjuntos")]
+        public async Task<ActionResult<List<ResultadoBusquedaConjuntos>>> ObtenerTodosConjuntos()
+        {
+            try
+            {
+
+                List<Conjunto> listaResultado = new List<Conjunto>();
+
+                listaResultado = await _Conjuntos.busquedaTodosConjuntos();
+
+
+                if (listaResultado.Count < 1)
+                {
+                    return NotFound(MensajesRespuesta.sinResultados());
+                }
+
+                List<ResultadoBusquedaConjuntos> listaResultadoDTO = _mapper.Map<List<ResultadoBusquedaConjuntos>>(listaResultado);
+
+                return Ok(listaResultadoDTO);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+
     }
 }

@@ -9,12 +9,13 @@ namespace Utilitarios
     public class ConstantesConsumoAPI
     {
 
-        #region Conjutos
+        #region Conjuntos
         public const string crearConjuto = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/";
         public const string buscarConjuntosAvanzado = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/ObtenerConjutosAvanzado";
         public const string buscarConjuntosPorID = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/";
         public const string EditarConjuntosPorID = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Editar?id=";
         public const string EditarConjuntosEliminar = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Eliminar?id=";
+        public const string TodosConjuntos = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/ObtenerTodosConjuntos";
         #endregion
 
         #region Torre
@@ -38,6 +39,52 @@ namespace Utilitarios
         public const string gestionarPersonaAPIEliminar = ConstantesAplicacion.pathAPI + "/api/persona/Eliminar?id=";
         public const string buscarPersonaoAvanzado = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaAvanzado";
 
+        #endregion
+
+        #region Catalogo        
+        public const string getGetCatalogosHijosPorCodigoPadre = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogsChildsIDConjunto?codigoPadreCatalgo=";
+
+        public const string getGetCatalogosHijosPorIDCatalogoPadre = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogsChildsIDConjuntoIDCatalogoPadre?idCatalogoPadre=";
+        public const string getGetCatalogosHijosPorNombre = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogsChildsByName_ConjuntoRol?nombrePadre=";
+        public const string getGetCatalogosPorHijosPorIDPadre = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogsChildsByIDFather?idCodigoPadreCatalgo=";
+        public const string getGetCatalogosPadreTios = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogsUpLevel_Conjunto?idCatalogo=";
+        public const string getGetCatalogosHermanosPorID = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogsSameLevelByID_Conjunto?idCatalogoHermano=";
+        public const string getGetCatalogosPorIdCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/";
+        public const string getGetCatalogosCreate = ConstantesAplicacion.pathAPI + "/api/Catalogo/Create";
+
+        public const string getEditCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/Edit?idCatalogo=";
+        public const string getNombreCatalogoIdConjuntos = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogoByNameIdConjunto?nameCatalogo=";
+        public const string getNombreCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogoByName?nameCatalogo=";
+        public const string getCodigoCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogoByCodeIDConjunto?codigoCatalgo=";
+        public const string obtenerCatalogoPorIDConjuntos = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetAllCatalogosByIDConjunto?idEmpresa=";
+        public const string obtenerTodosLosCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetAllCatalogosWithOutConjunto";
+        public const string getDeleteCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/DeleteCatalogo?idCatalogo=";
+
+        #endregion
+
+
+        #region Usuario
+        public const string getLogin = ConstantesAplicacion.pathAPI + "/api/Usuario/LoginUsuario?";
+        public const string getCreateUsuario = ConstantesAplicacion.pathAPI + "/api/Usuario/Create";
+        public const string getEditUsuario = ConstantesAplicacion.pathAPI + "/api/Usuario/Edit?IdUsuario=";
+        public const string getEditarUsuarioReingreso = ConstantesAplicacion.pathAPI + "/api/Usuario/EditarRecontratar?IdUsuario=";
+        public const string getUsuarioByID = ConstantesAplicacion.pathAPI + "/api/Usuario/";
+        public const string getAdvancedSearch = ConstantesAplicacion.pathAPI + "/api/Usuario/GetUsuariosAdvanced";
+        public const string getUsuarioByIDPersona = ConstantesAplicacion.pathAPI + "/api/Usuario/GetUsuariosPorIDPersona?idPersona=";
+        public const string eliminarUsuario = ConstantesAplicacion.pathAPI + "/api/Usuario/Delete?IdUsuario=";
+        public const string crearUsuarioEmpleado = ConstantesAplicacion.pathAPI + "/api/Usuario/CreateUser";
+        public const string apiOlvidoContrasena = ConstantesAplicacion.pathAPI + "/api/EnvioCorreo/EnviarCorreoOlvidoConstrasena?correoOlvido=";
+        public const string apiUsuarioCambioContrasena = ConstantesAplicacion.pathAPI + "/api/Usuario/UpdateCambioContrasenia?idUsuario=";
+        #endregion
+
+        #region ROL
+        public const string GetAllRolsByConjunto = ConstantesAplicacion.pathAPI + "/api/Rol/GetAllRolsByConjunto";
+        public const string getGetRolCreate = ConstantesAplicacion.pathAPI + "/api/Rol/Create";
+        public const string getGetRolEditar = ConstantesAplicacion.pathAPI + "/api/Rol/Edit?idRol=";
+        public const string getGetRolEliminar = ConstantesAplicacion.pathAPI + "/api/Rol/Delete?idRol=";
+        public const string endPointRolByID = ConstantesAplicacion.pathAPI + "/api/Rol/";
+        public const string getRolPorNombreExacto = ConstantesAplicacion.pathAPI + "/api/Rol/GetRolPorNombre?nombreRol=";
+        public const string getRolPorNombre = ConstantesAplicacion.pathAPI + "/api/Rol/GetRolPorNombre?nombreRol=";
         #endregion
 
     }

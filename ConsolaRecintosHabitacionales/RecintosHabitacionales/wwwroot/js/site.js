@@ -73,8 +73,6 @@ async function sendFormAjax(btnSubmit, formAjax, idDIVCargar, rutaCargarSubVista
                     let jsonObject = JSON.parse(responseRead);
 
                     if (jsonObject != undefined) {
-
-
                         if (jsonObject.result != undefined) {
                             console.log("Error mensaje linea 79 - Site.js")
                             Swal.fire(
@@ -432,4 +430,8 @@ function cerrarModal(nombreModal) {
     else {
         console.log("Se intentó cerrar un modal que ya no existe en el contexto actual en cerrarModal() -> site.js => " + nombreModal)
     }
+}
+
+function borrarResultadosAnteriores(divEmpty) {
+    $("#" + divEmpty).html("");
 }

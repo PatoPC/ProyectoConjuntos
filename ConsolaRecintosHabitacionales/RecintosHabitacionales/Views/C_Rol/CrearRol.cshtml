@@ -1,0 +1,206 @@
+﻿@model DTOs.Roles.RolDTOCompleto
+
+@{
+    string listaPermisos = "";
+    int contador = 0;
+
+    if (ViewData["listaPermisos"]!=null)
+        listaPermisos = ViewData["listaPermisos"].ToString();
+
+}
+
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-xxl">
+        <input type="hidden" id="listaPermisos" name="listaPermiso" value="@listaPermisos" />
+        <form asp-action="CrearRol" class="form" id="formCrear" method="post">
+            
+            <div class="card mb-5 mb-xl-10">
+                <div class="card-header card-header-stretch">
+                    <div class="card-title d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <h3 class="fw-bolder m-0 text-gray-800">
+                                    <i class="fas fa-key text-primary fs-2qx"></i>
+                                    Crear Rol
+                                </h3>
+                            </div>
+                            <div class="col-md-12">
+                                <a class="btn btn-success" asp-action="AdministracionRol"><i class="fas fa-undo-alt"></i><b>Lista de Roles</b></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body border-top p-9">
+                  
+                    <div class="row mb-8">
+                        <div class="col-xl-2">
+                            <div class="fs-6 fw-bold mt-2 mb-3">Nombre</div>
+                        </div>
+
+                        <div class="col-xl-9 fv-row">
+                            <input asp-for="NombreRol" class="form-control form-control-solid" placeholder="Define el nombre del rol" required="required" maxlength="30" />
+                        </div>
+                    </div>
+
+                    <div class="row mb-8">
+                        <div class="col-xl-2">
+                            <div class="fs-6 fw-bold mt-2 mb-3">Páginas Inicio</div>
+                        </div>
+                        <div class="col-xl-9 fv-row">
+                            @Html.DropDownList("IdPaginaInicioRol", ViewData["listaPaginasInicioRol"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
+                        </div>
+                    </div>
+
+                    <div class="row mb-8">
+                        <div class="col-xl-2">
+                            <div class="fs-6 fw-bold mt-2 mb-3">Módulos</div>
+                        </div>
+                        <div class="col-xl-5 fv-row">
+                            @Html.DropDownList("IdModuloSelect", ViewData["listaModulos"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid" })
+                        </div>
+                        <div class="col-xl-3">
+                            <div id="Aniadir" class="btn btn-primary" onclick="mostrarModalRol()">Añadir</div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-12">
+                        <div class="col-xl-4">
+                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                <label asp-for="AccesoTodos" class="control-label">
+                                    Acceso a Todos
+                                    @await Html.PartialAsync("_AsteriscoObligatorio")
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 fv-row">
+                            <label>
+                                <input type="radio" class="btn-check" name="AccesoTodos" value="true" />
+                                <span class="btn btn btn-color-muted btn-active-primary fw-bolder px-md-7">Si</span>
+                            </label>
+                            <label>
+                                <input type="radio" class="btn-check" name="AccesoTodos" value="false" />
+                                <span class="btn btn btn-color-muted btn-active-primary fw-bolder px-md-7">No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                     <div class="row mb-8">
+                        <div class="col-xl-4">
+                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                <label asp-for="RolRestringido" class="control-label">
+                                    Rol Restringido
+                                    @await Html.PartialAsync("_AsteriscoObligatorio")
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 fv-row">
+                            <label>
+                                <input type="radio" class="btn-check" name="RolRestringido" value="true" />
+                                <span class="btn btn btn-color-muted btn-active-primary fw-bolder px-md-7">Si</span>
+                            </label>
+                            <label>
+                                <input type="radio" class="btn-check" name="RolRestringido" value="false" />
+                                <span class="btn btn btn-color-muted  btn-active-primary fw-bolderpx-md-7">No</span>
+                            </label>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-8">
+                        <div class="col-xl-4">
+                            <div class="fs-6 fw-bold mt-2 mb-3">Estado</div>
+                        </div>
+                        <div class="col-xl-5 fv-row">
+                            <div class="form-check form-check-solid form-switch fv-row">
+                                <input type="checkbox" class="form-check-input w-45px h-30px" name="Estado" id="Estado">
+                                <label class="form-check-label" for="Activado"></label>
+                            </div>
+                        </div>
+                    </div>
+                    @*En esta sección se carga el acordión con los permisos seleccionados*@
+                    <div class="row mb-8" id="resumenPermisoRoles">
+                        <div class="accordion" id="acordionResumen">
+                                            
+                        </div>
+                    </div>
+                    <div class="row mb-8">
+                        <div class="col-xl-12 fv-row">
+                            <div>
+                                <center>
+                                    <img src="~/assets/media/loading.gif" id="imagenCargando" name="imagenCargando" class="invisible" />
+                                </center>
+                            </div>
+                            <center>
+                                <input type="button" value="Guardar" onclick="sendFormAjaxEditarRol(this,'formCrear')" class="btn btn-primary">
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="modal fade" id="modalRolCategoria" tabindex="-1" aria-labelledby="modalRolCategoria" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="idTituloModal"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModelRol()"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto">
+                                <div class="badge badge-light-success fs-8 fw-bolder" onclick="marcarTodos()">
+                                    <i class="far fa-check-square" style="color:green"></i>
+                                </div>
+                                <div class="badge badge-light-danger fs-8 fw-bolder" onclick="desmarTodos()">
+                                    <i class="far fa-square" style="color:red"></i>
+                                </div>
+                            </div>
+                            <div id="cuerpoModal" name="cuerpoModal" class="d-flex flex-column fv-row">
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModelRol()">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="btnAniadirModal" onclick="crearObjetoJSCreacion()">Añadir Permiso</button>
+                        <button type="button" class="btn btn-primary" id="btnEditarModal">Editar Permiso</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminar" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">¿Seguro de eliminar?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModelRol('modalConfirmarEliminar','btnConfirmarEliminarModal')"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Esta seguro que desea eliminar <b><span id="spanConfirmarEliminar"></span></b>?</p>
+                    </div>
+                    <div class="modal-footer" id="divBotonesConfirmarEliminar">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModelRol('modalConfirmarEliminar','btnConfirmarEliminarModal')">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+    <script src="~/assets/js/custom/documentation/documentation.js"></script>
+    <script src="~/assets/js/custom/documentation/search.js"></script>
+    <script src="~/assets/js/custom/documentation/forms/select2.js"></script>
+    <script src="~/js/editarroljs.js"></script>
+
+    <script type="text/javascript">
+        
+    </script>
+}

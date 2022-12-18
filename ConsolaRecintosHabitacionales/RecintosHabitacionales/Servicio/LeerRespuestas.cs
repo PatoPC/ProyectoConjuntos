@@ -98,6 +98,33 @@ namespace RecintosHabitacionales.Servicio
             return MensajesRespuesta.errorInesperado();
         }
 
+        public static async Task<string> procesarRespuestasJSON(HttpResponseMessage respuestaCatalogo)
+        {
+            string respuestaString = "";
+
+            if (respuestaCatalogo.IsSuccessStatusCode)
+            {
+                MemoryStream memoryContentStream = new();
+                memoryContentStream.Seek(0, SeekOrigin.Begin);
+
+                using (var streamContent = new StreamContent(memoryContentStream))
+                {
+                    try
+                    {
+                        respuestaString = await respuestaCatalogo.Content.ReadAsStringAsync();
+
+                        return respuestaString;
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+            }
+            return default;
+        }
+
+
         public static async Task<SelectList> cargarListaDropDownGenerico(IServicioConsumoAPI<T> servicioConsumoAPI, string urlAPI, string id, string value, Guid? valorSeleccionado = null)
         {
             HttpResponseMessage restapuestaCatalogo = await servicioConsumoAPI.consumoAPI(urlAPI, HttpMethod.Get);

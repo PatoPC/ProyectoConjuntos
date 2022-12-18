@@ -1,8 +1,21 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using Newtonsoft.Json
 @using Utilitarios;
-
+@using DTOs;
 @inject IHttpContextAccessor HttpContextAccessor
+
+
+@{ Layout = null; }
+@using Utilitarios;
+@{
+    DTOs.Usuarios.UsuarioSesionDTO objSesion = new DTOs.Usuarios.UsuarioSesionDTO();
+    string json = HttpContextAccessor.HttpContext.Session.GetString(ConstantesAplicacion.nombreSesion);
+
+    if (!string.IsNullOrEmpty(json))
+    {
+        objSesion = JsonConvert.DeserializeObject<DTOs.Usuarios.UsuarioSesionDTO>(json);
+    }
+}
 
 <input type="hidden" value="@ConstantesAplicacion.pathConsola" id="pathConsola" name="pathConsola" />
 
@@ -57,7 +70,7 @@
 										</span>
 										<!--end:Menu link-->
 										<!--begin:Menu sub-->
-										<div class="menu-sub menu-sub-accordion">
+									@*	<div class="menu-sub menu-sub-accordion">
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
@@ -71,7 +84,68 @@
 											</div>
 											<!--end:Menu item-->
 																					
-										</div>
+										</div>*@
+
+
+
+
+
+
+					@if (objSesion != null)
+					{
+						if (objSesion.Modulos != null)
+						{
+							string rutaMenuInicio = ConstantesAplicacion.pathConsola + objSesion.PaginaDefault;
+							<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+								<div class="menu-item">
+									<a class="menu-link" href="@rutaMenuInicio">
+										<span class="menu-icon">
+											<i class="fas fa-home"></i>
+										</span>
+										<span class="menu-title">Inicio</span>
+									</a>
+								</div>
+							</div>
+							foreach (var modulo in objSesion.Modulos)
+							{
+								<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+									<span class="menu-link">
+										<span class="menu-icon">
+											<i class="@modulo.IconoModulo"></i>
+										</span>
+										<span class="menu-title">@modulo.Nombre</span>
+										<span class="menu-arrow"></span>
+									</span>
+									<div class="menu-sub menu-sub-accordion menu-active-bg">
+										@foreach (var menu in modulo.Menus)
+										{
+											string rutaMenu = ConstantesAplicacion.pathConsola + menu.RutaMenu;
+											<div class="menu-sub menu-sub-accordion menu-active-bg">
+												<div class="menu-item">
+													<a class="menu-link" href="@rutaMenu">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">@menu.NombreMenu</span>
+													</a>
+												</div>
+											</div>
+
+										}
+									</div>
+								</div>
+							}
+						}
+					}
+
+
+
+
+
+
+
+
+
 										<!--end:Menu sub-->
 									</div>
 									<!--end:Menu item-->									

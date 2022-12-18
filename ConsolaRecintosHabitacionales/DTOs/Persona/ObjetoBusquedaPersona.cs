@@ -9,7 +9,9 @@ namespace DTOs.Persona
     public class ObjetoBusquedaPersona
     {
         public Guid? IdPersona { get; set; } = Guid.Empty;
-        public string? NombrePersona { get; set; } = null!;
+        public Guid IdTipoIdentificacion { get; set; }
+        public string NombresPersona { get; set; } = null!;
+        public string? ApellidosPersona { get; set; }
         public string? IdentificacionPersona { get; set; } = null!;       
         public string? EmailPersona { get; set; }
         

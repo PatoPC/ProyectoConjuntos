@@ -1,0 +1,248 @@
+﻿@model DTOs.CatalogoGeneral.CatalogoDTOCrear;
+@using Utilitarios
+@{
+    List<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda> listaCatalogosOrganizada = (List<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda>)ViewData["listaTodosCatalogos"];
+
+    SelectList listaConjuntos = (SelectList)ViewData["listaConjuntos"];
+}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Post-->
+    <div class="post d-flex flex-column-fluid" id="kt_post">
+        <!--begin::Container-->
+        <div id="kt_content_container" class="container-xxl">
+            <!--begin::Search vertical-->
+            <div class="d-flex flex-column flex-lg-row">
+                <!--begin::Aside-->
+                <div class="flex-column flex-lg-row-auto w-100 w-lg-300px w-xxl-325px mb-8 mb-lg-0 me-lg-9 me-5">
+                    <!--begin::Form-->
+                    <form asp-action="CrearCatalogo" class="form" id="formCreate">
+                        <!--begin::Card-->
+                        <div class="card">
+                            <div class="card-header card-header-stretch">
+                                <div class="card-title d-flex align-items-center">
+                                    <h3 class="fw-bolder m-0 text-gray-800">
+                                        <i class="fas fa-bars text-primary fs-2qx"></i>
+                                        Añadir Catálogo
+                                    </h3>
+                                </div>
+                            </div>
+                            <!--begin::Body-->
+                            <div class="card-body">
+                                <div class="mb-5">
+                                    <label class="fs-6 form-label fw-bolder text-dark">Empresa:</label>
+                                    <!--begin::Select-->
+                                    @Html.DropDownList("IdConjunto", listaConjuntos, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @onchange = "recuperarCatalogosPorEmpresa()" })
+                                    <!--end::Select-->
+                                </div>
+                                <div class="mb-5">
+                                    <label for="Nombrecatalogo" class="fs-6 form-label fw-bolder text-dark">Nombre Catágolo</label>@await Html.PartialAsync("_AsteriscoObligatorio")
+                                    <input asp-for="Nombrecatalogo" class="form-control form-control form-control-solid" maxlength="60" required="required" />
+
+                                </div>
+                                <div class="mb-5">
+                                    <label for="Codigocatalogo" class="fs-6 form-label fw-bolder text-dark">Código</label>@await Html.PartialAsync("_AsteriscoObligatorio")
+                                    <input asp-for="Codigocatalogo" class="form-control form-control form-control-solid" maxlength="8" required="required" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="fs-6 form-label fw-bolder text-dark">Dato Adicional</label>
+                                    <input asp-for="Datoadicional" class="form-control form-control form-control-solid" maxlength="80" />
+                                </div>
+                                <div class="mb-5">
+                                    <label class="fs-6 form-label fw-bolder text-dark">Dato ICONO</label>
+                                    <input asp-for="DatoIcono" class="form-control form-control form-control-solid" maxlength="45" />
+                                </div>
+
+                                <div class="mb-5">
+                                    <label class="fs-6 form-label fw-bolder text-dark">Descripción</label>
+                                    <textarea asp-for="Descripcion" class="form-control form-control form-control-solid"> </textarea>
+                                </div>
+                                <div class="mb-5">
+                                    <label class="fs-6 form-label fw-bolder text-dark">Catálogo Padre</label>
+
+                                    <select data-val="true" id="IdCatalogopadre" name="IdCatalogopadre" aria-label="Selecionar" , data-control="select2" data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
+                                        <option>Sin Padre</option>
+                                        @foreach (var catalogo in listaCatalogosOrganizada)
+                                        {
+                                    <optgroup label="@catalogo.NombreCatalogo">
+                                        <option value="@catalogo.IdCatalogo">@catalogo.NombreCatalogo</option>
+                                        @foreach (var subCatalogo in catalogo.InverseIdCatalogopadreNavigation)
+                                        {
+                                                    <option value="@subCatalogo.IdCatalogo">@subCatalogo.NombreCatalogo</option>
+                                           
+                                                @foreach (var subCatalogoInterno in subCatalogo.InverseIdCatalogopadreNavigation)
+                                                {
+                                                        <option value="@subCatalogoInterno.IdCatalogo">@subCatalogo.NombreCatalogo -> @subCatalogoInterno.NombreCatalogo</option>
+                                                }                                            
+                                        }
+                                    </optgroup>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="mb-5">
+                                    <label class="fs-6 form-label fw-bolder text-dark">Estado</label>
+                                    <label>
+                                        <input type="radio" class="btn-check" name="Estado" value="true" checked="checked">
+                                        <span class="btn btn-sm btn-color-muted btn-active btn-active-primary fw-bolder px-2">Activado</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" class="btn-check" name="Estado" value="false">
+                                        <span class="btn btn-sm btn-color-muted btn-active btn-active-danger fw-bolder px-2">Desactivado</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <button type="button" class="btn btn-primary me-12" id="enviarForm" onclick="sendFormAjax(this,'formCreate')">
+                                        <span class="indicator-label">
+                                            Guardar Nuevo
+                                        </span>
+                                        <span class="indicator-progress">
+                                            Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+
+                <div class="flex-lg-row-fluid">
+                    <form action="@ConstantesAplicacion.pathConsola/C_Catalogo/BusquedaTodosCatalogosPorIDEmpresa"
+                          data-ajax="true"
+                          data-ajax-method="Get"
+                          data-ajax-loading="#imagenCargando"
+                          data-ajax-update="#resultadoBusqueda"
+                          data-ajax-begin="borrarResultadosAnteriores('resultadoBusqueda')"
+                          data-ajax-success="ordenarTabla('dataTableCatalogo')"
+                          id="AjaxFormSend"
+                          method="post">
+                        <div class="card mb-7">
+                            <!--begin::Card body-->
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <label class="fs-5 form-label fw-bolder text-dark me-md-3">Conjunto</label>
+                                    </div>
+                                    <!--Inicio::Grupo de Filtros-->
+                                    <div class="col-lg-6 me-md-8">
+                                        @Html.DropDownList("IdConjuntoBusqueda", listaConjuntos, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                                    </div>
+                                    <!--Fin::Grupo de Filtros-->
+                                    <div class="d-flex align-items-center">
+                                        <button type="submit" class="btn btn-primary me-3">Buscar <i class="fas fa-search fs-1qx"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="tab-content" id="resultadoBusqueda">                        
+                        @await Html.PartialAsync("_ListaCatalogo", listaCatalogosOrganizada)
+                    </div>
+                    <center>
+                        <img src="~/assets/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" />
+                    </center>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!--end::Post-->
+</div>
+
+
+@section Scripts {
+
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ordenarTabla('dataTableCatalogo');
+            let elemento = document.getElementById("IdConjuntoBusqueda");
+
+            if (elemento != undefined) {
+                let newOption = new Option('Todas las conjuntos', 'Todos');
+                elemento.options[0] = newOption;
+                elemento.selectedIndex = 0;//se coloca debido a que por alguna razón luego de añadir el nuevo option se selecciona el ultimo option.
+            }
+
+            let elementoEmpresaBuscar = document.getElementById("IdConjunto");
+
+            if (elemento != undefined) {
+                let newOptionEmpresa = new Option('Todas las conjuntos', 'Todos');
+                elementoEmpresaBuscar.options[0] = newOptionEmpresa;
+                elementoEmpresaBuscar.selectedIndex = 0;//se coloca debido a que por alguna razón luego de añadir el nuevo option se selecciona el ultimo option.
+            }
+        });
+
+
+        function recuperarCatalogosPorEmpresa() {
+            let idSeleccion = recuperarValueSelect("IdConjunto")
+            //let elemento = document.getElementById("IdConjunto");
+            //var idSeleccion = elemento.options[elemento.selectedIndex].value;
+            //alert(idSeleccion);
+            let selectCatlogoPadre = document.getElementById("IdCatalogopadre");
+            var options = document.querySelectorAll('#IdCatalogopadre option');
+            options.forEach(o => o.remove());
+            var options = document.querySelectorAll('#IdCatalogopadre optgroup');
+            options.forEach(o => o.remove());
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", pathConsola + "/C_Catalogo/RecuperarListaCatalogos?IdConjuntoBusqueda=" + idSeleccion, true);
+            xhttp.send();
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var directo = xhttp.response
+
+                    var listaCatalogos = JSON.parse(directo)
+
+                    if (listaCatalogos.length > 0) {
+                        var option = document.createElement('option');
+
+                        option.text = "Sin Padre";
+                        selectCatlogoPadre.add(option);
+
+                        for (var catalogo of listaCatalogos) {
+                            optionGroup = document.createElement('optgroup');
+                            optionGroup.label = catalogo.nombrecatalogo;
+                            selectCatlogoPadre.add(optionGroup);
+
+                            optionSelect = document.createElement('option');
+                            optionSelect.text = catalogo.nombrecatalogo;
+                            optionSelect.value = catalogo.idCatalogo;
+
+                            selectCatlogoPadre.add(optionSelect);
+
+                            for (var subCatalogo of catalogo.inverseIdCatalogopadreNavigation) {
+                                optionSubSelect = document.createElement('option');
+                                optionSubSelect.text = subCatalogo.nombrecatalogo;
+                                optionSubSelect.value = subCatalogo.idCatalogo;
+
+                                selectCatlogoPadre.add(optionSubSelect);
+                            }
+                        }
+                    }
+                    else {
+                        Swal.fire({
+                            title: 'Advertencia',
+                            text: "No existen ciudades para la provincia seleccionada.",
+                            icon: 'info',
+                        })
+                    }
+                }
+                else if (this.readyState != 4 && this.status != 200) {
+                    Swal.fire({
+                        title: 'Error Inesperado',
+                        text: "Ocurrió un error al recuperar las ciudades, por favor intente más tarde.",
+                        icon: 'error',
+                    })
+                }
+            }
+        }
+
+    </script>
+
+}

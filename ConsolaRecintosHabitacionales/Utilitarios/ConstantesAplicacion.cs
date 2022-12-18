@@ -26,5 +26,22 @@ namespace Utilitarios
 
         public static Guid guidNulo = new Guid(); /// "00000000-0000-0000-0000-000000000000"
         public const string nombreSesion = "datosSesion";
+
+
+        #region Códigos Persona
+        public const string padreTipoIdentificacion = "TIPIDENT";
+        #endregion
+
+        #region Tipo Identificación
+        public const string IdentificacionCedula = "Cédula";
+        public const string IdentificacionPasaporte = "Pasaporte";
+        #endregion
+
+        #region CódigoCatalogos
+        public const string padreModulo = "MDLS";
+        public const string padrePermisos = "TPPMS";
+        public const string padrePaginasRoles = "HOMEINI";
+        #endregion
+
     }
 }

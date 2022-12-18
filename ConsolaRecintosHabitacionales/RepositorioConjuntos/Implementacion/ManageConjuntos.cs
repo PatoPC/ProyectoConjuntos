@@ -92,5 +92,22 @@ namespace RepositorioConjuntos.Implementacion
 
             return default;
         }
+
+        public async Task<List<Conjunto>> busquedaTodosConjuntos()
+        {
+            try
+            {
+                var conjuntos = await _context.Conjuntos.ToListAsync();
+
+                return conjuntos;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return default;
+        }
+
     }
 }

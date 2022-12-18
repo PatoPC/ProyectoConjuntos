@@ -1,0 +1,112 @@
+﻿@model DTOs.CatalogoGeneral.CatalogoDTOCompleto;
+@{
+    List<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda> listaCatalogosOrganizada = (List<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda>)ViewData["listaTodosCatalogos"];
+
+    SelectList listaConjunto = (SelectList)ViewData["listaConjuntos"];
+}
+
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-xxl">
+        <form asp-action="EditarCatalogo" class="form" id="formCreate">
+
+            <div class="card mb-5 mb-xl-10">
+                <div class="card-header card-header-stretch">
+                    <div class="card-title d-flex align-items-center">
+                        <h3 class="fw-bolder m-0 text-gray-800">
+                            <i class="fas fa-bars text-primary fs-2qx"></i>
+                            Editar Catálogo
+                        </h3>
+                    </div>
+                    <div class="d-flex my-4">
+                        <a class="btn btn-success" asp-action="GestionCatalogos"> <i class="fas fa-undo-alt"></i><b>Gestión Catálogos</b></a>
+                    </div>
+                </div>
+
+                <div class="card-body border-top p-9">
+                    @Html.HiddenFor(model => model.IdCatalogo)
+                    <div class="mb-5">
+                        <label class="fs-6 form-label fw-bolder text-dark">Conjunto:</label>
+                        @Html.DropDownList("IdConjunto", listaConjunto, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                    </div>
+                    <div class="mb-5">
+                        <label for="Nombrecatalogo" class="fs-6 form-label fw-bolder text-dark">Nombre Catágolo</label>@await Html.PartialAsync("_AsteriscoObligatorio")
+                        <input asp-for="Nombrecatalogo" class="form-control form-control form-control-solid" maxlength="40" required="required" />
+
+                    </div>
+                    <div class="mb-5">
+                        <label class="fs-6 form-label fw-bolder text-dark" for="Codigocatalogo">Código</label>@await Html.PartialAsync("_AsteriscoObligatorio")
+                        <input asp-for="Codigocatalogo" class="form-control form-control form-control-solid" maxlength="8" required="required" />
+
+                    </div>
+                    <div class="mb-5">
+                        <label class="fs-6 form-label fw-bolder text-dark">Dato Adicional</label>
+                        <input asp-for="Datoadicional" class="form-control form-control form-control-solid" maxlength="80" />
+                    </div>
+                    <div class="mb-5">
+                        <label class="fs-6 form-label fw-bolder text-dark">Nivel Catálogo</label>
+                        <input asp-for="NivelCatalogo" class="form-control form-control form-control-solid" maxlength="80" readonly="readonly" />
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="fs-6 form-label fw-bolder text-dark">Dato ICONO</label>
+                        <input asp-for="DatoIcono" class="form-control form-control form-control-solid" />
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="fs-6 form-label fw-bolder text-dark">Descripción</label>
+                        <textarea asp-for="Descripcion" class="form-control form-control form-control-solid"> </textarea>
+                    </div>
+                    <div class="mb-5">
+                        <label class="fs-6 form-label fw-bolder text-dark">Catálogo Padre</label>
+
+                        <select data-val="true" id="IdCatalogopadre" name="IdCatalogopadre" aria-label="Selecionar" , data-control="select2" data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
+                            <option>Sin Padre</option>
+                            @foreach (var catalogo in listaCatalogosOrganizada)
+                            {
+                                <optgroup label="@catalogo.NombreCatalogo">
+                                    @*<option value="@catalogo.IdCatalogo">@catalogo.Nombrecatalogo</option>*@
+
+                                    <option value="@catalogo.IdCatalogo" selected="@(catalogo.IdCatalogo == Model.IdCatalogopadre)">@catalogo.NombreCatalogo</option>
+
+                                    @foreach (var subCatalogo in catalogo.InverseIdCatalogopadreNavigation)
+                                    {
+                                        <option value="@subCatalogo.IdCatalogo" selected="@(subCatalogo.IdCatalogo == Model.IdCatalogopadre)">@subCatalogo.NombreCatalogo</option>
+                                        @foreach (var subCatalogoInterno in subCatalogo.InverseIdCatalogopadreNavigation)
+                                        {
+                                            <option value="@subCatalogoInterno.IdCatalogo">@subCatalogo.NombreCatalogo -> @subCatalogoInterno.NombreCatalogo</option>
+                                        }
+                                    }
+                                </optgroup>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-5">
+                        <label class="fs-6 form-label fw-bolder text-dark">Estado</label>
+                        <label>
+                            <input type="radio" class="btn-check" name="Estado" value="true" @(Model.Estado ? "checked= \"checked\"" : "")>
+                            <span class="btn btn-sm btn-color-muted btn-active btn-active-primary fw-bolder px-2">Activado</span>
+                        </label>
+                        <label>
+                            <input type="radio" class="btn-check" name="Estado" value="false" @(!Model.Estado ? "checked= \"checked\"" : "")>
+                            <span class="btn btn-sm btn-color-muted btn-active btn-active-danger fw-bolder px-2">Desactivado</span>
+                        </label>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-end">
+                        @*<input type="button" value="Crear nuevo" onclick="sendFormAjax(this,'formCreate')" class="btn btn-primary">*@
+                        <button type="button" class="btn btn-primary me-12" id="enviarForm" onclick="sendFormAjax(this,'formCreate')">
+                            <span class="indicator-label">
+                                Guardar Cambios
+                            </span>
+                            <span class="indicator-progress">
+                                Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

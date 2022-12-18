@@ -28,6 +28,12 @@ namespace Utilitarios
         private const string mensajeEliminadoOk = "Sus datos han sido eliminados correctamente, esta acción no se puede deshacer.";
         private const string mensajeGuardarOk = "Sus datos han sido guardados correctamente";
         private const string mensajeErrorInesperado = "Ocurrió un error inesperado al intentar al procesar la información.";
+        public const string mensajeErrorUsuarioContrasena = "Usuario/Correo o contraseña incorrectos, por favor verifique e intente nuevamente.";
+        public const string mensajeCatalogoRecursivo = "! No se puede crear un catálogo que tengan como padre a si mismo ¡";
+        public const string mensajeErrorCambioContrasena = "Ocurrió un error al intentar cambiar su contraseña, por favor contáctese con su departamento de TI.";
+        public const string mensajeEnvioCorreoRecuperacionClave = "Se ha enviado una nueva contraseña a su correo electrónico";
+        public const string mensajeRecuperacionContraseñaSinCamposRequeridos = "¡Por favor ingresa uno de los datos requeridos para la recuperación de tu contraseña ¡";
+
         public MensajesRespuesta(string mensaje, bool bandera, string state, string icon, string urlRetorno)
         {
             this.message = mensaje;
@@ -85,6 +91,22 @@ namespace Utilitarios
         {
 
         }
+
+        public static MensajesRespuesta ReseteoContrasenaNoSellenoCamposRequeridos()
+        {
+            return new MensajesRespuesta(mensajeRecuperacionContraseñaSinCamposRequeridos, false, "Error!", "error");
+        }
+
+        public static MensajesRespuesta guardarReseteoContrasena()
+        {
+            return new MensajesRespuesta(mensajeEnvioCorreoRecuperacionClave, true, "Exitoso!", "success");
+        }
+
+        public static MensajesRespuesta errorCatalogoPadreRecursivo()
+        {
+            return new MensajesRespuesta(mensajeCatalogoRecursivo, false, "¡error!", "error");
+        }
+
         public static MensajesRespuesta errorMensajePersonalizado(string mensaje)
         {
             return new MensajesRespuesta(mensaje, false, "¡error!", "error");
@@ -133,5 +155,16 @@ namespace Utilitarios
         {
             return new MensajesRespuesta(mensajeErrorInesperado, false, "¡error!", "error");
         }
+
+        public static MensajesRespuesta usuarioContrasenaIncorrecta()
+        {
+            return new MensajesRespuesta(mensajeErrorUsuarioContrasena, true, "!error!", "error");
+        }
+
+        public static MensajesRespuesta guardarErrorDatosDuplicados(string mensajeError, string icono, bool gifAnimado)
+        {
+            return new MensajesRespuesta(mensajeError, false, "¡error!", icono, gifAnimado);
+        }
+
     }
 }

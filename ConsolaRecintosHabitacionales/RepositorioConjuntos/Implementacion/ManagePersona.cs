@@ -28,9 +28,17 @@ namespace RepositorioConjuntos.Implementacion
             return listaPersonas;
         }
 
+        public async Task<Persona> obtenerPersonaPoNumeroIdentificacionExacta(string numeroIdentificacion)
+        {
+            var objRepositorio = await _context.Personas.Where(x => x.IdentificacionPersona == numeroIdentificacion).FirstOrDefaultAsync();
+
+            return objRepositorio;
+        }
+
+
         public Task<List<Persona>> obtenerPersonaPorNombre(string nombrePersona)
         {
-            var listaPersonas = _context.Personas.Where(x => x.NombrePersona.Trim().ToUpper().Contains(nombrePersona.Trim().ToUpper())).ToListAsync();
+            var listaPersonas = _context.Personas.Where(x => x.NombresPersona.Trim().ToUpper().Contains(nombrePersona.Trim().ToUpper())).ToListAsync();
 
             return listaPersonas;
         }
@@ -46,10 +54,14 @@ namespace RepositorioConjuntos.Implementacion
         {
             List<Persona> listaPersona = new List<Persona>();
 
-            if (!string.IsNullOrEmpty(objBusqueda.NombrePersona))
+            if (!string.IsNullOrEmpty(objBusqueda.NombresPersona))
             {
-                listaPersona = await _context.Personas.Where(x => x.NombrePersona.ToUpper().Trim().Contains(objBusqueda.NombrePersona.Trim().ToUpper())).ToListAsync();
-            }             
+                listaPersona = await _context.Personas.Where(x => x.NombresPersona.ToUpper().Trim().Contains(objBusqueda.NombresPersona.Trim().ToUpper())).ToListAsync();
+            }
+            else if (!string.IsNullOrEmpty(objBusqueda.ApellidosPersona))
+            {
+                listaPersona = await _context.Personas.Where(x => x.NombresPersona.ToUpper().Trim().Contains(objBusqueda.ApellidosPersona.Trim().ToUpper())).ToListAsync();
+            }
             else if(objBusqueda.IdPersona != Guid.Empty)
             {
                 listaPersona = await _context.Personas.Where(x => x.IdPersona == objBusqueda.IdPersona).ToListAsync();
@@ -70,9 +82,12 @@ namespace RepositorioConjuntos.Implementacion
             }
 
 
-            if (!string.IsNullOrEmpty(objBusqueda.NombrePersona))            
-                listaPersona = listaPersona.Where(x => x.NombrePersona.ToUpper().Trim().Contains(objBusqueda.NombrePersona.Trim().ToUpper())).ToList();
-            
+            if (!string.IsNullOrEmpty(objBusqueda.NombresPersona))            
+                listaPersona = listaPersona.Where(x => x.NombresPersona.ToUpper().Trim().Contains(objBusqueda.NombresPersona.Trim().ToUpper())).ToList();
+
+            if (!string.IsNullOrEmpty(objBusqueda.ApellidosPersona))
+                listaPersona = listaPersona.Where(x => x.NombresPersona.ToUpper().Trim().Contains(objBusqueda.ApellidosPersona.Trim().ToUpper())).ToList();
+
             if (objBusqueda.IdPersona != Guid.Empty)            
                 listaPersona = listaPersona.Where(x => x.IdPersona == objBusqueda.IdPersona).ToList();
             

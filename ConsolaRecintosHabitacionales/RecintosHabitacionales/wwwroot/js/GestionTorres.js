@@ -150,11 +150,11 @@ function mostrarModalDepartamentoEditar(idModal, idDepartamentoEditar, tipoAccio
             let jsonObject = JSON.parse(responseRead);
 
             if (jsonObject != undefined) {
-                document.getElementById("CoigoDeptoEditar").value = jsonObject.coigoDepto
-                document.getElementById("MetrosDeptoEditar").value = jsonObject.metrosDepto
-                document.getElementById("AliqDeptoEditar").value = jsonObject.aliqDepto
+                document.getElementById("CoigoDeptoEditar").value = jsonObject.codigoDepartamento
+                document.getElementById("MetrosDeptoEditar").value = jsonObject.metrosDepartamento
+                document.getElementById("AliqDeptoEditar").value = jsonObject.aliqDepartamento
                 document.getElementById("SaldoInicialAnualEditar").value = jsonObject.saldoInicialAnual
-                document.getElementById("IdDeptoEditar").value = jsonObject.idDepto
+                document.getElementById("IdDeptoEditar").value = jsonObject.idDepartamento
                 document.getElementById("IdTorresEditarDepartamento").value = jsonObject.idTorres
             }
 

@@ -14,8 +14,8 @@ namespace Utilitarios
         {
             try
             {
-                //string json = session.GetString(nombreSesion);
-                string json = "";
+                string json = session.GetString(nombreSesion);
+                
                 var objSesion = JsonConvert.DeserializeObject<T>(json);
 
                 return objSesion;

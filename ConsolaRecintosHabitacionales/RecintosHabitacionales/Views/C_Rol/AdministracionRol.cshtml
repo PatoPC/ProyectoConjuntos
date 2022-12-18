@@ -1,0 +1,75 @@
+﻿@model DTOs.Roles.RolDTOBusqueda;
+@using Utilitarios
+
+@{
+    List<DTOs.Roles.RolDTOBusqueda> lista = (List<DTOs.Roles.RolDTOBusqueda>)ViewData["listaRoles"];
+
+}
+
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-xxl">
+        <form action="@ConstantesAplicacion.pathConsola/C_Rol/BusquedaAvanzadaRol"
+              data-ajax="true"
+              data-ajax-method="Get"
+              data-ajax-loading="#imagenCargando"
+              data-ajax-update="#resultadoBusqueda"
+              data-ajax-begin="borrarResultadosAnteriores('resultadoBusqueda')"
+              data-ajax-success="ordenarTabla('dataTableResultadoBusqueda')"
+              id="AjaxFormSend"
+              method="post">
+            <div class="card mb-10 mb-xl-12">
+                <div class="card-header card-header-stretch">
+                    <div class="card-title d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h3 class="fw-bolder m-0 text-gray-800">
+                                    <i class="fas fa-key text-primary fs-2qx"></i>
+                                    Administrar Roles
+                                </h3>
+                            </div>
+                            <div class="col-md-2">
+                                <a class="btn btn-success" asp-action="CrearRol">Añadir</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body border-top p-9">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label class="fs-5 form-label fw-bolder text-dark me-md-3">
+                                    Nombre Rol
+                                </label>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" asp-for="NombreRol" class="form-control form-control form-control-solid" />
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary me-3">Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <center>
+                <img src="~/assets/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" />
+            </center>
+        </form>
+
+        <div id="resultadoBusqueda">
+            
+            @await Html.PartialAsync("_ListaRoles", lista)
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+
+    <script type="text/javascript">
+
+    </script>
+}

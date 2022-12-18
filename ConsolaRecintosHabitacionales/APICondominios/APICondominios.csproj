@@ -16,7 +16,12 @@
   <ItemGroup>
     <ProjectReference Include="..\ConjuntosEntidades\ConjuntosEntidades.csproj" />
     <ProjectReference Include="..\DTOs\DTOs.csproj" />
+    <ProjectReference Include="..\GestionUsuarioDB\GestionUsuarioDB.csproj" />
+    <ProjectReference Include="..\RepositorioCatalogos\RepositorioCatalogos.csproj" />
     <ProjectReference Include="..\RepositorioConjuntos\RepositorioConjuntos.csproj" />
+    <ProjectReference Include="..\RepositorioGestionUsuarios\RepositorioGestionUsuarios.csproj" />
+    <ProjectReference Include="..\RepositorioLogs\RepositorioLogs.csproj" />
+    <ProjectReference Include="..\RepositorioPapelera\RepositorioPapelera.csproj" />
     <ProjectReference Include="..\Utilitarios\Utilitarios.csproj" />
   </ItemGroup>
 

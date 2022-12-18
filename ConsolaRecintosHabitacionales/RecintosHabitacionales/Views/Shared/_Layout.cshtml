@@ -5191,6 +5191,7 @@
 		<script src="~/assets/js/sweetalert2.all.min.js"></script>
 		<script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
 		<script src="~/js/site.js"></script>
+		
 		<!--end::Custom Javascript-->
 		<!--end::Javascript-->
 
@@ -5222,6 +5223,38 @@
             catch (error) {
                 console.log("Error ordenarTabla: " + idTabla + " -> Error: " + error)
             }
+        }
+
+		function recuperarValueSelect(idSelect) {
+            try {
+                let elemento = document.getElementById(idSelect);
+                let idSeleccion
+                try {
+                    idSeleccion = elemento.options[elemento.selectedIndex].value;
+                }
+                catch {
+                    idSeleccion = elemento.selectedIndex
+                }
+                return idSeleccion
+            }
+            catch {
+                console.log("Error (recuperarValueSelect) al intentar value texto de select: " + idSelect)
+            }
+
+            return undefined
+        }
+
+        function recuperarTextSelect(idSelect) {
+            try {
+                let elemento = document.getElementById(idSelect);
+                var idSeleccion = elemento.options[elemento.selectedIndex].text;
+
+                return idSeleccion
+            }
+            catch {
+                console.log("Error (recuperarTextSelect) al intentar recuperar texto de select: " + idSelect)
+            }
+            return undefined
         }
 	</script>
 	@await RenderSectionAsync("Scripts", required: false)

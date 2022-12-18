@@ -1,0 +1,76 @@
+﻿@model IEnumerable<DTOs.Roles.RolDTOBusqueda>
+@{
+    Layout = "";
+}
+
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="post d-flex flex-column-fluid" id="kt_post">
+        <div id="kt_content_container" class="container-xxl">
+            <div class="card">
+                <div class="card-body pt-0">
+                    @await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+
+                    @if (Model.Count() > 0)
+                    {
+                        <div class="table-responsive" id="no-more-tables">
+                            <table id="dataTableResultadoBusqueda" name="dataTablePersonas" class="table align-middle table-row-dashed fs-6 gy-5">
+                                <thead>
+                                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                                        <th class="min-w-125px">
+                                            <span class="badge badge-light text-dark">
+                                                Nombre
+                                            </span>
+                                        </th>
+                                        <th class="min-w-125px">
+                                            <span class="badge badge-light text-dark">
+                                                Estado
+                                            </span>
+                                        </th>
+                                        <th class="min-w-125px">
+                                            <span class="badge badge-light text-dark">Modulos</span>
+                                        </th>                                       
+                                        <th class="min-w-125px">
+                                            <span class="badge badge-light text-dark">Acción</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="fw-bold text-gray-600">
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td data-title="Nombre">@item.NombreRol</td>
+                                            <td data-title="Estado">
+                                                @await Html.PartialAsync("_TextoActivadoDesactivado", item.Estado)
+                                            </td>
+                                            <td data-title="Modulos">
+                                                @foreach (var itemModulo in item.Modulos)
+                                                {
+                                                    <div>
+                                                        @itemModulo.nombreModulo
+                                                    </div>
+                                                }
+                                            </td>
+                                           
+                                            <td data-title="Acción">
+                                                <div>
+                                                    <a href="~/C_Rol/EditarRol?IdRol=@item.IdRol" class="badge badge-light-primary">Editar<i class="far fa-edit" style="color: #009ef7"></i></a>
+                                                </div> 
+                                                <div>
+                                                    <a href="~/C_Rol/DetalleRol?IdRol=@item.IdRol" class="badge badge-light-dark">Detalle<i class="far fa-eye" style="color: black"></i></a>
+                                                </div>
+                                                <div>
+                                                    <a href="~/C_Rol/EliminarRol?IdRol=@item.IdRol" class="badge badge-light-danger">Eliminar<i class="fas fa-trash-alt" style="color: #f1416c"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

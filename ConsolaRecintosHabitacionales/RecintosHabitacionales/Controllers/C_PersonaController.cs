@@ -1,7 +1,9 @@
-﻿using DTOs.Persona;
+﻿using DTOs.CatalogoGeneral;
+using DTOs.Persona;
 using DTOs.Torre;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
+using RecintosHabitacionales.Models;
 using RecintosHabitacionales.Servicio;
 using RecintosHabitacionales.Servicio.Interface;
 using Utilitarios;
@@ -16,19 +18,23 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<PersonaDTOCrear> _servicioConsumoAPICrear;
         private readonly IServicioConsumoAPI<PersonaDTOEditar> _servicioConsumoAPIEditar;
         private readonly IServicioConsumoAPI<ObjetoBusquedaPersona> _servicioConsumoAPIBusqueda;
+        private readonly IServicioConsumoAPI<CatalogoDTODropDown> _servicioConsumoAPICatalogos;
 
-        public C_PersonaController(IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrear, IServicioConsumoAPI<PersonaDTOEditar> servicioConsumoAPIEditar, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusqueda)
+        public C_PersonaController(IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrear, IServicioConsumoAPI<PersonaDTOEditar> servicioConsumoAPIEditar, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusqueda, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos)
         {
             _servicioConsumoAPICrear = servicioConsumoAPICrear;
             _servicioConsumoAPIEditar = servicioConsumoAPIEditar;
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
+            _servicioConsumoAPICatalogos = servicioConsumoAPICatalogos;
         }
 
         #region CRUD
 
         #region CrearPersona
-        public IActionResult CrearPersona()
+        public async Task<ActionResult> CrearPersona()
         {
+            await DatosInciales();
+
             return View();
         }
 
@@ -90,6 +96,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (respuesta.IsSuccessStatusCode)
             {
+                await DatosInciales();
                 PersonaDTOCompleto objDTO = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
                 return View(objDTO);
@@ -119,7 +126,6 @@ namespace RecintosHabitacionales.Controllers
         }
         #endregion
 
-         
         #region Eliminar Persona
         public async Task<ActionResult> EliminarPersona(Guid IdPersona)
         {
@@ -219,6 +225,11 @@ namespace RecintosHabitacionales.Controllers
 
         //    return View("Torre/_ListaTorres", new List<TorreDTOCompleto>());
         //}
+
+        public async Task DatosInciales()
+        {
+            ViewData["listaTipoIdentificacion"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoIdentificacion, "IdCatalogo", "Nombrecatalogo");
+        }
 
     }
 }

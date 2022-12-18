@@ -11,7 +11,9 @@ namespace ConjuntosEntidades.Entidades
         }
 
         public Guid IdPersona { get; set; }
-        public string NombrePersona { get; set; } = null!;
+        public Guid IdTipoIdentificacion { get; set; }
+        public string NombresPersona { get; set; } = null!;
+        public string? ApellidosPersona { get; set; }
         public string IdentificacionPersona { get; set; } = null!;
         public string? TelefonoPersona { get; set; }
         public string? EmailPersona { get; set; }
@@ -19,7 +21,7 @@ namespace ConjuntosEntidades.Entidades
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
-        public string? UsuarioModificacion { get; set; }
+        public string UsuarioModificacion { get; set; } = null!;
 
         public virtual ICollection<TipoPersona> TipoPersonas { get; set; }
     }

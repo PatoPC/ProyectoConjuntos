@@ -14,6 +14,7 @@ namespace RepositorioConjuntos.Interface
         public Task<Persona> obtenerPorIDPersona(Guid idPersona);
         public Task<List<Persona>> obtenerPersonaPorNombre(string nombreTorre);    
         public Task<List<Persona>> obtenerPersonaPoNumeroIdentificacion(string numeroIdentificacion);    
+        public Task<Persona> obtenerPersonaPoNumeroIdentificacionExacta(string numeroIdentificacion);    
         public Task<List<Persona>> busquedaAvanzada(ObjetoBusquedaPersona objBusqueda);    
     }
 }

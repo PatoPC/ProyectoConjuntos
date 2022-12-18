@@ -11,12 +11,14 @@ namespace Utilitarios
     {
         public static async Task<MensajesRespuesta> ExceptionResponse(this HttpResponseMessage httpResponseMessage)
         {
+            string mensaje = "Error:";
+            string responseContent = "";
             try
             {
-                string mensaje = "Error:";
-                string responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
+                
+                responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
 
-                string mensajeInferior = "";
+                string mensajeInterior = "";
 
                 var mensajeError = JsonConvert.DeserializeObject<MensajesRespuesta>(responseContent);
 
@@ -39,7 +41,7 @@ namespace Utilitarios
                                 {
                                     foreach (Newtonsoft.Json.Linq.JValue property in item)
                                     {
-                                        mensajeInferior += property.ToString() + " <br/>";
+                                        mensajeInterior += property.ToString() + " <br/>";
                                     }
                                 }
                             }
@@ -50,12 +52,16 @@ namespace Utilitarios
                     }
                 }
 
-                MensajesRespuesta objRespuesta = new MensajesRespuesta(mensaje, false, mensajeInferior, "error");
+                MensajesRespuesta objRespuesta = new MensajesRespuesta(mensaje, false, mensajeInterior, "error");
 
                 return objRespuesta;
             }
             catch (Exception ex)
             {
+                MensajesRespuesta objRespuesta = new MensajesRespuesta(mensaje, false, responseContent, "error");
+
+                return objRespuesta;
+
             }
 
             return MensajesRespuesta.errorInesperado();

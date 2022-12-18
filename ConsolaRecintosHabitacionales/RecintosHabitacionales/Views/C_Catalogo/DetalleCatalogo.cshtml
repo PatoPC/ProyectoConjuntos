@@ -1,0 +1,110 @@
+﻿@model DTOs.CatalogoGeneral.CatalogoDTOCompleto;
+@{
+    List<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda> listaCatalogosOrganizada = (List<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda>)ViewData["listaTodosCatalogos"];
+
+    SelectList listaConjunto = (SelectList)ViewData["listaConjuntos"];
+}
+
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-xxl">
+
+        <div class="card mb-5 mb-xl-10">
+            <div class="card-header card-header-stretch">
+                <div class="card-title d-flex align-items-center">
+                    <h3 class="fw-bolder m-0 text-gray-800">
+                        <i class="fas fa-bars text-primary fs-2qx"></i>
+                        Detalle Catálogo
+                    </h3>
+                </div>
+            </div>
+
+            <div class="card-body border-top p-9">
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Conjunto:</label>
+                    <!--begin::Select-->
+                    @Html.DropDownList("IdConjunto", listaConjunto, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @disabled = "disabled" })
+                    <!--end::Select-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Nombre Catágolo</label>
+                    <input asp-for="Nombrecatalogo" class="form-control form-control form-control-solid" readonly />
+                </div>
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Código</label>
+                    <input asp-for="Codigocatalogo" class="form-control form-control form-control-solid" readonly />
+                </div>
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Dato Adicional</label>
+                    <input asp-for="Datoadicional" class="form-control form-control form-control-solid" readonly />
+                </div>
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Dato ICONO</label>
+                    <input asp-for="DatoIcono" class="form-control form-control form-control-solid" readonly />
+                </div>
+
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Descripción</label>
+                    <textarea asp-for="Descripcion" class="form-control form-control form-control-solid" readonly> </textarea>
+                </div>
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Catálogo Padre</label>
+
+                    <select data-val="true" id="IdCatalogopadre" name="IdCatalogopadre" aria-label="Selecionar" , data-control="select2" data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg" disabled>
+                        <option>Sin Padre</option>
+                        @foreach (var catalogo in listaCatalogosOrganizada)
+                        {
+                            <optgroup label="@catalogo.NombreCatalogo">
+                                @*<option value="@catalogo.IdCatalogo">@catalogo.Nombrecatalogo</option>*@
+
+                                <option value="@catalogo.IdCatalogo" selected="@(catalogo.IdCatalogo == Model.IdCatalogopadre)">@catalogo.NombreCatalogo</option>
+
+                                @foreach (var subCatalogo in catalogo.InverseIdCatalogopadreNavigation)
+                                {
+                                    <option value="@subCatalogo.IdCatalogo" selected="@(subCatalogo.IdCatalogo == Model.IdCatalogopadre)">@subCatalogo.NombreCatalogo</option>
+                                }
+                            </optgroup>
+                        }
+                    </select>
+                </div>
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Estado</label>
+                    <label>
+                        @*<input type="checkbox" class="form-check-input w-45px h-30px" name="Activado" id="Activado" @(Model.Estado ? "checked= \"checked\"" : "")>*@
+                        <input type="radio" class="btn-check" name="Estado" value="true" @(Model.Estado ? "checked= \"checked\"" : "") disabled>
+                        <span class="btn btn-sm btn-color-muted btn-active btn-active-primary fw-bolder px-2">Activado</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="btn-check" name="Estado" value="false" @(!Model.Estado ? "checked= \"checked\"" : "") disabled>
+                        <span class="btn btn-sm btn-color-muted btn-active btn-active-danger fw-bolder px-2">Desactivado</span>
+                    </label>
+                </div>
+
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Usuario Creación</label>
+                    <input asp-for="Usuariocreacion" class="form-control form-control form-control-solid" readonly="readonly" />
+                </div>
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Fecha Creación</label>
+                    <input asp-for="Fechacreacion" class="form-control form-control form-control-solid" readonly="readonly" />
+                </div>
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Usuario Creación</label>
+                    <input asp-for="Usuariomodificacion" class="form-control form-control form-control-solid" readonly="readonly" />
+                </div>
+                <div class="mb-5">
+                    <label class="fs-6 form-label fw-bolder text-dark">Fecha Creación</label>
+                    <input asp-for="Fechamodificacion" class="form-control form-control form-control-solid" readonly="readonly" />
+                </div>
+
+            </div>
+            <!--end::Body-->
+        </div>
+
+    </div>
+</div>
+
+

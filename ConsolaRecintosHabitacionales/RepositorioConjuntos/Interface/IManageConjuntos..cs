@@ -14,5 +14,6 @@ namespace RepositorioConjuntos.Interface
         public Task<List<Conjunto>> obtenerPorNombre(string nombreCondominio);
         public Task<List<Conjunto>> obtenerPorRUC(string ruc);
         public Task<List<Conjunto>> busquedaAvanzada(BusquedaConjuntos ruc);
+        public Task<List<Conjunto>> busquedaTodosConjuntos();
     }
 }

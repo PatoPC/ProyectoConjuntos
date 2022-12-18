@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Ingresar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="../assets/media/logos/favicon.ico" />
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <link href="~/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    </head>
+
+<body id="kt_body" class="bg-body">
+
+    @RenderBody()
+
+    <script src="~/plugins/global/plugins.bundle.js"></script>
+    <script src="~/js/scripts.bundle.js"></script>
+    <script src="~/assets/js/sweetalert2.all.min.js"></script>
+    <script src="~/assets/js/sweetalert2.all.min.js"></script>
+    <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/site.js"></script>
+    @RenderSectionAsync("Scripts", required: false)
+</body>
+<!--end::Body-->
+</html>
