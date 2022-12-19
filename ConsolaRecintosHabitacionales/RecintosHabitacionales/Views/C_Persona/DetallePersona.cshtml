@@ -19,49 +19,81 @@
 
     <div class="card-body border-top">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="row p-lg-10">
+        <div class="row p-lg-10">       
+             @Html.HiddenFor(x => x.IdPersona)
 
-       
-               @Html.HiddenFor(x => x.IdPersona)
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
-                            <div class="row mb-12">
-                                <div class="col-xl-4">
-                                    <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="NombrePersona" class="control-label">
-                                            Nombre
-                                            @await Html.PartialAsync("_AsteriscoObligatorio")
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-xl-8 fv-row">
-                                <input type="text" asp-for="NombresPersona" class="form-control form-control-solid" placeholder="Nombre" readonly="readonly" maxlength="80" />
-                                </div>
-                            </div>                         
-
-                            <div class="row mb-12">
-                                <div class="col-xl-4">
-                                    <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="TelefonoConjunto" class="control-label">
-                                            Número Identificación
-                                            @await Html.PartialAsync("_AsteriscoObligatorio")
-                                        </label>
-
-                                    </div>
-                                </div>
-                                <div class="col-xl-8 fv-row">
-                                    <input asp-for="IdentificacionPersona" class="form-control form-control-solid" readonly="readonly" maxlength="13" readonly="readonly" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
                         <div class="row mb-12">
                             <div class="col-xl-4">
                                 <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="RucConjunto" class="control-label">
+                                    <label for="NombrePersona" class="control-label">
+                                        Nombres
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input type="text" asp-for="NombresPersona" class="form-control form-control-solid" placeholder="Nombres" readonly="readonly" maxlength="60" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="TelefonoConjunto" class="control-label">
+                                        Tipo Identificación
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                @Html.DropDownList("IdTipoIdentificacion", ViewData["listaTipoIdentificacion"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row mb-12">
+                        <div class="col-xl-4">
+                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                <label for="ApellidosPersona" class="control-label">
+                                    Apellidos
+                                    @await Html.PartialAsync("_AsteriscoObligatorio")
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 fv-row">
+                            <input asp-for="ApellidosPersona" class="form-control form-control-solid" readonly="readonly" maxlength="60" readonly="readonly" />
+                        </div>
+                    </div>
+
+                    <div class="row mb-12">
+                        <div class="col-xl-4">
+                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                <label for="IdentificacionPersona" class="control-label">
+                                    Número Identificación
+                                    @await Html.PartialAsync("_AsteriscoObligatorio")
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 fv-row">
+                            <input asp-for="IdentificacionPersona" class="form-control form-control-solid" readonly="readonly" maxlength="80" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="TelefonoPersona" class="control-label">
                                         Teléfono
                                         @await Html.PartialAsync("_AsteriscoObligatorio")
                                     </label>
@@ -71,43 +103,45 @@
                                 <input asp-for="TelefonoPersona" class="form-control form-control-solid" type="email" readonly="readonly" maxlength="50" readonly="readonly" />
                             </div>
                         </div>
-
-                        <div class="row mb-12">
-                            <div class="col-xl-4">
-                                <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="MailConjunto" class="control-label">
-                                        Email
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-xl-8 fv-row">
-                                <input asp-for="EmailPersona" class="form-control form-control-solid" readonly="readonly" maxlength="80" readonly="readonly" />
-                            </div>
-                        </div>
                     </div>
-              
-                    <div class="col-md-12">
-                        <div class="row mb-12">
-                            <div class="col-xl-12 mt-6">
-                                <div class="fs-6 fw-bold mt-8">
-                                    <label class="control-label" for="ObservacionPersona">
-                                        Dirección:
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
-                                    </label>
-                                </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="row mb-12">
+                        <div class="col-xl-4">
+                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                <label for="EmailPersona" class="control-label">
+                                    Email
+                                    @await Html.PartialAsync("_AsteriscoObligatorio")
+                                </label>
                             </div>
                         </div>
-                        <div class="row mb-12">
-                            <div class="col-xl-12 fv-row">
-                                <textarea asp-for="ObservacionPersona" class="form-control form-control-solid" readonly="readonly"></textarea>
-                            </div>
+                        <div class="col-xl-8 fv-row">
+                            <input asp-for="EmailPersona" class="form-control form-control-solid" type="email" readonly="readonly" maxlength="50" readonly="readonly" />
                         </div>
                     </div>
                 </div>
 
-              
+                <div class="col-md-12">
+                    <div class="row mb-12">
+                        <div class="col-xl-12 mt-6">
+                            <div class="fs-6 fw-bold mt-8">
+                                <label class="control-label" for="ObservacionPersona">
+                                    Dirección:
+                                    @await Html.PartialAsync("_AsteriscoObligatorio")
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-12">
+                        <div class="col-xl-12 fv-row">
+                            <textarea asp-for="ObservacionPersona" class="form-control form-control-solid" readonly="readonly"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+         
 
         </div>
     </div>

@@ -136,16 +136,12 @@ namespace APICondominios.Controllers
         {
             try
             {
-
                 List<Persona> listaResultado = new List<Persona>();
 
                 listaResultado = await _ConsultasPersonas.busquedaAvanzada(objBusqueda);
 
-
-                if (listaResultado.Count < 1)
-                {
-                    return NotFound(MensajesRespuesta.sinResultados());
-                }
+                if (listaResultado.Count < 1)                
+                    return NotFound(MensajesRespuesta.sinResultados());                
 
                 List<PersonaDTOCompleto> listaResultadoDTO = _mapper.Map<List<PersonaDTOCompleto>>(listaResultado);
 
@@ -158,8 +154,6 @@ namespace APICondominios.Controllers
 
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
-
-
     }
     
 }

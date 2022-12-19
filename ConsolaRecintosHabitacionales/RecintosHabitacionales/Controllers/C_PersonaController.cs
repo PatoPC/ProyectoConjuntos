@@ -81,6 +81,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (respuesta.IsSuccessStatusCode)
             {
+                await DatosInciales();
                 PersonaDTOCompleto objDTO = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
                 return View(objDTO);
@@ -129,11 +130,12 @@ namespace RecintosHabitacionales.Controllers
         #region Eliminar Persona
         public async Task<ActionResult> EliminarPersona(Guid IdPersona)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID+ IdPersona, HttpMethod.Get);
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI + IdPersona, HttpMethod.Get);
 
             if (respuesta.IsSuccessStatusCode)
             {
                 PersonaDTOCompleto objDTO = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(respuesta);
+                await DatosInciales();
 
                 return View(objDTO);
             }
@@ -143,8 +145,7 @@ namespace RecintosHabitacionales.Controllers
 
         [HttpPost]
         public async Task<ActionResult> EliminarPersona(Guid IdPersona, bool eliminar)
-        {
-           
+        {           
             HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPIEliminar + IdPersona, HttpMethod.Post);
 
             if (respuesta.IsSuccessStatusCode)
