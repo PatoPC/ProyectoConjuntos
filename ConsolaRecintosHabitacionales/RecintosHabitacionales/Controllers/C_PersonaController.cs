@@ -199,7 +199,6 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-
                 try
                 {
                     HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarPersonaoAvanzado, HttpMethod.Get, objBusquedaConjuntos);
@@ -217,8 +216,6 @@ namespace RecintosHabitacionales.Controllers
 
                                 resultado.IdUsuario = objDTOUsuario.IdUsuario;
                             }
-                                
-
                         }
                     }
                         
