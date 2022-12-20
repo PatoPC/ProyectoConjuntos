@@ -1,10 +1,13 @@
-﻿using AutoMapper;
+﻿using APICondominios.Model;
+using AutoMapper;
 using ConjuntosEntidades.Entidades;
 using DTOs.Departamento;
 using DTOs.Departamento;
+using DTOs.Torre;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RepositorioConjuntos.Interface;
+using RepositorioLogs.Interface;
 using Utilitarios;
 
 namespace APICondominios.Controllers
@@ -16,6 +19,7 @@ namespace APICondominios.Controllers
         private readonly IManageConjuntosCRUD<Departamento> _CRUD_Departamento;
         private readonly IManageDepartamento _Departamentos;
         private readonly IMapper _mapper;
+        private readonly IManageLogError _logError;
 
         public API_DepartamentoController(IMapper mapper, IManageConjuntosCRUD<Departamento> cRUD_Condominio, IManageDepartamento torres)
         {
@@ -24,34 +28,7 @@ namespace APICondominios.Controllers
             _Departamentos = torres;
         }
 
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        [HttpGet("{id}", Name = "GetDepartamentoByID")]
-        public async Task<IActionResult> GetDepartamentoByID(Guid id)
-        {
-            try
-            {
-                Departamento objRepositorio = await _Departamentos.obtenerPorIDDepartamento(id);
-                if (objRepositorio == null)
-                {
-                    return NotFound(MensajesRespuesta.sinResultados());
-                }
-
-                DepartamentoDTOCompleto objDTO = _mapper.Map<DepartamentoDTOCompleto>(objRepositorio);
-
-                return Ok(objDTO);
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-
+        #region CRUD
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] DepartamentoDTOCrear objDTO)
         {
@@ -85,7 +62,6 @@ namespace APICondominios.Controllers
             return BadRequest(MensajesRespuesta.guardarError());
         }
 
-
         [HttpPost("Editar")]
         public async Task<IActionResult> Editar(Guid id, DepartamentoDTOEditar objDTO)
         {
@@ -115,7 +91,6 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status406NotAcceptable);
         }
 
-
         [HttpPost("Eliminar")]
         public async Task<IActionResult> Eliminar(Guid id)
         {
@@ -136,6 +111,31 @@ namespace APICondominios.Controllers
 
             return BadRequest();
         }
+        
+        #endregion
+
+        [HttpGet("{id}", Name = "GetDepartamentoByID")]
+        public async Task<IActionResult> GetDepartamentoByID(Guid id)
+        {
+            try
+            {
+                Departamento objRepositorio = await _Departamentos.obtenerPorIDDepartamento(id);
+                if (objRepositorio == null)
+                {
+                    return NotFound(MensajesRespuesta.sinResultados());
+                }
+
+                DepartamentoDTOCompleto objDTO = _mapper.Map<DepartamentoDTOCompleto>(objRepositorio);
+
+                return Ok(objDTO);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
 
         [HttpGet("ObtenerTorresAvanzado")]
         public async Task<ActionResult<List<DepartamentoDTOCompleto>>> ObtenerTorresAvanzado(DepartamentoBusquedaDTO objBusqueda)
@@ -156,5 +156,33 @@ namespace APICondominios.Controllers
 
             return Ok(listaResultadoDTO);
         }
+
+        [HttpGet("ObtenerDepartamentoPorIDTorre")]
+        public async Task<ActionResult<List<DepartamentoDTOCompleto>>> ObtenerDepartamentoPorIDTorre(Guid idTorre)
+        {
+            List<Departamento> listaResultado = await _Departamentos.obtenerPorDeparta_IDTorre(idTorre);
+
+
+            if (listaResultado.Count < 1)
+                return NotFound(MensajesRespuesta.sinResultados());
+
+
+            List<DepartamentoDTOCompleto> listaResultadoDTO = _mapper.Map<List<DepartamentoDTOCompleto>>(listaResultado);
+
+
+            return Ok(listaResultadoDTO);
+        }
+
+
+        #region Varios
+        private async Task guardarLogs(string objetoJSON, string mensajeError)
+        {
+            LoggerAPI objLooger = new LoggerAPI(_logError);
+
+            await objLooger.guardarError(this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), mensajeError, objetoJSON);
+
+        }
+        #endregion
+
     }
 }

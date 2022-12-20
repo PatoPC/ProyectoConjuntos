@@ -435,3 +435,69 @@ function cerrarModal(nombreModal) {
 function borrarResultadosAnteriores(divEmpty) {
     $("#" + divEmpty).html("");
 }
+
+
+function consultarDesdeAPIControlador(idSelectPadre, idSelectHijo, controlador, accion, parametroBusqueda) {
+    //Este control se muestra cuando los tipos documentos tienen tres niveles (sub documentos como en las licencias, Drive Smarth )
+
+    let elemento = document.getElementById(idSelectPadre);
+    try {
+        let idSeleccion = elemento.options[elemento.selectedIndex].value;        //Elemento en donde se colocará el resultado
+
+        let selectHijo = document.getElementById(idSelectHijo);
+
+        var options = document.querySelectorAll('#' + idSelectHijo + ' option');
+        options.forEach(o => o.remove());
+        option = document.createElement('option');
+        option.text = "Seleccionar";
+        selectHijo.add(option);
+        //alert(value)
+
+        let rutaConsumo
+        var xhttp = new XMLHttpRequest();
+        if (idSeleccion != "") {
+            rutaConsumo = pathConsola + "/" + controlador + "/" + accion + "?" + parametroBusqueda + "=" + idSeleccion;
+        }
+        else {
+            rutaConsumo = pathConsola + "/" + controlador + "/" + accion + "?" + parametroBusqueda;
+        }
+        xhttp.open("GET", rutaConsumo, true);
+        xhttp.send();
+
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var directo = xhttp.response
+
+                var listaRegistros = JSON.parse(directo)
+                if (listaRegistros.length > 0) {
+                    for (var dato of listaRegistros) {
+                        option = document.createElement('option');
+
+                        if (dato.nombrecatalogo != undefined && dato.nombrecatalogo != null) {
+                            option.text = dato.nombrecatalogo;
+                            option.value = dato.idCatalogo;
+                        }
+                        else if (dato.id != undefined) {
+                            option.text = dato.texto;
+                            option.value = dato.id;
+                        }
+                        selectHijo.add(option);
+                    }
+
+
+                }
+                else {
+                   
+                    console.log("No existen registros: JSBusquedaDocumentos.js -> linea 10 a 88.")
+                    console.log("Controlador: " + controlador + ". Accion: " + accion + ". ParametroBusqueda: " + parametroBusqueda + " = " + idSeleccion)
+                }
+            }
+            else if (this.readyState != 4 && this.status != 200) {
+                console.log("Ocurrió un error al recuperar los datos, por favor intente más tarde.");
+            }
+        }
+    }
+    catch {
+        console.log("Error al recuperar información. (consultarDesdeAPIControlador.js linea 503)")
+    }
+};

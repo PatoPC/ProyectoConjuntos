@@ -63,9 +63,9 @@ namespace RecintosHabitacionales.Controllers
         #endregion
         
         #region EditarConjuntos
-        public async Task<ActionResult> EditarConjuntos(Guid idConjutos)
+        public async Task<ActionResult> EditarConjuntos(Guid idConjuntos)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID+ idConjutos, HttpMethod.Get);
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID+ idConjuntos, HttpMethod.Get);
 
             if (respuesta.IsSuccessStatusCode)
             {
@@ -100,9 +100,9 @@ namespace RecintosHabitacionales.Controllers
 
          
         #region EditarConjuntos
-        public async Task<ActionResult> EliminarConjuntos(Guid idConjutos)
+        public async Task<ActionResult> EliminarConjuntos(Guid idConjuntos)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID+ idConjutos, HttpMethod.Get);
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID+ idConjuntos, HttpMethod.Get);
 
             if (respuesta.IsSuccessStatusCode)
             {
@@ -161,16 +161,12 @@ namespace RecintosHabitacionales.Controllers
         [HttpGet]
         public IActionResult AdministrarConjuntos()
         {
-            //var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            //if (objUsuarioSesion != null)
-            //{
-              
+            if (objUsuarioSesion != null)            
+                return View();            
 
-                return View();
-            //}
-
-            //return RedirectToAction("Ingresar", "C_Ingreso");
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         [HttpGet]

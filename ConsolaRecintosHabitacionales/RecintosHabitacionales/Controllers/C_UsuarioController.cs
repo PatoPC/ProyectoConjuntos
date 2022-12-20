@@ -79,8 +79,7 @@ namespace RecintosHabitacionales.Controllers
                 {
                     MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
                     return new JsonResult(objMensajeRespuesta);
-                }
-               
+                }               
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");

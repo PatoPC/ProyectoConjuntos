@@ -23,6 +23,8 @@ namespace Utilitarios
         public const string buscarTorresAvanzado = ConstantesAplicacion.pathAPI + "/api/API_Torre/ObtenerTorresAvanzado";
         public const string TorresPorIDEditar = ConstantesAplicacion.pathAPI + "/api/API_Torre/Editar?id=";
         public const string TorresPorIDEliminar = ConstantesAplicacion.pathAPI + "/api/API_Torre/Eliminar?id=";
+        public const string buscarTorresPorConjunto = ConstantesAplicacion.pathAPI + "/api/API_Torre/ObtenerTorresPorIDConjunto?idConjunto=";
+        
         #endregion
 
         #region Departamento
@@ -30,6 +32,7 @@ namespace Utilitarios
         public const string gestionarDepartamentoAPIEditar = ConstantesAplicacion.pathAPI + "/api/API_Departamento/Editar?id=";
         public const string gestionarDepartamentoAPIEliminar = ConstantesAplicacion.pathAPI + "/api/API_Departamento/Eliminar?id=";
         public const string buscarDepartamentoAvanzado = ConstantesAplicacion.pathAPI + "/api/ API_Departamento/ObtenerTorresAvanzado";
+        public const string buscarDepartamentosPorIDTorre = ConstantesAplicacion.pathAPI + "/api/API_Departamento/ObtenerDepartamentoPorIDTorre?idTorre=";
 
         #endregion
 
@@ -38,6 +41,8 @@ namespace Utilitarios
         public const string gestionarPersonaAPIEditar = ConstantesAplicacion.pathAPI + "/api/persona/Editar?id=";
         public const string gestionarPersonaAPIEliminar = ConstantesAplicacion.pathAPI + "/api/persona/Eliminar?id=";
         public const string buscarPersonaoAvanzado = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaAvanzado";
+        public const string crearPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/CrearPersonaDepartamento";
+        public const string consultaTipoPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/ConsultaPersonaDepartamento";
 
         #endregion
 

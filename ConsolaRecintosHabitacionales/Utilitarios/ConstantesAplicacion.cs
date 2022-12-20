@@ -41,6 +41,7 @@ namespace Utilitarios
         public const string padreModulo = "MDLS";
         public const string padrePermisos = "TPPMS";
         public const string padrePaginasRoles = "HOMEINI";
+        public const string padreTipoPersona = "tipPerso";
         #endregion
 
     }

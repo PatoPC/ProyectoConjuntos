@@ -1,0 +1,221 @@
+﻿@model DTOs.Persona.PersonaDTOConjunto
+
+<div class="card mb-10 mb-xl-12">
+    <div class="card-header card-header-stretch">
+        <div class="card-title d-flex align-items-center">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3 class="fw-bolder m-0 text-gray-800">
+                        <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                        Asignar Persona Departamento
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body border-top">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row p-lg-10">
+
+            <form asp-action="AsignarConjuntoPersona" id="AsignarConjuntoPersona">
+                @Html.HiddenFor(x => x.IdPersona)
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="NombresPersona" class="control-label">
+                                            Nombres
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" asp-for="NombresPersona" class="form-control form-control-solid" placeholder="Nombres" readonly="readonly" />
+                                </div>
+                            </div>
+
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="IdTipoIdentificacion" class="control-label">
+                                            Tipo Identificación
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    @Html.DropDownList("IdTipoIdentificacion", ViewData["listaTipoIdentificacion"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @disabled = "disabled" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="ApellidosPersona" class="control-label">
+                                        Apellidos
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="ApellidosPersona" class="form-control form-control-solid" readonly="readonly" />
+                            </div>
+                        </div>
+
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="IdentificacionPersona" class="control-label">
+                                        Número Identificación
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="IdentificacionPersona" class="form-control form-control-solid" readonly="readonly" maxlength="80" readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="TelefonoPersona" class="control-label">
+                                            Teléfono
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="TelefonoPersona" class="form-control form-control-solid" type="email" readonly="readonly" maxlength="50" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="EmailPersona" class="control-label">
+                                        Email
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="EmailPersona" class="form-control form-control-solid" type="email" readonly="readonly" maxlength="50" readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="IdConjunto" class="control-label">
+                                        Conjunto
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @onchange="consultarDesdeAPIControlador('IdConjunto', 'IdTorres', 'C_Torres', 'BusquedaPorTorresIDConjunto', 'IdConjunto')" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="IdTorres" class="control-label">
+                                        Torre
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <select id="IdTorres" name="IdTorres" aria-label="Selecionar" data-control="select2" data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg" onchange="consultarDesdeAPIControlador('IdTorres', 'IdDepartamento', 'C_Departamento', 'BusquedaPorDepartamentoPorIDTorre', 'IdTorre')">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="IdDepartamento" class="control-label">
+                                        Departamento
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <select id="IdDepartamento" name="IdDepartamento" aria-label="Selecionar" data-control="select2" data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg" required="required">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="EmailPersona" class="control-label">
+                                        Tipo
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                @Html.DropDownList("IdTipoPersonaDepartamento", ViewData["listaTipoPersonas"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xl-12 fv-row">
+                        <center>
+                            <button type="button" onclick="validarDepartamentoPersonaDuplicado(this, 'AsignarConjuntoPersona', undefined,undefined,'btn_AsignarConjunto','IdDepartamento','IdTipoPersonaDepartamento')" class="btn btn-primary" id="btn_AsignarConjunto">
+                                <span class="indicator-label">
+                                    <i class="far fa-save  fs-md-2qx"></i>Guardar Nuevo
+                                </span>
+                                <span class="indicator-progress">
+                                    Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </center>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/personadepartamentojs.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let divConjuntosSeleccionadas = document.getElementById("IdConjunto")
+
+            if (divConjuntosSeleccionadas != undefined) {
+                consultarDesdeAPIControlador("IdConjunto", "IdTorres", "C_Torres", "BusquedaPorTorresIDConjunto", "IdConjunto")
+            }
+        });
+    </script>
+}

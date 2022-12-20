@@ -16,5 +16,6 @@ namespace RepositorioConjuntos.Interface
         public Task<List<Persona>> obtenerPersonaPoNumeroIdentificacion(string numeroIdentificacion);    
         public Task<Persona> obtenerPersonaPoNumeroIdentificacionExacta(string numeroIdentificacion);    
         public Task<List<Persona>> busquedaAvanzada(ObjetoBusquedaPersona objBusqueda);    
+        public Task<TipoPersona> busquedaPersonaDepartamento(ObjTipoPersonaDepartamento objBusqueda);    
     }
 }

@@ -1,9 +1,12 @@
-﻿using AutoMapper;
+﻿using APICondominios.Model;
+using AutoMapper;
 using ConjuntosEntidades.Entidades;
+using DTOs.Departamento;
 using DTOs.Torre;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RepositorioConjuntos.Interface;
+using RepositorioLogs.Interface;
 using Utilitarios;
 
 namespace APICondominios.Controllers
@@ -15,18 +18,14 @@ namespace APICondominios.Controllers
         private readonly IManageConjuntosCRUD<Torre> _CRUD_Torres;
         private readonly IManageTorre _Torres;
         private readonly IMapper _mapper;
+        private readonly IManageLogError _logError;
 
-        public API_TorreController(IMapper mapper, IManageConjuntosCRUD<Torre> cRUD_Condominio, IManageTorre torres)
+        public API_TorreController(IMapper mapper, IManageConjuntosCRUD<Torre> cRUD_Condominio, IManageTorre torres, IManageLogError logError)
         {
             _mapper = mapper;
             _CRUD_Torres = cRUD_Condominio;
             _Torres = torres;
-        }
-
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
+            _logError = logError;
         }
 
         [HttpGet("{id}", Name = "GetTorreByID")]
@@ -35,10 +34,8 @@ namespace APICondominios.Controllers
             try
             {
                 Torre objRepositorio = await _Torres.obtenerPorIDTorre(id);
-                if (objRepositorio == null)
-                {
-                    return NotFound(MensajesRespuesta.sinResultados());
-                }
+                if (objRepositorio == null)                
+                    return NotFound(MensajesRespuesta.sinResultados());                
 
                 TorreDTOCompleto objDTO = _mapper.Map<TorreDTOCompleto>(objRepositorio);
 
@@ -46,7 +43,7 @@ namespace APICondominios.Controllers
             }
             catch (Exception ex)
             {
-
+                await guardarLogs("", ex.ToString());
             }
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
@@ -56,10 +53,9 @@ namespace APICondominios.Controllers
         {
             try
             {
-                if (objDTO == null)
-                {
+                if (objDTO == null)                
                     return BadRequest(MensajesRespuesta.noSePermiteObjNulos());
-                }
+                
 
                 Torre objRepositorio = _mapper.Map<Torre>(objDTO);
                 _CRUD_Torres.Add(objRepositorio);
@@ -72,14 +68,13 @@ namespace APICondominios.Controllers
 
                     return CreatedAtRoute("GetTorreByID", new { id = objTorreDTO.IdTorres }, objTorreDTO);
                 }
-                else
-                {
-                    //await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
-                }
+                else                
+                    await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
+                
             }
             catch (Exception ExValidation)
             {
-                //await guardarLogs(JsonConvert.SerializeObject(objDTO), ExValidation.ToString());
+                await guardarLogs(JsonConvert.SerializeObject(objDTO), ExValidation.ToString());
             }
             return BadRequest(MensajesRespuesta.guardarError());
         }
@@ -91,34 +86,29 @@ namespace APICondominios.Controllers
             try
             {
                 Torre objRepository = new();
-                if (id == ConstantesAplicacion.guidNulo)
-                {
-                    objRepository = await _Torres.obtenerPorIDTorre(objDTO.IdTorresEditar);
-                }
-                else
-                {
+                if (id == ConstantesAplicacion.guidNulo)                
+                    objRepository = await _Torres.obtenerPorIDTorre(objDTO.IdTorresEditar);                
+                else                
                     objRepository = await _Torres.obtenerPorIDTorre(id);
-                }
+                
                 
                 _mapper.Map(objDTO, objRepository);
 
                 _CRUD_Torres.Edit(objRepository);
                 var result = await _CRUD_Torres.save();
                 // se comprueba que se actualizo correctamente
-                if (result.estado)
-                {
+                if (result.estado)                
                     return NoContent();
-                }
-                else
-                {
-                    //await guardarLogs(JsonConvert.SerializeObject(objCatalogoDTO), result.mensajeError);
-                }
+                
+                else                
+                    await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
+                
 
                 return BadRequest(MensajesRespuesta.guardarError());
             }
             catch (Exception ExValidation)
             {
-                //await guardarLogs(JsonConvert.SerializeObject(objCatalogoDTO), ExValidation.ToString());
+                await guardarLogs(JsonConvert.SerializeObject(objDTO), ExValidation.ToString());
             }
             return StatusCode(StatusCodes.Status406NotAcceptable);
         }
@@ -133,14 +123,11 @@ namespace APICondominios.Controllers
             var result = await _CRUD_Torres.save();
 
             //Se comprueba que se actualizó correctamente
-            if (result.estado)
-            {
-                return NoContent();
-            }
-            else
-            {
-                //await guardarLogs(JsonConvert.SerializeObject(objCatalogoRepository, jsonSerializerSettings), result.mensajeError);
-            }
+            if (result.estado)            
+                return NoContent();            
+            else            
+                await guardarLogs(id.ToString(), result.mensajeError);
+            
 
             return BadRequest();
         }
@@ -148,16 +135,27 @@ namespace APICondominios.Controllers
         [HttpGet("ObtenerTorresAvanzado")]
         public async Task<ActionResult<List<TorreDTOCompleto>>> ObtenerTorresAvanzado(BusquedaTorres objBusqueda)
         {
-            List<Torre> listaResultado = new List<Torre>();
+            List<Torre> listaResultado = await _Torres.busquedaAvanzada(objBusqueda);
 
-
-            listaResultado = await _Torres.busquedaAvanzada(objBusqueda);
-
-
-            if (listaResultado.Count < 1)
-            {
+            if (listaResultado.Count < 1)            
                 return NotFound(MensajesRespuesta.sinResultados());
-            }
+            
+
+            List<TorreDTOCompleto> listaResultadoDTO = _mapper.Map<List<TorreDTOCompleto>>(listaResultado);
+
+
+            return Ok(listaResultadoDTO);
+        }
+
+        [HttpGet("ObtenerTorresPorIDConjunto")]
+        public async Task<ActionResult<List<DepartamentoDTOCompleto>>> ObtenerTorresPorIDConjunto(Guid idConjunto)
+        {
+            List<Torre> listaResultado = await _Torres.obtenerTorresPorIDConjunto(idConjunto);
+
+
+            if (listaResultado.Count < 1)            
+                return NotFound(MensajesRespuesta.sinResultados());
+            
 
             List<TorreDTOCompleto> listaResultadoDTO = _mapper.Map<List<TorreDTOCompleto>>(listaResultado);
 
@@ -166,5 +164,14 @@ namespace APICondominios.Controllers
         }
 
 
+        #region Varios
+        private async Task guardarLogs(string objetoJSON, string mensajeError)
+        {
+            LoggerAPI objLooger = new LoggerAPI(_logError);
+
+            await objLooger.guardarError(this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), mensajeError, objetoJSON);
+
+        }
+        #endregion
     }
 }

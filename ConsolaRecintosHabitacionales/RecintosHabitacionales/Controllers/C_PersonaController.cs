@@ -1,9 +1,12 @@
-﻿using DTOs.CatalogoGeneral;
+﻿using AutoMapper;
+using DTOs.CatalogoGeneral;
 using DTOs.Persona;
+using DTOs.Select;
 using DTOs.Torre;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RecintosHabitacionales.Models;
 using RecintosHabitacionales.Servicio;
 using RecintosHabitacionales.Servicio.Interface;
@@ -17,16 +20,35 @@ namespace RecintosHabitacionales.Controllers
         private const string accionActual = "AdministrarPersona";
 
         private readonly IServicioConsumoAPI<PersonaDTOCrear> _servicioConsumoAPICrear;
+        private readonly IServicioConsumoAPI<TipoPersonaDTO> _servicioConsumoAPICrearTipoPersona;
+        private readonly IServicioConsumoAPI<ObjTipoPersonaDepartamento> _servicioConsumoAPIBusquedaTipoPersona;
         private readonly IServicioConsumoAPI<PersonaDTOEditar> _servicioConsumoAPIEditar;
         private readonly IServicioConsumoAPI<ObjetoBusquedaPersona> _servicioConsumoAPIBusqueda;
         private readonly IServicioConsumoAPI<CatalogoDTODropDown> _servicioConsumoAPICatalogos;
+        private readonly IMapper _mapper;
 
-        public C_PersonaController(IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrear, IServicioConsumoAPI<PersonaDTOEditar> servicioConsumoAPIEditar, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusqueda, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos)
+        public C_PersonaController(IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrear, IServicioConsumoAPI<PersonaDTOEditar> servicioConsumoAPIEditar, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusqueda, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IMapper mapper, IServicioConsumoAPI<TipoPersonaDTO> servicioConsumoAPICrearTipoPersona, IServicioConsumoAPI<ObjTipoPersonaDepartamento> servicioConsumoAPIBusquedaTipoPersona)
         {
             _servicioConsumoAPICrear = servicioConsumoAPICrear;
             _servicioConsumoAPIEditar = servicioConsumoAPIEditar;
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
             _servicioConsumoAPICatalogos = servicioConsumoAPICatalogos;
+            _mapper = mapper;
+            _servicioConsumoAPICrearTipoPersona = servicioConsumoAPICrearTipoPersona;
+            _servicioConsumoAPIBusquedaTipoPersona = servicioConsumoAPIBusquedaTipoPersona;
+        }
+
+
+        [HttpGet]
+        public IActionResult AdministrarPersona()
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+                return View();
+
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         #region CRUD
@@ -34,43 +56,58 @@ namespace RecintosHabitacionales.Controllers
         #region CrearPersona
         public async Task<ActionResult> CrearPersona()
         {
-            await DatosInciales();
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            return View();
+            if (objUsuarioSesion != null)
+            {
+                await DatosInciales();
+
+                return View();
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         [HttpPost]
         public async Task<ActionResult> CrearPersona(PersonaDTOCrear objDTO)
         {
-            objDTO.UsuarioCreacion = "prueba";
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            ObjetoBusquedaPersona objBusquedaConjuntos = new ObjetoBusquedaPersona();
-            objBusquedaConjuntos.IdentificacionPersona = objDTO.IdentificacionPersona;
-
-            HttpResponseMessage respuestaDuplicados = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarPersonaoAvanzado, HttpMethod.Get, objBusquedaConjuntos);
-
-            var listaResultado = await LeerRespuestas<List<PersonaDTOCompleto>>.procesarRespuestasConsultas(respuestaDuplicados);
-
-            if (listaResultado == null)
-                listaResultado = new List<PersonaDTOCompleto>();
-
-
-            if (listaResultado.Count() == 0)
+            if (objUsuarioSesion != null)
             {
-                HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI, HttpMethod.Post, objDTO);
 
-                if (respuesta.IsSuccessStatusCode)
+                ObjetoBusquedaPersona objBusquedaConjuntos = new ObjetoBusquedaPersona();
+                objBusquedaConjuntos.IdentificacionPersona = objDTO.IdentificacionPersona;
+
+                HttpResponseMessage respuestaDuplicados = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarPersonaoAvanzado, HttpMethod.Get, objBusquedaConjuntos);
+
+                var listaResultado = await LeerRespuestas<List<PersonaDTOCompleto>>.procesarRespuestasConsultas(respuestaDuplicados);
+
+                if (listaResultado == null)
+                    listaResultado = new List<PersonaDTOCompleto>();
+
+
+                if (listaResultado.Count() == 0)
                 {
-                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                    HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI, HttpMethod.Post, objDTO);
+
+                    objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                    }
+                    else
+                    {
+                        MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                        return new JsonResult(objMensajeRespuesta);
+                    }
                 }
-                else
-                {
-                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                    return new JsonResult(objMensajeRespuesta);
-                }
+
+                return new JsonResult(MensajesRespuesta.errorMensajePersonalizado("Error, ya existe una persona con el número de identificación ingresado.")); 
             }
 
-            return new JsonResult(MensajesRespuesta.errorMensajePersonalizado("Error, ya existe una persona con el número de identificación ingresado."));
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
         #endregion
 
@@ -96,7 +133,9 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
+        #endregion
 
+        #region Editar
         public async Task<ActionResult> EditarPersona(Guid IdPersona)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
@@ -112,7 +151,6 @@ namespace RecintosHabitacionales.Controllers
 
                     return View(objDTO);
                 }
-
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
@@ -176,20 +214,82 @@ namespace RecintosHabitacionales.Controllers
 
         #endregion
 
-        [HttpGet]
-        public IActionResult AdministrarPersona()
+        #region Asignar Persona Departamento
+        public async Task<ActionResult> AsignarConjuntoPersona(Guid IdPersona)
         {
-            //var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            //if (objUsuarioSesion != null)
-            //{
+            if (objUsuarioSesion != null)
+            {
+                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI + IdPersona, HttpMethod.Get);
+
+                if (respuesta.IsSuccessStatusCode)
+                {                    
+                    PersonaDTOCompleto objDTO = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(respuesta);
+                    SelectList objSelectListaConjunto = new SelectList(objUsuarioSesion.ListaConjuntosAcceso, "IdConjunto", "NombreConjunto", objUsuarioSesion.IdConjuntoDefault);
+
+                    await DatosInciales();
+
+                    PersonaDTOConjunto objPersonaConjunto = _mapper.Map<PersonaDTOConjunto>(objDTO);
+
+                    objPersonaConjunto.IdConjunto = objUsuarioSesion.IdConjuntoDefault;
+
+                    ViewData["listaTipoPersonas"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoPersona, "IdCatalogo", "Nombrecatalogo");
 
 
-            return View();
-            //}
+                    ViewData["listaConjuntos"] = objSelectListaConjunto;
 
-            //return RedirectToAction("Ingresar", "C_Ingreso");
+                    return View(objPersonaConjunto);
+                }
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
+
+        [HttpPost]
+        public async Task<ActionResult> AsignarConjuntoPersona(PersonaDTOConjunto objDTO)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion!=null)
+            {
+                TipoPersonaDTO objDTOTipoPersona = _mapper.Map<TipoPersonaDTO>(objDTO);
+
+                objDTOTipoPersona.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                objDTOTipoPersona.UsuarioModificacion = objDTOTipoPersona.UsuarioCreacion;
+
+                HttpResponseMessage respuesta = await _servicioConsumoAPICrearTipoPersona.consumoAPI(ConstantesConsumoAPI.crearPersonaDepartamento, HttpMethod.Post, objDTOTipoPersona);
+
+                if (respuesta.IsSuccessStatusCode)                
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                } 
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+
+        //Esta consulta esta pensada para evitar que exista un departamento asignado a dos personas
+        [HttpGet]
+        public async Task<JsonResult> BusquedTipoPersonaDepartamento(ObjTipoPersonaDepartamento objBusquedaConjuntos)
+        {
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusquedaTipoPersona.consumoAPI(ConstantesConsumoAPI.consultaTipoPersonaDepartamento, HttpMethod.Get, objBusquedaConjuntos);
+            TipoPersonaDTO resultado = new TipoPersonaDTO();
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                resultado = await LeerRespuestas<TipoPersonaDTO>.procesarRespuestasConsultas(respuesta);
+            }
+
+            return new JsonResult(resultado);
+        }
+
+
+        #endregion
 
         [HttpGet]
         public async Task<ActionResult> BusquedaAvanzadaPersona(ObjetoBusquedaPersona objBusquedaConjuntos)
@@ -234,27 +334,7 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
-        //public async Task<IActionResult> RecuperarListaTorresPorConjutoID(Guid idConjuto)
-        //{
-        //    BusquedaTorres objBusquedaTorres = new BusquedaTorres();
-
-        //    objBusquedaTorres.IdPersona = idConjuto;
-
-        //    HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarTorresAvanzado, HttpMethod.Get, objBusquedaTorres);
-
-        //    List<TorreDTOCompleto> listaResultado = await LeerRespuestas<List<TorreDTOCompleto>>.procesarRespuestasConsultas(respuesta);
-
-        //    if (listaResultado == null)
-        //        listaResultado = new List<TorreDTOCompleto>();
-
-        //    if (listaResultado != null)
-        //    {
-        //        return View("Torre/_ListaTorres", listaResultado);
-        //    }
-
-        //    return View("Torre/_ListaTorres", new List<TorreDTOCompleto>());
-        //}
-
+     
         public async Task DatosInciales()
         {
             ViewData["listaTipoIdentificacion"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoIdentificacion, "IdCatalogo", "Nombrecatalogo");

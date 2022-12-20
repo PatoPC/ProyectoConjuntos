@@ -71,5 +71,12 @@ namespace RepositorioConjuntos.Implementacion
 
             return default;
         }
+
+        public async Task<List<Torre>> obtenerTorresPorIDConjunto(Guid idConjunto)
+        {
+            var objRepositorio = await _context.Torres.Where(x => x.IdConjunto == idConjunto).ToListAsync();
+
+            return objRepositorio;
+        }
     }
 }

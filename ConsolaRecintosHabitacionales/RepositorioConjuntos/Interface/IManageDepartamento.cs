@@ -14,5 +14,7 @@ namespace RepositorioConjuntos.Interface
         public Task<Departamento> obtenerPorIDDepartamento(Guid idDepartamento);
         public Task<List<Departamento>> obtenerDepartamentoPorNombre(string nombreDepartamento);    
         public Task<List<Departamento>> busquedaAvanzadaDepartamento(DepartamentoBusquedaDTO objBusquedaDepartamento);
+        public Task<List<Departamento>> obtenerPorDeparta_IDTorre(Guid idTorre);
+        
     }
 }

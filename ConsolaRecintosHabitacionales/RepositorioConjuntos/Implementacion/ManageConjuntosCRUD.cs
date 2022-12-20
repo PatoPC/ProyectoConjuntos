@@ -28,7 +28,13 @@ namespace RepositorioConjuntos.Implementacion
             }
             catch (Exception exValidation)
             {
-
+                try
+                {
+                    _context.AddAsync(obj);
+                }
+                catch (Exception ex)
+                {
+                }
             }
         }
 
@@ -53,7 +59,7 @@ namespace RepositorioConjuntos.Implementacion
             catch (Exception ex)
             {
 
-                
+
             }
         }
 

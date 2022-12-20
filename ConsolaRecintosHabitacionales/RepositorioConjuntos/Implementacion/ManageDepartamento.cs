@@ -55,5 +55,12 @@ namespace RepositorioConjuntos.Implementacion
 
             return objRepositorio;
         }
+
+        public async Task<List<Departamento>> obtenerPorDeparta_IDTorre(Guid idTorre)
+        {
+            var objRepositorio = await _context.Departamentos.Where(x => x.IdTorres == idTorre).ToListAsync();
+
+            return objRepositorio;
+        }
     }
 }

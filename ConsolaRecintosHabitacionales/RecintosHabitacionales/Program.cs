@@ -42,6 +42,8 @@ builder.Services.AddScoped(typeof(PersonaDTOCrear));
 builder.Services.AddScoped(typeof(PersonaDTOEditar));
 builder.Services.AddScoped(typeof(PersonaDTOCompleto));
 builder.Services.AddScoped(typeof(ObjetoBusquedaPersona));
+builder.Services.AddScoped(typeof(TipoPersonaDTO));
+builder.Services.AddScoped(typeof(ObjTipoPersonaDepartamento));
 
 builder.Services.AddScoped(typeof(CatalogoDTODropDown));
 builder.Services.AddScoped(typeof(CatalogoDTOCrear));

@@ -724,6 +724,14 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("ID_TIPO_PERSONA")
                     .HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
                 entity.Property(e => e.IdDepartamento)
                     .HasColumnName("ID_DEPARTAMENTO")
                     .HasDefaultValueSql("(newid())");
@@ -732,14 +740,28 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("ID_PERSONA")
                     .HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.IdTipoPersonaDepartamento).HasColumnName("ID_TIPO_PERSONA_DEPARTAMENTO");
+
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_CREACION");
+
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
+
                 entity.HasOne(d => d.IdDepartamentoNavigation)
                     .WithMany(p => p.TipoPersonas)
                     .HasForeignKey(d => d.IdDepartamento)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TIPO_PER_REFERENCE_DEPARTAM");
 
                 entity.HasOne(d => d.IdPersonaNavigation)
                     .WithMany(p => p.TipoPersonas)
                     .HasForeignKey(d => d.IdPersona)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TIPO_PER_REFERENCE_PERSONA");
             });
 

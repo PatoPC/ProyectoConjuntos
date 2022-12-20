@@ -100,5 +100,12 @@ namespace RepositorioConjuntos.Implementacion
 
             return listaPersona;
         }
+
+        public async Task<TipoPersona> busquedaPersonaDepartamento(ObjTipoPersonaDepartamento objBusqueda)
+        {
+            TipoPersona listaRepositorio = await _context.TipoPersonas.Where(x => x.IdTipoPersonaDepartamento == objBusqueda.IdTipoPersonaDepartamento && x.IdDepartamento==objBusqueda.IdDepartamento).Include(x => x.IdPersonaNavigation).Include(x => x.IdDepartamentoNavigation).FirstOrDefaultAsync();
+
+            return listaRepositorio;
+        }
     }
 }

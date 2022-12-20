@@ -687,8 +687,6 @@ function sendFormAjaxEditarRol(btnSubmit, formAjax) {
 
 
     if (continueSummit) {
-
-
         $.ajax({
             url: myForm.action,
             type: myForm.method,

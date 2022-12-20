@@ -13,5 +13,6 @@ namespace RepositorioConjuntos.Interface
         public Task<Torre> obtenerPorIDTorre(Guid idTorre);
         public Task<List<Torre>> obtenerTorrePorNombre(string nombreTorre);    
         public Task<List<Torre>> busquedaAvanzada(BusquedaTorres objBusquedaTorreo);
+        public Task<List<Torre>> obtenerTorresPorIDConjunto(Guid idConjunto);
     }
 }
