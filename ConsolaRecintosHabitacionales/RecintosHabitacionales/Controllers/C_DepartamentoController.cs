@@ -150,9 +150,5 @@ namespace RecintosHabitacionales.Controllers
 
             return new JsonResult(objResultado);
         }
-
-
-        
-
     }
 }

@@ -34,13 +34,16 @@ namespace APICondominios.Perfil
            
 
             //CreateMap<Origen, Destino>();
-            CreateMap<UsuarioDTOCrear, Usuario>();
-            //ForMember(x => x.UsuarioConjuntos, y => y.MapFrom(fuent => fuent.conjuUsuarioDTO));
+            CreateMap<UsuarioDTOCrear, Usuario>().
+            ForMember(x => x.UsuarioConjuntos, y => y.MapFrom(fuent => fuent.UsuarioConjuntos));
+
+            CreateMap<Usuario, UsuarioDTOCrear>().
+            ForMember(x => x.UsuarioConjuntos, y => y.MapFrom(fuent => fuent.UsuarioConjuntos));
 
             CreateMap<Usuario, UsuarioDTOCompleto>();
 
-            //CreateMap<UsuarioEmpresa, EmpresaUsuarioDTO>()
-            //    .ForMember(x => x.RazonSocial, y => y.MapFrom(fuente => fuente.IdEmpresaNavigation.RazonSocial));
+            CreateMap<UsuarioConjunto, UsuarioConjuntoDTO>();                
+            CreateMap<UsuarioConjuntoDTO, UsuarioConjunto>();                
 
             //CreateMap<EmpresaUsuarioDTO, UsuarioEmpresa>()
             //    .ForMember(x => x.IdConjunto, y => y.MapFrom(fuent => fuent.IdConjunto))
@@ -48,10 +51,10 @@ namespace APICondominios.Perfil
 
 
             CreateMap<UsuarioResultadoBusquedaDTO, Usuario>();
-            //CreateMap<Usuario, UsuarioResultadoBusquedaDTO>()
-            //    .ForMember(x => x.EmpresaUsuarioDTO, y => y.MapFrom(fuente => fuente.UsuarioEmpresas))
-            //    .ForMember(x => x.Perfil, y => y.MapFrom(fuente => fuente.IdRolNavigation.NombreRol))
-            //    .ForMember(x => x.Estado, y => y.MapFrom(fuente => fuente.Estado));
+            CreateMap<Usuario, UsuarioResultadoBusquedaDTO>()
+                .ForMember(x => x.Perfil, y => y.MapFrom(fuente => fuente.IdRolNavigation.NombreRol))
+                .ForMember(x => x.IdConjunto, y => y.MapFrom(fuente => fuente.IdConjuntoDefault));                
+                
 
             CreateMap<Usuario, UsuarioDTOEditar>();
             CreateMap<UsuarioDTOEditar, Usuario>();

@@ -16,15 +16,16 @@ namespace DTOs.Usuarios
         public Guid IdConjuntoDefault { get; set; }
 
         public bool? Estado { get; set; }
-
+        public string? IdentificacionPersona { get; set; } = null!;
+        public string? NombresCompletos { get; set; } = null!;
         public string? CorreoElectronico { get; set; }
 
         public bool ContrasenaInicial { get; set; }
 
-        public string Contrasena { get; set; } = null!;
+        public string? Contrasena { get; set; } = null!;
 
-        public string UsuarioCreacion { get; set; } = null!;
-        public virtual RolDTOCompleto IdRolNavigation { get; set; } = null!;
+        public string? UsuarioCreacion { get; set; } = null!;     
 
+        public List<UsuarioConjuntoDTO>? UsuarioConjuntos { get; set; } = new List<UsuarioConjuntoDTO>();
     }
 }

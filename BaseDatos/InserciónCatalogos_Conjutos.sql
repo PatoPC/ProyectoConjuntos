@@ -22,6 +22,8 @@ USUARIO_CREACION, USUARIO_MODIFICACION)
 VALUES((select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='CDULA'), 
 'Patricio', 'Córdova', '2200025787', '0982119036', 'patricio.cordova@outlook.com', '', getdate(), getdate(), 'admin', 'admin');
 
+SELECT *
+from Condominios.dbo.PERSONA
 
 INSERT INTO Condominios_Permisos.dbo.ROL
 (NOMBRE_ROL, ESTADO, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, ACCESO_TODOS, ROL_RESTRINGIDO)
@@ -80,16 +82,34 @@ VALUES(
 (SELECT ID_USUARIO from Condominios_Permisos.dbo.USUARIO where ID_PERSONA = (select ID_PERSONA  from Condominios.dbo.PERSONA WHERE IDENTIFICACION_PERSONA ='2200025787')),
 (SELECT ID_CONJUNTO from Condominios.dbo.CONJUNTO WHERE NOMBRE_CONJUNTO ='Condominio'))
 
+INSERT INTO Condominios_Permisos.dbo.USUARIO_CONJUNTO
+(ID_USUARIO, ID_CONJUNTO)
+VALUES(
+(SELECT ID_USUARIO from Condominios_Permisos.dbo.USUARIO where ID_PERSONA = (select ID_PERSONA  from Condominios.dbo.PERSONA WHERE IDENTIFICACION_PERSONA ='2200025787')),
+(SELECT ID_CONJUNTO from Condominios.dbo.CONJUNTO WHERE NOMBRE_CONJUNTO ='Marianas'))
+
 SELECT *
 FROM Condominios_Permisos.dbo.USUARIO_CONJUNTO
 
-SELECT *
-from OrientoilRolesPermisos.dbo.USUARIO u 
-where u.ID_PERSONA =(SELECT ID_PERSONA 
-from OrientoilRRHH.dbo.PERSONA p 
-where p.NUMERO_IDENTIFICACION ='2200025787')
+
 
 
 
 SELECT ID_CONJUNTO from Condominios.dbo.CONJUNTO WHERE NOMBRE_CONJUNTO ='Condominio'
+
+SELECT * 
+from Condominios.dbo.CONJUNTO WHERE ID_CONJUNTO ='3476eaa4-0e8c-481f-b361-32524502bfc9'
+
+SELECT * 
+from Condominios.dbo.CONJUNTO WHERE ID_CONJUNTO ='3476eaa4-0e8c-481f-b361-32524502bfc9'
+
+SELECT * 
+from Condominios_Permisos.dbo.USUARIO WHERE ID_USUARIO  ='3476eaa4-0e8c-481f-b361-32524502bfc9'
+
+select * 
+from Condominios_Permisos.dbo.USUARIO
+
+select * 
+from Condominios.dbo.CONJUNTO c  
+
 

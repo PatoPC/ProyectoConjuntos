@@ -10,7 +10,7 @@ namespace Utilitarios
 {
     public class FuncionesUtiles
     {
-        public static string consturirUsuarioAuditoria(UsuarioSesionDTO objUsuarioSesion)
+        public static string construirUsuarioAuditoria(UsuarioSesionDTO objUsuarioSesion)
         {
             try
             {

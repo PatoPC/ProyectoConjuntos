@@ -1,0 +1,184 @@
+﻿@model DTOs.Usuarios.UsuarioDTOCrear
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-xxl">
+        <div>
+            <center><h2>Asignar Usuarios</h2></center>
+        </div>
+        <form asp-action="CrearUsuarios" asp-controller="C_Usuario" class="form" id="formCreateUser">
+            <div class="card mb-5 mb-xl-10">
+                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#cuentaDatosPersonales" aria-expanded="true" aria-controls="cuentaDatosPersonales">
+
+                    <input type="hidden" asp-for="IdPersona" />
+
+                    <div class="card-title m-0">
+                        <h3 class="fw-bolder m-0">
+                            <i class="fas fa-address-card text-primary fs-2qx"></i>
+                            Datos Personales
+                        </h3>
+                    </div>
+                </div>
+                <div id="cuentaDatosPersonales" class="collapse show">
+                    <div class="card-body border-top p-9">
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6" for="IdConjunto">
+                                Conjunto Disponibles
+                                <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Selecciona las empresas a las cuales este usuario tendrá acceso en el futuro."></i>
+                            </label>
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-xl-6 fv-row">
+                                        @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                                    </div>
+                                    <div class="col-lg-6 fv-row">
+                                        <div class="btn btn-primary" onclick="anadirConjuntosSeleccion()">Añadir Conjunto</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Conjunto Acceso</label>
+                            <div class="col-lg-8 fv-row">
+                                <div class="symbol-group" id="divListaConjuntosAcceso">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6" for="IdConjuntoDefault">Conjunto Principal <i class="fas fa-star " style="color: #FFD700 "></i></label>
+                            <div class="col-lg-8 fv-row">
+                                <select id="IdConjuntoDefault" name="IdConjuntoDefault" aria-label="Selecionar" data-control="select2" data-placeholder="Añada una empresa primero" class="form-select form-select-solid form-select-lg" required="required">
+                                    <option>Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Identificación</label>
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col-lg-12 fv-row">
+                                        <input asp-for="IdentificacionPersona" class="form-control form-control-solid" readonly="readonly" maxlength="15" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Nombres Apellidos</label>
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <!--begin::Col-->
+                                    <div class="col-lg-12 fv-row">
+                                        <input asp-for="NombresCompletos" class="form-control form-control-solid" readonly="readonly" maxlength="60" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <!--begin::Label-->
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Correo</label>
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <!--begin::Col-->
+                                    <div class="col-lg-12 fv-row">
+                                        <input asp-for="CorreoElectronico" class="form-control form-control-solid" readonly="readonly" maxlength="60" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="card mb-5 mb-xl-10">
+                <!--begin::Card header-->
+                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#cuentaSeguridad" aria-expanded="true" aria-controls="cuentaSeguridad">
+                    <!--begin::Card title-->
+                    <div class="card-title m-0">
+                        <h3 class="fw-bolder m-0">
+                            <i class="fas fa-lock text-active-dark fs-2qx"></i>
+                            Seguridad
+                        </h3>
+                    </div>
+                </div>
+                <div id="cuentaSeguridad" class="collapse show">
+                    <div class="card-body border-top p-9">
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label required fw-bold fs-6">Perfil/Rol</label>
+                            <div class="col-lg-8 fv-row">
+                                @Html.DropDownList("IdRol", ViewData["listaRoles"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
+                            </div>
+                        </div>
+                        <div class="row mb-6">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                <span>Contraseña</span>
+                            </label>
+                            <div class="col-lg-8 fv-row">
+                                <label class="alert alert-warning">Se configurará automaticamente como contraseña el número de cédula de la persona.</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-0">
+                            <label class="col-lg-4 col-form-label fw-bold fs-6">Habilitado</label>
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <label>
+                                    <input type="radio" class="btn-check" name="Estado" value="true" />
+                                    <span class="btn btn btn-color-muted  btn-active-primary fw-bolder px-md-7">Si</span>
+                                </label>
+                                <label>
+                                    <input type="radio" class="btn-check" name="Estado" value="false"  />
+                                    <span class="btn btn btn-color-muted  btn-active-danger fw-bolder px-md-7">No</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-footer justify-content-end py-6 px-9">
+                        <div>
+                            <center>
+                                <img src="~/assets/media/loading.gif" id="imagenCargando" name="imagenCargando" class="invisible" />
+                            </center>
+                        </div>
+                        <center>
+                            <div onclick="sendFormAjax(this,'formCreateUser')" class="btn btn-primary">
+                                Crear nuevo
+                                <i class="fas fa-user-plus fs-2qx"></i>
+                            </div>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/JSBusquedaDocumentos.js"></script>
+    <script src="~/js/contratarusuario.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            anadirConjuntosSeleccion()
+
+            let selectConjunto = document.getElementById("IdConjuntoDefault");
+
+            var options = selectConjunto.options;
+
+            // Set the selected option
+            options[1].selected = true;
+
+        });
+
+
+    </script>
+}

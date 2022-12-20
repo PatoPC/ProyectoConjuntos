@@ -13,5 +13,6 @@ namespace DTOs.Usuarios
         public Guid IdUsuario { get; set; }
 
         public Guid IdConjunto { get; set; }
+        public string? NombreConjunto { get; set; }
     }
 }

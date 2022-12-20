@@ -9,3 +9,6 @@ Scaffold-DBContext "server=181.39.23.39;database=Catalogo_Conjunto;persist secur
 
 
 Scaffold-DBContext "server=181.39.23.39;database=Papelera_Conjuntos;persist security info=True; Encrypt=False;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True" Microsoft.EntityFrameworkCore.SqlServer -Output Entidades -Force -Context ContextoDB_Papelera
+
+Scaffold-DBContext "server=181.39.23.39;database=LogsConjuntos;persist security info=True; Encrypt=False;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True" Microsoft.EntityFrameworkCore.SqlServer -Output Entidades -Force -Context ContextoDB_Logs
+

@@ -10,6 +10,7 @@ namespace DTOs.Persona
     {
         public Guid IdPersona { get; set; }
         public Guid IdTipoIdentificacion { get; set; }
+        public Guid IdUsuario { get; set; }
         public string? NombresPersona { get; set; } = null!;
         public string? ApellidosPersona { get; set; }
         public string IdentificacionPersona { get; set; } = null!;

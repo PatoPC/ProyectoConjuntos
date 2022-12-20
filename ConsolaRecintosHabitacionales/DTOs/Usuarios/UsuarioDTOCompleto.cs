@@ -16,14 +16,20 @@ namespace DTOs.Usuarios
         public Guid IdPersona { get; set; }
 
         public Guid IdConjuntoDefault { get; set; }
+        public string? NombreConjunto { get; set; }
+        public string? Nombre { get; set; }
+        public string? Apellido { get; set; }
 
-        public bool? Estado { get; set; }
+        public bool Estado { get; set; }
 
         public string? CorreoElectronico { get; set; }
+        public string? numeroIdentificacion { get; set; }
 
         public bool ContrasenaInicial { get; set; }
 
-        public string Contrasena { get; set; } = null!;
+        public string? Contrasena { get; set; } = null!;
+        public string? NombresCompletos { get; set; } = null!;
+        public string? IdentificacionPersona { get; set; } = null!;
 
         public string? IndicioContrasena { get; set; }
 
@@ -33,11 +39,11 @@ namespace DTOs.Usuarios
 
         public DateTime? FechaModificacion { get; set; }
 
-        public string UsuarioCreacion { get; set; } = null!;
+        public string? UsuarioCreacion { get; set; } = null!;
 
-        public string UsuarioModificacion { get; set; } = null!;
+        public string? UsuarioModificacion { get; set; } = null!;
 
-        public RolDTOCompleto IdRolNavigation { get; set; } = null!;
-        public List<UsuarioConjuntoDTO> UsuarioConjuntos { get; set; } = new List<UsuarioConjuntoDTO>();
+        public RolDTOCompleto? IdRolNavigation { get; set; } = null!;
+        public List<UsuarioConjuntoDTO>? UsuarioConjuntos { get; set; } = new List<UsuarioConjuntoDTO>();
     }
 }

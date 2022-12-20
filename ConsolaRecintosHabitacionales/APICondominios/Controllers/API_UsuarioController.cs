@@ -18,22 +18,24 @@ namespace APICondominios.Controllers
     public class API_UsuarioController : ControllerBase
     {
         private readonly IManageCRUDPermisos<Usuario> _CRUDRepository;
-        private readonly IManageCRUDPermisos<UsuarioConjunto> CRUDRepositoryUsuarioConjunto;
+        private readonly IManageCRUDPermisos<UsuarioConjunto> _CRUDRepositoryUsuarioConjunto;
         private readonly IManageConsultasUsuario _UsuarioConsultasRepository;
+        private readonly IManageConjuntos _Conjuntos;
         private readonly IMapper _mapper;
 
         private readonly IManagePersona _Consultas_Persona;
         //private readonly IManageConsultasCatalogos _Consultas_Catalogo;
         private readonly IManageLogError _logError;
 
-        public API_UsuarioController(IManageConsultasUsuario UsuarioRepository, IMapper mapper, IManageCRUDPermisos<Usuario> cRUDRepository, IManageCRUDPermisos<UsuarioConjunto> cRUDRepositoryUsuarioConjuto = null, IManagePersona consultas_Persona = null, IManageLogError logError = null)
+        public API_UsuarioController(IManageConsultasUsuario UsuarioRepository, IMapper mapper, IManageCRUDPermisos<Usuario> cRUDRepository, IManageCRUDPermisos<UsuarioConjunto> cRUDRepositoryUsuarioConjuto = null, IManagePersona consultas_Persona = null, IManageLogError logError = null, IManageConjuntos conjuntos = null)
         {
             _UsuarioConsultasRepository = UsuarioRepository ?? throw new ArgumentException(nameof(UsuarioRepository));
             this._mapper = mapper;
             _CRUDRepository = cRUDRepository;
-            CRUDRepositoryUsuarioConjunto = cRUDRepositoryUsuarioConjuto;
+            _CRUDRepositoryUsuarioConjunto = cRUDRepositoryUsuarioConjuto;
             _Consultas_Persona = consultas_Persona;
             _logError = logError;
+            _Conjuntos = conjuntos;
         }
 
         #region CRUD
@@ -43,9 +45,8 @@ namespace APICondominios.Controllers
             try
             {
                 if (objUsuarioDTO == null)
-                {
                     return BadRequest();
-                }
+
                 Usuario objUsuario = _mapper.Map<Usuario>(objUsuarioDTO);
 
                 _CRUDRepository.Add(objUsuario);
@@ -68,7 +69,7 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status406NotAcceptable);
         } // end Create Usuario
 
-     
+
         [HttpPost("Edit")]
         public async Task<IActionResult> Edit(Guid IdUsuario, UsuarioDTOEditar objUsuarioDTO)
         {
@@ -77,12 +78,27 @@ namespace APICondominios.Controllers
                 if (objUsuarioDTO == null || IdUsuario == ConstantesAplicacion.guidNulo)
                     return BadRequest(MensajesRespuesta.noSePermiteObjNulos());
 
-
                 Usuario objUsuaioRepository = await _UsuarioConsultasRepository.getUserById(IdUsuario);
 
+                List<UsuarioConjunto> listaUsuariosConjuntos = objUsuaioRepository.UsuarioConjuntos.ToList();
+
+                if (listaUsuariosConjuntos.Count()>0)
+                {
+                    _CRUDRepositoryUsuarioConjunto.DeleteRange(listaUsuariosConjuntos);
+
+                    var resultado = await _CRUDRepositoryUsuarioConjunto.save();
+
+                    if (!resultado.estado)
+                    {
+                        await guardarLogs(JsonConvert.SerializeObject(objUsuarioDTO), resultado.mensajeError);
+                        return BadRequest(MensajesRespuesta.guardarError());
+                    }                 
+                }    
+                    
+
                 _mapper.Map(objUsuarioDTO, objUsuaioRepository);
-                List<UsuarioConjuntoDTO> usuariosConjutos = _mapper.Map<List<UsuarioConjuntoDTO>>(objUsuarioDTO.UsuarioConjuntos);
-                //objUsuaioRepository.UsuarioConjuntos = usuariosConjutos;
+                List<UsuarioConjuntoDTO> usuariosConjuntos = _mapper.Map<List<UsuarioConjuntoDTO>>(objUsuarioDTO.UsuarioConjuntos);
+
 
                 _CRUDRepository.Edit(objUsuaioRepository);
                 var result = await _CRUDRepository.save();
@@ -113,13 +129,10 @@ namespace APICondominios.Controllers
                 var result = await _CRUDRepository.save();
                 // se comprueba que se actualizo correctamente
                 if (result.estado)
-                {
                     return NoContent();
-                }
                 else
-                {
                     await guardarLogs(JsonConvert.SerializeObject(objUsuaioRepository), result.mensajeError);
-                }
+
 
                 return BadRequest(MensajesRespuesta.guardarError());
             }
@@ -189,7 +202,7 @@ namespace APICondominios.Controllers
                     usuarioDTO.Fechaultimoingreso = objUsuaioRepository.FechaUltimoIngreso;
 
                     usuarioDTO.CorreoElectronico = usuarioDTO.CorreoElectronico != null ? usuarioDTO.CorreoElectronico.Trim() : "";
-                  
+
                     return Ok(usuarioDTO);
                 }
                 return Ok();
@@ -260,6 +273,8 @@ namespace APICondominios.Controllers
 
                 UsuarioDTOCompleto objUsuarioDTO = _mapper.Map<UsuarioDTOCompleto>(objUsuario);
 
+                objUsuarioDTO = await completarDatosUsuario(objUsuarioDTO);
+
                 return Ok(objUsuarioDTO);
             }
             catch (Exception ex)
@@ -292,16 +307,13 @@ namespace APICondominios.Controllers
         }
 
 
-
         [HttpGet("GetUsuariosAdvanced")]
-        [HttpHead]
         public async Task<ActionResult<List<UsuarioResultadoBusquedaDTO>>> GetUsuariosAdvanced(ObjetoBusquedaUsuarios objBusqueda)
         {
             List<Usuario> listaUsuarios = await _UsuarioConsultasRepository.GetUserAdvanced(objBusqueda);
 
             if (listaUsuarios.Count < 1)
                 return NotFound(MensajesRespuesta.sinResultados());
-
 
             List<UsuarioResultadoBusquedaDTO> listaResultadoDTO = _mapper.Map<List<UsuarioResultadoBusquedaDTO>>(listaUsuarios);
 
@@ -330,26 +342,56 @@ namespace APICondominios.Controllers
         #endregion Busquedas
 
         #region Varios
+
+        private async Task<UsuarioDTOCompleto> completarDatosUsuario(UsuarioDTOCompleto objDTO)
+        {
+            List<Conjunto> listaConjuntos = await _Conjuntos.busquedaTodosConjuntos();
+
+
+            Persona objPersona = await _Consultas_Persona.obtenerPorIDPersona(objDTO.IdPersona);
+
+            objDTO.Nombre = objPersona.NombresPersona;
+            objDTO.Apellido = objPersona.ApellidosPersona;
+            objDTO.numeroIdentificacion = objPersona.IdentificacionPersona;
+            Conjunto objConjunto = listaConjuntos.Where(x => x.IdConjunto == objDTO.IdConjuntoDefault).FirstOrDefault();
+
+            if (objConjunto!=null)
+            {
+                objDTO.NombreConjunto = objConjunto.NombreConjunto;
+
+                foreach (var item in objDTO.UsuarioConjuntos)
+                {
+                    if (objConjunto!=null)
+                    {
+                        if (item.IdConjunto != objConjunto.IdConjunto)
+                        {
+                            Conjunto objConjuntoTemporal = listaConjuntos.Where(x => x.IdConjunto == item.IdConjunto).FirstOrDefault();
+
+                            item.NombreConjunto = objConjuntoTemporal.NombreConjunto;
+                        }
+                        else
+                            item.NombreConjunto = objConjunto.NombreConjunto; 
+                    }
+                    
+                } 
+            }
+
+            return objDTO;
+        }
+
         private async Task<List<UsuarioResultadoBusquedaDTO>> completarDatosUsuario(List<UsuarioResultadoBusquedaDTO> listaResultadoDTO, ObjetoBusquedaUsuarios objBusqueda)
         {
+            List<Conjunto> listaConjuntos = await _Conjuntos.busquedaTodosConjuntos();
+
             foreach (var usuario in listaResultadoDTO)
             {
                 Persona objPersona = await _Consultas_Persona.obtenerPorIDPersona(usuario.IdPersona);
 
                 if (objBusqueda != null && objPersona != null)
                 {
-                    //usuario.Nombre = objPersona.Nombres;
-                    //usuario.Apellido = objPersona.Apellidos;
-                    //usuario.numeroIdentificacion = objPersona.NumeroIdentificacion;
-
-                    //if (objPersona.IdEmpleadoNavigation != null)
-                    //{
-                    //    Catalogo objCatalogo = await _Consultas_Catalogo.GetCatalogoById(objPersona.IdEmpleadoNavigation.IdEstadoLaboral);
-
-                    //    if (objCatalogo != null)
-                    //        usuario.EstadoLaboral = objCatalogo.NombreCatalogo;
-                    //}
-
+                    usuario.Nombre = objPersona.NombresPersona;
+                    usuario.Apellido = objPersona.ApellidosPersona;
+                    usuario.numeroIdentificacion = objPersona.IdentificacionPersona;
                 }
             }
 
@@ -366,8 +408,72 @@ namespace APICondominios.Controllers
                 listaResultadoDTO = listaResultadoDTO.Where(x => x.numeroIdentificacion.Trim() == objBusqueda.numeroIdentificacion.Trim()).ToList();
             }
 
-            return listaResultadoDTO;
+            var listaUsuariosPorConjunto = listaResultadoDTO.GroupBy(x => x.IdConjunto);
+            List<UsuarioResultadoBusquedaDTO> listaResultadoDTOFinal = new();
+
+            foreach (var item in listaUsuariosPorConjunto)
+            {
+                List<UsuarioResultadoBusquedaDTO> listaTemporal = new();
+                Conjunto objConjunto = listaConjuntos.Where(x => x.IdConjunto == item.Key).FirstOrDefault();
+                try
+                {
+                    listaTemporal = item.Select(x => new UsuarioResultadoBusquedaDTO
+                    {
+                        IdUsuario = x.IdUsuario,
+                        IdPersona = x.IdPersona,
+                        IdConjunto = x.IdConjunto,
+                        Estado = x.Estado,
+                        numeroIdentificacion = x.numeroIdentificacion,
+                        Perfil = x.Perfil,
+                        CorreoElectronico = x.CorreoElectronico,
+                        Nombre = x.Nombre,
+                        Apellido = x.Apellido,
+                        UsuarioConjuntos = x.UsuarioConjuntos,
+                        NombreConjunto = objConjunto!=null ? objConjunto.NombreConjunto : ""
+
+                    }).ToList();
+
+                    listaResultadoDTOFinal = listaResultadoDTOFinal.Union(listaTemporal).ToList();
+
+                    foreach (var objTemporal in listaResultadoDTOFinal)
+                    {
+                        foreach (var usuarioConjunto in objTemporal.UsuarioConjuntos)
+                        {
+                            if (objConjunto!=null)
+                            {
+                                if (usuarioConjunto.IdConjunto != objConjunto.IdConjunto)
+                                {
+                                    try
+                                    {
+                                        Conjunto objConjuntoTemporal = listaConjuntos.Where(x => x.IdConjunto == usuarioConjunto.IdConjunto).FirstOrDefault();
+
+                                        if (objConjuntoTemporal != null)
+                                            usuarioConjunto.NombreConjunto = objConjuntoTemporal.NombreConjunto;
+
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                }
+                                else
+                                {
+                                    if (objConjunto != null)
+                                        usuarioConjunto.NombreConjunto = objConjunto.NombreConjunto;
+                                } 
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+
+            return listaResultadoDTOFinal;
         }
+
+
         #endregion
     }
 }

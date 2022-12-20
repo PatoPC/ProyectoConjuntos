@@ -49,6 +49,7 @@ builder.Services.AddScoped(typeof(CatalogoDTOCrear));
 builder.Services.AddScoped(typeof(CatalogoDTOActualizar));
 builder.Services.AddScoped(typeof(CatalogoDTOPaginaDropDown));
 
+builder.Services.AddScoped(typeof(ObjetoBusquedaUsuarios));
 builder.Services.AddScoped(typeof(UsuarioDTOCompleto));
 builder.Services.AddScoped(typeof(UsuarioDTOCrear));
 builder.Services.AddScoped(typeof(UsuarioDTOEditar));

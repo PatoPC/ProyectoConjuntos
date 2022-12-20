@@ -79,7 +79,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                listaRoles.UsuarioCreacion = FuncionesUtiles.consturirUsuarioAuditoria(objUsuarioSesion);
+                listaRoles.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
                 listaRoles.listaModulos = listaRoles.listaModulos.Where(x => x != null).ToList();
 
@@ -129,7 +129,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                listaRoles.UsuarioModificacion = FuncionesUtiles.consturirUsuarioAuditoria(objUsuarioSesion);
+                listaRoles.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
                 listaRoles.listaModulos = listaRoles.listaModulos.Where(x => x != null).ToList();
 

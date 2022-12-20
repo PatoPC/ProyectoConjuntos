@@ -15,6 +15,7 @@ namespace RepositorioGestionUsuarios.Interface
         public void EditUltimoIngreso(Usuario obj);
         public List<Modulo> EditRol(Rol objRol, List<Modulo> listaModulos);
         public void Delete(T obj);
+        public void DeleteRange(List<UsuarioConjunto> listaUsuariosConjuntos);
         public Task<(bool estado, string mensajeError)> save();
         #endregion
     }

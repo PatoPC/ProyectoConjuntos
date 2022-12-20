@@ -1,14 +1,14 @@
-﻿@model DTOs.Persona.ObjetoBusquedaPersona;
+﻿@model DTOs.Usuarios.ObjetoBusquedaUsuarios
 @using Utilitarios;
 
 
-<form action="@ConstantesAplicacion.pathConsola/C_Persona/BusquedaAvanzadaPersona"
+<form action="@ConstantesAplicacion.pathConsola/C_Usuario/BusquedaAvanzadaPersona"
       data-ajax="true"
       data-ajax-method="Get"
       data-ajax-loading="#imagenCargando"
       data-ajax-update="#resultSearch"
       data-ajax-begin="emptyLastResults('resultSearch')"
-      data-ajax-success="ordenarTabla('idTablaPersonas')"
+      data-ajax-success="ordenarTabla('idTablaConjutos')"
       id="AjaxFormSend"
       method="post">
     <div class="card">
@@ -18,12 +18,9 @@
                     <div class="col-md-10">
                         <h3 class="fw-bolder m-0 text-gray-800">
                             <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
-                            Personas
+                            Usuarios
                         </h3>
-                    </div>
-                    <div class="col-md-2">
-                        <a class="btn btn-success" asp-action="CrearPersona">Nuevo</a>
-                    </div>
+                    </div>                  
                 </div>
             </div>
         </div>
@@ -32,13 +29,13 @@
                 <div class="row">
                     <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
                     <div class="col-md-2">
-                        <input asp-for="NombresPersona" type="text" class="form-control form-control-solid" placeholder="Nombres Apellidos" />
+                        <input asp-for="numeroIdentificacion" type="text" class="form-control form-control-solid" placeholder="Número Identificación" />
                     </div>
                     <div class="col-md-2">
-                        <input asp-for="IdentificacionPersona" type="text" class="form-control form-control-solid" placeholder="Identificación" />
+                        <input asp-for="nombres" type="text" class="form-control form-control-solid" placeholder="Nombres" />
                     </div>
                     <div class="col-md-2">
-                        <input asp-for="EmailPersona" type="text" class="form-control form-control-solid" placeholder="email" />
+                        <input asp-for="nombres" type="text" class="form-control form-control-solid" placeholder="Apellidos" />
                     </div>
 
                 </div>
@@ -54,7 +51,6 @@
         </div>
     </div>
     <center><img src="~/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
-
 </form>
 
 <div id="resultSearch">

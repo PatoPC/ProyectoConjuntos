@@ -97,10 +97,6 @@ namespace RecintosHabitacionales.Controllers
 
                                 SesionExtensions.SetObject(HttpContext.Session, ConstantesAplicacion.nombreSesion, objUsuario);
 
-
-
-
-
                                 HttpResponseMessage respuestaPersona = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI + objUsuario.IdPersona, HttpMethod.Get);
 
                                 PersonaDTOCompleto objDTO = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(respuestaPersona);

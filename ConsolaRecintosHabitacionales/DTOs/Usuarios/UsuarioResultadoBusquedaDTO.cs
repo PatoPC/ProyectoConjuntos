@@ -10,13 +10,14 @@ namespace DTOs.Usuarios
     {
         public Guid IdUsuario { get; set; }
         public Guid IdPersona { get; set; }
+        public Guid IdConjunto { get; set; }
         public bool? Estado { get; set; }
-        public string Empresa { get; set; }
-        public string numeroIdentificacion { get; set; }
-        public string Perfil { get; set; }
-        public string CorreoElectronico { get; set; }
-        public string Nombre { get; set; }
-        public string EstadoLaboral { get; set; }
-        public string Apellido { get; set; }
+        public string? NombreConjunto { get; set; }
+        public string? numeroIdentificacion { get; set; }
+        public string? Perfil { get; set; }
+        public string? CorreoElectronico { get; set; }
+        public string? Nombre { get; set; }
+        public string? Apellido { get; set; }
+        public List<UsuarioConjuntoDTO>? UsuarioConjuntos { get; set; } = new List<UsuarioConjuntoDTO>();
     }
 }

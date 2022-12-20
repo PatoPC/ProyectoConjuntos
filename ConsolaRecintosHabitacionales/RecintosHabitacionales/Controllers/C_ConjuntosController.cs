@@ -157,7 +157,6 @@ namespace RecintosHabitacionales.Controllers
             return View();
         }
         #endregion
-
      
         [HttpGet]
         public IActionResult AdministrarConjuntos()

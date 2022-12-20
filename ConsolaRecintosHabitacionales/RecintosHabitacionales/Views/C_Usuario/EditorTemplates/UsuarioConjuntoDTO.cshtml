@@ -1,0 +1,27 @@
+﻿@model DTOs.Usuarios.UsuarioConjuntoDTO
+
+@{
+    string nombreConjunto = "";
+    string divContenedor = "divContendor";
+    if (Model != null)
+    {
+        if (!string.IsNullOrEmpty(Model.NombreConjunto))
+            nombreConjunto = @Model.NombreConjunto.Trim().Replace(" ", "");
+
+        divContenedor = "divContendor" + @Model.IdConjunto;
+    }
+
+}
+<div id="@divContenedor">
+    @if (!string.IsNullOrEmpty(nombreConjunto))
+    {
+        @Html.HiddenFor(model => model.IdConjunto)
+        @Html.HiddenFor(model => model.IdUsuario)
+        @Html.HiddenFor(model => model.NombreConjunto)
+        <div class="border border-gray-300 border-dashed rounded py-3 px-4 mb-3" id="@nombreConjunto@Model.IdConjunto">
+            @nombreConjunto<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" title="Eliminar"
+                             onclick="eliminarElementoConjuntoSeleccionada('@divContenedor', '@Model.IdConjunto')"><i class="bi bi-x fs-2"></i></span>
+        </div>
+        <input type="hidden">
+    }
+</div>

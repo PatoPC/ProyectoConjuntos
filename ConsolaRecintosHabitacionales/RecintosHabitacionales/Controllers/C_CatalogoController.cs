@@ -59,7 +59,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                objCatalogo.UsuarioCreacion = FuncionesUtiles.consturirUsuarioAuditoria(objUsuarioSesion);
+                objCatalogo.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
                 if (objCatalogo.IdCatalogopadre != null && objCatalogo.IdCatalogopadre != ConstantesAplicacion.guidNulo)
                 {

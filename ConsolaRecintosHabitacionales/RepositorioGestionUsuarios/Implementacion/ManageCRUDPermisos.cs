@@ -66,6 +66,10 @@ namespace RepositorioGestionUsuarios.Implementacion
             _context.Remove(obj);
         }
 
+        public void DeleteRange(List<UsuarioConjunto> listaUsuariosConjuntos)
+        {
+            _context.RemoveRange(listaUsuariosConjuntos);
+        }
         public async Task<(bool estado, string mensajeError)> save()
         {
             try
@@ -78,6 +82,8 @@ namespace RepositorioGestionUsuarios.Implementacion
                 string mensajeError = "";
                 if (ex.InnerException != null)
                     mensajeError = ex.InnerException.Message;
+                else if(ex.Message!=null)
+                    mensajeError = ex.Message;
 
                 return (false, mensajeError);
             }
