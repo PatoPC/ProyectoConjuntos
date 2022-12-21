@@ -110,6 +110,6 @@ select *
 from Condominios_Permisos.dbo.USUARIO
 
 select * 
-from Condominios.dbo.CONJUNTO c  
+from Condominios.dbo.TIPO_PERSONA  
 
 

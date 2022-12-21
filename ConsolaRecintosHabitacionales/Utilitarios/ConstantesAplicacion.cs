@@ -10,16 +10,16 @@ namespace Utilitarios
     {
 
         ////DESARROLLO
-        public const string pathConsola = "";
-        public const string pathAPI = "";
-        public const string urlConsola = "http://localhost:5067";
+        //public const string pathConsola = "";
+        //public const string pathAPI = "";
+        //public const string urlConsola = "http://localhost:5067";
 
         ////PRODUCCION
-        //public const string pathConsola = "/Consola_Conjuntos";
-        //public const string pathAPI = "/API_Conjuntos";
+        public const string pathConsola = "/Consola_Conjuntos";
+        public const string pathAPI = "/API_Conjuntos";
         //public const string urlConsola = "http://181.39.23.39";
 
-        ////public const string urlConsola = "http://181.39.23.39/Consola_Conjuntos/";
+        public const string urlConsola = "http://181.39.23.39/Consola_Conjuntos/";
 
         //http://181.39.23.39/API_Conjuntos/api/API_Conjuntos/ObtenerConjutosAvanzado
 
