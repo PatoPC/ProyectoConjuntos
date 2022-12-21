@@ -44,6 +44,7 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
+        #region Crear
         [HttpGet]
         //[AccionesFiltro(nombreModulo = "Configuraciones", nombreMenu = "Catálogo", tipoPermiso = "Escritura", concedido = true)]
         public IActionResult CrearCatalogo()
@@ -84,6 +85,7 @@ namespace RecintosHabitacionales.Controllers
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
+        #endregion
 
         #region Editar
 

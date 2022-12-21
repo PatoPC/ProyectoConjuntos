@@ -8,7 +8,7 @@ namespace APICondominios.Perfil
     {
         public ProfileDepartamentos()
         {
-            CreateMap<Departamento, DepartamentoDTOCompleto>();
+            CreateMap<Departamento, DepartamentoDTOCompleto>();                
             CreateMap<DepartamentoDTOCompleto, Departamento>();
 
             CreateMap<Departamento, DepartamentoDTOCrear>();

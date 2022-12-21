@@ -41,8 +41,11 @@ async function sendFormAjax(btnSubmit, formAjax, idDIVCargar, rutaCargarSubVista
 
         $(btnSubmit).attr('disabled', true);
 
-        event.preventDefault();
-        event.stopImmediatePropagation();
+        try {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+        }
+        catch { }
 
         let formData = new FormData(myForm);
 

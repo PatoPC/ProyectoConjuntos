@@ -25,6 +25,9 @@
                             <span class="badge badge-light text-dark">Correo</span>
                         </th>
                         <th>
+                            <span class="badge badge-light text-dark">Departamento</span>
+                        </th>
+                        <th>
                             <span class="badge badge-light text-dark">Acción</span>
                         </th>
 
@@ -47,7 +50,19 @@
                                 </td>
                                 <td data-title="Correo">
                                     @item.EmailPersona
-                                </td>                               
+                                </td>
+                                <td data-title="Departamento">
+                                    @if(item.TipoPersonas!=null){
+                                        foreach (var tipoPersona in item.TipoPersonas)
+                                        {
+                                            <div>
+                                                <b>@tipoPersona.TipoPersona :</b>
+                                                <span>@tipoPersona.CodigoDepartamento</span>
+                                            </div>
+                                        }
+                                    }
+                                </td>
+                                
                                 <td data-title="Acción">
                                     @* @if (edicion)
                         {*@

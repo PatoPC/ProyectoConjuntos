@@ -22,6 +22,11 @@ namespace APICondominios.Perfil
                 .ForMember(x => x.NombrePersona, y => y.MapFrom(y => y.IdPersonaNavigation.NombresPersona + " " + y.IdPersonaNavigation.ApellidosPersona))
                 .ForMember(x => x.CodigoDepartamento, y => y.MapFrom(y => y.IdDepartamentoNavigation.CodigoDepartamento));
             CreateMap<TipoPersonaDTO, TipoPersona>();
+
+            CreateMap<TipoPersona, TipoPersonaDTOCompleto>()
+                .ForMember(x => x.NombrePersona, y => y.MapFrom(y => y.IdPersonaNavigation.NombresPersona + " " + y.IdPersonaNavigation.ApellidosPersona))
+                .ForMember(x => x.CodigoDepartamento, y => y.MapFrom(y => y.IdDepartamentoNavigation.CodigoDepartamento));
+            CreateMap<TipoPersonaDTOCompleto, TipoPersona>();
            
         }
        

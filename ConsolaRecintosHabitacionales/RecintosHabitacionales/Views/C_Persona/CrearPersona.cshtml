@@ -96,12 +96,29 @@
                                     <div class="fs-6 fw-bold mt-2 mb-3">
                                         <label for="TelefonoPersona" class="control-label">
                                             Teléfono
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="TelefonoPersona" class="form-control form-control-solid" maxlength="50" required="required" />
+                                </div>
+                            </div>                          
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="CelularPersona" class="control-label">
+                                            Celular
                                             @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    <input asp-for="TelefonoPersona" class="form-control form-control-solid" type="email" maxlength="50" required="required" />
+                                    <input asp-for="CelularPersona" class="form-control form-control-solid" maxlength="50" required="required" />
                                 </div>
                             </div>                          
                         </div>

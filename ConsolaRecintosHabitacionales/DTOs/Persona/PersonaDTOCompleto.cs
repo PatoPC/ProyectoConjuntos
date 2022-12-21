@@ -19,7 +19,8 @@ namespace DTOs.Persona
         public string? ObservacionPersona { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
-        public string UsuarioCreacion { get; set; } = null!;
-        public string UsuarioModificacion { get; set; }
+        public string? UsuarioCreacion { get; set; } = null!;
+        public string? UsuarioModificacion { get; set; }
+        public List<TipoPersonaDTOCompleto>? TipoPersonas { get; set; }
     }
 }

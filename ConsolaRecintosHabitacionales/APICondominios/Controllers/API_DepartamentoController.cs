@@ -120,10 +120,9 @@ namespace APICondominios.Controllers
             try
             {
                 Departamento objRepositorio = await _Departamentos.obtenerPorIDDepartamento(id);
-                if (objRepositorio == null)
-                {
+                if (objRepositorio == null)                
                     return NotFound(MensajesRespuesta.sinResultados());
-                }
+                
 
                 DepartamentoDTOCompleto objDTO = _mapper.Map<DepartamentoDTOCompleto>(objRepositorio);
 

@@ -75,7 +75,8 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-
+                //Añadir un campo para celular y  otro para telefono
+                objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
                 ObjetoBusquedaPersona objBusquedaConjuntos = new ObjetoBusquedaPersona();
                 objBusquedaConjuntos.IdentificacionPersona = objDTO.IdentificacionPersona;
 
@@ -91,7 +92,7 @@ namespace RecintosHabitacionales.Controllers
                 {
                     HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI, HttpMethod.Post, objDTO);
 
-                    objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                    
 
                     if (respuesta.IsSuccessStatusCode)
                     {
@@ -315,6 +316,18 @@ namespace RecintosHabitacionales.Controllers
                                 UsuarioDTOCompleto objDTOUsuario = await LeerRespuestas<UsuarioDTOCompleto>.procesarRespuestasConsultas(respuestaUsuario);
 
                                 resultado.IdUsuario = objDTOUsuario.IdUsuario;
+                            }
+
+                            if (resultado.TipoPersonas != null)
+                            {
+                                foreach (var item in resultado.TipoPersonas)
+                                {
+                                    HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorIdCatalogo + item.IdTipoPersonaDepartamento, HttpMethod.Get);
+
+                                    CatalogoDTOCompleto objCatalogo = await LeerRespuestas<CatalogoDTOCompleto>.procesarRespuestasConsultas(respuestaCatalogo);
+
+                                    item.TipoPersona = objCatalogo.Nombrecatalogo;
+                                }
                             }
                         }
                     }

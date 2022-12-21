@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTOs.Persona
 {
-    public class TipoPersonaDTO
+    public class TipoPersonaDTOCompleto
     {
         public Guid? IdPersona { get; set; }
         public Guid? IdDepartamento { get; set; }
@@ -16,6 +16,5 @@ namespace DTOs.Persona
         public string? NombrePersona { get; set; } = null!;
         public string? UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
-        public PersonaDTOCompleto? IdPersonaNavigation { get; set; } = null!;
     }
 }

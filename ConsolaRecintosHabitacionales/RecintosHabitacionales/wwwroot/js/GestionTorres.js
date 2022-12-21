@@ -156,6 +156,22 @@ function mostrarModalDepartamentoEditar(idModal, idDepartamentoEditar, tipoAccio
                 document.getElementById("SaldoInicialAnualEditar").value = jsonObject.saldoInicialAnual
                 document.getElementById("IdDeptoEditar").value = jsonObject.idDepartamento
                 document.getElementById("IdTorresEditarDepartamento").value = jsonObject.idTorres
+
+                console.log("jsonObject.tipoPersonas " + jsonObject.tipoPersonas)
+                
+                for (let i = 0; i < jsonObject.tipoPersonas.length; i++) {
+                    let divRow = document.getElementById("columnaTipoPersona" + i)
+                    divRow.style.display = '';  // toggle back to the previous value
+
+                    let labelTipoPersona = document.getElementById("labelTipoPersonaDepartamento" + i)
+                    if (labelTipoPersona != undefined)
+                        labelTipoPersona.innerHTML = jsonObject.tipoPersonas[i].tipoPersona
+
+                    let inputTipoPersona = document.getElementById("nombreTipoPersonaDepartamento" + i)
+                    if (inputTipoPersona != undefined)
+                        inputTipoPersona.value = jsonObject.tipoPersonas[i].nombrePersona
+
+                }
             }
 
         },

@@ -1,9 +1,12 @@
-﻿using DTOs.Departamento;
+﻿using DTOs.CatalogoGeneral;
+using DTOs.Departamento;
 using DTOs.Select;
 using DTOs.Torre;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.WebEncoders.Testing;
 using RecintosHabitacionales.Servicio;
+using RecintosHabitacionales.Servicio.Implementar;
 using RecintosHabitacionales.Servicio.Interface;
 using Utilitarios;
 
@@ -148,7 +151,26 @@ namespace RecintosHabitacionales.Controllers
             HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarDepartamentoAPI + IdDepartamento, HttpMethod.Get);
 
             if (respuesta.IsSuccessStatusCode)
+            {
                 objResultado = await LeerRespuestas<DepartamentoDTOCompleto>.procesarRespuestasConsultas(respuesta);
+
+                if (objResultado!=null)
+                {
+                    if (objResultado.TipoPersonas!=null)
+                    {
+                        foreach (var item in objResultado.TipoPersonas)
+                        {
+                            HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorIdCatalogo + item.IdTipoPersonaDepartamento, HttpMethod.Get);
+
+                            CatalogoDTOCompleto objCatalogo = await LeerRespuestas<CatalogoDTOCompleto>.procesarRespuestasConsultas(respuestaCatalogo);
+
+                            item.TipoPersona = objCatalogo.Nombrecatalogo;
+                        }  
+                    }
+                }
+
+            }
+                
 
             if (objResultado == null)
                 objResultado = new DepartamentoDTOCompleto();

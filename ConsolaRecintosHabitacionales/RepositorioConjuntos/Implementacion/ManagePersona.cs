@@ -56,29 +56,29 @@ namespace RepositorioConjuntos.Implementacion
 
             if (!string.IsNullOrEmpty(objBusqueda.NombresPersona))
             {
-                listaPersona = await _context.Personas.Where(x => x.NombresPersona.ToUpper().Trim().Contains(objBusqueda.NombresPersona.Trim().ToUpper())).ToListAsync();
+                listaPersona = await _context.Personas.Where(x => x.NombresPersona.ToUpper().Trim().Contains(objBusqueda.NombresPersona.Trim().ToUpper())).Include(x => x.TipoPersonas).ThenInclude(x => x.IdDepartamentoNavigation).ToListAsync();
             }
             else if (!string.IsNullOrEmpty(objBusqueda.ApellidosPersona))
             {
-                listaPersona = await _context.Personas.Where(x => x.NombresPersona.ToUpper().Trim().Contains(objBusqueda.ApellidosPersona.Trim().ToUpper())).ToListAsync();
+                listaPersona = await _context.Personas.Where(x => x.NombresPersona.ToUpper().Trim().Contains(objBusqueda.ApellidosPersona.Trim().ToUpper())).Include(x => x.TipoPersonas).ThenInclude(x => x.IdDepartamentoNavigation).ToListAsync();
             }
             else if(objBusqueda.IdPersona != Guid.Empty)
             {
-                listaPersona = await _context.Personas.Where(x => x.IdPersona == objBusqueda.IdPersona).ToListAsync();
+                listaPersona = await _context.Personas.Where(x => x.IdPersona == objBusqueda.IdPersona).Include(x => x.TipoPersonas).ThenInclude(x => x.IdDepartamentoNavigation).ToListAsync();
 
                 return listaPersona;
             }
             else if (!string.IsNullOrEmpty(objBusqueda.IdentificacionPersona))
             {
-                listaPersona = await _context.Personas.Where(x => x.IdentificacionPersona==objBusqueda.IdentificacionPersona).ToListAsync();
+                listaPersona = await _context.Personas.Where(x => x.IdentificacionPersona==objBusqueda.IdentificacionPersona).Include(x => x.TipoPersonas).ThenInclude(x => x.IdDepartamentoNavigation).ToListAsync();
             }
             else if (!string.IsNullOrEmpty(objBusqueda.IdentificacionPersona))
             {
-                listaPersona = await _context.Personas.Where(x => x.EmailPersona.ToUpper().Trim().Contains(objBusqueda.EmailPersona.Trim().ToUpper())).ToListAsync();
+                listaPersona = await _context.Personas.Where(x => x.EmailPersona.ToUpper().Trim().Contains(objBusqueda.EmailPersona.Trim().ToUpper())).Include(x => x.TipoPersonas).ThenInclude(x => x.IdDepartamentoNavigation).ToListAsync();
             }
             else
             {
-                listaPersona = await _context.Personas.ToListAsync();
+                listaPersona = await _context.Personas.Include(x => x.TipoPersonas).ThenInclude(x => x.IdDepartamentoNavigation).ToListAsync();
             }
 
 

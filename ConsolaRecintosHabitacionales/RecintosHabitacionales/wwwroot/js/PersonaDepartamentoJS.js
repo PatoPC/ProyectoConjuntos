@@ -38,7 +38,7 @@ function validarDepartamentoPersonaDuplicado(btnSubmit, formAjax, idDIVCargar, r
                         })
                     }
                     else {
-                        sendFormAjax(btnSubmit, formAjax, idDIVCargar, rutaCargarSubVista, id_BTN_Formulario)
+                       sendFormAjax(btnSubmit, formAjax, idDIVCargar, rutaCargarSubVista, id_BTN_Formulario)
                     }
                     
                 }
