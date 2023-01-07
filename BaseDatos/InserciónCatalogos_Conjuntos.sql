@@ -1,6 +1,6 @@
 INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
 (NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA,   FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION)
-VALUES( 0, 'Tipo Identificación', 'TPIDENT', 'Padre tipo identificación', 0, 1, 0, getdate(), getdate(), 'admin', 'admin');
+VALUES( 0, 'Tipo IdentificaciÃ³n', 'TPIDENT', 'Padre tipo identificaciï¿½n', 0, 1, 0, getdate(), getdate(), 'admin', 'admin');
 
 SELECT * 
 from Catalogo_Conjunto.dbo.CATALOGO
@@ -8,7 +8,7 @@ from Catalogo_Conjunto.dbo.CATALOGO
 INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
 (ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION)
 VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='TPIDENT'), 
-0, 'Cédula', 'CDULA', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin');
+0, 'CÃ©dula', 'CEDULA', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin');
 
 INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
 (ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION)
@@ -20,7 +20,7 @@ INSERT INTO Condominios.dbo.PERSONA
 (ID_TIPO_IDENTIFICACION, NOMBRES_PERSONA, APELLIDOS_PERSONA, IDENTIFICACION_PERSONA, TELEFONO_PERSONA, EMAIL_PERSONA, OBSERVACION_PERSONA, FECHA_CREACION, FECHA_MODIFICACION, 
 USUARIO_CREACION, USUARIO_MODIFICACION)
 VALUES((select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='CDULA'), 
-'Patricio', 'Córdova', '2200025787', '0982119036', 'patricio.cordova@outlook.com', '', getdate(), getdate(), 'admin', 'admin');
+'Patricio', 'CÃ³rdova', '2200025787', '0982119036', 'patricio.cordova@outlook.com', '', getdate(), getdate(), 'admin', 'admin');
 
 SELECT *
 from Condominios.dbo.PERSONA
@@ -36,27 +36,27 @@ INSERT INTO Condominios_Permisos.dbo.MODULO
 (ID_ROL, NOMBRE, ICONO_MODULO)
 VALUES(
 (SELECT ID_ROL from Condominios_Permisos.dbo.ROL where NOMBRE_ROL ='Administrador')
-, 'Configuración', '');
+, 'ConfiguraciÃ³n', '');
 
-SELECT ID_MODULO  from Condominios_Permisos.dbo.MODULO where NOMBRE ='Configuración'
+SELECT ID_MODULO  from Condominios_Permisos.dbo.MODULO where NOMBRE ='ConfiguraciÃ³n'
 
 INSERT INTO Condominios_Permisos.dbo.MENU
 ( ID_MODULO, NOMBRE_MENU, RUTA_MENU, DATO_ICONO)
 VALUES(
-(SELECT ID_MODULO  from Condominios_Permisos.dbo.MODULO where NOMBRE ='Configuración'), 
-'Catálogos', '/C_Catalogo/GestionCatalogos', '');
+(SELECT ID_MODULO  from Condominios_Permisos.dbo.MODULO where NOMBRE ='ConfiguraciÃ³n'), 
+'CatÃ¡logos', '/C_Catalogo/GestionCatalogos', '');
 
-SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBREMENU ='Catálogos'
+SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBREMENU ='CatÃ¡logos'
 
 
 INSERT INTO Condominios_Permisos.dbo.PERMISOS
 (ID_MENU, NOMBRE_PERMISO, CONCEDIDO, CSS_PERMISO)
 values 
-((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='Catálogos'),'Eliminar', 1, 'btn btn-outline-danger'),
-((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='Catálogos'),'Lectura', 1, 'badge badge-primary'),
-((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='Catálogos'),'Escritura', 1, 'btn btn-outline-info'),
-((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='Catálogos'),'Búsquedas', 1, 'badge badge-dark'),
-((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='Catálogos'),'Edición', 1, 'badge badge-success')
+((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='CatÃ¡logos'),'Eliminar', 1, 'btn btn-outline-danger'),
+((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='CatÃ¡logos'),'Lectura', 1, 'badge badge-primary'),
+((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='CatÃ¡logos'),'Escritura', 1, 'btn btn-outline-info'),
+((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='CatÃ¡logos'),'BÃºsquedas', 1, 'badge badge-dark'),
+((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='CatÃ¡logos'),'Ediciï¿½n', 1, 'badge badge-success')
 
 INSERT INTO Condominios_Permisos.dbo.USUARIO
 (ID_ROL, ID_PERSONA, ID_CONJUNTO_DEFAULT, ESTADO, CORREO_ELECTRONICO, CONTRASENA_INICIAL, CONTRASENA, INDICIO_CONTRASENA, FECHA_ULTIMO_INGRESO, FECHA_CREACION, FECHA_MODIFICACION, 
@@ -89,9 +89,10 @@ VALUES(
 (SELECT ID_CONJUNTO from Condominios.dbo.CONJUNTO WHERE NOMBRE_CONJUNTO ='Marianas'))
 
 SELECT *
+from Condominios_Permisos.dbo.USUARIO u 
+
+SELECT *
 FROM Condominios_Permisos.dbo.USUARIO_CONJUNTO
-
-
 
 
 

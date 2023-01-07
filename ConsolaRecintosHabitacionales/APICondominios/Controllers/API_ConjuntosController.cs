@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+﻿using APICondominios.Model;
+using AutoMapper;
 using ConjuntosEntidades.Entidades;
 using DTOs.Conjunto;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RepositorioConjuntos.Interface;
+using RepositorioLogs.Interface;
 using Utilitarios;
 
 namespace APICondominios.Controllers
@@ -15,12 +17,14 @@ namespace APICondominios.Controllers
         private readonly IManageConjuntosCRUD<Conjunto> _CRUD_Conjuntos;
         private readonly IManageConjuntos _Conjuntos;
         private readonly IMapper _mapper;
+        private readonly IManageLogError _logError;
 
-        public API_ConjuntosController(IMapper mapper, IManageConjuntosCRUD<Conjunto> cRUD_Condominio, IManageConjuntos condominio)
+        public API_ConjuntosController(IMapper mapper, IManageConjuntosCRUD<Conjunto> cRUD_Condominio, IManageConjuntos condominio, IManageLogError logError)
         {
             _mapper = mapper;
             _CRUD_Conjuntos = cRUD_Condominio;
             _Conjuntos = condominio;
+            _logError = logError;
         }
 
         [HttpGet]
@@ -74,12 +78,12 @@ namespace APICondominios.Controllers
                 }
                 else
                 {
-                    //await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
+                    await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
                 }
             }
             catch (Exception ExValidation)
             {
-                //await guardarLogs(JsonConvert.SerializeObject(objDTO), ExValidation.ToString());
+                await guardarLogs(JsonConvert.SerializeObject(objDTO), ExValidation.ToString());
             }
             return BadRequest(MensajesRespuesta.guardarError());
         }
@@ -102,14 +106,14 @@ namespace APICondominios.Controllers
                 }
                 else
                 {
-                    //await guardarLogs(JsonConvert.SerializeObject(objCatalogoDTO), result.mensajeError);
+                    await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
                 }
 
                 return BadRequest(MensajesRespuesta.guardarError());
             }
             catch (Exception ExValidation)
             {
-                //await guardarLogs(JsonConvert.SerializeObject(objCatalogoDTO), ExValidation.ToString());
+                await guardarLogs(JsonConvert.SerializeObject(objDTO), ExValidation.ToString());
             }
             return StatusCode(StatusCodes.Status406NotAcceptable);
         }
@@ -118,6 +122,11 @@ namespace APICondominios.Controllers
         [HttpPost("Eliminar")]
         public async Task<IActionResult> Eliminar(Guid id)
         {
+            var jsonSerializerSettings = new JsonSerializerSettings
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            };
+
             Conjunto objRepositorio = await _Conjuntos.obtenerPorIDConjuntos(id);
 
             _CRUD_Conjuntos.Delete(objRepositorio);
@@ -130,7 +139,7 @@ namespace APICondominios.Controllers
             }
             else
             {
-                //await guardarLogs(JsonConvert.SerializeObject(objCatalogoRepository, jsonSerializerSettings), result.mensajeError);
+                await guardarLogs(JsonConvert.SerializeObject(objRepositorio, jsonSerializerSettings), result.mensajeError);
             }
 
             return BadRequest();
@@ -194,6 +203,16 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
+
+        #region Varios
+        private async Task guardarLogs(string objetoJSON, string mensajeError)
+        {
+            LoggerAPI objLooger = new LoggerAPI(_logError);
+
+            await objLooger.guardarError(this.ControllerContext.RouteData.Values["controller"].ToString(), this.ControllerContext.RouteData.Values["action"].ToString(), mensajeError, objetoJSON);
+
+        }
+        #endregion
 
     }
 }

@@ -2,6 +2,7 @@ using DTOs.CatalogoGeneral;
 using DTOs.Conjunto;
 using DTOs.Departamento;
 using DTOs.Persona;
+using DTOs.Proveedor;
 using DTOs.Roles;
 using DTOs.Torre;
 using DTOs.Usuarios;
@@ -64,6 +65,12 @@ builder.Services.AddScoped(typeof(ResultadoBusquedaConjuntos));
 builder.Services.AddScoped(typeof(RolDTOCrear));
 builder.Services.AddScoped(typeof(RolDTOBusqueda));
 builder.Services.AddScoped(typeof(RolDTOEditar));
+
+
+builder.Services.AddScoped(typeof(ProveedorDTOCrear));
+builder.Services.AddScoped(typeof(ProveedorDTOEditar));
+builder.Services.AddScoped(typeof(ProveedorDTOCompleto));
+builder.Services.AddScoped(typeof(BusquedaProveedor));
 
 //builder.Services.AddScoped(typeof(ConexionApi));
 builder.Services.AddControllersWithViews();

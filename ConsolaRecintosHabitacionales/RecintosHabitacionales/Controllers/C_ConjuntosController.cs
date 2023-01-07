@@ -15,6 +15,7 @@ namespace RecintosHabitacionales.Controllers
         private const string accionActual = "AdministrarConjuntos";
 
         private readonly IServicioConsumoAPI<ConjuntoDTOCrear> _servicioConsumoAPICrear;
+        private readonly IServicioConsumoAPI<UsuarioConjuntoDTO> _servicioConsumoAPIUsuarioConjunto;
         private readonly IServicioConsumoAPI<ConjuntoDTOEditar> _servicioConsumoAPICrearEditar;
         private readonly IServicioConsumoAPI<BusquedaConjuntos> _servicioConsumoAPIBusqueda;
         private readonly IServicioConsumoAPI<BusquedaTorres> _servicioConsumoAPIBusquedaTorres;
@@ -23,7 +24,7 @@ namespace RecintosHabitacionales.Controllers
 
         private readonly IServicioConsumoAPI<DepartamentoDTOCrear> _servicioConsumoAPIDepartamento;
 
-        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar)
+        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto)
         {
             _servicioConsumoAPICrear = servicioConsumoAPIConjunto;
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
@@ -31,6 +32,7 @@ namespace RecintosHabitacionales.Controllers
             _servicioConsumoAPIBusquedaTorres = servicioConsumoAPIBusquedaTorres;
             _servicioConsumoAPIDepartamento = servicioConsumoAPIDepartamento;
             _servicioConsumoAPIDepartamentoEditar = servicioConsumoAPIDepartamentoEditar;
+            _servicioConsumoAPIUsuarioConjunto = servicioConsumoAPIUsuarioConjunto;
         }
 
         #region CRUD
@@ -44,28 +46,41 @@ namespace RecintosHabitacionales.Controllers
         [HttpPost]
         public async Task<ActionResult> CrearConjuntos(ConjuntoDTOCrear objDTO)
         {
-            objDTO.UsuarioCreacion = "prueba";
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.crearConjuto, HttpMethod.Post, objDTO);
-
-            if (respuesta.IsSuccessStatusCode)
+            if (objUsuarioSesion != null)
             {
-                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
-            }
-            else
-            {
-                MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                return new JsonResult(objMensajeRespuesta);
+                objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.crearConjuto, HttpMethod.Post, objDTO);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    ConjuntoDTOCompleto objDTDOCreado = await LeerRespuestas<ConjuntoDTOCompleto>.procesarRespuestasConsultas(respuesta);
+
+                    UsuarioConjuntoDTO objDTOUsuario = new UsuarioConjuntoDTO();
+                    objDTOUsuario.IdUsuario = objUsuarioSesion.IdUsuario;
+                    objDTOUsuario.IdConjunto = objDTDOCreado.IdConjunto;
+
+                    HttpResponseMessage respuestaConjuntoUsuairo = await _servicioConsumoAPIUsuarioConjunto.consumoAPI(ConstantesConsumoAPI.getCreateUsuarioConjunto, HttpMethod.Post, objDTOUsuario);
+
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
+
             }
 
-            return View();
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
         #endregion
-        
+
         #region EditarConjuntos
         public async Task<ActionResult> EditarConjuntos(Guid idConjuntos)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID+ idConjuntos, HttpMethod.Get);
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + idConjuntos, HttpMethod.Get);
 
             if (respuesta.IsSuccessStatusCode)
             {
@@ -82,7 +97,7 @@ namespace RecintosHabitacionales.Controllers
         {
             objDTO.UsuarioModificacion = "prueba";
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPICrearEditar.consumoAPI(ConstantesConsumoAPI.EditarConjuntosPorID+ IdConjunto, HttpMethod.Post, objDTO);
+            HttpResponseMessage respuesta = await _servicioConsumoAPICrearEditar.consumoAPI(ConstantesConsumoAPI.EditarConjuntosPorID + IdConjunto, HttpMethod.Post, objDTO);
 
             if (respuesta.IsSuccessStatusCode)
             {
@@ -98,11 +113,11 @@ namespace RecintosHabitacionales.Controllers
         }
         #endregion
 
-         
+
         #region EditarConjuntos
         public async Task<ActionResult> EliminarConjuntos(Guid idConjuntos)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID+ idConjuntos, HttpMethod.Get);
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + idConjuntos, HttpMethod.Get);
 
             if (respuesta.IsSuccessStatusCode)
             {
@@ -117,7 +132,7 @@ namespace RecintosHabitacionales.Controllers
         [HttpPost]
         public async Task<ActionResult> EliminarConjuntos(Guid IdConjunto, bool eliminar)
         {
-           
+
             HttpResponseMessage respuesta = await _servicioConsumoAPICrearEditar.consumoAPI(ConstantesConsumoAPI.EditarConjuntosEliminar + IdConjunto, HttpMethod.Post);
 
             if (respuesta.IsSuccessStatusCode)
@@ -157,14 +172,14 @@ namespace RecintosHabitacionales.Controllers
             return View();
         }
         #endregion
-     
+
         [HttpGet]
         public IActionResult AdministrarConjuntos()
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (objUsuarioSesion != null)            
-                return View();            
+            if (objUsuarioSesion != null)
+                return View();
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }

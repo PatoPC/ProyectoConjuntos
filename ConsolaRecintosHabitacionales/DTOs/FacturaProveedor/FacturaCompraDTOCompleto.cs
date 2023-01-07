@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ConjuntosEntidades.Entidades
+namespace DTOs.FacturaProveedor
 {
-    public partial class FacturaCompra
+    public class FacturaCompraDTOCompleto
     {
         public Guid IdCompras { get; set; }
-        public Guid? IdProveedor { get; set; }
+        public Guid? IdProvee { get; set; }
         public string? SerieCompras { get; set; }
         public int? NExternoCompras { get; set; }
         public int? TipoFacCompras { get; set; }
@@ -42,6 +45,5 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
 
-        public virtual Proveedore? IdProveedorNavigation { get; set; }
     }
 }

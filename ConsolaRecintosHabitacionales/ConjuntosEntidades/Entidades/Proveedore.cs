@@ -10,18 +10,24 @@ namespace ConjuntosEntidades.Entidades
             FacturaCompras = new HashSet<FacturaCompra>();
         }
 
-        public Guid IdProvee { get; set; }
-        public string NombreProvee { get; set; } = null!;
-        public string RucProvee { get; set; } = null!;
-        public string? ContactoProvee { get; set; }
-        public string CiudadProvee { get; set; } = null!;
-        public string DirecProvee { get; set; } = null!;
-        public string? TelefonosProvee { get; set; }
-        public string? EMailProvee { get; set; }
-        public decimal? SaldoAntProvee { get; set; }
-        public decimal? SaldoPendProvee { get; set; }
-        public bool? StatusProvee { get; set; }
+        public Guid IdProveedor { get; set; }
+        public Guid IdConjunto { get; set; }
+        public string NombreProveedor { get; set; } = null!;
+        public string RucProveedor { get; set; } = null!;
+        public string? ContactoProveedor { get; set; }
+        public string CiudadProveedor { get; set; } = null!;
+        public string DirecProveedor { get; set; } = null!;
+        public string? TelefonosProveedor { get; set; }
+        public string? EMailProveedor { get; set; }
+        public decimal? SaldoAntProveedor { get; set; }
+        public decimal? SaldoPendProveedor { get; set; }
+        public bool StatusProveedor { get; set; }
+        public DateTime FechaCreacion { get; set; }
+        public DateTime? FechaModificacion { get; set; }
+        public string UsuarioCreacion { get; set; } = null!;
+        public string? UsuarioModificacion { get; set; }
 
+        public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;
         public virtual ICollection<FacturaCompra> FacturaCompras { get; set; }
     }
 }

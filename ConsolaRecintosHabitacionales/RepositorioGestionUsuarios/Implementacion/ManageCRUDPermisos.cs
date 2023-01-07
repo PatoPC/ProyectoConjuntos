@@ -24,12 +24,14 @@ namespace RepositorioGestionUsuarios.Implementacion
                 obj.GetType().GetProperty("FechaCreacion").SetValue(obj, DateTime.Now);
                 obj.GetType().GetProperty("FechaModificacion").SetValue(obj, DateTime.Now);
                 obj.GetType().GetProperty("UsuarioModificacion").SetValue(obj, obj.GetType().GetProperty("UsuarioCreacion").GetValue(obj, null));
-                _context.AddAsync(obj);
+                
             }
             catch (Exception exValidation)
             {
-
+                
             }
+
+            _context.AddAsync(obj);
         }
 
         public void Edit(T obj)

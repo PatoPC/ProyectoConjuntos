@@ -40,7 +40,7 @@ namespace Utilitarios
         public const string gestionarPersonaAPI = ConstantesAplicacion.pathAPI + "/api/persona/";
         public const string gestionarPersonaAPIEditar = ConstantesAplicacion.pathAPI + "/api/persona/Editar?id=";
         public const string gestionarPersonaAPIEliminar = ConstantesAplicacion.pathAPI + "/api/persona/Eliminar?id=";
-        public const string buscarPersonaoAvanzado = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaAvanzado";
+        public const string buscarPersonaAvanzado = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaAvanzado";
         public const string crearPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/CrearPersonaDepartamento";
         public const string consultaTipoPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/ConsultaPersonaDepartamento";
 
@@ -67,10 +67,10 @@ namespace Utilitarios
 
         #endregion
 
-
         #region Usuario
         public const string getLogin = ConstantesAplicacion.pathAPI + "/api/Usuario/LoginUsuario?";
         public const string getCreateUsuario = ConstantesAplicacion.pathAPI + "/api/Usuario/Create";
+        public const string getCreateUsuarioConjunto = ConstantesAplicacion.pathAPI + "/api/Usuario/CreateUsuarioConjunto";
         public const string getEditUsuario = ConstantesAplicacion.pathAPI + "/api/Usuario/Edit?IdUsuario=";
         public const string getEditarUsuarioReingreso = ConstantesAplicacion.pathAPI + "/api/Usuario/EditarRecontratar?IdUsuario=";
         public const string getUsuarioByID = ConstantesAplicacion.pathAPI + "/api/Usuario/";
@@ -90,6 +90,14 @@ namespace Utilitarios
         public const string endPointRolByID = ConstantesAplicacion.pathAPI + "/api/Rol/";
         public const string getRolPorNombreExacto = ConstantesAplicacion.pathAPI + "/api/Rol/GetRolPorNombre?nombreRol=";
         public const string getRolPorNombre = ConstantesAplicacion.pathAPI + "/api/Rol/GetRolPorNombre?nombreRol=";
+        #endregion
+
+
+        #region Proveedor
+        public const string gestionarProveedorAPI = ConstantesAplicacion.pathAPI + "/api/proveeedor/";
+        public const string gestionarProveedorAPIEditar = ConstantesAplicacion.pathAPI + "/api/proveeedor/Editar?id=";
+        public const string gestionarProveedorAPIEliminar = ConstantesAplicacion.pathAPI + "/api/proveeedor/Eliminar?id=";
+        public const string buscarProveedorAvanzado = ConstantesAplicacion.pathAPI + "/api/proveeedor/BusquedaAvanzadaProveedor";
         #endregion
 
     }

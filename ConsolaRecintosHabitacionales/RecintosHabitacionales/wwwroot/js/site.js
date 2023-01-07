@@ -255,7 +255,7 @@ function validarCamposObligatoriosFormulario(nombreFormulario) {
                 try {
                     if (inputs[i].getAttribute("required")) {
                         if (!inputs[i].value) {
-                            let campo = obtnerTextoNombreCampoObligatorio(inputs[i])
+                            let campo = obtenerTextoNombreCampoObligatorio(inputs[i])
                             if (campo == undefined)
                                 campo = "Campo obligatorio sin label for, posición " + i
                             Swal.fire(
@@ -282,7 +282,7 @@ function validarCamposObligatoriosFormulario(nombreFormulario) {
 
                             console.log("Campo linea 163: " + campo)
 
-                            let textoLabelSelect = obtnerTextoNombreCampoObligatorio(campo)
+                            let textoLabelSelect = obtenerTextoNombreCampoObligatorio(campo)
                             console.log("campo Select id: " + campo)
 
                             if (textoLabelSelect == "" || textoLabelSelect == undefined) {
@@ -331,7 +331,7 @@ function validarCamposObligatoriosFormulario(nombreFormulario) {
     return false;
 }
 
-function obtnerTextoNombreCampoObligatorio(input) {
+function obtenerTextoNombreCampoObligatorio(input) {
     let campo
     try {
         campo = $("label[for='" + input.getAttribute('id') + "']")[0].innerText
@@ -345,7 +345,7 @@ function obtnerTextoNombreCampoObligatorio(input) {
                 campo = $("label[for='" + input + "']")[0].innerText
             }
             catch (e) {
-                console.log("Error en obtnerTextoNombreCampoObligatorio" + " Error: " + e)
+                console.log("Error en obtenerTextoNombreCampoObligatorio" + " Error: " + e)
             }
 
         }

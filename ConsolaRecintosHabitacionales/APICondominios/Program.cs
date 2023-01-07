@@ -17,6 +17,7 @@ using RepositorioGestionUsuarios.Interface;
 using RepositorioLogs.Interface;
 using RepositorioPapelera.Implementacion;
 using RepositorioPapelera.Interface;
+using RepositorioProveedores.Implementacion;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,7 @@ builder.Services.AddScoped<IManageConsultasUsuario, ManageConsultasUsuario>();
 builder.Services.AddScoped<IManageLogError, ManageLogError>();
 builder.Services.AddScoped<IManageConsultasCatalogos, ManageConsultasCatalogos>();
 builder.Services.AddScoped<IManageConsultasPermisos, ManageConsultasPermisos>();
+builder.Services.AddScoped<IManageProveedor, ManageProveedor>();
         
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

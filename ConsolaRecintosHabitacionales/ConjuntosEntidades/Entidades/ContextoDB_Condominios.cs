@@ -405,8 +405,8 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("date")
                     .HasColumnName("FECHA_VENCI_COMPRA");
 
-                entity.Property(e => e.IdProvee)
-                    .HasColumnName("ID_PROVEE")
+                entity.Property(e => e.IdProveedor)
+                    .HasColumnName("ID_PROVEEDOR")
                     .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.IvaCompras)
@@ -488,9 +488,9 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("money")
                     .HasColumnName("VALRET_RF_COMPRAS");
 
-                entity.HasOne(d => d.IdProveeNavigation)
+                entity.HasOne(d => d.IdProveedorNavigation)
                     .WithMany(p => p.FacturaCompras)
-                    .HasForeignKey(d => d.IdProvee)
+                    .HasForeignKey(d => d.IdProveedor)
                     .HasConstraintName("FK_FACTURA__REFERENCE_PROVEEDO");
             });
 
@@ -556,58 +556,86 @@ namespace ConjuntosEntidades.Entidades
 
             modelBuilder.Entity<Proveedore>(entity =>
             {
-                entity.HasKey(e => e.IdProvee);
+                entity.HasKey(e => e.IdProveedor);
 
                 entity.ToTable("PROVEEDORES");
 
-                entity.Property(e => e.IdProvee)
-                    .HasColumnName("ID_PROVEE")
+                entity.Property(e => e.IdProveedor)
+                    .HasColumnName("ID_PROVEEDOR")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.CiudadProvee)
+                entity.Property(e => e.CiudadProveedor)
                     .HasMaxLength(30)
                     .IsUnicode(false)
-                    .HasColumnName("CIUDAD_PROVEE");
+                    .HasColumnName("CIUDAD_PROVEEDOR");
 
-                entity.Property(e => e.ContactoProvee)
+                entity.Property(e => e.ContactoProveedor)
                     .HasMaxLength(70)
                     .IsUnicode(false)
-                    .HasColumnName("CONTACTO_PROVEE");
+                    .HasColumnName("CONTACTO_PROVEEDOR");
 
-                entity.Property(e => e.DirecProvee)
+                entity.Property(e => e.DirecProveedor)
                     .HasMaxLength(100)
                     .IsUnicode(false)
-                    .HasColumnName("DIREC_PROVEE");
+                    .HasColumnName("DIREC_PROVEEDOR");
 
-                entity.Property(e => e.EMailProvee)
+                entity.Property(e => e.EMailProveedor)
                     .HasMaxLength(100)
                     .IsUnicode(false)
-                    .HasColumnName("E_MAIL_PROVEE");
+                    .HasColumnName("E_MAIL_PROVEEDOR");
 
-                entity.Property(e => e.NombreProvee)
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.IdConjunto)
+                    .HasColumnName("ID_CONJUNTO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.NombreProveedor)
                     .HasMaxLength(70)
                     .IsUnicode(false)
-                    .HasColumnName("NOMBRE_PROVEE");
+                    .HasColumnName("NOMBRE_PROVEEDOR");
 
-                entity.Property(e => e.RucProvee)
+                entity.Property(e => e.RucProveedor)
                     .HasMaxLength(13)
                     .IsUnicode(false)
-                    .HasColumnName("RUC_PROVEE");
+                    .HasColumnName("RUC_PROVEEDOR");
 
-                entity.Property(e => e.SaldoAntProvee)
+                entity.Property(e => e.SaldoAntProveedor)
                     .HasColumnType("money")
-                    .HasColumnName("SALDO_ANT_PROVEE");
+                    .HasColumnName("SALDO_ANT_PROVEEDOR");
 
-                entity.Property(e => e.SaldoPendProvee)
+                entity.Property(e => e.SaldoPendProveedor)
                     .HasColumnType("money")
-                    .HasColumnName("SALDO_PEND_PROVEE");
+                    .HasColumnName("SALDO_PEND_PROVEEDOR");
 
-                entity.Property(e => e.StatusProvee).HasColumnName("STATUS_PROVEE");
+                entity.Property(e => e.StatusProveedor).HasColumnName("STATUS_PROVEEDOR");
 
-                entity.Property(e => e.TelefonosProvee)
+                entity.Property(e => e.TelefonosProveedor)
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasColumnName("TELEFONOS_PROVEE");
+                    .HasColumnName("TELEFONOS_PROVEEDOR");
+
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_CREACION");
+
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.HasOne(d => d.IdConjuntoNavigation)
+                    .WithMany(p => p.Proveedores)
+                    .HasForeignKey(d => d.IdConjunto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PROVEEDO_REFERENCE_CONJUNTO");
             });
 
             modelBuilder.Entity<ReciboCabecera>(entity =>

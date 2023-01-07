@@ -87,12 +87,15 @@ namespace RecintosHabitacionales.Controllers
 
                                 HttpResponseMessage respuestaConjuntos = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.TodosConjuntos, HttpMethod.Get);
 
-                                List<ResultadoBusquedaConjuntos> listaConjuntosAcceso = await LeerRespuestas<List<ResultadoBusquedaConjuntos>>.procesarRespuestasConsultas(respuestaConjuntos);
+                                if (respuestaConjuntos.IsSuccessStatusCode)
+                                {
+                                    List<ResultadoBusquedaConjuntos> listaConjuntosAcceso = await LeerRespuestas<List<ResultadoBusquedaConjuntos>>.procesarRespuestasConsultas(respuestaConjuntos);
 
-                                SelectList SelectListaConjuntos = new SelectList(listaConjuntosAcceso, "IdConjunto", "NombreConjunto", objUsuario.IdConjuntoDefault);
+                                    SelectList SelectListaConjuntos = new SelectList(listaConjuntosAcceso, "IdConjunto", "NombreConjunto", objUsuario.IdConjuntoDefault);
 
-                                objUsuario.ListaConjuntosAcceso = listaConjuntosAcceso;
-                                objUsuario.ListaConjuntos = _mapper.Map<CustomSelectConjuntos>(SelectListaConjuntos);
+                                    objUsuario.ListaConjuntosAcceso = listaConjuntosAcceso;
+                                    objUsuario.ListaConjuntos = _mapper.Map<CustomSelectConjuntos>(SelectListaConjuntos); 
+                                }
 
 
                                 SesionExtensions.SetObject(HttpContext.Session, ConstantesAplicacion.nombreSesion, objUsuario);

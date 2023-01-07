@@ -80,7 +80,7 @@ namespace RecintosHabitacionales.Controllers
                 ObjetoBusquedaPersona objBusquedaConjuntos = new ObjetoBusquedaPersona();
                 objBusquedaConjuntos.IdentificacionPersona = objDTO.IdentificacionPersona;
 
-                HttpResponseMessage respuestaDuplicados = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarPersonaoAvanzado, HttpMethod.Get, objBusquedaConjuntos);
+                HttpResponseMessage respuestaDuplicados = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarPersonaAvanzado, HttpMethod.Get, objBusquedaConjuntos);
 
                 var listaResultado = await LeerRespuestas<List<PersonaDTOCompleto>>.procesarRespuestasConsultas(respuestaDuplicados);
 
@@ -92,7 +92,7 @@ namespace RecintosHabitacionales.Controllers
                 {
                     HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI, HttpMethod.Post, objDTO);
 
-                    
+
 
                     if (respuesta.IsSuccessStatusCode)
                     {
@@ -105,7 +105,7 @@ namespace RecintosHabitacionales.Controllers
                     }
                 }
 
-                return new JsonResult(MensajesRespuesta.errorMensajePersonalizado("Error, ya existe una persona con el número de identificación ingresado.")); 
+                return new JsonResult(MensajesRespuesta.errorMensajePersonalizado("Error, ya existe una persona con el número de identificación ingresado."));
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
@@ -160,21 +160,27 @@ namespace RecintosHabitacionales.Controllers
         [HttpPost]
         public async Task<ActionResult> EditarPersona(PersonaDTOEditar objDTO, Guid IdPersona)
         {
-            objDTO.UsuarioModificacion = "prueba";
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPIEditar + IdPersona, HttpMethod.Post, objDTO);
-
-            if (respuesta.IsSuccessStatusCode)
+            if (objUsuarioSesion != null)
             {
-                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
-            }
-            else
-            {
-                MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                return new JsonResult(objMensajeRespuesta);
+                objDTO.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+
+                HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPIEditar + IdPersona, HttpMethod.Post, objDTO);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
+
             }
 
-            return View();
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
         #endregion
 
@@ -225,7 +231,7 @@ namespace RecintosHabitacionales.Controllers
                 HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI + IdPersona, HttpMethod.Get);
 
                 if (respuesta.IsSuccessStatusCode)
-                {                    
+                {
                     PersonaDTOCompleto objDTO = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(respuesta);
                     SelectList objSelectListaConjunto = new SelectList(objUsuarioSesion.ListaConjuntosAcceso, "IdConjunto", "NombreConjunto", objUsuarioSesion.IdConjuntoDefault);
 
@@ -252,7 +258,7 @@ namespace RecintosHabitacionales.Controllers
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (objUsuarioSesion!=null)
+            if (objUsuarioSesion != null)
             {
                 TipoPersonaDTO objDTOTipoPersona = _mapper.Map<TipoPersonaDTO>(objDTO);
 
@@ -261,14 +267,14 @@ namespace RecintosHabitacionales.Controllers
 
                 HttpResponseMessage respuesta = await _servicioConsumoAPICrearTipoPersona.consumoAPI(ConstantesConsumoAPI.crearPersonaDepartamento, HttpMethod.Post, objDTOTipoPersona);
 
-                if (respuesta.IsSuccessStatusCode)                
+                if (respuesta.IsSuccessStatusCode)
                     return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
-                
+
                 else
                 {
                     MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
                     return new JsonResult(objMensajeRespuesta);
-                } 
+                }
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
@@ -302,7 +308,7 @@ namespace RecintosHabitacionales.Controllers
             {
                 try
                 {
-                    HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarPersonaoAvanzado, HttpMethod.Get, objBusquedaConjuntos);
+                    HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarPersonaAvanzado, HttpMethod.Get, objBusquedaConjuntos);
 
                     if (respuesta.IsSuccessStatusCode)
                     {
@@ -331,7 +337,7 @@ namespace RecintosHabitacionales.Controllers
                             }
                         }
                     }
-                        
+
                 }
                 catch (Exception ex)
                 {
@@ -347,7 +353,7 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
-     
+
         public async Task DatosInciales()
         {
             ViewData["listaTipoIdentificacion"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoIdentificacion, "IdCatalogo", "Nombrecatalogo");

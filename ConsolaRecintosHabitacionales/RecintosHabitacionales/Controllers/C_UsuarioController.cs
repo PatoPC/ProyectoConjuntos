@@ -149,6 +149,70 @@ namespace RecintosHabitacionales.Controllers
         }
         #endregion
 
+
+        #region Editar Usuario
+
+        public async Task<ActionResult> EliminarUsuario(Guid IdUsuario)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getUsuarioByID + IdUsuario, HttpMethod.Get);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+
+                    UsuarioDTOCompleto objDTO = await LeerRespuestas<UsuarioDTOCompleto>.procesarRespuestasConsultas(respuesta);
+
+                    HttpResponseMessage respuestaPersona = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI + objDTO.IdPersona, HttpMethod.Get);
+
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        await cargaInicial(objUsuarioSesion, objDTO);
+                        PersonaDTOCompleto objDTOPersona = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(respuestaPersona);
+
+                        objDTO.IdPersona = objDTOPersona.IdPersona;
+                        objDTO.IdentificacionPersona = objDTOPersona.IdentificacionPersona;
+                        objDTO.NombresCompletos = objDTOPersona.NombresPersona + " " + objDTOPersona.ApellidosPersona;
+                        objDTO.CorreoElectronico = objDTOPersona.EmailPersona;
+
+                        return View(objDTO);
+                    }
+                }
+            }
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> EliminarUsuario(Guid IdUsuario, UsuarioDTOEditar objDTO)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+                objDTO.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+
+                HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.eliminarUsuario + IdUsuario, HttpMethod.Post, objDTO);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
+
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+        #endregion
+
+
         #endregion CRUD
 
         public async Task<ActionResult> BusquedaAvanzadaPersona(ObjetoBusquedaUsuarios objDTO)
