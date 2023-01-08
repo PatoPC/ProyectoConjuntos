@@ -204,7 +204,11 @@ namespace RecintosHabitacionales.Controllers
         [AccionesFiltro(nombreModulo = "Configuración", nombreMenu = "Roles", tipoPermiso = "Eliminar", concedido = true)]
         public async Task<IActionResult> EliminarRol(Guid IdRol, bool eliminar)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIUpdate.consumoAPI(ConstantesConsumoAPI.getGetRolEliminar + IdRol, HttpMethod.Delete);
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+                HttpResponseMessage respuesta = await _servicioConsumoAPIUpdate.consumoAPI(ConstantesConsumoAPI.getGetRolEliminar + IdRol, HttpMethod.Delete);
 
             if (respuesta.IsSuccessStatusCode)
             {
@@ -212,6 +216,10 @@ namespace RecintosHabitacionales.Controllers
             }
             //return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, "", "", true));
             return new JsonResult(MensajesRespuesta.guardarErrorDatosDuplicados("<div>Error no se puede eliminar un rol asignado a un usuario, por favor verifique que no existen usuarios con este rol.</div>", "error", false));
+
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         #endregion
@@ -245,7 +253,6 @@ namespace RecintosHabitacionales.Controllers
 
             return objRol;
         }
-
 
         public async Task<JsonResult> BusquedaRolesPorEmpresaID(Guid IdConjunto)
         {

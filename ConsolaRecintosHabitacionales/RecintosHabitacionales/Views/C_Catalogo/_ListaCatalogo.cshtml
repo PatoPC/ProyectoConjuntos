@@ -20,7 +20,8 @@
                                 <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                                     <th>
                                         <span class="badge badge-light text-dark">Catalogo
-                                            </span></th>
+                                            </span>
+                                    </th>
                                     <th>
                                         <span class="badge badge-light text-dark">Código</span></th>
                                     <th><span class="badge badge-light text-dark">Conjunto</span></th>
@@ -42,8 +43,12 @@
                                         <td>@catalogo.NombreCatalogoPadre</td>
                                         <td>@catalogo.CodigoCatalogoPadre</td>
                                         <td>
-                                            <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@catalogo.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
-                                            <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@catalogo.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
+                                            <div>
+                                                <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@catalogo.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
+                                            </div>
+                                            <div>
+                                                <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@catalogo.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
+                                            </div>
 
                                         </td>
                                     </tr>
@@ -57,8 +62,12 @@
                                             <td>@subCatalogo.NombreCatalogoPadre</td>
                                             <td>@subCatalogo.CodigoCatalogoPadre</td>
                                             <td>
-                                                <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@subCatalogo.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
-                                                <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@subCatalogo.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
+                                                <div>
+                                                    <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@subCatalogo.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
+                                                </div>
+                                                <div>
+                                                    <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@subCatalogo.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
+                                                </div>
                                             </td>
                                         </tr>
                                         foreach (var subCatalogoM in subCatalogo.InverseIdCatalogopadreNavigation)
@@ -71,8 +80,12 @@
                                                 <td>@subCatalogoM.NombreCatalogoPadre</td>
                                                 <td>@subCatalogoM.CodigoCatalogoPadre</td>
                                                 <td>
-                                                    <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@subCatalogoM.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
-                                                    <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@subCatalogoM.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
+                                                    <div>
+                                                        <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@subCatalogoM.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
+                                                    </div>
+                                                    <div>
+                                                        <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@subCatalogoM.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             foreach (var subCatalogoD in subCatalogoM.InverseIdCatalogopadreNavigation)
@@ -85,8 +98,12 @@
                                                     <td>@subCatalogoD.NombreCatalogoPadre</td>
                                                     <td>@subCatalogoD.CodigoCatalogoPadre</td>
                                                     <td>
-                                                        <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@subCatalogoD.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
-                                                        <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@subCatalogoD.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
+                                                       <div>
+                                                            <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@subCatalogoD.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
+                                                        </div>
+                                                        <div>
+                                                            <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@subCatalogoD.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             }

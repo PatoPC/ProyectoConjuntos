@@ -80,72 +80,95 @@ namespace RecintosHabitacionales.Controllers
         #region EditarConjuntos
         public async Task<ActionResult> EditarConjuntos(Guid idConjuntos)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + idConjuntos, HttpMethod.Get);
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (respuesta.IsSuccessStatusCode)
+            if (objUsuarioSesion != null)
             {
-                ConjuntoDTOCompleto objDTO = await LeerRespuestas<ConjuntoDTOCompleto>.procesarRespuestasConsultas(respuesta);
+                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + idConjuntos, HttpMethod.Get);
 
-                return View(objDTO);
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    ConjuntoDTOCompleto objDTO = await LeerRespuestas<ConjuntoDTOCompleto>.procesarRespuestasConsultas(respuesta);
+
+                    return View(objDTO);
+                }
+
             }
 
-            return View();
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         [HttpPost]
         public async Task<ActionResult> EditarConjuntos(ConjuntoDTOEditar objDTO, Guid IdConjunto)
         {
-            objDTO.UsuarioModificacion = "prueba";
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPICrearEditar.consumoAPI(ConstantesConsumoAPI.EditarConjuntosPorID + IdConjunto, HttpMethod.Post, objDTO);
-
-            if (respuesta.IsSuccessStatusCode)
+            if (objUsuarioSesion != null)
             {
-                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
-            }
-            else
-            {
-                MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                return new JsonResult(objMensajeRespuesta);
+                objDTO.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+
+                HttpResponseMessage respuesta = await _servicioConsumoAPICrearEditar.consumoAPI(ConstantesConsumoAPI.EditarConjuntosPorID + IdConjunto, HttpMethod.Post, objDTO);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
+
             }
 
-            return View();
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
         #endregion
 
 
-        #region EditarConjuntos
+        #region Eliminar Conjuntos
         public async Task<ActionResult> EliminarConjuntos(Guid idConjuntos)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + idConjuntos, HttpMethod.Get);
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (respuesta.IsSuccessStatusCode)
+            if (objUsuarioSesion != null)
             {
-                ConjuntoDTOCompleto objDTO = await LeerRespuestas<ConjuntoDTOCompleto>.procesarRespuestasConsultas(respuesta);
+                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + idConjuntos, HttpMethod.Get);
 
-                return View(objDTO);
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    ConjuntoDTOCompleto objDTO = await LeerRespuestas<ConjuntoDTOCompleto>.procesarRespuestasConsultas(respuesta);
+
+                    return View(objDTO);
+                }
+
             }
 
-            return View();
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         [HttpPost]
         public async Task<ActionResult> EliminarConjuntos(Guid IdConjunto, bool eliminar)
         {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPICrearEditar.consumoAPI(ConstantesConsumoAPI.EditarConjuntosEliminar + IdConjunto, HttpMethod.Post);
-
-            if (respuesta.IsSuccessStatusCode)
+            if (objUsuarioSesion != null)
             {
-                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual, true));
-            }
-            else
-            {
-                MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                return new JsonResult(objMensajeRespuesta);
+                HttpResponseMessage respuesta = await _servicioConsumoAPICrearEditar.consumoAPI(ConstantesConsumoAPI.EditarConjuntosEliminar + IdConjunto, HttpMethod.Post);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual, true));
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
+
             }
 
-            return View();
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
         #endregion
 
@@ -155,21 +178,27 @@ namespace RecintosHabitacionales.Controllers
         [HttpPost]
         public async Task<ActionResult> CrearDepartamento(DepartamentoDTOCrear objDTO)
         {
-            objDTO.UsuarioCreacion = "prueba";
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPIDepartamento.consumoAPI(ConstantesConsumoAPI.gestionarDepartamentoAPI, HttpMethod.Post, objDTO);
-
-            if (respuesta.IsSuccessStatusCode)
+            if (objUsuarioSesion != null)
             {
-                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta));
-            }
-            else
-            {
-                MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                return new JsonResult(objMensajeRespuesta);
+                objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+
+                HttpResponseMessage respuesta = await _servicioConsumoAPIDepartamento.consumoAPI(ConstantesConsumoAPI.gestionarDepartamentoAPI, HttpMethod.Post, objDTO);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta));
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
+
             }
 
-            return View();
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
         #endregion
 
@@ -187,7 +216,12 @@ namespace RecintosHabitacionales.Controllers
         [HttpGet]
         public async Task<ActionResult> BusquedaAvanzadaConjuntos(BusquedaConjuntos objBusquedaConjuntos)
         {
-            List<ResultadoBusquedaConjuntos> listaResultado = new List<ResultadoBusquedaConjuntos>();
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+
+                List<ResultadoBusquedaConjuntos> listaResultado = new List<ResultadoBusquedaConjuntos>();
             //var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
             //if (objUsuarioSesion != null)
@@ -210,6 +244,10 @@ namespace RecintosHabitacionales.Controllers
 
             return View("_ListaConjutos", listaResultado);
         }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+           
 
         public async Task<IActionResult> RecuperarListaTorresPorConjutoID(Guid idConjuto)
         {

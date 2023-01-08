@@ -187,35 +187,48 @@ namespace RecintosHabitacionales.Controllers
         #region Eliminar Persona
         public async Task<ActionResult> EliminarPersona(Guid IdPersona)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI + IdPersona, HttpMethod.Get);
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (respuesta.IsSuccessStatusCode)
+            if (objUsuarioSesion != null)
             {
-                PersonaDTOCompleto objDTO = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(respuesta);
-                await DatosInciales();
 
-                return View(objDTO);
+                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI + IdPersona, HttpMethod.Get);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    PersonaDTOCompleto objDTO = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(respuesta);
+                    await DatosInciales();
+
+                    return View(objDTO);
+                }
+
             }
 
-            return View();
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         [HttpPost]
         public async Task<ActionResult> EliminarPersona(Guid IdPersona, bool eliminar)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPIEliminar + IdPersona, HttpMethod.Post);
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (respuesta.IsSuccessStatusCode)
+            if (objUsuarioSesion != null)
             {
-                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual, true));
-            }
-            else
-            {
-                MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                return new JsonResult(objMensajeRespuesta);
+                HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPIEliminar + IdPersona, HttpMethod.Post);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual, true));
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
+
             }
 
-            return View();
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
         #endregion
 
