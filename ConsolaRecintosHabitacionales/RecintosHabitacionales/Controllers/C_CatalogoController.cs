@@ -199,10 +199,6 @@ namespace RecintosHabitacionales.Controllers
         }
 
         #region Búsquedas
-
-       
-
-
         public async Task<IActionResult> BusquedaPorCodigo(string objCodigo, Guid idConjunto)
         {
             HttpResponseMessage respuesta = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + objCodigo + "&idConjunto" + idConjunto, HttpMethod.Get);
@@ -315,6 +311,7 @@ namespace RecintosHabitacionales.Controllers
         public async Task<JsonResult> recuperarCatalogosPorIDCatalogoPadre(Guid idCatalogoPadre)
         {
             HttpResponseMessage respuesta = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorHijosPorIDPadre + idCatalogoPadre, HttpMethod.Get);
+
             var objCatalogo = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuesta);
 
             return new JsonResult(objCatalogo);

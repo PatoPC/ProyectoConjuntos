@@ -7,6 +7,7 @@ namespace ConjuntosEntidades.Entidades
     {
         public Departamento()
         {
+            AreasDepartamentos = new HashSet<AreasDepartamento>();
             TipoPersonas = new HashSet<TipoPersona>();
         }
 
@@ -22,6 +23,7 @@ namespace ConjuntosEntidades.Entidades
         public string? UsuarioModificacion { get; set; }
 
         public virtual Torre IdTorresNavigation { get; set; } = null!;
+        public virtual ICollection<AreasDepartamento> AreasDepartamentos { get; set; }
         public virtual ICollection<TipoPersona> TipoPersonas { get; set; }
     }
 }

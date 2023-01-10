@@ -35,13 +35,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalogo", "Catalogo", "{F1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntidadesCatalogos", "EntidadesCatalogos\EntidadesCatalogos.csproj", "{18CF8348-A2CC-4EA6-BE0D-BC610CC41383}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositorioCatalogos", "RepositorioCatalogos\RepositorioCatalogos.csproj", "{C2D1FC90-9CBF-46AB-AA15-43828D0A52DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositorioCatalogos", "RepositorioCatalogos\RepositorioCatalogos.csproj", "{C2D1FC90-9CBF-46AB-AA15-43828D0A52DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Papelera", "Papelera", "{DE8957F7-7DBE-487F-BED1-A54CC48673CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntidadesPapelera", "EntidadesPapelera\EntidadesPapelera.csproj", "{38180418-61BF-4981-880F-035677FDBD47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntidadesPapelera", "EntidadesPapelera\EntidadesPapelera.csproj", "{38180418-61BF-4981-880F-035677FDBD47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositorioPapelera", "RepositorioPapelera\RepositorioPapelera.csproj", "{7EDD70DF-A4D0-4A49-B3A6-86D8F8777C86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositorioPapelera", "RepositorioPapelera\RepositorioPapelera.csproj", "{7EDD70DF-A4D0-4A49-B3A6-86D8F8777C86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +111,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{344B3EBF-6E58-438B-A433-CEBF7C67B36E} = {65A4B65D-3B44-4E8F-B3C7-CA08AF5D8412}
+		{B34E9180-DDD9-436F-8160-B2A52362089F} = {65A4B65D-3B44-4E8F-B3C7-CA08AF5D8412}
 		{02EC9D94-AD14-4322-B183-86F44CF0FBDB} = {B34E9180-DDD9-436F-8160-B2A52362089F}
 		{3481C25C-9178-4D54-B940-73E69A06F8C7} = {65A4B65D-3B44-4E8F-B3C7-CA08AF5D8412}
 		{80624DC7-4FA9-453E-84ED-55D3DC063446} = {B34E9180-DDD9-436F-8160-B2A52362089F}

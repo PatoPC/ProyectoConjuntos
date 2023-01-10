@@ -44,5 +44,8 @@ namespace Utilitarios
         public const string padreTipoPersona = "tipPerso";
         #endregion
 
+        #region Ciudades
+        public const string padreCiudades = "ECUADR";
+        #endregion
     }
 }

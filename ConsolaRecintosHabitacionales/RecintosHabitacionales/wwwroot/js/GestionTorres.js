@@ -1,5 +1,5 @@
 ﻿//Cambia algunos atributos incluyendo ID del modal para crear Cargos
-function crearNuevaTorreConjuto(IdTorre_atributo, IdConjunto_Torre_atributo, IdTorreHtml,
+function crearNuevaTorreConjunto(IdTorre_atributo, IdConjunto_Torre_atributo, IdTorreHtml,
     IdConjuntoHtml, nombreModal, Contador, btn_idCerrarModal_cabecera, btn_idCerrarModal_Foter, btn_FormularioModal) {
     let IdConjunto = document.getElementById(IdConjuntoHtml)
     let IdArea = document.getElementById(IdTorreHtml)

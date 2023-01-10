@@ -504,3 +504,5 @@ function consultarDesdeAPIControlador(idSelectPadre, idSelectHijo, controlador, 
         console.log("Error al recuperar información. (consultarDesdeAPIControlador.js linea 503)")
     }
 };
+
+

@@ -6,8 +6,11 @@ using DTOs.Usuarios;
 using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RecintosHabitacionales.Models;
 using RecintosHabitacionales.Servicio;
+using RecintosHabitacionales.Servicio.Implementar;
 using RecintosHabitacionales.Servicio.Interface;
 using Utilitarios;
 
@@ -64,6 +67,9 @@ namespace RecintosHabitacionales.Controllers
             {
 
                 ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+
+                await DatosInciales();
+
                 return View();
             }
 
@@ -122,6 +128,7 @@ namespace RecintosHabitacionales.Controllers
 
                 if (respuesta.IsSuccessStatusCode)
                 {
+                    await DatosInciales();
                     ProveedorDTOCompleto objDTO = await LeerRespuestas<ProveedorDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
                     return View(objDTO);
@@ -144,9 +151,11 @@ namespace RecintosHabitacionales.Controllers
 
                 if (respuesta.IsSuccessStatusCode)
                 {
+                    
                     ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
 
                     ProveedorDTOCompleto objDTO = await LeerRespuestas<ProveedorDTOCompleto>.procesarRespuestasConsultas(respuesta);
+                    await DatosInciales(objDTO.IdCiudadProveedor);
 
                     return View(objDTO);
                 }
@@ -194,6 +203,7 @@ namespace RecintosHabitacionales.Controllers
 
                 if (respuesta.IsSuccessStatusCode)
                 {
+                    await DatosInciales();
                     ProveedorDTOCompleto objDTO = await LeerRespuestas<ProveedorDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
                     ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
@@ -269,10 +279,32 @@ namespace RecintosHabitacionales.Controllers
         }
 
 
-        //public async Task DatosInciales()
-        //{
-        //    ViewData["listaTipoIdentificacion"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoIdentificacion, "IdCatalogo", "Nombrecatalogo");
-        //}
+        public async Task DatosInciales(Guid? idCiudad=null)
+        {
+
+            if (idCiudad!=null)
+            {
+                HttpResponseMessage respuestaHijos = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPadreTios + idCiudad, HttpMethod.Get);
+
+                var listaCiudades = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuestaHijos);
+
+                SelectList objSelectListCiudades = new SelectList(listaCiudades, "IdCatalogo", "NombreCatalogo", idCiudad);
+
+                ViewData["listaCiudades"] = objSelectListCiudades;
+            }
+
+
+            HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreCiudades, HttpMethod.Get);
+
+            var listaProvincias = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuesta);
+
+            SelectList objSelectList = new SelectList(listaProvincias, "IdCatalogo", "NombreCatalogo", idCiudad);
+
+            ViewData["listaProvincias"] = objSelectList;
+
+
+            
+        }
 
     }
 

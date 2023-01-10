@@ -17,6 +17,7 @@ namespace ConjuntosEntidades.Entidades
         }
 
         public virtual DbSet<Adeudo> Adeudos { get; set; } = null!;
+        public virtual DbSet<AreasDepartamento> AreasDepartamentos { get; set; } = null!;
         public virtual DbSet<Banco> Bancos { get; set; } = null!;
         public virtual DbSet<Conjunto> Conjuntos { get; set; } = null!;
         public virtual DbSet<Departamento> Departamentos { get; set; } = null!;
@@ -72,6 +73,29 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("NOMBRE_ADEUDOS");
 
                 entity.Property(e => e.StatusAdeudos).HasColumnName("STATUS_ADEUDOS");
+            });
+
+            modelBuilder.Entity<AreasDepartamento>(entity =>
+            {
+                entity.HasKey(e => e.IdAreasDepartamentos);
+
+                entity.ToTable("AREAS_DEPARTAMENTOS");
+
+                entity.Property(e => e.IdAreasDepartamentos)
+                    .HasColumnName("ID_AREAS_DEPARTAMENTOS")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdDepartamento)
+                    .HasColumnName("ID_DEPARTAMENTO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdTipoArea).HasColumnName("ID_TIPO_AREA");
+
+                entity.HasOne(d => d.IdDepartamentoNavigation)
+                    .WithMany(p => p.AreasDepartamentos)
+                    .HasForeignKey(d => d.IdDepartamento)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AREAS_DE_REFERENCE_DEPARTAM");
             });
 
             modelBuilder.Entity<Banco>(entity =>
@@ -564,11 +588,6 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("ID_PROVEEDOR")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.CiudadProveedor)
-                    .HasMaxLength(30)
-                    .IsUnicode(false)
-                    .HasColumnName("CIUDAD_PROVEEDOR");
-
                 entity.Property(e => e.ContactoProveedor)
                     .HasMaxLength(70)
                     .IsUnicode(false)
@@ -591,6 +610,8 @@ namespace ConjuntosEntidades.Entidades
                 entity.Property(e => e.FechaModificacion)
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.IdCiudadProveedor).HasColumnName("ID_CIUDAD_PROVEEDOR");
 
                 entity.Property(e => e.IdConjunto)
                     .HasColumnName("ID_CONJUNTO")
