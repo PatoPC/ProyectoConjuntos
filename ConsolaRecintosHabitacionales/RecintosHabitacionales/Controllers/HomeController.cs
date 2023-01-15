@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DTOs.Usuarios;
+using Microsoft.AspNetCore.Mvc;
 using RecintosHabitacionales.Models;
 using System.Diagnostics;
+using Utilitarios;
 
 namespace RecintosHabitacionales.Controllers
 {
@@ -15,7 +17,14 @@ namespace RecintosHabitacionales.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+                return View();
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         public IActionResult Privacy()

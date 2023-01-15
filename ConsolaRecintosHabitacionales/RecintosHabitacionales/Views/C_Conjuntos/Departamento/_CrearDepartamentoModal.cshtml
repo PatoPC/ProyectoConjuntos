@@ -17,10 +17,6 @@
                     <div class="row p-lg-10">
 
                         <form asp-action="CrearDepartamento" id="CrearDepartamentoModal">
-                            @*
-                        <form action="@ConstantesAplicacion.pathConsola/C_Departamento/_CrearDepartamentoModal" id="CrearDepartamentoModal">
-*@
-
                             @Html.HiddenFor(x => x.IdTorresCrearDepartamento)
                             @Html.HiddenFor(x => x.IdConjuntoCrearDepartamento)
                             <div class="row">
@@ -57,7 +53,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">                                    
+                                <div class="col-md-6">
                                     <div class="row mb-12">
                                         <div class="col-xl-4">
                                             <div class="fs-6 fw-bold mt-2 mb-3">
@@ -68,7 +64,7 @@
                                             </div>
                                         </div>
                                         <div class="col-xl-8 fv-row">
-                                            <input asp-for="AliqDepartamento" class="form-control form-control-solid" type="number" required="required" required="required" />
+                                            <input asp-for="AliqDepartamento" class="form-control form-control-solid" type="number" required="required" />
                                         </div>
                                     </div>
                                     <div class="row mb-12">
@@ -81,13 +77,33 @@
                                             </div>
                                         </div>
                                         <div class="col-xl-8 fv-row">
-                                            <input asp-for="SaldoInicialAnual" class="form-control form-control-solid" type="number" required="required" required="required" />
+                                            <input asp-for="SaldoInicialAnual" class="form-control form-control-solid" type="number" required="required" />
                                         </div>
                                     </div>
-
                                 </div>
+                            </div>
 
-
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row mb-12">
+                                        <div class="col-xl-4">
+                                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                                <label for="IdTipoAreaDepartamento" class="control-label">
+                                                    Tipo Area                                                    
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 fv-row">
+                                            @Html.DropDownList("IdTipoAreaDepartamento", ViewData["listaTipoAreas"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                                        </div>
+                                        <div class="col-xl-2 fv-row">
+                                            <input type="button" class="btn btn-primary" value="Agregar" onclick="anadirTipoAreaDepartamento('divAreasDepartamento','idCantidadAreasDepartamentos','IdTipoAreaDepartamento','Crear')" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="divAreasDepartamento">                                
+                                <input type="hidden" id="idCantidadAreasDepartamentos" value="0" />
                             </div>
 
                             <div class="row">

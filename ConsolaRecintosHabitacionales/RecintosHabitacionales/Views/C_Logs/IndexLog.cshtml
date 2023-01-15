@@ -1,0 +1,85 @@
+﻿@model DTOs.Logs.LogBusqueda
+@using Utilitarios;
+@using DTOs.CatalogoGeneral;
+
+@{
+    
+}
+
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    
+    <div id="kt_content_container" class="container-xxl">
+        <form action="@ConstantesAplicacion.pathConsola/C_Logs/BusquedaAvanzada"
+              data-ajax="true"
+              data-ajax-method="Get"
+              data-ajax-loading="#imagenCargando"
+              data-ajax-update="#resultSearch"
+              data-ajax-begin="emptyLastResults('resultSearch')"
+              data-ajax-success="ordenarTabla('dataTablePersonas')"
+              id="AjaxFormSend"
+              method="post">
+
+            <div class="card mb-10">
+                <div class="card-header card-header-stretch">
+                    <div class="card-title d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h3 class="fw-bolder m-0 text-gray-800">
+                                    <i class="fas fa-bug text-primary fs-2qx"></i>
+                                    Logs
+                                </h3>
+                            </div>                          
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body border-top p-9">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="fs-6 form-label fw-bolder text-dark">Datos Personales</label>
+
+                            <div class="col-md-2">
+                                <input asp-for="FechaInicio" class="form-control form-control-solid" required="required" />
+                            </div>
+                            <div class="col-md-2">
+                                <input asp-for="FechaFin" class="form-control form-control-solid" required="required" />
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <center><img src="~/assets/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
+
+        </form>
+
+        <div id="resultSearch">
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+    
+
+    <script type="text/javascript">
+        $("#FechaInicio").flatpickr({
+            defaultDate: "today"
+        });
+        $("#FechaFin").flatpickr({
+            defaultDate: "today"
+        });
+
+            function emptyLastResults(divEmpty) {
+                $("#" + divEmpty).html("");
+            }
+
+
+    </script>
+}

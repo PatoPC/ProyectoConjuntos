@@ -1,4 +1,5 @@
-﻿using DTOs.CatalogoGeneral;
+﻿using DTOs.AreasDepartamento;
+using DTOs.CatalogoGeneral;
 using DTOs.Departamento;
 using DTOs.Select;
 using DTOs.Torre;
@@ -49,9 +50,9 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
-        #region EditarDepartamento
+        #region Editar Departamento
         [HttpPost]
-        public async Task<ActionResult> EditarDepartamento(DepartamentoDTOEditar objDTO, Guid IdDepartamento)
+        public async Task<ActionResult> EditarDepartamento(DepartamentoDTOEditar objDTO, Guid IdDepartamento, List<decimal> listaTipoAreaDepartamentoEditar, List<Guid> IdTipoAreaEditar)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
@@ -60,6 +61,20 @@ namespace RecintosHabitacionales.Controllers
                 if (IdDepartamento == ConstantesAplicacion.guidNulo)
                     IdDepartamento = objDTO.IdDeptoEditar;
 
+                objDTO.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                List<AreasDepartamentoDTO> listaAreasDepartamentos = new List<AreasDepartamentoDTO>();
+
+                if (listaTipoAreaDepartamentoEditar != null && IdTipoAreaEditar != null)
+                {
+                    for (int i = 0; i < IdTipoAreaEditar.Count(); i++)
+                    {
+                        AreasDepartamentoDTO objTemporal = new AreasDepartamentoDTO(IdTipoAreaEditar[i], listaTipoAreaDepartamentoEditar[i]);
+
+                        listaAreasDepartamentos.Add(objTemporal);
+                    }
+
+                    objDTO.AreasDepartamentos = listaAreasDepartamentos;
+                }
 
                 HttpResponseMessage respuesta = await _servicioConsumoAPIDepartamentoEditar.consumoAPI(ConstantesConsumoAPI.gestionarDepartamentoAPIEditar + IdDepartamento, HttpMethod.Post, objDTO);
 
@@ -165,8 +180,21 @@ namespace RecintosHabitacionales.Controllers
                             CatalogoDTOCompleto objCatalogo = await LeerRespuestas<CatalogoDTOCompleto>.procesarRespuestasConsultas(respuestaCatalogo);
 
                             item.TipoPersona = objCatalogo.Nombrecatalogo;
-                        }  
+                        }
                     }
+
+                    if (objResultado.AreasDepartamentos != null)
+                    {
+                        foreach (AreasDepartamentoDTO tipoArea in objResultado.AreasDepartamentos)
+                        {
+                            HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorIdCatalogo + tipoArea.IdTipoArea, HttpMethod.Get);
+
+                            CatalogoDTOCompleto objCatalogo = await LeerRespuestas<CatalogoDTOCompleto>.procesarRespuestasConsultas(respuestaCatalogo);
+
+                            tipoArea.NombreTipoArea = objCatalogo.Nombrecatalogo;
+                        }
+                    }
+
                 }
 
             }

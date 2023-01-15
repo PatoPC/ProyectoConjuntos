@@ -92,12 +92,17 @@ namespace Utilitarios
         public const string getRolPorNombre = ConstantesAplicacion.pathAPI + "/api/Rol/GetRolPorNombre?nombreRol=";
         #endregion
 
-
         #region Proveedor
         public const string gestionarProveedorAPI = ConstantesAplicacion.pathAPI + "/api/proveeedor/";
         public const string gestionarProveedorAPIEditar = ConstantesAplicacion.pathAPI + "/api/proveeedor/Editar?id=";
         public const string gestionarProveedorAPIEliminar = ConstantesAplicacion.pathAPI + "/api/proveeedor/Eliminar?id=";
         public const string buscarProveedorAvanzado = ConstantesAplicacion.pathAPI + "/api/proveeedor/BusquedaAvanzadaProveedor";
+        #endregion
+
+        #region Logs
+        public const string crearLogs = ConstantesAplicacion.pathAPI + "/api/Logs/Create";
+        public const string busquedaLogs = ConstantesAplicacion.pathAPI + "/api/Logs/BusquedaAvanzada";
+        public const string busquedaLogsPorID = ConstantesAplicacion.pathAPI + "/api/Logs/";
         #endregion
 
     }

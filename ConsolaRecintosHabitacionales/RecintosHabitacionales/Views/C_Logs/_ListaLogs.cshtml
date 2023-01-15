@@ -1,0 +1,74 @@
+﻿@model IEnumerable<DTOs.Logs.ResultadoBusquedaLogDTO>
+@using Utilitarios
+
+@{
+    Layout = "";
+}
+
+@await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+@if (Model != null)
+{
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+        <div class="post d-flex flex-column-fluid" id="kt_post">
+            <div id="kt_content_container" class="container-xxl">
+                <div class="card">
+                    <div class="card-body pt-0">
+                        @if (Model.Count() > 0)
+                        {
+                            <div class="table-responsive" id="tablaResponsivaAreas">
+                                <table class="table align-middle table-row-dashed fs-6 gy-5" id="idTablaAreasDepartamento">
+                                    <thead>
+                                        <tr class="table align-middle table-row-dashed fs-6 gy-5">
+                                            <th class="min-w-125px">
+                                                <span class="badge badge-light text-dark">Método</span>
+                                            </th>
+                                            <th class="min-w-125px">
+                                                <span class="badge badge-light text-dark">Entidad</span>
+                                            </th>
+                                            <th class="min-w-125px">
+                                                <span class="badge badge-light text-dark">Error</span>
+                                            </th>
+                                            <th class="min-w-125px">
+                                                <span class="badge badge-light text-dark">FechaError</span>
+                                            </th>
+                                            <th class="min-w-125px">
+                                                <span class="badge badge-light text-dark">Acción</span>
+
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="fw-bold text-gray-600">
+
+                                        @foreach (var item in Model)
+                                        {
+                                        <tr>
+                                            <td data-title="Método">
+                                                @item.Metodo
+                                            </td>
+                                            <td data-title="Entidad">
+                                                <div>@item.Entidad</div>
+                                            </td>
+                                            <td data-title="Error">
+                                                @item.Error
+                                            </td>
+                                            <td data-title="FechaError">
+                                                @item.FechaError
+                                            </td>
+                                            <td data-title="Acción">
+                                                <a href="~/C_Logs/DetalleLogs?IdLogExcepciones=@item.IdLogExcepciones" target="_blank" class="badge badge-light-primary">Detalle<i class="far fa-edit" style="color: #009ef7"></i></a>
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

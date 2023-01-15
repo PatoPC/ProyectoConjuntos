@@ -36,7 +36,7 @@ namespace APICondominios.Model
             bool resultado = await _logError.saveError(objLog);
         }
 
-        public async Task guardarError(Error_DTO objErrorDTO)
+        public async Task<bool> guardarError(Error_DTO objErrorDTO)
         {
             LogsExcepcione objLog = new LogsExcepcione();
 
@@ -49,6 +49,8 @@ namespace APICondominios.Model
             _logError.AddLogError(objLog);
 
             bool resultado = await _logError.saveError(objLog);
+
+            return resultado;
         }
     }
 }

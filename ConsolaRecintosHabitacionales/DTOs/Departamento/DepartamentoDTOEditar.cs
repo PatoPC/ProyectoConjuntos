@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTOs.AreasDepartamento;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,6 @@ namespace DTOs.Departamento
         public decimal MetrosDeptoEditar { get; set; }
         public decimal SaldoInicialAnualEditar { get; set; }
         public string UsuarioModificacion { get; set; }
-
+        public List<AreasDepartamentoDTO>? AreasDepartamentos { get; set; }
     }
 }

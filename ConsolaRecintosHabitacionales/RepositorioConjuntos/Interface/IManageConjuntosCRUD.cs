@@ -14,6 +14,7 @@ namespace RepositorioConjuntos.Interface
         public void AddRange(T obj);
         public void Edit(T obj);
         public void Delete(T obj);
+        public void DeleteRango(List<AreasDepartamento> lista);
         public Task<(bool estado, string mensajeError)> save();
         #endregion
 

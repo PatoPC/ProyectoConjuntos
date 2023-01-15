@@ -1,8 +1,11 @@
-﻿using DTOs.Conjunto;
+﻿using DTOs.AreasDepartamento;
+using DTOs.CatalogoGeneral;
+using DTOs.Conjunto;
 using DTOs.Departamento;
 using DTOs.Torre;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
+using RecintosHabitacionales.Models;
 using RecintosHabitacionales.Servicio;
 using RecintosHabitacionales.Servicio.Interface;
 using Utilitarios;
@@ -24,7 +27,9 @@ namespace RecintosHabitacionales.Controllers
 
         private readonly IServicioConsumoAPI<DepartamentoDTOCrear> _servicioConsumoAPIDepartamento;
 
-        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto)
+        private readonly IServicioConsumoAPI<CatalogoDTODropDown> _servicioConsumoAPICatalogos;
+
+        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos)
         {
             _servicioConsumoAPICrear = servicioConsumoAPIConjunto;
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
@@ -33,6 +38,7 @@ namespace RecintosHabitacionales.Controllers
             _servicioConsumoAPIDepartamento = servicioConsumoAPIDepartamento;
             _servicioConsumoAPIDepartamentoEditar = servicioConsumoAPIDepartamentoEditar;
             _servicioConsumoAPIUsuarioConjunto = servicioConsumoAPIUsuarioConjunto;
+            _servicioConsumoAPICatalogos = servicioConsumoAPICatalogos;
         }
 
         #region CRUD
@@ -88,6 +94,7 @@ namespace RecintosHabitacionales.Controllers
 
                 if (respuesta.IsSuccessStatusCode)
                 {
+                    await cargaInicial();
                     ConjuntoDTOCompleto objDTO = await LeerRespuestas<ConjuntoDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
                     return View(objDTO);
@@ -111,6 +118,7 @@ namespace RecintosHabitacionales.Controllers
 
                 if (respuesta.IsSuccessStatusCode)
                 {
+                    await cargaInicial();
                     return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
                 }
                 else
@@ -176,13 +184,27 @@ namespace RecintosHabitacionales.Controllers
 
         #region CrearDepartamento
         [HttpPost]
-        public async Task<ActionResult> CrearDepartamento(DepartamentoDTOCrear objDTO)
+        public async Task<ActionResult> CrearDepartamento(DepartamentoDTOCrear objDTO, List<decimal> listaTipoAreaDepartamentoCrear, List<Guid> IdTipoAreaCrear)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
             if (objUsuarioSesion != null)
             {
                 objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+
+                List<AreasDepartamentoDTO> listaAreasDepartamentos = new List<AreasDepartamentoDTO>();
+
+                if(listaTipoAreaDepartamentoCrear != null && IdTipoAreaCrear != null)
+                {
+                    for (int i = 0; i < IdTipoAreaCrear.Count(); i++)                    
+                    {
+                        AreasDepartamentoDTO objTemporal = new AreasDepartamentoDTO(IdTipoAreaCrear[i], listaTipoAreaDepartamentoCrear[i]);
+
+                        listaAreasDepartamentos.Add(objTemporal);
+                    }
+
+                    objDTO.AreasDepartamentos = listaAreasDepartamentos;
+                }
 
                 HttpResponseMessage respuesta = await _servicioConsumoAPIDepartamento.consumoAPI(ConstantesConsumoAPI.gestionarDepartamentoAPI, HttpMethod.Post, objDTO);
 
@@ -268,6 +290,11 @@ namespace RecintosHabitacionales.Controllers
             }
 
             return View("Torre/_ListaTorres", new List<TorreDTOCompleto>());
+        }
+
+        public async Task cargaInicial()
+        {
+            ViewData["listaTipoAreas"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoAreas, "IdCatalogo", "Nombrecatalogo");
         }
 
     }

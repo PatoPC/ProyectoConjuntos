@@ -170,7 +170,16 @@ function mostrarModalDepartamentoEditar(idModal, idDepartamentoEditar, tipoAccio
                     let inputTipoPersona = document.getElementById("nombreTipoPersonaDepartamento" + i)
                     if (inputTipoPersona != undefined)
                         inputTipoPersona.value = jsonObject.tipoPersonas[i].nombrePersona
+                }
 
+                let divAreasDepartamentoEditar = document.getElementById('divAreasDepartamentoEditar')
+
+                if (divAreasDepartamentoEditar != undefined)
+                    divAreasDepartamentoEditar.innerHTML=""
+
+                for (let j = 0; j < jsonObject.areasDepartamentos.length; j++) {                   
+
+                    anadirTipoAreaDepartamento('divAreasDepartamentoEditar', 'idCantidadAreasDepartamentosEditar', 'IdTipoAreaDepartamentoEditar', 'Editar', jsonObject.areasDepartamentos[j].nombreTipoArea, jsonObject.areasDepartamentos[j].idTipoArea, jsonObject.areasDepartamentos[j].metrosCuadrados)
                 }
             }
 

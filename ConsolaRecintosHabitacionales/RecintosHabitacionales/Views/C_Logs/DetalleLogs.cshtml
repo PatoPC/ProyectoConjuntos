@@ -1,0 +1,164 @@
+﻿@model DTOs.Logs.LogErrorCompleto
+@using Utilitarios;
+
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-xxl">
+
+        <div class="card mb-10 mb-xl-12">
+            <div class="card-header card-header-stretch">
+                <div class="card-title d-flex align-items-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="fw-bolder m-0 text-gray-800">
+                                <i class="fas fa-address-card text-primary fs-2qx"></i>
+                                Logs
+                            </h3>
+                        </div>
+                        <div class="col-md-12">
+                                <a class="btn btn-success" href="@ConstantesAplicacion.pathConsola/C_Logs/IndexLog"><i class="fas fa-undo-alt"></i>Administrar Personas</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-top">
+                <div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                                <div class="row mb-12">
+                                    <div class="col-xl-4">
+                                        <div class="fs-6 fw-bold mt-2 mb-3">
+                                            <label class="control-label">
+                                                Entidad
+                                                @await Html.PartialAsync("_AsteriscoObligatorio")
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8 fv-row">
+                                        <input asp-for="Entidad" class="form-control" readonly="readonly" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                                <div class="row mb-12">
+                                    <div class="col-xl-4">
+                                        <div class="fs-6 fw-bold mt-2 mb-3">
+                                            <label class="control-label">
+                                                Método
+                                                @await Html.PartialAsync("_AsteriscoObligatorio")
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8 fv-row">
+                                        <input asp-for="Metodo" class="form-control" readonly="readonly" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row mb-12">
+                                <div class="col-xl-2 fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="Error" class="control-label">
+                                        Error
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                                <div class="col-xl-10 fv-row">
+                                    <textarea asp-for="Error" class="form-control" readonly="readonly" ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row mb-12">
+                                <div class="col-xl-4 fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="FechaError" class="control-label">
+                                        Fecha Error
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="FechaError" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row mb-12">
+                                <div class="col-xl-4 fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="IdUsuario" class="control-label">
+                                        ID Usuario
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="IdUsuario" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row mb-12">
+                                <div class="col-xl-4 fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="IdPersona" class="control-label">
+                                        ID Persona
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="IdPersona" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="row mb-12">
+                                <div class="col-xl-4 fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="NombrePersona" class="control-label">
+                                        Persona
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="NombrePersona" class="form-control" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row mb-12">
+                                <div class="col-xl-2 fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="Descripcion" class="control-label">
+                                        Descripción
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <textarea class="form-control" rows="20">@Model.Descripcion</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

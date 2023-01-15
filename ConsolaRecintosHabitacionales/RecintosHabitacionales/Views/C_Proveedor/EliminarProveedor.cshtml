@@ -22,35 +22,35 @@
         <div class="row p-lg-10">
 
             <form asp-action="EliminarProveedor" id="FormCrear">
-                <input type="hidden" asp-for="IdProveedor" />
+                @Html.HiddenFor(x => x.IdProveedor)
                 <div class="row">
                     <div class="col-md-6">
                         <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
                             <div class="row mb-12">
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="NombreProveedor" class="control-label">
+                                        <label asp-for="IdConjunto" class="control-label">
                                             Conjunto
                                             @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @disabled="disabled" })
+                                    @if (ViewData["listaConjuntos"]!=null){
+                                        @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                                    }                                    
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
                     <div class="col-md-6">
                         <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
                             <div class="row mb-12">
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="NombreProveedor" class="control-label">
+                                        <label asp-for="NombreProveedor" class="control-label">
                                             Nombre/Razón Social
                                             @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
@@ -60,50 +60,47 @@
                                     <input type="text" asp-for="NombreProveedor" class="form-control form-control-solid" placeholder="Nombre/Razón Social" readonly="readonly" maxlength="60" />
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
                             <div class="row mb-12">
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="TelefonoConjunto" class="control-label">
+                                        <label asp-for="RucProveedor" class="control-label">
                                             RUC
                                             @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
-
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    <input type="text" asp-for="RucProveedor" class="form-control form-control-solid" placeholder="RUC" readonly="readonly" maxlength="60" />
+                                    <input asp-for="RucProveedor" class="form-control form-control-solid" maxlength="70" readonly="readonly" />
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <div class="row mb-12">
-                            <div class="col-xl-4">
-                                <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="ApellidosPersona" class="control-label">
-                                        Contacto
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
-                                    </label>
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="idProvincia" class="control-label">
+                                            Provincia:
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-8 fv-row">
-                                <input asp-for="ContactoProveedor" class="form-control form-control-solid" maxlength="70" readonly="readonly" />
-                            </div>
-                        </div>
-
-                        <div class="row mb-12">
-                            <div class="col-xl-4">
-                                <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="IdentificacionPersona" class="control-label">
-                                        Ciudad
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-xl-8 fv-row">
-                                @*<input asp-for="CiudadProveedor" class="form-control form-control-solid" maxlength="80" readonly="readonly" />*@
+                                <div class="col-xl-8 fv-row">
+                                     @if(ViewData["listaProvincias"]!=null){
+                                    @Html.DropDownList("idProvincia", ViewData["listaProvincias"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @readonly = "readonly", @onchange="consultarDesdeAPIControlador('idProvincia', 'IdCiudadProveedor', 'C_Catalogo', 'cargarListaDropDownCiudades', 'idPadreCatalogoCiudad')", @disabled="disabled" })
+                                     }
+                                  </div>
                             </div>
                         </div>
                     </div>
@@ -115,7 +112,7 @@
                             <div class="row mb-12">
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="TelefonoPersona" class="control-label">
+                                        <label asp-for="TelefonosProveedor" class="control-label">
                                             Teléfono
                                         </label>
                                     </div>
@@ -132,7 +129,44 @@
                             <div class="row mb-12">
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="CelularPersona" class="control-label">
+                                        <label asp-for="IdCiudadProveedor" class="control-label">
+                                            Ciudad
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    @if (ViewData["listaCiudades"]!=null){
+                                        @Html.DropDownList("IdCiudadProveedor", ViewData["listaCiudades"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @disabled = "disabled" })
+
+                                    }
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="ContactoProveedor" class="control-label">
+                                        Persona Contacto
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="ContactoProveedor" class="form-control form-control-solid" maxlength="50" readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label asp-for="EMailProveedor" class="control-label">
                                             EMail
                                             @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
@@ -145,25 +179,28 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="row mb-12">
-                            <div class="col-xl-4">
-                                <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="SaldoAntProveedor" class="control-label">
-                                        Saldo Anterior
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
-                                    </label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label asp-for="SaldoAntProveedor" class="control-label">
+                                            Saldo Anterior
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-8 fv-row">
-                                <input asp-for="SaldoAntProveedor" class="form-control form-control-solid" maxlength="50" readonly="readonly" />
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="SaldoAntProveedor" class="form-control form-control-solid" maxlength="50" readonly="readonly" />
+                                </div>
                             </div>
                         </div>
                     </div>
 
+
                     <div class="col-md-6">
                         <div class="row mb-12">
-                            <label class="col-lg-4 col-form-label fw-bold fs-6">Habilitado</label>
+                            <label class="col-lg-4 col-form-label fw-bold fs-6" asp-for="StatusProveedor">Habilitado</label>
                             <div class="col-lg-8 d-flex align-items-center">
                                 <label>
                                     <input type="radio" class="btn-check" name="StatusProveedor" value="true" @(Model.StatusProveedor ? "checked= \"checked\"" : "" ) />
@@ -178,28 +215,11 @@
                         </div>
                     </div>
 
-
-                    @*  <div class="col-md-6">
-                    <div class="row mb-12">
-                    <div class="col-xl-4">
-                    <div class="fs-6 fw-bold mt-2 mb-3">
-                    <label for="StatusProveedor" class="control-label">
-                    Saldo Pendiente Proveedor
-                    @await Html.PartialAsync("_AsteriscoObligatorio")
-                    </label>
-                    </div>
-                    </div>
-                    <div class="col-xl-8 fv-row">
-                    <input asp-for="StatusProveedor" class="form-control form-control-solid" maxlength="50" readonly="readonly" />
-                    </div>
-                    </div>
-                    </div>
-                    *@
                     <div class="col-md-12">
                         <div class="row mb-12">
                             <div class="col-xl-12 mt-6">
                                 <div class="fs-6 fw-bold mt-8">
-                                    <label class="control-label" for="ObservacionPersona">
+                                    <label class="control-label" asp-for="DirecProveedor">
                                         Dirección:
                                         @await Html.PartialAsync("_AsteriscoObligatorio")
                                     </label>
@@ -217,7 +237,7 @@
                 <div class="row">
                     <div class="col-xl-12 fv-row">
                         <center>
-                            <button type="button" onclick="sendFormAjax(this, 'FormCrear', undefined,undefined,'btn_CrearProveedor')" class="btn btn-danger" id="btn_CrearProveedor">
+                            <button type="button" onclick="sendFormAjaxEliminar(this, 'FormCrear', undefined,undefined,'btn_CrearProveedor')" class="btn btn-danger" id="btn_CrearProveedor">
                                 <span class="indicator-label">
                                     <i class="far fa-save  fs-md-2qx"></i>Eliminar
                                 </span>
@@ -228,16 +248,14 @@
                         </center>
                     </div>
                 </div>
-
             </form>
-
-
         </div>
     </div>
 </div>
 
 
 @section Scripts {
+    <script src="~/js/site.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             const select = document.querySelector('#IdConjunto');

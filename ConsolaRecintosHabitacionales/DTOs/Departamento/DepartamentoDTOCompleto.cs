@@ -1,4 +1,5 @@
-﻿using DTOs.Persona;
+﻿using DTOs.AreasDepartamento;
+using DTOs.Persona;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,6 @@ namespace DTOs.Departamento
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
         public List<TipoPersonaDTO>? TipoPersonas { get; set; }
+        public List<AreasDepartamentoDTO>? AreasDepartamentos { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ConjuntosEntidades.Entidades;
+using DTOs.AreasDepartamento;
 using DTOs.Departamento;
 
 namespace APICondominios.Perfil
@@ -22,6 +23,9 @@ namespace APICondominios.Perfil
             ForMember(x => x.MetrosDepartamento, y => y.MapFrom(fuente => fuente.MetrosDeptoEditar)).
             ForMember(x => x.AliqDepartamento, y => y.MapFrom(fuente => fuente.AliqDeptoEditar)).
             ForMember(x => x.SaldoInicialAnual, y => y.MapFrom(fuente => fuente.SaldoInicialAnualEditar));
+
+            CreateMap<AreasDepartamentoDTO, AreasDepartamento>();
+            CreateMap<AreasDepartamento, AreasDepartamentoDTO>();
         }
        
     }

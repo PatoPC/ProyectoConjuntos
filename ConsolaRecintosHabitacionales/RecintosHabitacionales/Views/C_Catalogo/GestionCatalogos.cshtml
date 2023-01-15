@@ -206,19 +206,42 @@
                         selectCatlogoPadre.add(option);
 
                         for (var catalogo of listaCatalogos) {
+                            let nombreCatalogo
+                            let idCatalogo
+                            
+                            if (catalogo.nombrecatalogo!=undefined){
+                                nombreCatalogo = catalogo.nombrecatalogo
+                            } 
+                            else
+                            {
+                                nombreCatalogo = catalogo.nombreCatalogo
+                            }
+
+
                             optionGroup = document.createElement('optgroup');
-                            optionGroup.label = catalogo.nombrecatalogo;
+                            optionGroup.label = nombreCatalogo
+
                             selectCatlogoPadre.add(optionGroup);
 
                             optionSelect = document.createElement('option');
-                            optionSelect.text = catalogo.nombrecatalogo;
+                            optionSelect.text = nombreCatalogo;
                             optionSelect.value = catalogo.idCatalogo;
 
                             selectCatlogoPadre.add(optionSelect);
 
                             for (var subCatalogo of catalogo.inverseIdCatalogopadreNavigation) {
+                                let nombreSubCatalogo
                                 optionSubSelect = document.createElement('option');
-                                optionSubSelect.text = subCatalogo.nombrecatalogo;
+
+                                if (catalogo.nombrecatalogo != undefined) {
+                                    nombreCatalogo = subCatalogo.nombrecatalogo
+                                }
+                                else {
+                                    nombreSubCatalogo = subCatalogo.nombreCatalogo
+                                }
+
+
+                                optionSubSelect.text = nombreSubCatalogo;
                                 optionSubSelect.value = subCatalogo.idCatalogo;
 
                                 selectCatlogoPadre.add(optionSubSelect);

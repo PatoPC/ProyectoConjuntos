@@ -68,6 +68,11 @@ namespace RepositorioConjuntos.Implementacion
             _context.Remove(obj);
         }
 
+        public void DeleteRango(List<AreasDepartamento> lista)
+        {
+            _context.RemoveRange(lista);
+        }
+
         public async Task<(bool estado, string mensajeError)> save()
         {
             try

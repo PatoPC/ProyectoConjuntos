@@ -51,7 +51,12 @@ namespace RepositorioConjuntos.Implementacion
 
         public async Task<Departamento> obtenerPorIDDepartamento(Guid idDepartamento)
         {
-            var objRepositorio = await _context.Departamentos.Where(x => x.IdDepartamento == idDepartamento).Include(x => x.TipoPersonas).ThenInclude(x => x.IdPersonaNavigation) .FirstOrDefaultAsync();
+            var objRepositorio = await _context.Departamentos
+                .Where(x => x.IdDepartamento == idDepartamento)
+                .Include(x => x.AreasDepartamentos)
+                .Include(x => x.TipoPersonas)
+                .ThenInclude(x => x.IdPersonaNavigation)
+                .FirstOrDefaultAsync();
 
             return objRepositorio;
         }

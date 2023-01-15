@@ -16,8 +16,11 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row p-lg-10">
 
-                        <form asp-action="EditarDepartamento" id="FormularioEditarDepartamentoModal">
-                            @*<form action="@ConstantesAplicacion.pathConsola/C_Departamento/_FormularioEditarDepartamentoModal" id="FormularioEditarDepartamentoModal">*@
+                        @* C_DepartamentoController -> BusquedaPorDepartamentoID
+                            Recupera por id el departamento en ese metodo
+                        *@
+
+                        <form asp-action="EditarDepartamento" id="FormularioEditarDepartamentoModal">                            
                             @Html.HiddenFor(x => x.IdDeptoEditar)
                             @Html.HiddenFor(x => x.IdTorresEditarDepartamento)
 
@@ -45,7 +48,6 @@
                                                         Metros Dept.
                                                         @await Html.PartialAsync("_AsteriscoObligatorio")
                                                     </label>
-
                                                 </div>
                                             </div>
                                             <div class="col-xl-8 fv-row">
@@ -83,6 +85,31 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row mb-12">
+                                        <div class="col-xl-4">
+                                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                                <label for="IdTipoAreaDepartamento" class="control-label">
+                                                    Tipo Area
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 fv-row">
+                                            @Html.DropDownList("IdTipoAreaDepartamentoEditar", ViewData["listaTipoAreas"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                                        </div>
+                                        <div class="col-xl-2 fv-row">
+                                            <input type="button" class="btn btn-primary" value="Agregar" onclick="anadirTipoAreaDepartamento('divAreasDepartamentoEditar','idCantidadAreasDepartamentosEditar','IdTipoAreaDepartamentoEditar','Editar')" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="idCantidadAreasDepartamentosEditar" value="0" />
+                            <div class="row" id="divAreasDepartamentoEditar">
+                                
                             </div>
 
                             <div class="row">

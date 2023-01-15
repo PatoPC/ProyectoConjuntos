@@ -17,16 +17,18 @@ namespace APICondominios.Controllers
     public class API_DepartamentoController : ControllerBase
     {
         private readonly IManageConjuntosCRUD<Departamento> _CRUD_Departamento;
+        private readonly IManageConjuntosCRUD<AreasDepartamento> _CRUD_AreaDepartamento;
         private readonly IManageDepartamento _Departamentos;
         private readonly IMapper _mapper;
         private readonly IManageLogError _logError;
 
-        public API_DepartamentoController(IMapper mapper, IManageConjuntosCRUD<Departamento> cRUD_Condominio, IManageDepartamento torres, IManageLogError logError)
+        public API_DepartamentoController(IMapper mapper, IManageConjuntosCRUD<Departamento> cRUD_Condominio, IManageDepartamento torres, IManageLogError logError, IManageConjuntosCRUD<AreasDepartamento> cRUD_AreaDepartamento)
         {
             _mapper = mapper;
             _CRUD_Departamento = cRUD_Condominio;
             _Departamentos = torres;
             _logError = logError;
+            _CRUD_AreaDepartamento = cRUD_AreaDepartamento;
         }
 
         #region CRUD
@@ -35,10 +37,8 @@ namespace APICondominios.Controllers
         {
             try
             {
-                if (objDTO == null)
-                {
-                    return BadRequest(MensajesRespuesta.noSePermiteObjNulos());
-                }
+                if (objDTO == null)                
+                    return BadRequest(MensajesRespuesta.noSePermiteObjNulos());                
 
                 Departamento objRepositorio = _mapper.Map<Departamento>(objDTO);
                 _CRUD_Departamento.Add(objRepositorio);
@@ -51,15 +51,15 @@ namespace APICondominios.Controllers
 
                     return CreatedAtRoute("GetDepartamentoByID", new { id = objDTOResultado.IdTorres }, objDTOResultado);
                 }
-                else
-                {
+                else                
                     await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
-                }
+                
             }
             catch (Exception ExValidation)
             {
                 await guardarLogs(JsonConvert.SerializeObject(objDTO), ExValidation.ToString());
             }
+
             return BadRequest(MensajesRespuesta.guardarError());
         }
 
@@ -68,20 +68,23 @@ namespace APICondominios.Controllers
         {
             try
             {
-                var objRepository = await _Departamentos.obtenerPorIDDepartamento(id);
+                Departamento objRepository = await _Departamentos.obtenerPorIDDepartamento(id);
+
+                List<AreasDepartamento> AreasDepartamentos = objRepository.AreasDepartamentos.ToList();
+
+                _CRUD_AreaDepartamento.DeleteRango(AreasDepartamentos);
+                var resultadoAreas = await _CRUD_AreaDepartamento.save();
+
                 _mapper.Map(objDTO, objRepository);
 
                 _CRUD_Departamento.Edit(objRepository);
                 var result = await _CRUD_Departamento.save();
                 // se comprueba que se actualizo correctamente
-                if (result.estado)
-                {
-                    return NoContent();
-                }
-                else
-                {
+                if (result.estado)                
+                    return NoContent();                
+                else                
                     await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
-                }
+                
 
                 return BadRequest(MensajesRespuesta.guardarError());
             }
@@ -102,18 +105,20 @@ namespace APICondominios.Controllers
 
             Departamento objRepositorio = await _Departamentos.obtenerPorIDDepartamento(id);
 
+            List<AreasDepartamento> AreasDepartamentos = objRepositorio.AreasDepartamentos.ToList();
+
+            _CRUD_AreaDepartamento.DeleteRango(AreasDepartamentos);
+            var resultadoAreas = await _CRUD_AreaDepartamento.save();
+
             _CRUD_Departamento.Delete(objRepositorio);
             var result = await _CRUD_Departamento.save();
 
             //Se comprueba que se actualizó correctamente
-            if (result.estado)
-            {
-                return NoContent();
-            }
-            else
-            {
+            if (result.estado)            
+                return NoContent();            
+            else            
                 await guardarLogs(JsonConvert.SerializeObject(objRepositorio, jsonSerializerSettings), result.mensajeError);
-            }
+            
 
             return BadRequest();
         }
@@ -127,8 +132,7 @@ namespace APICondominios.Controllers
             {
                 Departamento objRepositorio = await _Departamentos.obtenerPorIDDepartamento(id);
                 if (objRepositorio == null)                
-                    return NotFound(MensajesRespuesta.sinResultados());
-                
+                    return NotFound(MensajesRespuesta.sinResultados());                
 
                 DepartamentoDTOCompleto objDTO = _mapper.Map<DepartamentoDTOCompleto>(objRepositorio);
 
@@ -136,8 +140,9 @@ namespace APICondominios.Controllers
             }
             catch (Exception ex)
             {
-
+                await guardarLogs("GetDepartamentoByID: id " + id.ToString(), ex.ToString());
             }
+
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 

@@ -91,6 +91,10 @@ namespace ConjuntosEntidades.Entidades
 
                 entity.Property(e => e.IdTipoArea).HasColumnName("ID_TIPO_AREA");
 
+                entity.Property(e => e.MetrosCuadrados)
+                    .HasColumnType("decimal(38, 0)")
+                    .HasColumnName("METROS_CUADRADOS");
+
                 entity.HasOne(d => d.IdDepartamentoNavigation)
                     .WithMany(p => p.AreasDepartamentos)
                     .HasForeignKey(d => d.IdDepartamento)

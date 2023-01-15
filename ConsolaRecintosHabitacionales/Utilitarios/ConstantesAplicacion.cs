@@ -47,5 +47,11 @@ namespace Utilitarios
         #region Ciudades
         public const string padreCiudades = "ECUADR";
         #endregion
+
+        #region Tipo Areas
+        public const string padreTipoAreas = "TIPAREAS";
+        #endregion
+
+        public const string mensajeSesionCaducada = "?sesionCaducada=Tu sesión ha caducado";
     }
 }
