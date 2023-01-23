@@ -329,14 +329,12 @@ namespace APICondominios.Controllers
             try
             {
                 List<Catalogo> listCatalago = await _CatalogoConsultas.GetCatalogoByName(nameCatalogo);
-                if (listCatalago == null)
-                {
+                if (listCatalago == null)                
                     return NotFound(MensajesRespuesta.sinResultados());
-                }
-                if (listCatalago.Count() == 0)
-                {
+                
+                if (listCatalago.Count() == 0)                
                     return NotFound(MensajesRespuesta.sinResultados());
-                }
+                
                 List<CatalogoDTOCompleto> listCatalogoDTO = _mapper.Map<List<CatalogoDTOCompleto>>(listCatalago);
 
                 listCatalogoDTO = listCatalogoDTO.OrderBy(x => x.Nombrecatalogo).ToList();
@@ -349,6 +347,31 @@ namespace APICondominios.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
+
+         [HttpGet("GetCatalogoByNameExact")]
+        public async Task<ActionResult<List<CatalogoDTOCompleto>>> GetCatalogoByNameExact(string nameCatalogo)
+        {
+            try
+            {
+                Catalogo objRepositorio = await _CatalogoConsultas.GetCatalogoByNameExact(nameCatalogo);
+                if (objRepositorio == null)                
+                    return NotFound(MensajesRespuesta.sinResultados());
+                
+              
+                
+                CatalogoDTOCompleto objDTO = _mapper.Map<CatalogoDTOCompleto>(objRepositorio);
+
+                return Ok(objDTO);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+
+
         #endregion
 
         #region get by Codigo

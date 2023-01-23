@@ -77,10 +77,11 @@ namespace RecintosHabitacionales.Controllers
             {
                 //Añadir un campo para celular y  otro para telefono
                 objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
-                ObjetoBusquedaPersona objBusquedaConjuntos = new ObjetoBusquedaPersona();
-                objBusquedaConjuntos.IdentificacionPersona = objDTO.IdentificacionPersona;
 
-                HttpResponseMessage respuestaDuplicados = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarPersonaAvanzado, HttpMethod.Get, objBusquedaConjuntos);
+                ObjetoBusquedaPersona objBusqueda = new ObjetoBusquedaPersona();
+                objBusqueda.IdentificacionPersona = objDTO.IdentificacionPersona;
+
+                HttpResponseMessage respuestaDuplicados = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarPersonaAvanzado, HttpMethod.Get, objBusqueda);
 
                 var listaResultado = await LeerRespuestas<List<PersonaDTOCompleto>>.procesarRespuestasConsultas(respuestaDuplicados);
 
@@ -91,8 +92,6 @@ namespace RecintosHabitacionales.Controllers
                 if (listaResultado.Count() == 0)
                 {
                     HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI, HttpMethod.Post, objDTO);
-
-
 
                     if (respuesta.IsSuccessStatusCode)
                     {
@@ -255,7 +254,6 @@ namespace RecintosHabitacionales.Controllers
                     objPersonaConjunto.IdConjunto = objUsuarioSesion.IdConjuntoDefault;
 
                     ViewData["listaTipoPersonas"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoPersona, "IdCatalogo", "Nombrecatalogo");
-
 
                     ViewData["listaConjuntos"] = objSelectListaConjunto;
 

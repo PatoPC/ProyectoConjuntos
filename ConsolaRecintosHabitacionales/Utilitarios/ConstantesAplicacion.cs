@@ -42,6 +42,8 @@ namespace Utilitarios
         public const string padrePermisos = "TPPMS";
         public const string padrePaginasRoles = "HOMEINI";
         public const string padreTipoPersona = "tipPerso";
+        public const string tipoPersonaCondomino = "opcInqui";
+        public const string tipoPersonaPropietario = "mdueño";
         #endregion
 
         #region Ciudades
@@ -53,5 +55,7 @@ namespace Utilitarios
         #endregion
 
         public const string mensajeSesionCaducada = "?sesionCaducada=Tu sesión ha caducado";
+
+        public const string rutaArchivosLectura = @"ArchivosConjuntos\";
     }
 }

@@ -38,15 +38,23 @@ namespace RepositorioConjuntos.Implementacion
             }
         }
 
-        public void AddRange(T obj)
+        public async Task<(bool estado, string mensajeError)> saveRangeConjunto(List<Conjunto> listaConjuntos)
         {
             try
             {
-                _context.AddRangeAsync(obj);
-            }
-            catch (Exception exValidation)
-            {
+                await _context.AddRangeAsync(listaConjuntos);
 
+                var created = await _context.SaveChangesAsync();
+
+                return (created > 0, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                string mensajeError = "";
+                if (ex.InnerException != null)
+                    mensajeError = ex.InnerException.Message;
+
+                return (false, mensajeError);
             }
         }
 
@@ -62,16 +70,96 @@ namespace RepositorioConjuntos.Implementacion
 
             }
         }
+        //public void DeleteRango(List<AreasDepartamento> lista)
+        //{
+        //    _context.RemoveRange(lista);
+        //}
 
         public void Delete(T obj)
         {
             _context.Remove(obj);
         }
-
-        public void DeleteRango(List<AreasDepartamento> lista)
+        public async Task<(bool estado, string mensajeError)> DeleteRange(List<Conjunto> lista)
         {
-            _context.RemoveRange(lista);
+            try
+            {
+                _context.RemoveRange(lista);
+
+                var created = await _context.SaveChangesAsync();
+
+                return (created > 0, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                string mensajeError = "";
+                if (ex.InnerException != null)
+                    mensajeError = ex.InnerException.Message;
+
+                return (false, mensajeError);
+            }
         }
+        
+
+        public async Task<(bool estado, string mensajeError)> DeleteRange(List<Torre> lista)
+        {
+            try
+            {
+                _context.RemoveRange(lista);
+
+                var created = await _context.SaveChangesAsync();
+
+                return (created > 0, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                string mensajeError = "";
+                if (ex.InnerException != null)
+                    mensajeError = ex.InnerException.Message;
+
+                return (false, mensajeError);
+            }
+        }
+
+        public async Task<(bool estado, string mensajeError)> DeleteRange(List<Departamento> lista)
+        {
+            try
+            {
+                _context.RemoveRange(lista);
+
+                var created = await _context.SaveChangesAsync();
+
+                return (created > 0, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                string mensajeError = "";
+                if (ex.InnerException != null)
+                    mensajeError = ex.InnerException.Message;
+
+                return (false, mensajeError);
+            }
+        }
+
+        public async Task<(bool estado, string mensajeError)> DeleteRange(List<AreasDepartamento> lista)
+        {
+            try
+            {
+                _context.RemoveRange(lista);
+
+                var created = await _context.SaveChangesAsync();
+
+                return (created > 0, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                string mensajeError = "";
+                if (ex.InnerException != null)
+                    mensajeError = ex.InnerException.Message;
+
+                return (false, mensajeError);
+            }
+        }
+
 
         public async Task<(bool estado, string mensajeError)> save()
         {

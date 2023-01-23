@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTOs.Torre;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,8 @@ namespace DTOs.Conjunto
         public string? TelefonoConjunto { get; set; } 
         public string? MailConjunto { get; set; } 
         public string? UsuarioCreacion { get; set; }
+        public DateTime? FechaCreacion { get; set; }
+        public List<TorreDTOCrear>? Torres { get; set; }
       
     }
 }

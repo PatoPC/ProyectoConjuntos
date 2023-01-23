@@ -96,6 +96,20 @@ namespace RepositorioCatalogos.Implementacion
             return default;
         }
 
+        public async Task<Catalogo> GetCatalogoByNameExact(string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                Catalogo objRepositorio = await _context.Catalogos.Where(c => c.NombreCatalogo.Trim().ToUpper() == name.Trim().ToUpper()).FirstOrDefaultAsync();
+
+                //Catalogo objRepositorio = await _context.Catalogos.Where(c => FuncionesUtiles.quitarTildes(c.NombreCatalogo).Trim().ToUpper()==FuncionesUtiles.quitarTildes(name).Trim().ToUpper()).FirstOrDefaultAsync();
+
+                return objRepositorio;
+            }
+
+            return default;
+        }
+
       
 
         #endregion

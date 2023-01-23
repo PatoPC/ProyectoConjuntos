@@ -27,6 +27,7 @@ builder.Services.AddMvc()
 builder.Services.AddSession();
 
 builder.Services.AddScoped(typeof(ConjuntoDTOCrear));
+builder.Services.AddScoped(typeof(List<ConjuntoDTOCrear>));
 builder.Services.AddScoped(typeof(ConjuntoDTOCompleto));
 builder.Services.AddScoped(typeof(ResultadoBusquedaConjuntos));
 builder.Services.AddScoped(typeof(BusquedaConjuntos));
@@ -58,6 +59,7 @@ builder.Services.AddScoped(typeof(UsuarioDTOCompleto));
 builder.Services.AddScoped(typeof(UsuarioDTOCrear));
 builder.Services.AddScoped(typeof(UsuarioDTOEditar));
 builder.Services.AddScoped(typeof(UsuarioConjuntoDTO));
+builder.Services.AddScoped(typeof(List<UsuarioConjuntoDTO>));
 builder.Services.AddScoped(typeof(UsuarioResultadoBusquedaDTO));
 builder.Services.AddScoped(typeof(UsuarioCambioContrasena));
 builder.Services.AddScoped(typeof(OlvideMicontrasenaDTO));

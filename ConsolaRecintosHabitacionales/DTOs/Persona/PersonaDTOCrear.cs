@@ -8,7 +8,7 @@ namespace DTOs.Persona
 {
     public class PersonaDTOCrear
     {
-        public Guid IdTipoIdentificacion { get; set; }
+        public Guid? IdTipoIdentificacion { get; set; }        
         public string NombresPersona { get; set; } = null!;
         public string? ApellidosPersona { get; set; }
         public string IdentificacionPersona { get; set; } = null!;
@@ -17,5 +17,12 @@ namespace DTOs.Persona
         public string? EmailPersona { get; set; }
         public string? ObservacionPersona { get; set; }       
         public string? UsuarioCreacion { get; set; } = null!;
+        public DateTime? FechaCreacion { get; set; } = null!;
+
+        //Para la creacion con archivo
+        public string RUC { get; set; } = null!;
+        public string? Torre { get; set; } = null;
+        public string? Departamento { get; set; } = null;
+        //Fin
     }
 }

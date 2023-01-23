@@ -17,6 +17,7 @@ namespace RepositorioGestionUsuarios.Interface
         public void Delete(T obj);
         public void DeleteRange(List<UsuarioConjunto> listaUsuariosConjuntos);
         public Task<(bool estado, string mensajeError)> save();
+        public Task<(bool estado, string mensajeError)> saveRangeUsuarioConjunto(List<UsuarioConjunto> listaUsuariosConjuntos);
         #endregion
     }
 }

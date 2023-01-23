@@ -98,6 +98,31 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status406NotAcceptable);
         } // end Create Usuario
 
+        [HttpPost("CreateUsuarioConjuntoLista")]
+        public async Task<IActionResult> CreateUsuarioConjuntoLista([FromBody] List<UsuarioConjuntoDTO> listaObjUsuarioDTO)
+        {
+            try
+            {
+                if (listaObjUsuarioDTO == null)
+                    return BadRequest();
+
+                List<UsuarioConjunto> listaObjUsuario = _mapper.Map<List<UsuarioConjunto>>(listaObjUsuarioDTO);
+
+                var result = await _CRUDRepositoryUsuarioConjunto.saveRangeUsuarioConjunto(listaObjUsuario);
+
+                if (result.estado)                
+                    return Ok();                
+                else                
+                    await guardarLogs(JsonConvert.SerializeObject(listaObjUsuarioDTO), result.mensajeError);
+                
+            }
+            catch (Exception ex)
+            {
+                await guardarLogs(JsonConvert.SerializeObject(listaObjUsuarioDTO), ex.ToString());
+            }
+            return StatusCode(StatusCodes.Status406NotAcceptable);
+        } // end Create Usuario
+
 
 
         [HttpPost("Edit")]

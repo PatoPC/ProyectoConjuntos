@@ -506,3 +506,96 @@ function consultarDesdeAPIControlador(idSelectPadre, idSelectHijo, controlador, 
 };
 
 
+/////////////////////////////////////////////////////ARVHICOS//////////////////////////////////
+function recuperNombreArchivoInputFile(inputFile, textoNombreArchivo, idLinkArchivo) {
+    let inputFileElement = document.getElementById(inputFile)
+    let divTextoNombreArchivo = document.getElementById(textoNombreArchivo)
+    let tipoArchivo = inputFileElement.files[0].type;
+
+    let divImagen
+
+    console.log("tipoArchivo: " + tipoArchivo)
+
+    switch (tipoArchivo) {
+
+        case 'application/pdf':
+            divImagen = divConIconoPDF('/media/svg/files/pdf.svg')
+            break;
+        case 'image/png':
+            divImagen = divConIconoPDF('/media/svg/files/png.svg')
+            break;
+        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            divImagen = divConIconoPDF('/media/svg/files/icons8-ms-excel.svg')
+            break;
+        case 'image/jpeg':
+        case 'image/jpg':
+            divImagen = divConIconoPDF('/media/svg/files/jpg.svg')
+            break;
+
+        default:
+    }
+
+    if (divImagen != undefined) {
+
+        let linkVerDocumento = document.getElementById(idLinkArchivo)
+
+        if (linkVerDocumento != undefined)
+            linkVerDocumento.remove()
+
+
+        let spanTextoInput = "spanTextoInput"
+        divTextoNombreArchivo.innerHTML = "<b>Nombre:</b> " + inputFileElement.files[0].name;
+
+        divTextoNombreArchivo.style.backgroundColor = "#f5f8fa";
+        let tamanoArchivo = parseFloat(inputFileElement.files[0].size) / parseFloat(1000);
+
+        let tamanoArchivoMB = tamanoArchivo / parseFloat(1000);
+
+        divTextoNombreArchivo.style.display = "block";
+
+        var spanCerrar = document.createElement("SPAN");
+        spanCerrar.setAttribute("class", "dropzone-delete");
+        spanCerrar.setAttribute("onclick", "eliminarArchivoInput('" + inputFile + "','" + textoNombreArchivo + "','" + inputFile + "')");
+        spanCerrar.setAttribute("id", "spanTextoInput");
+
+        var iconoCerrar = document.createElement("i");
+        iconoCerrar.setAttribute("class", "bi bi-x fs-1");
+
+        spanCerrar.appendChild(iconoCerrar)
+
+        var spanTamanio = document.createElement("div");
+        spanTamanio.innerHTML = "<b>Tamaño:</b> " + tamanoArchivoMB + " <b>MB</b>"
+
+        console.log(tamanoArchivo)
+
+        divTextoNombreArchivo.appendChild(spanTamanio)
+        divTextoNombreArchivo.appendChild(divImagen)
+
+        divTextoNombreArchivo.appendChild(spanCerrar)
+    }
+    else {
+        Swal.fire({
+            title: 'Advertencia',
+            text: "Formato de archivo no permitido.",
+            icon: 'info',
+        })
+    }
+}
+
+//Icono pdf
+// /assets/media/svg/files/pdf.svg
+// /assets/media/svg/files/jpg.svg
+// /assets/media/svg/files/png.svg
+
+function divConIconoPDF(urlArchivo) {
+    var divImagenIcono = document.createElement("DIV");
+    divImagenIcono.setAttribute("class", "symbol symbol-60px mb-5");
+
+    var imagenSVG = document.createElement("IMG");
+    imagenSVG.setAttribute("src", urlArchivo);
+
+    divImagenIcono.appendChild(imagenSVG);
+
+    return divImagenIcono
+}
+

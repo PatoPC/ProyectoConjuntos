@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DTOs.Departamento;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +20,8 @@ namespace DTOs.Torre
         public Guid? IdConjunto { get; set; }
         public string NombreTorres { get; set; } = null!;      
         public string UsuarioCreacion { get; set; } = null!;
+        public DateTime? FechaCreacion { get; set; }
+        public DateTime? FechaModificacion { get; set; }
+        public List<DepartamentoDTOCrear>? Departamentos { get; set; }
     }
 }

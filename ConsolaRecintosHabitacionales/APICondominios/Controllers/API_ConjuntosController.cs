@@ -15,16 +15,18 @@ namespace APICondominios.Controllers
     public class API_ConjuntosController : ControllerBase
     {
         private readonly IManageConjuntosCRUD<Conjunto> _CRUD_Conjuntos;
+        private readonly IManageConjuntosCRUD<List<Conjunto>> _CRUD_ListaConjuntos;
         private readonly IManageConjuntos _Conjuntos;
         private readonly IMapper _mapper;
         private readonly IManageLogError _logError;
 
-        public API_ConjuntosController(IMapper mapper, IManageConjuntosCRUD<Conjunto> cRUD_Condominio, IManageConjuntos condominio, IManageLogError logError)
+        public API_ConjuntosController(IMapper mapper, IManageConjuntosCRUD<Conjunto> cRUD_Condominio, IManageConjuntos condominio, IManageLogError logError, IManageConjuntosCRUD<List<Conjunto>> cRUD_ListaConjuntos)
         {
             _mapper = mapper;
             _CRUD_Conjuntos = cRUD_Condominio;
             _Conjuntos = condominio;
             _logError = logError;
+            _CRUD_ListaConjuntos = cRUD_ListaConjuntos;
         }
 
         [HttpGet]
@@ -60,10 +62,8 @@ namespace APICondominios.Controllers
         {
             try
             {
-                if (objDTO == null)
-                {
-                    return BadRequest(MensajesRespuesta.noSePermiteObjNulos());
-                }
+                if (objDTO == null)                
+                    return BadRequest(MensajesRespuesta.noSePermiteObjNulos());                
 
                 Conjunto objRepositorio = _mapper.Map<Conjunto>(objDTO);
                 _CRUD_Conjuntos.Add(objRepositorio);
@@ -76,10 +76,9 @@ namespace APICondominios.Controllers
 
                     return CreatedAtRoute("GetConjuntoByID", new { id = objCatalogoResult.IdConjunto }, objCatalogoResult);
                 }
-                else
-                {
+                else                
                     await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
-                }
+                
             }
             catch (Exception ExValidation)
             {
@@ -87,6 +86,38 @@ namespace APICondominios.Controllers
             }
             return BadRequest(MensajesRespuesta.guardarError());
         }
+
+        [HttpPost("CrearListaConjuntos")]
+        public async Task<IActionResult> CrearListaConjuntos([FromBody] List<ConjuntoDTOCrear> objDTO)
+        {
+            try
+            {
+                if (objDTO == null)                
+                    return BadRequest(MensajesRespuesta.noSePermiteObjNulos());
+                
+
+                List<Conjunto> objRepositorio = _mapper.Map<List<Conjunto>>(objDTO);
+
+                var result = await _CRUD_ListaConjuntos.saveRangeConjunto(objRepositorio);
+
+                if (result.estado)
+                {
+                    List<ConjuntoDTOCompleto> objCatalogoResult = _mapper.Map<List<ConjuntoDTOCompleto>>(objRepositorio);
+
+                    return Ok(objCatalogoResult);
+                }
+                else                
+                    await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
+
+            }
+            catch (Exception ExValidation)
+            {
+                await guardarLogs(JsonConvert.SerializeObject(objDTO), ExValidation.ToString());
+            }
+
+            return BadRequest(MensajesRespuesta.guardarError());
+        }
+
 
 
         [HttpPost("Editar")]
@@ -128,6 +159,27 @@ namespace APICondominios.Controllers
             };
 
             Conjunto objRepositorio = await _Conjuntos.obtenerPorIDConjuntos(id);
+
+            List<Torre> listaTorres = objRepositorio.Torres.ToList();
+
+            foreach (var torre in listaTorres)
+            {
+                try
+                {
+                    foreach (var departamento in torre.Departamentos.Where(x => x.AreasDepartamentos.Count() > 0))
+                    {
+                        var resultadoAreasDepartamentos = await _CRUD_Conjuntos.DeleteRange(departamento.AreasDepartamentos.ToList());
+                    }
+                    var resultadoDepartamentos = await _CRUD_Conjuntos.DeleteRange(torre.Departamentos.ToList());
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            var resultadoTorre = await _CRUD_Conjuntos.DeleteRange(objRepositorio.Torres.ToList());
+
 
             _CRUD_Conjuntos.Delete(objRepositorio);
             var result = await _CRUD_Conjuntos.save();

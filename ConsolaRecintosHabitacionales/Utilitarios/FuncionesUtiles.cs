@@ -1,5 +1,6 @@
 ﻿using DTOs.Select;
 using DTOs.Usuarios;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -178,6 +179,48 @@ namespace Utilitarios
             }
         }
 
+        public static async Task<string> recuperarBytes(string rutaCompleta, IFormFile imagenFile)
+        {
+            using (Stream inputStream = new FileStream(rutaCompleta, FileMode.Create))
+            {
+                await imagenFile.CopyToAsync(inputStream);
 
+                byte[] array = new byte[inputStream.Length];
+                inputStream.Seek(0, SeekOrigin.Begin);
+                inputStream.Read(array, 0, array.Length);
+            }
+
+            return rutaCompleta;
+        }
+
+        public static void validarRuta(string ruta)
+        {
+            if (!Directory.Exists(ruta))
+            {
+                Directory.CreateDirectory(ruta);
+                Console.WriteLine("Se creo " + ruta);
+            }
+            else
+            {
+                Console.WriteLine("Ya existe");
+            }
+
+        }
+
+        public static string quitarTildes(string texto)
+        {
+            try
+            {
+                string sinTildes = texto.Normalize(NormalizationForm.FormD).Replace("\u0301", string.Empty);
+
+                return sinTildes;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return texto;
+        }
     }
 }

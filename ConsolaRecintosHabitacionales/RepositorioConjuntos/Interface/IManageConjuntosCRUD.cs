@@ -11,10 +11,15 @@ namespace RepositorioConjuntos.Interface
     {
         #region CRUD
         public void Add(T obj);
-        public void AddRange(T obj);
+        public Task<(bool estado, string mensajeError)> saveRangeConjunto(List<Conjunto> listaConjuntos);
+        
         public void Edit(T obj);
         public void Delete(T obj);
-        public void DeleteRango(List<AreasDepartamento> lista);
+        //public void DeleteRango(List<AreasDepartamento> lista);
+        public Task<(bool estado, string mensajeError)> DeleteRange(List<Conjunto> lista);
+        public Task<(bool estado, string mensajeError)> DeleteRange(List<Torre> lista);
+        public Task<(bool estado, string mensajeError)> DeleteRange(List<Departamento> lista);
+        public Task<(bool estado, string mensajeError)> DeleteRange(List<AreasDepartamento> lista);
         public Task<(bool estado, string mensajeError)> save();
         #endregion
 

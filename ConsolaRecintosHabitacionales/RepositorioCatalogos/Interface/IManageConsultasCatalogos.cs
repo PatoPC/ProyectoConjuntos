@@ -17,6 +17,7 @@ namespace RepositorioCatalogos.Interface
         public Task<List<Catalogo>> GetAllCatalogos();
         public Task<List<Catalogo>> GetCatalogoByNameIdConjunto(string name, Guid idConjunto);
         public Task<List<Catalogo>> GetCatalogoByName(string name);
+        public Task<Catalogo> GetCatalogoByNameExact(string name);
         public Task<Catalogo> GetCatalogoByCodeIDEmpresa(string code, Guid? idConjunto);
         public Task<List<Catalogo>> GetCatalogsChildsByIDFather(Guid idCodigoPadreCatalgo);
         public Task<List<Catalogo>> GetChildByParentCodeIDEmpresa(string code, Guid idConjunto);

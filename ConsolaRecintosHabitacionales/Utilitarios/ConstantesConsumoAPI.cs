@@ -11,6 +11,7 @@ namespace Utilitarios
 
         #region Conjuntos
         public const string crearConjuto = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/";
+        public const string crearListaConjutos = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/CrearListaConjuntos";
         public const string buscarConjuntosAvanzado = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/ObtenerConjutosAvanzado";
         public const string buscarConjuntosPorID = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/";
         public const string EditarConjuntosPorID = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Editar?id=";
@@ -60,6 +61,7 @@ namespace Utilitarios
         public const string getEditCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/Edit?idCatalogo=";
         public const string getNombreCatalogoIdConjuntos = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogoByNameIdConjunto?nameCatalogo=";
         public const string getNombreCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogoByName?nameCatalogo=";
+        public const string getNombreExactoCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogoByNameExact?nameCatalogo=";
         public const string getCodigoCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetCatalogoByCodeIDConjunto?codigoCatalgo=";
         public const string obtenerCatalogoPorIDConjuntos = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetAllCatalogosByIDConjunto?idEmpresa=";
         public const string obtenerTodosLosCatalogo = ConstantesAplicacion.pathAPI + "/api/Catalogo/GetAllCatalogosWithOutConjunto";
@@ -71,6 +73,7 @@ namespace Utilitarios
         public const string getLogin = ConstantesAplicacion.pathAPI + "/api/Usuario/LoginUsuario?";
         public const string getCreateUsuario = ConstantesAplicacion.pathAPI + "/api/Usuario/Create";
         public const string getCreateUsuarioConjunto = ConstantesAplicacion.pathAPI + "/api/Usuario/CreateUsuarioConjunto";
+        public const string getCreateUsuarioConjuntoLista = ConstantesAplicacion.pathAPI + "/api/Usuario/CreateUsuarioConjuntoLista";
         public const string getEditUsuario = ConstantesAplicacion.pathAPI + "/api/Usuario/Edit?IdUsuario=";
         public const string getEditarUsuarioReingreso = ConstantesAplicacion.pathAPI + "/api/Usuario/EditarRecontratar?IdUsuario=";
         public const string getUsuarioByID = ConstantesAplicacion.pathAPI + "/api/Usuario/";

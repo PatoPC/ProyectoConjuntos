@@ -72,8 +72,8 @@ namespace APICondominios.Controllers
 
                 List<AreasDepartamento> AreasDepartamentos = objRepository.AreasDepartamentos.ToList();
 
-                _CRUD_AreaDepartamento.DeleteRango(AreasDepartamentos);
-                var resultadoAreas = await _CRUD_AreaDepartamento.save();
+                var resultadoAreas = await _CRUD_AreaDepartamento.DeleteRange(AreasDepartamentos);
+                //var resultadoAreas = await _CRUD_AreaDepartamento.save();
 
                 _mapper.Map(objDTO, objRepository);
 
@@ -107,8 +107,8 @@ namespace APICondominios.Controllers
 
             List<AreasDepartamento> AreasDepartamentos = objRepositorio.AreasDepartamentos.ToList();
 
-            _CRUD_AreaDepartamento.DeleteRango(AreasDepartamentos);
-            var resultadoAreas = await _CRUD_AreaDepartamento.save();
+            var resultadoAreas = await _CRUD_AreaDepartamento.DeleteRange(AreasDepartamentos);
+            //var resultadoAreas = await _CRUD_AreaDepartamento.save();
 
             _CRUD_Departamento.Delete(objRepositorio);
             var result = await _CRUD_Departamento.save();

@@ -90,5 +90,25 @@ namespace RepositorioGestionUsuarios.Implementacion
                 return (false, mensajeError);
             }
         }
+
+        public async Task<(bool estado, string mensajeError)> saveRangeUsuarioConjunto(List<UsuarioConjunto> listaUsuariosConjuntos)
+        {
+            try
+            {
+                await _context.AddRangeAsync(listaUsuariosConjuntos);
+
+                var created = await _context.SaveChangesAsync();
+
+                return (created > 0, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                string mensajeError = "";
+                if (ex.InnerException != null)
+                    mensajeError = ex.InnerException.Message;
+
+                return (false, mensajeError);
+            }
+        }
     }
 }
