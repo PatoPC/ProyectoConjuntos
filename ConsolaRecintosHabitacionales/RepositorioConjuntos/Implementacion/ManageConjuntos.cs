@@ -84,8 +84,6 @@ namespace RepositorioConjuntos.Implementacion
                 if (!string.IsNullOrEmpty(objBusqueda.RucConjunto))
                     conjuntos = conjuntos.Where(x => x.RucConjunto.Trim().Contains(objBusqueda.NombreConjunto.Trim())).ToList();
 
-
-
                 return conjuntos;
             }
             catch (Exception ex)
