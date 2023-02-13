@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RecintosHabitacionales.Models;
 using RecintosHabitacionales.Servicio;
+using RecintosHabitacionales.Servicio.Implementar;
 using RecintosHabitacionales.Servicio.Interface;
 using Utilitarios;
 
@@ -88,19 +89,31 @@ namespace RecintosHabitacionales.Controllers
                 if (listaResultado == null)
                     listaResultado = new List<PersonaDTOCompleto>();
 
-
                 if (listaResultado.Count() == 0)
                 {
-                    HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI, HttpMethod.Post, objDTO);
+                    HttpResponseMessage respuestaCedula = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.CodigoCatalogoCedula, HttpMethod.Get);
+                    var objCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCedula);
 
-                    if (respuesta.IsSuccessStatusCode)
+                    //Recuperar catalogo seleccionado
+                    bool cedulaValida = FuncionesUtiles.validacionNumeroCedula(objDTO.IdentificacionPersona, objCatalogo.NombreCatalogo);
+
+                    if (cedulaValida)
                     {
-                        return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                        HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI, HttpMethod.Post, objDTO);
+
+                        if (respuesta.IsSuccessStatusCode)
+                        {
+                            return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                        }
+                        else
+                        {
+                            MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                            return new JsonResult(objMensajeRespuesta);
+                        } 
                     }
                     else
                     {
-                        MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                        return new JsonResult(objMensajeRespuesta);
+                        return new JsonResult(MensajesRespuesta.errorCedulaIncorrecta());
                     }
                 }
 
@@ -112,7 +125,6 @@ namespace RecintosHabitacionales.Controllers
         #endregion
 
         #region Detalle/Editar Persona
-
         public async Task<ActionResult> DetallePersona(Guid IdPersona)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
@@ -132,7 +144,6 @@ namespace RecintosHabitacionales.Controllers
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
-
         #endregion
 
         #region Editar
@@ -176,7 +187,6 @@ namespace RecintosHabitacionales.Controllers
                     MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
                     return new JsonResult(objMensajeRespuesta);
                 }
-
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");

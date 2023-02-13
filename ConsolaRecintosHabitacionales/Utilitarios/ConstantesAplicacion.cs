@@ -34,6 +34,7 @@ namespace Utilitarios
 
         #region Tipo Identificación
         public const string IdentificacionCedula = "Cédula";
+        public const string CodigoCatalogoCedula = "CDULA";
         public const string IdentificacionPasaporte = "Pasaporte";
         #endregion
 

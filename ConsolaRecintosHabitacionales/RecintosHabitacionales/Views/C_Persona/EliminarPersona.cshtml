@@ -22,8 +22,7 @@
         <div class="row p-lg-10">
 
             <form asp-action="EliminarPersona" id="CrearFormPersona">
-               @Html.HiddenFor(x => x.IdPersona)
-
+                @Html.HiddenFor(x => x.IdPersona)
                 <div class="row">
                     <div class="col-md-6">
                         <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
@@ -44,7 +43,7 @@
                             <div class="row mb-12">
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="TelefonoConjunto" class="control-label">
+                                        <label for="IdTipoIdentificacion" class="control-label">
                                             Tipo Identificación
                                             @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
@@ -69,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
-                                <input asp-for="ApellidosPersona" class="form-control form-control-solid" readonly="readonly" maxlength="60" readonly="readonly" />
+                                <input asp-for="ApellidosPersona" class="form-control form-control-solid" maxlength="60" readonly="readonly" />
                             </div>
                         </div>
 
@@ -83,7 +82,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
-                                <input asp-for="IdentificacionPersona" class="form-control form-control-solid" readonly="readonly" maxlength="80" readonly="readonly" />
+                                <input asp-for="IdentificacionPersona" class="form-control form-control-solid" maxlength="80" readonly="readonly" />
                             </div>
                         </div>
                     </div>
@@ -97,12 +96,29 @@
                                     <div class="fs-6 fw-bold mt-2 mb-3">
                                         <label for="TelefonoPersona" class="control-label">
                                             Teléfono
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="TelefonoPersona" class="form-control form-control-solid" maxlength="50" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="CelularPersona" class="control-label">
+                                            Celular
                                             @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    <input asp-for="TelefonoPersona" class="form-control form-control-solid" type="email" readonly="readonly" maxlength="50" readonly="readonly" />
+                                    <input asp-for="CelularPersona" class="form-control form-control-solid" maxlength="50" readonly="readonly" />
                                 </div>
                             </div>
                         </div>
@@ -119,21 +135,17 @@
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
-                                <input asp-for="EmailPersona" class="form-control form-control-solid" type="email" readonly="readonly" maxlength="50" readonly="readonly" />
+                                <input asp-for="EmailPersona" class="form-control form-control-solid" type="email" maxlength="50" readonly="readonly" />
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-12">
-                        <div class="row mb-12">
-                            <div class="col-xl-12 mt-6">
-                                <div class="fs-6 fw-bold mt-8">
-                                    <label class="control-label" for="ObservacionPersona">
-                                        Dirección:
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
-                                    </label>
-                                </div>
-                            </div>
+                        <div class="fs-6 fw-bold mt-2 mb-3">
+                            <label class="control-label" for="ObservacionPersona">
+                                Dirección:
+                                @await Html.PartialAsync("_AsteriscoObligatorio")
+                            </label>
                         </div>
                         <div class="row mb-12">
                             <div class="col-xl-12 fv-row">
@@ -143,10 +155,69 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-md-6 h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="UsuarioCreacion" class="control-label">
+                                        Usuario Creación
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                @await Html.PartialAsync("_MostrarUsuarioAuditoria", Model.UsuarioCreacion)
+                            </div>
+                        </div>
+
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="FechaCreacion" class="control-label">
+                                        Fecha Creación
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="FechaCreacion" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 d-flex flex-column">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="UsuarioModificacion" class="control-label">
+                                        Usuario Modificación
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                @await Html.PartialAsync("_MostrarUsuarioAuditoria", Model.UsuarioModificacion)
+                            </div>
+                        </div>
+
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="FechaModificacion" class="control-label">
+                                        Fecha Modificación
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="FechaModificacion" class="form-control" readonly="readonly" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
 
                 <div class="row">
                     <div class="col-xl-12 fv-row">
-                    <center>
+                        <center>
                             <button type="button" onclick="sendFormAjaxEliminar(this, 'CrearFormPersona', undefined,undefined,'btn_CrearConjunto')" class="btn btn-danger" id="btn_CrearConjunto">
                                 <span class="indicator-label">
                                     <i class="far fa-save  fs-md-2qx"></i>Eliminar Cambios
@@ -155,7 +226,7 @@
                                     Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                 </span>
                             </button>
-                    </center>
+                        </center>
                     </div>
                 </div>
             </form>

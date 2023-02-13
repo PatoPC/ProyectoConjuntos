@@ -93,7 +93,7 @@ builder.Services.AddHttpClient<ConexionApi>(client =>
     client.BaseAddress = new Uri("http://localhost:5186");
 
     //Producción    
-    //client.BaseAddress = new Uri("http://181.39.23.39/");
+    //client.BaseAddress = new Uri("http://181.39.23.33/");
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
 

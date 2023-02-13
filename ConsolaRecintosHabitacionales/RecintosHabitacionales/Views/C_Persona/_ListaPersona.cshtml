@@ -24,11 +24,7 @@
                         </th>
                         <th>
                             <span class="badge badge-light text-dark">Teléfono</span>
-                        </th>
-                         <th>
-                            <span class="badge badge-light text-dark">Clla</span>
-                        </th>
-
+                        </th>                         
                         <th>
                             <span class="badge badge-light text-dark">Correo</span>
                         </th>
@@ -53,17 +49,17 @@
                                 <td data-title="Nombre">
                                     @item.ApellidosPersona
                                 </td>
-
                                 <td data-title="Identificación">
                                     @item.IdentificacionPersona
                                 </td>
                                 <td data-title="Teléfono">
-                                    @item.TelefonoPersona
+                                    <div>
+                                        @item.TelefonoPersona
+                                    </div>                                    
+                                    <div>
+                                        @item.CelularPersona
+                                    </div>
                                 </td>
-                                 <td data-title="Teléfono">
-                                    
-                                </td>
-
                                 <td data-title="Correo">
                                     @item.EmailPersona
                                 </td>

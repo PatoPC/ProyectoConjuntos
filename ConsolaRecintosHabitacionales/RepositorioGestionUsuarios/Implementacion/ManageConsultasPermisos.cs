@@ -37,8 +37,11 @@ namespace RepositorioGestionUsuarios.Implementacion
         {
             try
             {
-                Rol objRol = await _context.Rols.Where(c => c.IdRol == IdRol).Include(x => x.Modulos)
-                    .ThenInclude(x => x.Menus).ThenInclude(x => x.Permisos).FirstOrDefaultAsync();
+                Rol objRol = await _context.Rols
+                    .Where(c => c.IdRol == IdRol)
+                    .Include(x => x.Modulos)
+                    .ThenInclude(x => x.Menus)
+                    .ThenInclude(x => x.Permisos).FirstOrDefaultAsync();
 
                 return objRol;
             }

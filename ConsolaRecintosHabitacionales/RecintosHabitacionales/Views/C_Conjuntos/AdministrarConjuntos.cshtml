@@ -21,44 +21,39 @@
                             Conjuntos
                         </h3>
                     </div>
-                    <div class="col-md-6">
-                        <div>
-                            <a class="btn btn-success" asp-action="CrearConjuntos">Nuevo</a>
-
-                        </div>
-                         <div>
-                            <a class="btn btn-primary" asp-action="CargarConjuntoDesdeArchivo">Nuevo Desde Archivo</a>
-                    </div>
-                        
-                    </div>
                 </div>
                 <div class="row">
-                   
-                </div>
-
-            </div>
-        </div>
-        <div class="card-body border-top">
-            <div class="col-md-12">
-                <div class="row">
-                    <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
-                    <div class="col-md-2">
-                        <input asp-for="NombreConjunto" type="text" class="form-control form-control-solid" placeholder="Nombre" />
+                    <div class="col-md-4">
+                        <a class="btn btn-success" asp-action="CrearConjuntos">Nuevo</a>
                     </div>
-                    <div class="col-md-2">
-                        <input asp-for="RucConjunto" type="text" class="form-control form-control-solid" placeholder="RUC" />
+                    <div class="col-md-8">
+                        <a class="btn btn-primary" asp-action="CargarConjuntoDesdeArchivo">Nuevo Desde Archivo</a>
                     </div>
-                </div>
-            </div>
+                </div>           
         </div>
+    </div>
 
-        <div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Buscar</button>
+    <div class="card-body border-top">
+        <div class="col-md-12">
+            <div class="row">
+                <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
+                <div class="col-md-2">
+                    <input asp-for="NombreConjunto" type="text" class="form-control form-control-solid" placeholder="Nombre" />
+                </div>
+                <div class="col-md-2">
+                    <input asp-for="RucConjunto" type="text" class="form-control form-control-solid" placeholder="RUC" />
                 </div>
             </div>
         </div>
+    </div>
+
+    <div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Buscar</button>
+            </div>
+        </div>
+    </div>
     </div>
     <center><img src="~/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
 

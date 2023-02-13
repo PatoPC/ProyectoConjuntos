@@ -1,0 +1,16 @@
+﻿@model string
+@{
+    Layout = "";
+    string nombreUsuario = "";
+    if (Model.Contains(";"))
+    {
+        string[] datosUsuario = Model.Split(";");
+        nombreUsuario = datosUsuario[1];
+    }
+    else
+    {
+        nombreUsuario = Model;
+    }
+}
+
+<input class="form-control" value="@nombreUsuario" readonly="readonly" />

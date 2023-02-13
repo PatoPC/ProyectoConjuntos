@@ -20,7 +20,7 @@ namespace DTOs.Persona
         public DateTime? FechaCreacion { get; set; } = null!;
 
         //Para la creacion con archivo
-        public string RUC { get; set; } = null!;
+        public string? RUC { get; set; } = null!;
         public string? Torre { get; set; } = null;
         public string? Departamento { get; set; } = null;
         //Fin

@@ -19,9 +19,10 @@ namespace APICondominios.Controllers
         private readonly IManageCRUDPermisos<Rol> _manageRol;
         private readonly IManageCRUDPermisos<Modulo> _manageModulo;
         private readonly IManageCRUDPermisos<Menu> _manageMenu;
+        private readonly IManageCRUDPermisos<Permiso> _managePermiso;
         private readonly IManageConsultasPermisos _manageRolConsultas;
         private readonly IManageLogError _logError;
-        public API_RolController(IMapper mapper, IManageCRUDPermisos<Rol> manageRol, IManageConsultasPermisos manageRolConsultas, IManageLogError logError, IManageCRUDPermisos<Modulo> manageModulo, IManageCRUDPermisos<Menu> manageMenu)
+        public API_RolController(IMapper mapper, IManageCRUDPermisos<Rol> manageRol, IManageConsultasPermisos manageRolConsultas, IManageLogError logError, IManageCRUDPermisos<Modulo> manageModulo, IManageCRUDPermisos<Menu> manageMenu, IManageCRUDPermisos<Permiso> managePermiso)
         {
             _mapper = mapper;
             _manageRol = manageRol;
@@ -29,6 +30,7 @@ namespace APICondominios.Controllers
             _logError = logError;
             _manageModulo = manageModulo;
             _manageMenu = manageMenu;
+            _managePermiso = managePermiso;
         }
 
         #region CRUD
@@ -83,12 +85,18 @@ namespace APICondominios.Controllers
                         foreach (var menu in modulo.Menus)
                         {
                             _manageMenu.Delete(menu);
+
+                            foreach (var permiso in menu.Permisos)
+                            {
+                                _managePermiso.Delete(permiso);
+                            }
                         }
                         _manageModulo.Delete(modulo);
                     }
 
                     var elminarModulo = await _manageModulo.save();
                     var elminarMenu = await _manageMenu.save();
+                    var elminarPermiso = await _managePermiso.save();
                 }
                 catch (Exception ex)
                 {
@@ -132,6 +140,28 @@ namespace APICondominios.Controllers
 
                 Rol objDB = await _manageRolConsultas.GetRolByID(idRol);
 
+                try
+                {
+                    foreach (var modulo in objDB.Modulos)
+                    {
+                        foreach (var menu in modulo.Menus)
+                        {                            
+                            foreach (var permiso in menu.Permisos)
+                            {
+                                _managePermiso.Delete(permiso);                                
+                            }
+                            _manageMenu.Delete(menu);                            
+                        }
+                        _manageModulo.Delete(modulo);                        
+                    }
+
+                    var elminarPermiso = await _managePermiso.save();
+                    //var elminarMenu = await _manageMenu.save();
+                    //var elminarModulo = await _manageModulo.save();
+                }
+                catch (Exception ex)
+                {
+                }
                 _manageRol.Delete(objDB);
                 var result = await _manageRol.save();
                 // se comprueba que se actualizo correctamente

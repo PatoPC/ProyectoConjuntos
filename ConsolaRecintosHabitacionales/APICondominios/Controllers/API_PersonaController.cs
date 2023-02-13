@@ -83,8 +83,6 @@ namespace APICondominios.Controllers
             return BadRequest(MensajesRespuesta.guardarError());
         }
 
-
-
         #region Eliminar
         [HttpPost("Editar")]
         public async Task<IActionResult> Editar(Guid id, PersonaDTOEditar objDTO)
@@ -132,7 +130,6 @@ namespace APICondominios.Controllers
             return BadRequest();
         }
         #endregion
-
 
         #region Tipo Persona Departamento
         [HttpPost("CrearPersonaDepartamento")]
@@ -195,9 +192,6 @@ namespace APICondominios.Controllers
 
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
-
-
-
         #endregion
 
         [HttpGet("ObtenerPersonaAvanzado")]

@@ -63,8 +63,8 @@ namespace Utilitarios
         public static List<ObjetoSelectDropDown> crearListaOpcionesEnBlanco = new()
         {
             new(
-        id: "No se recuperar con el ID",
-        texto: "Error. No recupero información."
+                id: "No se recuperar con el ID",
+                texto: "Error. No recupero información."
                 )
         };
 

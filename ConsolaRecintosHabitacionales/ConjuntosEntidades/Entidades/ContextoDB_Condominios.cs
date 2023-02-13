@@ -36,7 +36,7 @@ namespace ConjuntosEntidades.Entidades
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server=181.39.23.39;database=Condominios;persist security info=True;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer("server=181.39.23.33;database=Condominios;persist security info=True;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
             }
         }
 
@@ -536,6 +536,11 @@ namespace ConjuntosEntidades.Entidades
                     .HasMaxLength(60)
                     .IsUnicode(false)
                     .HasColumnName("APELLIDOS_PERSONA");
+
+                entity.Property(e => e.CelularPersona)
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .HasColumnName("CELULAR_PERSONA");
 
                 entity.Property(e => e.EmailPersona)
                     .HasMaxLength(80)

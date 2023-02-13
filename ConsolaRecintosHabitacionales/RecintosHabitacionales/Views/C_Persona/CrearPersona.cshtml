@@ -21,8 +21,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row p-lg-10">
 
-            <form asp-action="CrearPersona" id="CrearFormPersona">
-               
+            <form asp-action="CrearPersona" id="CrearFormPersona">               
                 <div class="row">
                     <div class="col-md-6">
                         <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
@@ -43,7 +42,7 @@
                             <div class="row mb-12">
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="TelefonoConjunto" class="control-label">
+                                        <label for="IdTipoIdentificacion" class="control-label">
                                             Tipo Identificación
                                             @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
@@ -139,17 +138,13 @@
                             </div>
                         </div>                       
                     </div>
-              
+
                     <div class="col-md-12">
-                        <div class="row mb-12">
-                            <div class="col-xl-12 mt-6">
-                                <div class="fs-6 fw-bold mt-8">
-                                    <label class="control-label" for="ObservacionPersona">
-                                        Dirección:
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
-                                    </label>
-                                </div>
-                            </div>
+                        <div class="fs-6 fw-bold mt-2 mb-3">
+                            <label class="control-label" for="ObservacionPersona">
+                                Dirección:
+                                @await Html.PartialAsync("_AsteriscoObligatorio")
+                            </label>
                         </div>
                         <div class="row mb-12">
                             <div class="col-xl-12 fv-row">

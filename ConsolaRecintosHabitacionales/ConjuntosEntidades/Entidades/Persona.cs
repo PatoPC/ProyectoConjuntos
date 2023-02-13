@@ -22,6 +22,7 @@ namespace ConjuntosEntidades.Entidades
         public DateTime? FechaModificacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
         public string UsuarioModificacion { get; set; } = null!;
+        public string? CelularPersona { get; set; }
 
         public virtual ICollection<TipoPersona> TipoPersonas { get; set; }
     }

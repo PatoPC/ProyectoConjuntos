@@ -200,7 +200,7 @@ namespace APICondominios.Controllers
     
         #region Search
 
-        #region Get Catalogo by ID
+        #region Get Catalogo Por Nivel
         [HttpGet("GetCatalogosByLevel")]
         public async Task<ActionResult<CatalogoDTOCompleto>> GetCatalogosByLevel(int nivelCatalogo)
         {
@@ -248,7 +248,7 @@ namespace APICondominios.Controllers
         #endregion
 
 
-        #region Get All
+        #region Get All GetAllCatalogosByIDConjunto
         [HttpGet("GetAllCatalogosByIDConjunto")]
         public async Task<ActionResult<List<CatalogoDTOResultadoBusqueda>>> GetAllCatalogosByIDConjunto(Guid idEmpresa)
         {

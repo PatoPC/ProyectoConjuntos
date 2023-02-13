@@ -33,6 +33,7 @@ namespace Utilitarios
         public const string mensajeErrorCambioContrasena = "Ocurrió un error al intentar cambiar su contraseña, por favor contáctese con su departamento de TI.";
         public const string mensajeEnvioCorreoRecuperacionClave = "Se ha enviado una nueva contraseña a su correo electrónico";
         public const string mensajeRecuperacionContraseñaSinCamposRequeridos = "¡Por favor ingresa uno de los datos requeridos para la recuperación de tu contraseña ¡";
+        private const string mensajeErrorCedulaIncorrecto = "El Número de cédula ingresado es incorrecto o no valido, por favor verifique e intente nuevamente.'";
 
         public MensajesRespuesta(string mensaje, bool bandera, string state, string icon, string urlRetorno)
         {
@@ -166,5 +167,9 @@ namespace Utilitarios
             return new MensajesRespuesta(mensajeError, false, "¡error!", icono, gifAnimado);
         }
 
+        public static MensajesRespuesta errorCedulaIncorrecta()
+        {
+            return new MensajesRespuesta(mensajeErrorCedulaIncorrecto, false, "¡error!", "error");
+        }
     }
 }
