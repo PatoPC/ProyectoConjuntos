@@ -16,7 +16,6 @@ namespace DTOs.Torre
         public DateTime? FechaModificacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
-
         public List<DepartamentoDTOCompleto> Departamentos { get; set; } = null;
     }
 }

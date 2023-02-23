@@ -19,8 +19,6 @@ namespace DTOs.Conjunto
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioCreacion { get; set; } 
         public string? UsuarioModificacion { get; set; }
-
-
         public List<TorreDTOCompleto>? Torres { get; set; }
 
     }

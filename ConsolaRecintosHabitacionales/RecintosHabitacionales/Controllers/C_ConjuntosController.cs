@@ -15,6 +15,7 @@ using DTOs.Persona;
 using System.Collections.Generic;
 using RecintosHabitacionales.Servicio.Implementar;
 using AutoMapper;
+using DTOs.Roles;
 
 namespace RecintosHabitacionales.Controllers
 {
@@ -24,6 +25,7 @@ namespace RecintosHabitacionales.Controllers
         private const string accionActual = "AdministrarConjuntos";
 
         private readonly IServicioConsumoAPI<ConjuntoDTOCrear> _servicioConsumoAPICrear;
+        private readonly IServicioConsumoAPI<UsuarioDTOCrear> UsuarioDTOCrearUsuario;
         private readonly IServicioConsumoAPI<List<ConjuntoDTOCrear>> _servicioConsumoAPICrearLista;
         private readonly IServicioConsumoAPI<UsuarioConjuntoDTO> _servicioConsumoAPIUsuarioConjunto;
         private readonly IServicioConsumoAPI<List<UsuarioConjuntoDTO>> _servicioConsumoAPIUsuarioConjuntoLista;
@@ -40,8 +42,9 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<DepartamentoDTOCrear> _servicioConsumoAPIDepartamento;
 
         private readonly IServicioConsumoAPI<CatalogoDTODropDown> _servicioConsumoAPICatalogos;
+        private readonly IServicioConsumoAPI<CatalogoDTOCrear> _servicioConsumoAPICrearCatalogos;
         private readonly IMapper _mapper;
-        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IServicioConsumoAPI<List<ConjuntoDTOCrear>> servicioConsumoAPICrearLista, IServicioConsumoAPI<List<UsuarioConjuntoDTO>> servicioConsumoAPIUsuarioConjuntoLista, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusquedaPersona, IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrearPersona, IServicioConsumoAPI<TipoPersonaDTO> servicioConsumoAPICrearTipoPersona, IMapper mapper)
+        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IServicioConsumoAPI<List<ConjuntoDTOCrear>> servicioConsumoAPICrearLista, IServicioConsumoAPI<List<UsuarioConjuntoDTO>> servicioConsumoAPIUsuarioConjuntoLista, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusquedaPersona, IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrearPersona, IServicioConsumoAPI<TipoPersonaDTO> servicioConsumoAPICrearTipoPersona, IMapper mapper, IServicioConsumoAPI<CatalogoDTOCrear> servicioConsumoAPICrearCatalogos, IServicioConsumoAPI<UsuarioDTOCrear> usuarioDTOCrearUsuario)
         {
             _servicioConsumoAPICrear = servicioConsumoAPIConjunto;
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
@@ -57,6 +60,8 @@ namespace RecintosHabitacionales.Controllers
             _servicioConsumoAPICrearPersona = servicioConsumoAPICrearPersona;
             _servicioConsumoAPICrearTipoPersona = servicioConsumoAPICrearTipoPersona;
             _mapper = mapper;
+            _servicioConsumoAPICrearCatalogos = servicioConsumoAPICrearCatalogos;
+            UsuarioDTOCrearUsuario = usuarioDTOCrearUsuario;
         }
 
         #region CRUD
@@ -82,7 +87,7 @@ namespace RecintosHabitacionales.Controllers
             if (objUsuarioSesion != null)
             {
                 objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
-                HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.crearConjuto, HttpMethod.Post, objDTO);
+                HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.crearConjunto, HttpMethod.Post, objDTO);
 
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -158,7 +163,6 @@ namespace RecintosHabitacionales.Controllers
         }
         #endregion
 
-
         #region Eliminar Conjuntos
         public async Task<ActionResult> EliminarConjuntos(Guid idConjuntos)
         {
@@ -206,14 +210,13 @@ namespace RecintosHabitacionales.Controllers
         #endregion
 
         #region Crear Desde Archivo
-        public async Task<ActionResult> CargarConjuntoDesdeArchivo()
+        public ActionResult CargarConjuntoDesdeArchivo()
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (objUsuarioSesion != null)
-            {
+            if (objUsuarioSesion != null)            
                 return View();
-            }
+            
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
@@ -225,39 +228,85 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                List<ModeloArchivoConjunto> listaArchivoLeido = await procesarExcelConjuntos();
+                HttpResponseMessage respuestaRol = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getRolPorNombreExacto + ConstantesAplicacion.nombreRolCondominos, HttpMethod.Get);
 
-                List<ConjuntoDTOCrear> listaConjuntos = construirConjuntos(objUsuarioSesion, listaArchivoLeido);
+                var objRol = await LeerRespuestas<RolDTOBusqueda>.procesarRespuestasConsultas(respuestaRol);
 
-                HttpResponseMessage respuesta = await _servicioConsumoAPICrearLista.consumoAPI(ConstantesConsumoAPI.crearListaConjutos, HttpMethod.Post, listaConjuntos);
-
-                if (respuesta.IsSuccessStatusCode)
+                if (objRol != null)
                 {
-                    List<ConjuntoDTOCompleto> ListaObjDTDOCreado = await LeerRespuestas<List<ConjuntoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+                    List<ModeloArchivoConjunto> listaArchivoLeido = await procesarExcelConjuntos(FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion));
 
+                    List<ConjuntoDTOCrear> listaConjuntos = construirConjuntos(objUsuarioSesion, listaArchivoLeido);
 
-                    var listaUsuariosConjuntos = ListaObjDTDOCreado.
-                            Select(x => new UsuarioConjuntoDTO
+                    HttpResponseMessage respuesta = await _servicioConsumoAPICrearLista.consumoAPI(ConstantesConsumoAPI.crearListaConjuntos, HttpMethod.Post, listaConjuntos);
+
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        List<ConjuntoDTOCompleto> ListaObjDTDOCreado = await LeerRespuestas<List<ConjuntoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+
+                        var listaUsuariosConjuntos = ListaObjDTDOCreado.
+                                Select(x => new UsuarioConjuntoDTO
+                                {
+                                    IdUsuario = objUsuarioSesion.IdUsuario,
+                                    IdConjunto = x.IdConjunto,
+                                }).ToList();
+
+                        HttpResponseMessage respuestaConjuntoUsuarios = await _servicioConsumoAPIUsuarioConjuntoLista.consumoAPI(ConstantesConsumoAPI.getCreateUsuarioConjuntoLista, HttpMethod.Post, listaUsuariosConjuntos);
+
+                        List<PersonaDTOCompleto> listaPersonas = await construirPersonaConjuntos(objUsuarioSesion, listaArchivoLeido, ListaObjDTDOCreado);
+
+                        //Crear usuarios
+                        foreach (var objPersona in listaPersonas)
+                        {
+                            UsuarioDTOCrear objDTO = new UsuarioDTOCrear();
+                            objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                            objDTO.Contrasena = FuncionesContrasena.encriptarContrasena(objPersona.IdentificacionPersona);
+
+                            //Encontrar conjunto del usuario 
+                            var listaPersonaCnjunto = listaArchivoLeido
+                                .Where(x =>
+                                x.Numero_Identificacion_Condomino.Trim() == objPersona.IdentificacionPersona.Trim()
+                                || x.Numero_Identificacion_Propietario.Trim() == objPersona.IdentificacionPersona.Trim()
+                                ).ToList();
+
+                            List<UsuarioConjuntoDTO> UsuarioConjuntos = new List<UsuarioConjuntoDTO>();
+
+                            foreach (var datos in listaPersonaCnjunto)
                             {
-                                IdUsuario = objUsuarioSesion.IdUsuario,
-                                IdConjunto = x.IdConjunto,
-                            }).ToList();
+                                ConjuntoDTOCompleto conjuntoTemporal = ListaObjDTDOCreado.Where(x => x.RucConjunto.Trim() == datos.RUC).FirstOrDefault();
 
-                    HttpResponseMessage respuestaConjuntoUsuarios = await _servicioConsumoAPIUsuarioConjuntoLista.consumoAPI(ConstantesConsumoAPI.getCreateUsuarioConjuntoLista, HttpMethod.Post, listaUsuariosConjuntos);
+                                UsuarioConjuntoDTO objConjuntoUsuario = new UsuarioConjuntoDTO();
 
+                                objConjuntoUsuario.IdConjunto = conjuntoTemporal.IdConjunto;
+                                objDTO.IdConjuntoDefault = conjuntoTemporal.IdConjunto;
 
-                    List<PersonaDTOCompleto> listaPersonas = await construirPersonaConjuntos(objUsuarioSesion, listaArchivoLeido, ListaObjDTDOCreado);
+                                UsuarioConjuntos.Add(objConjuntoUsuario);
+                            }
 
+                            if (objRol != null)
+                            {
+                                objDTO.IdRol = objRol.IdRol;
 
+                                HttpResponseMessage respuestaPersona = await UsuarioDTOCrearUsuario.consumoAPI(ConstantesConsumoAPI.getCreateUsuario, HttpMethod.Post, objDTO);
 
-                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuestaConjuntoUsuarios, controladorActual, accionActual));
+                                if (respuestaPersona.IsSuccessStatusCode)
+                                {
+
+                                }
+                            }
+                        }
+
+                        return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuestaConjuntoUsuarios, controladorActual, accionActual));
+                    }
+                    else
+                    {
+                        MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                        return new JsonResult(objMensajeRespuesta);
+                    }
                 }
-                else
-                {
-                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                    return new JsonResult(objMensajeRespuesta);
-                }
-
+                else                
+                    return new JsonResult(MensajesRespuesta.errorNoExisteRol());
+                
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
@@ -385,7 +434,7 @@ namespace RecintosHabitacionales.Controllers
 
         #region ProcesarArchivo
 
-        public async Task<List<ModeloArchivoConjunto>> procesarExcelConjuntos()
+        public async Task<List<ModeloArchivoConjunto>> procesarExcelConjuntos(string usuarioCreacion)
         {
             IFormFileCollection archivosFormulario = Request.Form.Files;
             List<ModeloArchivoConjunto> listaArchivoLeido = new List<ModeloArchivoConjunto>();
@@ -397,7 +446,7 @@ namespace RecintosHabitacionales.Controllers
                 {
                     if (archivo.Length > 0)
                     {
-                        listaArchivoLeido = await LeerArchivoConjunto.procesarArchivoExcel(archivo);
+                        listaArchivoLeido = await LeerArchivoConjunto.procesarArchivoExcel(archivo, _servicioConsumoAPICrearCatalogos, usuarioCreacion);
                     }
                 }
             }
@@ -456,6 +505,53 @@ namespace RecintosHabitacionales.Controllers
                         }).ToList();
 
                     torre.Departamentos = listaDepartamentos;
+
+                    foreach (var departamento in listaDepartamentos)
+                    {
+                        List<AreasDepartamentoDTO> listaAreas = new List<AreasDepartamentoDTO>();
+
+                        try
+                        {
+                            var areasTemporal = listaArchivoLeido
+                                                .Where(y =>
+                                                y.Torre == torre.NombreTorres
+                                                && y.Departamento == departamento.CodigoDepartamento
+                                                && y.listaAreasDepartamentos != null)
+                                                .GroupBy(x =>
+                                                        new
+                                                        { x.Nombre_Condomino, x.Torre, x.Departamento }, (key, group) => group.First()).
+                                                        Select(x =>
+                                                            x.listaAreasDepartamentos
+                                                        );
+
+                            foreach (var item in areasTemporal)
+                            {
+                                var datos = item.Split(';');
+                                foreach (var area in datos)
+                                {
+                                    var datosFinal = area.Split(',');
+                                    AreasDepartamentoDTO objAreas = new AreasDepartamentoDTO();
+
+                                    objAreas.IdTipoArea = Guid.Parse(datosFinal[0]);
+                                    objAreas.MetrosCuadrados = Convert.ToDecimal(datosFinal[1]);
+
+                                    listaAreas.Add(objAreas);
+                                }
+                            }
+
+                        }
+                        catch (Exception exx)
+                        {
+
+                        }
+                        if (listaAreas!=null)
+                        {
+                            if (listaAreas.Count > 0)
+                            {
+                                departamento.AreasDepartamentos = listaAreas;
+                            } 
+                        }
+                    }
                 }
             }
 
@@ -469,8 +565,8 @@ namespace RecintosHabitacionales.Controllers
             List<PersonaDTOCompleto> listaPersonasCompleta = new List<PersonaDTOCompleto>();
 
             //Se filtran todas las opciones de tipo identificacion disponibles en el documento
-            var listaFiltrada = listaArchivoLeido.Select(x => x.Tipo_Identificación_Condomino)
-                                  .Concat(listaArchivoLeido.Select(x => x.Tipo_Identificación_Propietario))
+            var listaFiltrada = listaArchivoLeido.Select(x => x.Tipo_Identificacion_Condomino)
+                                  .Concat(listaArchivoLeido.Select(x => x.Tipo_Identificacion_Propietario))
                                   .Distinct().Where(x => !string.IsNullOrEmpty(x))
                                   .ToList();
 
@@ -484,17 +580,16 @@ namespace RecintosHabitacionales.Controllers
                 listaCatalogos.Add(objCatalogo);
             }
 
-
             List<PersonaDTOCrear> listaPersonasCondominos = listaArchivoLeido.
                          Select(x => new PersonaDTOCrear
                          {
-                             IdTipoIdentificacion = listaCatalogos.Where(y => y.Nombrecatalogo.Trim().ToUpper() == x.Tipo_Identificación_Condomino.Trim().ToUpper()).FirstOrDefault() != null ? listaCatalogos.Where(y => y.Nombrecatalogo.Trim().ToUpper() == x.Tipo_Identificación_Condomino.Trim().ToUpper()).FirstOrDefault().IdCatalogo : null,
+                             IdTipoIdentificacion = listaCatalogos.Where(y => y.Nombrecatalogo.Trim().ToUpper() == x.Tipo_Identificacion_Condomino.Trim().ToUpper()).FirstOrDefault() != null ? listaCatalogos.Where(y => y.Nombrecatalogo.Trim().ToUpper() == x.Tipo_Identificacion_Condomino.Trim().ToUpper()).FirstOrDefault().IdCatalogo : null,
                              NombresPersona = x.Nombre_Condomino,
                              ApellidosPersona = x.Apellido_Condomino,
                              Torre = x.Torre,
-                             IdentificacionPersona = x.Numero_Identificación_Condomino,
+                             IdentificacionPersona = x.Numero_Identificacion_Condomino,
                              TelefonoPersona = x.Telefono_Condomino,
-                             CelularPersona = x.Numero_Identificación_Condomino,
+                             CelularPersona = x.Celular_Condomino,
                              EmailPersona = x.Correo_Condomino,
                              RUC = x.RUC,
                              Departamento = x.Departamento,
@@ -505,15 +600,15 @@ namespace RecintosHabitacionales.Controllers
             List<PersonaDTOCrear> listaPersonasPropietarios = listaArchivoLeido.
                          Select(x => new PersonaDTOCrear
                          {
-                             IdTipoIdentificacion = listaCatalogos.Where(y => y.Nombrecatalogo.Trim().ToUpper() == x.Tipo_Identificación_Propietario.Trim().ToUpper()).FirstOrDefault() != null ? listaCatalogos.Where(y => y.Nombrecatalogo.Trim().ToUpper() == x.Tipo_Identificación_Propietario.Trim().ToUpper()).FirstOrDefault().IdCatalogo : null,
+                             IdTipoIdentificacion = listaCatalogos.Where(y => y.Nombrecatalogo.Trim().ToUpper() == x.Tipo_Identificacion_Propietario.Trim().ToUpper()).FirstOrDefault() != null ? listaCatalogos.Where(y => y.Nombrecatalogo.Trim().ToUpper() == x.Tipo_Identificacion_Propietario.Trim().ToUpper()).FirstOrDefault().IdCatalogo : null,
                              RUC = x.RUC,
                              Departamento = x.Departamento,
                              Torre = x.Torre,
                              NombresPersona = x.Nombre_Propietario,
                              ApellidosPersona = x.Apellido_Propietario,
-                             IdentificacionPersona = x.Numero_Identificación_Propietario,
+                             IdentificacionPersona = x.Numero_Identificacion_Propietario,
                              TelefonoPersona = x.Telefono_Propietario,
-                             CelularPersona = x.Numero_Identificación_Propietario,
+                             CelularPersona = x.Celular_Propietario,
                              EmailPersona = x.Correo_Propietario,
                              UsuarioCreacion = usuarioCreacion,
                              FechaCreacion = DateTime.Now,
@@ -570,11 +665,11 @@ namespace RecintosHabitacionales.Controllers
             {
                 PersonaDTOCompleto objPersonaTemporal = listaPersonasCompleta.Where(x => x.IdentificacionPersona == persona.CelularPersona).FirstOrDefault();
 
-                if (objPersonaTemporal!=null)
+                if (objPersonaTemporal != null)
                 {
                     PersonaDTOConjunto objPersonaConjunto = _mapper.Map<PersonaDTOConjunto>(objPersonaTemporal);
-                    
-                    var departamentoActual = listaConjuntos.Where(x => x.RucConjunto == persona.RUC).FirstOrDefault().Torres.Where(x => x.NombreTorres==persona.Torre).FirstOrDefault().Departamentos.Where(w => w.CodigoDepartamento==persona.Departamento).FirstOrDefault();
+
+                    var departamentoActual = listaConjuntos.Where(x => x.RucConjunto == persona.RUC).FirstOrDefault().Torres.Where(x => x.NombreTorres == persona.Torre).FirstOrDefault().Departamentos.Where(w => w.CodigoDepartamento == persona.Departamento).FirstOrDefault();
 
                     objPersonaConjunto.IdDepartamento = departamentoActual.IdDepartamento;
 
@@ -594,19 +689,19 @@ namespace RecintosHabitacionales.Controllers
                     else
                     {
 
-                    } 
+                    }
                 }
             }
 
-             foreach (var persona in listaPersonasPropietarios)
+            foreach (var persona in listaPersonasPropietarios)
             {
                 PersonaDTOCompleto objPersonaTemporal = listaPersonasCompleta.Where(x => x.IdentificacionPersona == persona.CelularPersona).FirstOrDefault();
 
-                if (objPersonaTemporal!=null)
+                if (objPersonaTemporal != null)
                 {
                     PersonaDTOConjunto objPersonaConjunto = _mapper.Map<PersonaDTOConjunto>(objPersonaTemporal);
-                    
-                    var departamentoActual = listaConjuntos.Where(x => x.RucConjunto == persona.RUC).FirstOrDefault().Torres.Where(x => x.NombreTorres==persona.Torre).FirstOrDefault().Departamentos.Where(w => w.CodigoDepartamento==persona.Departamento).FirstOrDefault();
+
+                    var departamentoActual = listaConjuntos.Where(x => x.RucConjunto == persona.RUC).FirstOrDefault().Torres.Where(x => x.NombreTorres == persona.Torre).FirstOrDefault().Departamentos.Where(w => w.CodigoDepartamento == persona.Departamento).FirstOrDefault();
 
                     objPersonaConjunto.IdDepartamento = departamentoActual.IdDepartamento;
 
@@ -626,12 +721,9 @@ namespace RecintosHabitacionales.Controllers
                     else
                     {
 
-                    } 
+                    }
                 }
             }
-
-
-
 
             return listaPersonasCompleta;
         }

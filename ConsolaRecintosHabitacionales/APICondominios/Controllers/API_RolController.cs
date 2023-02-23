@@ -229,6 +229,30 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
+        [HttpGet("GetRolPorNombreExacto")]
+        public async Task<ActionResult<RolDTOBusqueda>> GetRolPorNombreExacto(string nombreRolExacto)
+        {
+            try
+            {
+                Rol objRepositorio = await _manageRolConsultas.GetRolPorNombreExacto(nombreRolExacto);
+
+                if (objRepositorio == null)
+                    return NotFound(MensajesRespuesta.sinResultados());
+
+
+                RolDTOBusqueda listaDTO = _mapper.Map<RolDTOBusqueda>(objRepositorio);
+
+                return Ok(listaDTO);
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+
+
 
         [HttpGet("{IdRol}", Name = "GetRolByID")]
         public async Task<IActionResult> GetRolByID(Guid IdRol)

@@ -130,6 +130,8 @@ namespace RecintosHabitacionales.Controllers
                 {                    
                     ProveedorDTOCompleto objDTO = await LeerRespuestas<ProveedorDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
+                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+
                     await DatosInciales(objDTO.IdCiudadProveedor);
                     return View(objDTO);
                 }
@@ -311,8 +313,8 @@ namespace RecintosHabitacionales.Controllers
 
             ViewData["listaProvincias"] = objSelectList;
 
+            ViewData["listaTipoIdentificacion"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoIdentificacionProveedor, "IdCatalogo", "Nombrecatalogo");
 
-            
         }
 
     }

@@ -48,7 +48,6 @@ namespace RecintosHabitacionales.Controllers
             if (objUsuarioSesion != null)
                 return View();
 
-
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 

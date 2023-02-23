@@ -12,6 +12,7 @@ namespace RepositorioGestionUsuarios.Interface
         public Task<List<Rol>> GetAllRolsByConjuntos();
         public Task<Rol> GetRolByID(Guid IdRol);
         public Task<List<Rol>> GetRolPorNombre(string nombreRol);
+        public Task<Rol> GetRolPorNombreExacto(string nombreRolExacto);
 
     }
 }

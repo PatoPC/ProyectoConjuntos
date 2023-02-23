@@ -26,6 +26,7 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
         public Guid? IdCiudadProveedor { get; set; }
+        public Guid IdTipoContacto { get; set; }
 
         public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;
         public virtual ICollection<FacturaCompra> FacturaCompras { get; set; }

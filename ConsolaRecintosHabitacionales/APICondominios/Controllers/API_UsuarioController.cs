@@ -82,14 +82,10 @@ namespace APICondominios.Controllers
                 _CRUDRepositoryUsuarioConjunto.Add(objUsuario);
                 var result = await _CRUDRepositoryUsuarioConjunto.save();
 
-                if (result.estado)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    await guardarLogs(JsonConvert.SerializeObject(objUsuarioDTO), result.mensajeError);
-                }
+                if (result.estado)                
+                    return Ok();                
+                else                
+                    await guardarLogs(JsonConvert.SerializeObject(objUsuarioDTO), result.mensajeError);                
             }
             catch (Exception ex)
             {
@@ -187,7 +183,6 @@ namespace APICondominios.Controllers
                     return NoContent();
                 else
                     await guardarLogs(JsonConvert.SerializeObject(objUsuaioRepository), result.mensajeError);
-
 
                 return BadRequest(MensajesRespuesta.guardarError());
             }
@@ -401,7 +396,6 @@ namespace APICondominios.Controllers
         private async Task<UsuarioDTOCompleto> completarDatosUsuario(UsuarioDTOCompleto objDTO)
         {
             List<Conjunto> listaConjuntos = await _Conjuntos.busquedaTodosConjuntos();
-
 
             Persona objPersona = await _Consultas_Persona.obtenerPorIDPersona(objDTO.IdPersona);
 

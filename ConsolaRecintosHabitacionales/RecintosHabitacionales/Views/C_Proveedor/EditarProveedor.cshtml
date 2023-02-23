@@ -70,13 +70,13 @@
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
                                         <label for="NombreProveedor" class="control-label">
-                                            RUC
+                                            Tipo Identificación
                                             @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    <input asp-for="RucProveedor" class="form-control form-control-solid" maxlength="70" required="required" />
+                                    @Html.DropDownList("IdTipoContacto", ViewData["listaTipoIdentificacion"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
                                 </div>
                             </div>
 
@@ -108,15 +108,17 @@
                             <div class="row mb-12">
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label asp-for="TelefonosProveedor" class="control-label">
-                                            Teléfono
+                                        <label for="NombreProveedor" class="control-label">
+                                            RUC
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    <input asp-for="TelefonosProveedor" class="form-control form-control-solid" maxlength="50" required="required" />
+                                    <input asp-for="RucProveedor" class="form-control form-control-solid" maxlength="70" required="required" />
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -132,25 +134,28 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                  
+
                                     @Html.DropDownList("IdCiudadProveedor", ViewData["listaCiudades"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                </div>
+                
+                <div class="row">
                     <div class="col-md-6">
-                        <div class="row mb-12">
-                            <div class="col-xl-4">
-                                <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label asp-for="ContactoProveedor" class="control-label">
-                                        Persona Contacto
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
-                                    </label>
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label asp-for="TelefonosProveedor" class="control-label">
+                                            Teléfono
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-8 fv-row">
-                                <input asp-for="ContactoProveedor" class="form-control form-control-solid" maxlength="50" required="required" />
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="TelefonosProveedor" class="form-control form-control-solid" maxlength="50" required="required" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -172,25 +177,24 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="row mb-12">
-                                <div class="col-xl-4">
-                                    <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label asp-for="SaldoAntProveedor" class="control-label">
-                                            Saldo Anterior
-                                            @await Html.PartialAsync("_AsteriscoObligatorio")
-                                        </label>
-                                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="ContactoProveedor" class="control-label">
+                                        Persona Contacto
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
                                 </div>
-                                <div class="col-xl-8 fv-row">
-                                    <input asp-for="SaldoAntProveedor" class="form-control form-control-solid" maxlength="50" required="required" />
-                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="ContactoProveedor" class="form-control form-control-solid" maxlength="50" required="required" />
                             </div>
                         </div>
                     </div>
-
 
                     <div class="col-md-6">
                         <div class="row mb-12">
@@ -205,10 +209,32 @@
                                     <span class="btn btn btn-color-muted  btn-active-danger fw-bolder px-md-7">No</span>
                                 </label>
                             </div>
-
                         </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        
+                    </div>
 
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label asp-for="SaldoAntProveedor" class="control-label">
+                                        Saldo Anterior
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="SaldoAntProveedor" class="form-control form-control-solid" maxlength="50" required="required" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="col-md-12">
                         <div class="row mb-12">
                             <div class="col-xl-12 mt-6">

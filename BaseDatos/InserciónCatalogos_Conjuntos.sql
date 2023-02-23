@@ -73,6 +73,7 @@ VALUES(
 SELECT ID_USUARIO 
 from Condominios_Permisos.dbo.USUARIO
 where ID_PERSONA = (select ID_PERSONA  from Condominios.dbo.PERSONA WHERE IDENTIFICACION_PERSONA ='2200025787')
+
 SELECT *
 from Condominios_Permisos.dbo.USUARIO_CONJUNTO uc 
 
@@ -94,8 +95,6 @@ from Condominios_Permisos.dbo.USUARIO u
 SELECT *
 FROM Condominios_Permisos.dbo.USUARIO_CONJUNTO
 
-
-
 SELECT ID_CONJUNTO from Condominios.dbo.CONJUNTO WHERE NOMBRE_CONJUNTO ='Condominio'
 
 SELECT * 
@@ -112,5 +111,62 @@ from Condominios_Permisos.dbo.USUARIO
 
 select * 
 from Condominios.dbo.TIPO_PERSONA  
+
+select *
+from Condominios.dbo.CONJUNTO 
+where NOMBRE_CONJUNTO !='Marianas'
+
+select *
+from Condominios.dbo.TORRES  
+where ID_CONJUNTO in (
+select ID_CONJUNTO 
+from Condominios.dbo.CONJUNTO 
+where NOMBRE_CONJUNTO !='Marianas')
+
+SELECT *
+from Condominios.dbo.DEPARTAMENTOS 
+where ID_TORRES in (
+select ID_TORRES
+from Condominios.dbo.TORRES  
+where ID_CONJUNTO in (
+select ID_CONJUNTO 
+from Condominios.dbo.CONJUNTO 
+where NOMBRE_CONJUNTO !='Marianas'))
+
+
+SELECT *
+from Condominios.dbo.AREAS_DEPARTAMENTOS 
+where ID_DEPARTAMENTO in (SELECT ID_DEPARTAMENTO 
+from Condominios.dbo.DEPARTAMENTOS 
+where ID_TORRES in (
+select ID_TORRES
+from Condominios.dbo.TORRES  
+where ID_CONJUNTO in (
+select ID_CONJUNTO 
+from Condominios.dbo.CONJUNTO 
+where NOMBRE_CONJUNTO !='Marianas' )))
+
+
+SELECT *
+from Condominios.dbo.PERSONA 
+where IDENTIFICACION_PERSONA !='2200025787'
+
+SELECT *
+from Condominios_Permisos.dbo.USUARIO u 
+
+SELECT *
+from Condominios_Permisos.dbo.USUARIO_CONJUNTO 
+where ID_CONJUNTO !='06e4199d-41f3-47f0-9c0b-2370f38e730f'
+and ID_CONJUNTO !='ae40db51-0cf4-4e49-8837-72160f50c09a'
+and ID_CONJUNTO != 'f02612fc-da7b-4a20-b37e-2a20edadb5e9'
+
+
+SELECT *
+from Condominios_Permisos.dbo.USUARIO_CONJUNTO 
+where ID_USUARIO ='854A4AD5-2376-4F35-88A4-65AA621A45AD'
+
+
+
+
 
 

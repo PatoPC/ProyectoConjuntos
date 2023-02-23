@@ -34,6 +34,7 @@ namespace Utilitarios
         public const string mensajeEnvioCorreoRecuperacionClave = "Se ha enviado una nueva contraseña a su correo electrónico";
         public const string mensajeRecuperacionContraseñaSinCamposRequeridos = "¡Por favor ingresa uno de los datos requeridos para la recuperación de tu contraseña ¡";
         private const string mensajeErrorCedulaIncorrecto = "El Número de cédula ingresado es incorrecto o no valido, por favor verifique e intente nuevamente.'";
+        private const string mensajeErrorNoExisteRol = "No se econtró el ROL necesiario para crear un condomino '"+ ConstantesAplicacion.nombreRolCondominos + "', por favor cree este Rol e intente nuevamente";
 
         public MensajesRespuesta(string mensaje, bool bandera, string state, string icon, string urlRetorno)
         {
@@ -93,6 +94,10 @@ namespace Utilitarios
 
         }
 
+        public static MensajesRespuesta errorNoExisteRol()
+        {
+            return new MensajesRespuesta(mensajeErrorNoExisteRol, false, "¡error!", "error");
+        }
         public static MensajesRespuesta ReseteoContrasenaNoSellenoCamposRequeridos()
         {
             return new MensajesRespuesta(mensajeRecuperacionContraseñaSinCamposRequeridos, false, "Error!", "error");

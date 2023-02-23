@@ -626,6 +626,8 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("ID_CONJUNTO")
                     .HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.IdTipoContacto).HasColumnName("ID_TIPO_CONTACTO");
+
                 entity.Property(e => e.NombreProveedor)
                     .HasMaxLength(70)
                     .IsUnicode(false)

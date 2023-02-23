@@ -11,6 +11,7 @@ namespace DTOs.Proveedor
     {
         public Guid? IdConjunto { get; set; }
         public Guid? IdCiudadProveedor { get; set; }
+        public Guid? IdTipoContacto { get; set; } = null!;
         public string? NombreProveedor { get; set; } = null!;
         public string? RucProveedor { get; set; } = null!;
         public string? ContactoProveedor { get; set; }

@@ -8,6 +8,7 @@ namespace DTOs.AreasDepartamento
 {
     public class AreasDepartamentoDTO
     {
+        public AreasDepartamentoDTO() { }
         public AreasDepartamentoDTO(Guid? idTipoArea, decimal? metrosCuadrados)
         {
             IdTipoArea = idTipoArea;

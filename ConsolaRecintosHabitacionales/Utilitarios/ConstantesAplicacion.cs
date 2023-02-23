@@ -32,6 +32,10 @@ namespace Utilitarios
         public const string padreTipoIdentificacion = "TIPIDENT";
         #endregion
 
+        #region Códigos Proveedor
+        public const string padreTipoIdentificacionProveedor = "tidenprv";
+        #endregion
+
         #region Tipo Identificación
         public const string IdentificacionCedula = "Cédula";
         public const string CodigoCatalogoCedula = "CDULA";
@@ -58,5 +62,6 @@ namespace Utilitarios
         public const string mensajeSesionCaducada = "?sesionCaducada=Tu sesión ha caducado";
 
         public const string rutaArchivosLectura = @"ArchivosConjuntos\";
+        public const string nombreRolCondominos = "Condomino";
     }
 }

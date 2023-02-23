@@ -10,8 +10,8 @@ namespace Utilitarios
     {
 
         #region Conjuntos
-        public const string crearConjuto = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/";
-        public const string crearListaConjutos = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/CrearListaConjuntos";
+        public const string crearConjunto = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/";
+        public const string crearListaConjuntos = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/CrearListaConjuntos";
         public const string buscarConjuntosAvanzado = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/ObtenerConjutosAvanzado";
         public const string buscarConjuntosPorID = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/";
         public const string EditarConjuntosPorID = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Editar?id=";
@@ -90,9 +90,9 @@ namespace Utilitarios
         public const string getGetRolCreate = ConstantesAplicacion.pathAPI + "/api/Rol/Create";
         public const string getGetRolEditar = ConstantesAplicacion.pathAPI + "/api/Rol/Edit?idRol=";
         public const string getGetRolEliminar = ConstantesAplicacion.pathAPI + "/api/Rol/Delete?idRol=";
-        public const string endPointRolByID = ConstantesAplicacion.pathAPI + "/api/Rol/";
-        public const string getRolPorNombreExacto = ConstantesAplicacion.pathAPI + "/api/Rol/GetRolPorNombre?nombreRol=";
+        public const string endPointRolByID = ConstantesAplicacion.pathAPI + "/api/Rol/";        
         public const string getRolPorNombre = ConstantesAplicacion.pathAPI + "/api/Rol/GetRolPorNombre?nombreRol=";
+        public const string getRolPorNombreExacto = ConstantesAplicacion.pathAPI + "/api/Rol/GetRolPorNombreExacto?nombreRolExacto=";
         #endregion
 
         #region Proveedor

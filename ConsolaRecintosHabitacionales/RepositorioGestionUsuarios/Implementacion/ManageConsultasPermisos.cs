@@ -66,5 +66,23 @@ namespace RepositorioGestionUsuarios.Implementacion
 
             return null;
         }
+        public async Task<Rol> GetRolPorNombreExacto(string nombreRolExacto)
+        {
+            try
+            {
+                Rol objRol = await _context.Rols
+                    .Where(
+                    c => c.NombreRol.ToUpper().Trim() == nombreRolExacto.ToUpper().Trim())
+                    .Include(x => x.Modulos).FirstOrDefaultAsync();
+
+                return objRol;
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return null;
+        }
+
     }
 }
