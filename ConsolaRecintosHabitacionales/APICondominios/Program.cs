@@ -48,6 +48,7 @@ builder.Services.AddScoped<IManageLogError, ManageLogError>();
 builder.Services.AddScoped<IManageConsultasCatalogos, ManageConsultasCatalogos>();
 builder.Services.AddScoped<IManageConsultasPermisos, ManageConsultasPermisos>();
 builder.Services.AddScoped<IManageProveedor, ManageProveedor>();
+builder.Services.AddScoped<IManageConMST, ManageConMST>();
         
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

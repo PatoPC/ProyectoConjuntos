@@ -19,6 +19,7 @@ namespace ConjuntosEntidades.Entidades
         public virtual DbSet<Adeudo> Adeudos { get; set; } = null!;
         public virtual DbSet<AreasDepartamento> AreasDepartamentos { get; set; } = null!;
         public virtual DbSet<Banco> Bancos { get; set; } = null!;
+        public virtual DbSet<ConMst> ConMsts { get; set; } = null!;
         public virtual DbSet<Conjunto> Conjuntos { get; set; } = null!;
         public virtual DbSet<Departamento> Departamentos { get; set; } = null!;
         public virtual DbSet<DetalleContabilidad> DetalleContabilidads { get; set; } = null!;
@@ -129,6 +130,47 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("NOMBRE_BANCOS");
 
                 entity.Property(e => e.StatusBancos).HasColumnName("STATUS_BANCOS");
+            });
+
+            modelBuilder.Entity<ConMst>(entity =>
+            {
+                entity.HasKey(e => e.IdConMst);
+
+                entity.ToTable("CON_MST");
+
+                entity.Property(e => e.IdConMst)
+                    .HasColumnName("ID_CON_MST")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.CuentaCon)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("CUENTA_CON");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.Grupo).HasColumnName("GRUPO");
+
+                entity.Property(e => e.NombreCuenta)
+                    .HasMaxLength(60)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE_CUENTA");
+
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_CREACION");
+
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
             });
 
             modelBuilder.Entity<Conjunto>(entity =>
