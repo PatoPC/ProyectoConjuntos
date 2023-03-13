@@ -42,5 +42,12 @@ namespace RepositorioConjuntos.Implementacion
 
             return listaRepositorio;
         }
+
+        public async Task<List<ConMst>> obtenerTodos()
+        {
+            List<ConMst> listaRepositorio = await _context.ConMsts.ToListAsync();
+
+            return listaRepositorio;
+        }
     }
 }

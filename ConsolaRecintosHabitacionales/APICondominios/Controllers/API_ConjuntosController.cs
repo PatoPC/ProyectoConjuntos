@@ -62,8 +62,8 @@ namespace APICondominios.Controllers
         {
             try
             {
-                if (objDTO == null)                
-                    return BadRequest(MensajesRespuesta.noSePermiteObjNulos());                
+                if (objDTO == null)
+                    return BadRequest(MensajesRespuesta.noSePermiteObjNulos());
 
                 Conjunto objRepositorio = _mapper.Map<Conjunto>(objDTO);
                 _CRUD_Conjuntos.Add(objRepositorio);
@@ -76,9 +76,9 @@ namespace APICondominios.Controllers
 
                     return CreatedAtRoute("GetConjuntoByID", new { id = objCatalogoResult.IdConjunto }, objCatalogoResult);
                 }
-                else                
+                else
                     await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
-                
+
             }
             catch (Exception ExValidation)
             {
@@ -92,9 +92,9 @@ namespace APICondominios.Controllers
         {
             try
             {
-                if (objDTO == null)                
+                if (objDTO == null)
                     return BadRequest(MensajesRespuesta.noSePermiteObjNulos());
-                
+
 
                 List<Conjunto> objRepositorio = _mapper.Map<List<Conjunto>>(objDTO);
 
@@ -106,7 +106,7 @@ namespace APICondominios.Controllers
 
                     return Ok(objCatalogoResult);
                 }
-                else                
+                else
                     await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
 
             }
@@ -207,11 +207,9 @@ namespace APICondominios.Controllers
 
                 listaResultado = await _Conjuntos.busquedaAvanzada(objBusqueda);
 
-
                 if (listaResultado.Count < 1)
-                {
                     return NotFound(MensajesRespuesta.sinResultados());
-                }
+
 
                 List<ResultadoBusquedaConjuntos> listaResultadoDTO = _mapper.Map<List<ResultadoBusquedaConjuntos>>(listaResultado);
 
@@ -232,16 +230,13 @@ namespace APICondominios.Controllers
         {
             try
             {
-
                 List<Conjunto> listaResultado = new List<Conjunto>();
 
                 listaResultado = await _Conjuntos.busquedaTodosConjuntos();
 
 
                 if (listaResultado.Count < 1)
-                {
                     return NotFound(MensajesRespuesta.sinResultados());
-                }
 
                 List<ResultadoBusquedaConjuntos> listaResultadoDTO = _mapper.Map<List<ResultadoBusquedaConjuntos>>(listaResultado);
 

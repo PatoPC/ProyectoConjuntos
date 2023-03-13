@@ -12,5 +12,6 @@ namespace RepositorioConjuntos.Interface
         public Task<ConMst> obtenerPorIDConMST(Guid idConMST);
         public Task<List<ConMst>> obtenerPorCuenta(string numeroCuenta);
         public Task<List<ConMst>> obtenerPorNombreCuenta(string nombre);
+        public Task<List<ConMst>> obtenerTodos();
     }
 }

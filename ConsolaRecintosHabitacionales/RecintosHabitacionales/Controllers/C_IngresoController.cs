@@ -36,10 +36,9 @@ namespace RecintosHabitacionales.Controllers
         public IActionResult Ingresar(string sesionCaducada)
         {
 
-            if (!string.IsNullOrEmpty(sesionCaducada))
-            {
+            if (!string.IsNullOrEmpty(sesionCaducada))            
                 ViewBag.errorLogin = sesionCaducada;
-            }
+            
             return View();
         }
 

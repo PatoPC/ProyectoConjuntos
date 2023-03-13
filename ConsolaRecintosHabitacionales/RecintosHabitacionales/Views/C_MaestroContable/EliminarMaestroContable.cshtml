@@ -1,0 +1,110 @@
+﻿@model DTOs.MaestroContable.MaestroContableDTOCompleto
+
+<div class="card mb-10 mb-xl-12">
+    <div class="card-header card-header-stretch">
+        <div class="card-title d-flex align-items-center">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3 class="fw-bolder m-0 text-gray-800">
+                        <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                        Eliminar Maestro Contable
+                    </h3>
+                </div>
+                <div class="col-md-12">
+                    <a class="btn btn-success" asp-action="GestionarMaestro"><i class="fas fa-undo-alt"></i><b>Regresar</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body border-top">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row p-lg-10">
+
+            <form asp-action="EliminarMaestroContable" id="EliminarMaestroContableForm">
+                <input type="hidden" asp-for="IdConMst" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="CuentaCon" class="control-label">
+                                            Cuenta Contable
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" asp-for="CuentaCon" class="form-control form-control-solid" placeholder="Nombre" readonly="readonly" />
+                                </div>
+                            </div>
+
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="NombreCuenta" class="control-label">
+                                            Nombre Cuenta
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="NombreCuenta" class="form-control form-control-solid" maxlength="60" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="Grupo" class="control-label">
+                                        Grupo
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <div class="col-lg-8 d-flex align-items-center">
+                                    <label>
+                                        <input type="radio" class="btn-check" name="Grupo" value="true" disabled="disabled" @(Model.Grupo ? "checked= \"checked\"" : "") />
+                                        <span class="btn btn btn-color-muted  btn-active-primary fw-bolder px-md-7">Grupo</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" class="btn-check" name="Grupo" value="false" disabled="disabled" @(!Model.Grupo ? "checked= \"checked\"" : "") />
+                                        <span class="btn btn btn-color-muted  btn-active-danger fw-bolder px-md-7">Movimiento</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-12 fv-row">
+                        <center>
+                            <button type="button" onclick="sendFormAjax(this, 'EliminarMaestroContableForm', undefined,undefined,'btn_EliminarMaestro')" class="btn btn-danger" id="btn_EliminarMaestro">
+                                <span class="indicator-label">
+                                    <i class="far fa-save  fs-md-2qx"></i>Eliminar
+                                </span>
+                                <span class="indicator-progress">
+                                    Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </center>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+}

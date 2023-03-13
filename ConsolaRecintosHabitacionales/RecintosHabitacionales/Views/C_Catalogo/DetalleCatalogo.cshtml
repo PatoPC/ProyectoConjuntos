@@ -74,11 +74,11 @@
                     <label class="fs-6 form-label fw-bolder text-dark">Estado</label>
                     <label>
                         @*<input type="checkbox" class="form-check-input w-45px h-30px" name="Activado" id="Activado" @(Model.Estado ? "checked= \"checked\"" : "")>*@
-                        <input type="radio" class="btn-check" name="Estado" value="true" @(Model.Estado ? "checked= \"checked\"" : "") disabled>
+                        <input type="radio" class="btn-check" name="Estado" value="true" disabled="disabled" @(Model.Estado ? "checked= \"checked\"" : "") />
                         <span class="btn btn-sm btn-color-muted btn-active btn-active-primary fw-bolder px-2">Activado</span>
                     </label>
                     <label>
-                        <input type="radio" class="btn-check" name="Estado" value="false" @(!Model.Estado ? "checked= \"checked\"" : "") disabled>
+                        <input type="radio" class="btn-check" name="Estado" value="false" disabled="disabled" @(!Model.Estado ? "checked= \"checked\"" : "") />
                         <span class="btn btn-sm btn-color-muted btn-active btn-active-danger fw-bolder px-2">Desactivado</span>
                     </label>
                 </div>

@@ -2,6 +2,7 @@ using DTOs.CatalogoGeneral;
 using DTOs.Conjunto;
 using DTOs.Departamento;
 using DTOs.Logs;
+using DTOs.MaestroContable;
 using DTOs.Persona;
 using DTOs.Proveedor;
 using DTOs.Roles;
@@ -76,6 +77,9 @@ builder.Services.AddScoped(typeof(ProveedorDTOCompleto));
 builder.Services.AddScoped(typeof(BusquedaProveedor));
 
 builder.Services.AddScoped(typeof(LogBusqueda));
+
+builder.Services.AddScoped(typeof(MaestroContableDTOCrear));
+builder.Services.AddScoped(typeof(MaestroContableDTOCompleto));
 
 //builder.Services.AddScoped(typeof(ConexionApi));
 builder.Services.AddControllersWithViews();

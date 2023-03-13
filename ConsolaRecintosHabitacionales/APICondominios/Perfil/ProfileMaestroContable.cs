@@ -14,6 +14,9 @@ namespace APICondominios.Perfil
 
             CreateMap<ConMst, MaestroContableDTOCompleto>();
 
+            CreateMap<MaestroContableDTOEditar, ConMst>();
+            CreateMap<ConMst, MaestroContableDTOEditar>();
+
         }
     }
 }
