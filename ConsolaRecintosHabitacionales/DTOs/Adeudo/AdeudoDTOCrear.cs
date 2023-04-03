@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ConjuntosEntidades.Entidades
+namespace DTOs.Adeudo
 {
-    public partial class Adeudo
+    public class AdeudoDTOCrear
     {
-        public Guid IdAdeudos { get; set; }
         public Guid IdDepartamento { get; set; }
         public Guid IdPersona { get; set; }
         public DateTime FechaAdeudos { get; set; }
@@ -13,10 +15,6 @@ namespace ConjuntosEntidades.Entidades
         public bool EstadoAdeudos { get; set; }
         public DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
-        public DateTime? FechaModificacion { get; set; }
-        public string? UsuarioModificacion { get; set; }
-
-        public virtual Departamento IdDepartamentoNavigation { get; set; } = null!;
-        public virtual Persona IdPersonaNavigation { get; set; } = null!;
+       
     }
 }

@@ -7,6 +7,7 @@ namespace ConjuntosEntidades.Entidades
     {
         public Departamento()
         {
+            Adeudos = new HashSet<Adeudo>();
             AreasDepartamentos = new HashSet<AreasDepartamento>();
             TipoPersonas = new HashSet<TipoPersona>();
         }
@@ -21,8 +22,10 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioCreacion { get; set; } = null!;
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
+        public bool? Estado { get; set; }
 
         public virtual Torre IdTorresNavigation { get; set; } = null!;
+        public virtual ICollection<Adeudo> Adeudos { get; set; }
         public virtual ICollection<AreasDepartamento> AreasDepartamentos { get; set; }
         public virtual ICollection<TipoPersona> TipoPersonas { get; set; }
     }

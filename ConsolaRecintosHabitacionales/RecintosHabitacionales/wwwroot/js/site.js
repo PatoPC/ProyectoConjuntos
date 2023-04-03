@@ -519,17 +519,18 @@ function recuperNombreArchivoInputFile(inputFile, textoNombreArchivo, idLinkArch
     switch (tipoArchivo) {
 
         case 'application/pdf':
-            divImagen = divConIconoPDF('/media/svg/files/pdf.svg')
+            divImagen = divConIconoArchivo('/media/svg/files/pdf.svg')
             break;
         case 'image/png':
-            divImagen = divConIconoPDF('/media/svg/files/png.svg')
+            divImagen = divConIconoArchivo('/media/svg/files/png.svg')
             break;
         case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-            divImagen = divConIconoPDF('/media/svg/files/icons8-ms-excel.svg')
+        case 'application/vnd.ms-excel':
+            divImagen = divConIconoArchivo('/media/svg/files/icons8-ms-excel.svg')
             break;
         case 'image/jpeg':
         case 'image/jpg':
-            divImagen = divConIconoPDF('/media/svg/files/jpg.svg')
+            divImagen = divConIconoArchivo('/media/svg/files/jpg.svg')
             break;
 
         default:
@@ -587,7 +588,7 @@ function recuperNombreArchivoInputFile(inputFile, textoNombreArchivo, idLinkArch
 // /assets/media/svg/files/jpg.svg
 // /assets/media/svg/files/png.svg
 
-function divConIconoPDF(urlArchivo) {
+function divConIconoArchivo(urlArchivo) {
     var divImagenIcono = document.createElement("DIV");
     divImagenIcono.setAttribute("class", "symbol symbol-60px mb-5");
 

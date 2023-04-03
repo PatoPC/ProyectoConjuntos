@@ -186,13 +186,9 @@ namespace APICondominios.Controllers
 
             //Se comprueba que se actualizó correctamente
             if (result.estado)
-            {
                 return NoContent();
-            }
             else
-            {
                 await guardarLogs(JsonConvert.SerializeObject(objRepositorio, jsonSerializerSettings), result.mensajeError);
-            }
 
             return BadRequest();
         }

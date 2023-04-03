@@ -7,6 +7,7 @@ namespace ConjuntosEntidades.Entidades
     {
         public Conjunto()
         {
+            ConMsts = new HashSet<ConMst>();
             Proveedores = new HashSet<Proveedore>();
             Torres = new HashSet<Torre>();
         }
@@ -22,6 +23,7 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
 
+        public virtual ICollection<ConMst> ConMsts { get; set; }
         public virtual ICollection<Proveedore> Proveedores { get; set; }
         public virtual ICollection<Torre> Torres { get; set; }
     }

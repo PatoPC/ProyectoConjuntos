@@ -8,6 +8,7 @@ namespace DTOs.MaestroContable
 {
     public class MaestroContableDTOEditar
     {
+        public Guid IdConjunto { get; set; }
         public string CuentaCon { get; set; } = null!;
         public string NombreCuenta { get; set; } = null!;
         public bool Grupo { get; set; }

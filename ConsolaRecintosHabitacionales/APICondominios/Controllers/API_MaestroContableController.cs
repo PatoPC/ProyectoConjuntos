@@ -19,17 +19,19 @@ namespace APICondominios.Controllers
     public class API_MaestroContableController : ControllerBase
     {
         private readonly IManageConjuntosCRUD<ConMst> _CRUD_ConMST;
+        private readonly IManageConjuntosCRUD<List<ConMst>> _CRUD_ConMSTLista;
         private readonly IManageConMST _consultaMaestroCont;
 
         private readonly IMapper _mapper;
-        private readonly IManageLogError _logError;        
+        private readonly IManageLogError _logError;
 
-        public API_MaestroContableController(IManageConjuntosCRUD<ConMst> cRUD_ConMST, IMapper mapper, IManageLogError logError, IManageConMST consultaMaestroCont)
+        public API_MaestroContableController(IManageConjuntosCRUD<ConMst> cRUD_ConMST, IMapper mapper, IManageLogError logError, IManageConMST consultaMaestroCont, IManageConjuntosCRUD<List<ConMst>> cRUD_ConMSTLista)
         {
             _CRUD_ConMST = cRUD_ConMST;
             _mapper = mapper;
             _logError = logError;
             _consultaMaestroCont = consultaMaestroCont;
+            _CRUD_ConMSTLista = cRUD_ConMSTLista;
         }
 
         #region CRUD
@@ -66,6 +68,37 @@ namespace APICondominios.Controllers
         }
 
 
+        [HttpPost("CrearListaMaestro")]
+        public async Task<IActionResult> CrearListaMaestro([FromBody] List<MaestroContableDTOCrear> objDTO)
+        {
+            try
+            {
+                if (objDTO == null)
+                    return BadRequest(MensajesRespuesta.noSePermiteObjNulos());
+
+                List<ConMst> objRepositorio = _mapper.Map<List<ConMst>>(objDTO);
+
+                var result = await _CRUD_ConMSTLista.saveRangeMaestro(objRepositorio);
+
+                if (result.estado)
+                {
+                    List<MaestroContableDTOCompleto> listaResult = _mapper.Map<List<MaestroContableDTOCompleto>>(objRepositorio);
+
+                    return Ok(listaResult);
+                }
+                else
+                    await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
+
+            }
+            catch (Exception ExValidation)
+            {
+                await guardarLogs(JsonConvert.SerializeObject(objDTO), ExValidation.ToString());
+            }
+
+            return BadRequest(MensajesRespuesta.guardarError());
+        }
+
+
         [HttpPost("Editar")]
         public async Task<IActionResult> Editar(Guid id, MaestroContableDTOEditar objDTO)
         {
@@ -92,6 +125,30 @@ namespace APICondominios.Controllers
             }
             return StatusCode(StatusCodes.Status406NotAcceptable);
         }
+
+
+        [HttpPost("Eliminar")]
+        public async Task<IActionResult> Eliminar(Guid id)
+        {
+            var jsonSerializerSettings = new JsonSerializerSettings
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            };
+
+            ConMst objRepositorio = await _consultaMaestroCont.obtenerPorIDConMST(id);
+
+            _CRUD_ConMST.Delete(objRepositorio);
+            var result = await _CRUD_ConMST.save();
+
+            //Se comprueba que se actualizó correctamente
+            if (result.estado)            
+                return NoContent();            
+            else            
+                await guardarLogs(JsonConvert.SerializeObject(objRepositorio, jsonSerializerSettings), result.mensajeError);            
+
+            return BadRequest();
+        }
+
 
         #endregion
 
@@ -127,6 +184,8 @@ namespace APICondominios.Controllers
                     return NotFound(MensajesRespuesta.sinResultados());                
 
                 List<MaestroContableDTOCompleto> listaResultadoDTO = _mapper.Map<List<MaestroContableDTOCompleto>>(listaResultado);
+
+                listaResultadoDTO = listaResultadoDTO.OrderBy(x => x.CuentaCon).ToList();
 
                 return Ok(listaResultadoDTO);
             }

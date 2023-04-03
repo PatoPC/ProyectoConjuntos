@@ -9,6 +9,7 @@ namespace DTOs.MaestroContable
     public class MaestroContableDTOCompleto
     {
         public Guid IdConMst { get; set; }
+        public Guid IdConjunto { get; set; }
         public string CuentaCon { get; set; } = null!;
         public string NombreCuenta { get; set; } = null!;
         public bool Grupo { get; set; }

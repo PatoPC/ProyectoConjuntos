@@ -7,6 +7,7 @@ namespace ConjuntosEntidades.Entidades
     {
         public Persona()
         {
+            Adeudos = new HashSet<Adeudo>();
             TipoPersonas = new HashSet<TipoPersona>();
         }
 
@@ -24,6 +25,7 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioModificacion { get; set; } = null!;
         public string? CelularPersona { get; set; }
 
+        public virtual ICollection<Adeudo> Adeudos { get; set; }
         public virtual ICollection<TipoPersona> TipoPersonas { get; set; }
     }
 }

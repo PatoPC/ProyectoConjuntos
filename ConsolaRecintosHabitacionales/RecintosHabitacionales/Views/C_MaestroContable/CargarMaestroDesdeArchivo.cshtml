@@ -1,0 +1,83 @@
+﻿@model DTOs.Conjunto.BusquedaConjuntos
+@using Utilitarios;
+
+
+<form id="CrearMaestroArchivo" method="post" asp-action="CargarMaestroDesdeArchivo">
+    <div class="card">
+        <div class="card-header card-header-stretch">
+            <div class="card-title d-flex align-items-center">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3 class="fw-bolder m-0 text-gray-800">
+                            <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                            Maestro
+                        </h3>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-success" asp-action="GestionarMaestro">Regresar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body border-top">
+            <div class="col-md-12">
+                <div class="row">
+                    <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
+                    <div class="col-md-2">
+                        <label class="fs-6 form-label fw-bolder text-dark">Cargar Información</label>
+                       
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-xl-8 fv-row">
+                            <div>
+                                <label class="custom-file-upload btn btn-primary">
+                                  
+                                    <input type="file" id="archivoConjuntoExcel" name="archivoConjuntoExcel" onchange="recuperNombreArchivoInputFile('archivoConjuntoExcel','textoNombreArchivo')" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" data-divInformacion="textoNombreArchivo" required="required" />
+                                    <i class="fas fa-file-image text-active-inverse-light fs-2qx"></i>
+                                    Cargar archivo
+                                </label>
+                                <div class="text-Input-File fondoOscuro" id="textoNombreArchivo" style="display:none; width:100%"></div>
+                                <div class="form-text text-muted">Archivos maximo de 5 MB, solo Excel.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 fv-row">
+                <center>
+                    <button type="button" onclick="sendFormAjax(this, 'CrearMaestroArchivo', undefined,undefined,'btn_CrearConjunto')" class="btn btn-primary" id="btn_CrearConjunto">
+                        <span class="indicator-label">
+                            <i class="far fa-save  fs-md-2qx"></i>Guardar
+                        </span>
+                        <span class="indicator-progress">
+                            Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                </center>
+            </div>
+        </div>
+    </div>
+
+
+
+</form>
+
+<div id="resultSearch">
+</div>
+
+@section scripts{
+
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+    <script src="~/js/JSBusquedaDocumentos.js"></script>
+    <script src="~/js/cargadatosdocumentospersona.js"></script>
+
+
+    <script type="text/javascript">
+
+
+    </script>
+}

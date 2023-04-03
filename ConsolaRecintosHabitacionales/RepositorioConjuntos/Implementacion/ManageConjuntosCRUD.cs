@@ -57,6 +57,25 @@ namespace RepositorioConjuntos.Implementacion
                 return (false, mensajeError);
             }
         }
+        public async Task<(bool estado, string mensajeError)> saveRangeMaestro(List<ConMst> listaMaestro)        
+        {
+            try
+            {
+                await _context.AddRangeAsync(listaMaestro);
+
+                var created = await _context.SaveChangesAsync();
+
+                return (created > 0, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                string mensajeError = "";
+                if (ex.InnerException != null)
+                    mensajeError = ex.InnerException.Message;
+
+                return (false, mensajeError);
+            }
+        }
 
         public void Edit(T obj)
         {

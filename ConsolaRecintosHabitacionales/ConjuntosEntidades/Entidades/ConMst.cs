@@ -6,6 +6,7 @@ namespace ConjuntosEntidades.Entidades
     public partial class ConMst
     {
         public Guid IdConMst { get; set; }
+        public Guid IdConjunto { get; set; }
         public string CuentaCon { get; set; } = null!;
         public string NombreCuenta { get; set; } = null!;
         public bool Grupo { get; set; }
@@ -13,5 +14,7 @@ namespace ConjuntosEntidades.Entidades
         public DateTime? FechaModificacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
+
+        public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;
     }
 }

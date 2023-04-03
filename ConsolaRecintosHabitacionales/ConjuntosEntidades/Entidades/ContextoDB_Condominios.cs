@@ -53,27 +53,53 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("ID_ADEUDOS")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.CodigoAdeudos).HasColumnName("CODIGO_ADEUDOS");
-
-                entity.Property(e => e.CodigoDeptoAdeudos)
-                    .HasMaxLength(8)
-                    .IsUnicode(false)
-                    .HasColumnName("CODIGO_DEPTO_ADEUDOS");
+                entity.Property(e => e.EstadoAdeudos).HasColumnName("ESTADO_ADEUDOS");
 
                 entity.Property(e => e.FechaAdeudos)
                     .HasColumnType("date")
                     .HasColumnName("FECHA_ADEUDOS");
 
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.IdDepartamento)
+                    .HasColumnName("ID_DEPARTAMENTO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdPersona)
+                    .HasColumnName("ID_PERSONA")
+                    .HasDefaultValueSql("(newid())");
+
                 entity.Property(e => e.MontoAdeudos)
                     .HasColumnType("money")
                     .HasColumnName("MONTO_ADEUDOS");
 
-                entity.Property(e => e.NombreAdeudos)
-                    .HasMaxLength(20)
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(60)
                     .IsUnicode(false)
-                    .HasColumnName("NOMBRE_ADEUDOS");
+                    .HasColumnName("USUARIO_CREACION");
 
-                entity.Property(e => e.StatusAdeudos).HasColumnName("STATUS_ADEUDOS");
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(60)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.HasOne(d => d.IdDepartamentoNavigation)
+                    .WithMany(p => p.Adeudos)
+                    .HasForeignKey(d => d.IdDepartamento)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ADEUDOS_REFERENCE_DEPARTAM");
+
+                entity.HasOne(d => d.IdPersonaNavigation)
+                    .WithMany(p => p.Adeudos)
+                    .HasForeignKey(d => d.IdPersona)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ADEUDOS_REFERENCE_PERSONA");
             });
 
             modelBuilder.Entity<AreasDepartamento>(entity =>
@@ -157,6 +183,10 @@ namespace ConjuntosEntidades.Entidades
 
                 entity.Property(e => e.Grupo).HasColumnName("GRUPO");
 
+                entity.Property(e => e.IdConjunto)
+                    .HasColumnName("ID_CONJUNTO")
+                    .HasDefaultValueSql("(newid())");
+
                 entity.Property(e => e.NombreCuenta)
                     .HasMaxLength(60)
                     .IsUnicode(false)
@@ -171,6 +201,12 @@ namespace ConjuntosEntidades.Entidades
                     .HasMaxLength(70)
                     .IsUnicode(false)
                     .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.HasOne(d => d.IdConjuntoNavigation)
+                    .WithMany(p => p.ConMsts)
+                    .HasForeignKey(d => d.IdConjunto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CON_MST_REFERENCE_CONJUNTO");
             });
 
             modelBuilder.Entity<Conjunto>(entity =>
@@ -244,6 +280,11 @@ namespace ConjuntosEntidades.Entidades
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("CODIGO_DEPARTAMENTO");
+
+                entity.Property(e => e.Estado)
+                    .IsRequired()
+                    .HasColumnName("ESTADO")
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")

@@ -80,6 +80,7 @@ builder.Services.AddScoped(typeof(LogBusqueda));
 
 builder.Services.AddScoped(typeof(MaestroContableDTOCrear));
 builder.Services.AddScoped(typeof(MaestroContableDTOCompleto));
+builder.Services.AddScoped(typeof(List<MaestroContableDTOCrear>));
 
 //builder.Services.AddScoped(typeof(ConexionApi));
 builder.Services.AddControllersWithViews();

@@ -20,12 +20,12 @@ namespace RepositorioConjuntos.Implementacion
             this._context = context ?? throw new ArgumentException(nameof(context));
         }
 
-        public async Task<Conjunto> obtenerPorIDConjuntos(Guid idCondominio)
+        public async Task<Conjunto> obtenerPorIDConjuntos(Guid idConjunto)
         {
             try
             {
-                var condominio = await _context.Conjuntos
-                    .Where(x => x.IdConjunto == idCondominio)
+                Conjunto condominio = await _context.Conjuntos
+                    .Where(x => x.IdConjunto == idConjunto)
                     .Include(x => x.Torres)
                     .ThenInclude(x => x.Departamentos).FirstOrDefaultAsync();
 
