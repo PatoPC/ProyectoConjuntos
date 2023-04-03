@@ -1,4 +1,5 @@
 ﻿@using Utilitarios;
+@model DTOs.MaestroContable.MaestroContableBusqueda
 
 
 <form action="@ConstantesAplicacion.pathConsola/C_MaestroContable/BusquedaMaestroContable"
@@ -14,34 +15,36 @@
         <div class="card-header card-header-stretch">
             <div class="card-title d-flex align-items-center">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-7">
                         <h3 class="fw-bolder m-0 text-gray-800">
-                            <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                            <i class="fas fa-calculator text-primary fs-2qx"></i>
                             Maestro Contable
                         </h3>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
+                
+                    <div class="col-md-3">
                         <a class="btn btn-success" asp-action="CrearMaestroContable">Nuevo</a>
                     </div>
-                    @*<div class="col-md-8">
-                        <a class="btn btn-primary" asp-action="CargarConjuntoDesdeArchivo">Nuevo Desde Archivo</a>
-                    </div>*@
-                </div>
-            </div>
+                    <div class="col-md-1">
+                        <a class="btn btn-primary" asp-action="CargarMaestroDesdeArchivo"><span class="fas fa-file"></span></a>
+                    </div>
+                </div>           
         </div>
+    </div>
 
         <div class="card-body border-top">
             <div class="col-md-12">
                 <div class="row">
-                    @*<label class="fs-6 form-label fw-bolder text-dark">Datos</label>
+                    <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
                     <div class="col-md-2">
-                        <input asp-for="NombreConjunto" type="text" class="form-control form-control-solid" placeholder="Nombre" />
+                        @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
                     </div>
                     <div class="col-md-2">
-                        <input asp-for="RucConjunto" type="text" class="form-control form-control-solid" placeholder="RUC" />
-                    </div>*@
+                        <input asp-for="CuentaCon" type="text" class="form-control form-control-solid" placeholder="Cuenta" />
+                    </div>
+                    <div class="col-md-2">
+                        <input asp-for="NombreCuenta" type="text" class="form-control form-control-solid" placeholder="Nombre Cuenta" />
+                    </div>
                 </div>
             </div>
         </div>

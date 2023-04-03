@@ -197,6 +197,32 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
+        [HttpGet("MaestroContableBusquedaAvanzada")]
+        public async Task<ActionResult<List<ResultadoBusquedaConjuntos>>> MaestroContableBusquedaAvanzada(MaestroContableBusqueda objBusqueda)
+        {
+            try
+            {
+                List<ConMst> listaResultado = await _consultaMaestroCont.busquedaAvanzada(objBusqueda);
+
+                if (listaResultado.Count ==0)                
+                    return NotFound(MensajesRespuesta.sinResultados());                
+
+                List<MaestroContableDTOCompleto> listaResultadoDTO = _mapper.Map<List<MaestroContableDTOCompleto>>(listaResultado);
+
+                listaResultadoDTO = listaResultadoDTO.OrderBy(x => x.CuentaCon).ToList();
+
+                return Ok(listaResultadoDTO);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+
+
         #region Varios
         private async Task guardarLogs(string objetoJSON, string mensajeError)
         {

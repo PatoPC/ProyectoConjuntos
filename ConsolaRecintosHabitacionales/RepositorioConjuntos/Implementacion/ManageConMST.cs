@@ -1,4 +1,5 @@
 ﻿using ConjuntosEntidades.Entidades;
+using DTOs.MaestroContable;
 using Microsoft.EntityFrameworkCore;
 using RepositorioConjuntos.Interface;
 using System;
@@ -46,6 +47,26 @@ namespace RepositorioConjuntos.Implementacion
         public async Task<List<ConMst>> obtenerTodos()
         {
             List<ConMst> listaRepositorio = await _context.ConMsts.ToListAsync();
+
+            return listaRepositorio;
+        }
+
+        public async Task<List<ConMst>> busquedaAvanzada(MaestroContableBusqueda objBusqueda)
+        {
+            List<ConMst> listaRepositorio = await _context.ConMsts.Where(x => x.IdConjunto==objBusqueda.IdConjunto).ToListAsync();
+
+            if (!string.IsNullOrEmpty(objBusqueda.NombreCuenta))
+            {
+                listaRepositorio = listaRepositorio.Where(x => x.NombreCuenta.Trim().ToUpper().Contains(objBusqueda.NombreCuenta.Trim().ToUpper())).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(objBusqueda.CuentaCon))
+            {
+                listaRepositorio = listaRepositorio
+                    .Where(x => x.CuentaCon.Trim().Contains(objBusqueda.CuentaCon.Trim())).ToList();
+            }
+
+
 
             return listaRepositorio;
         }

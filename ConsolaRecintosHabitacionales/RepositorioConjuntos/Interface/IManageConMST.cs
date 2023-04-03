@@ -1,4 +1,5 @@
 ﻿using ConjuntosEntidades.Entidades;
+using DTOs.MaestroContable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace RepositorioConjuntos.Interface
         public Task<List<ConMst>> obtenerPorCuenta(string numeroCuenta);
         public Task<List<ConMst>> obtenerPorNombreCuenta(string nombre);
         public Task<List<ConMst>> obtenerTodos();
+        public Task<List<ConMst>> busquedaAvanzada(MaestroContableBusqueda objBusqueda);
     }
 }

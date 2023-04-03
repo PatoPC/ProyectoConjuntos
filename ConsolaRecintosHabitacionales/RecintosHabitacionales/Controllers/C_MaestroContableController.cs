@@ -21,12 +21,14 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<MaestroContableDTOCrear> _servicioConsumoAPICrear;
         private readonly IServicioConsumoAPI<List<MaestroContableDTOCrear>> _servicioConsumoAPICrearList;
         private readonly IServicioConsumoAPI<MaestroContableDTOCompleto> _servicioConsumoAPICompleto;
+        private readonly IServicioConsumoAPI<MaestroContableBusqueda> _servicioConsumoAPIBusqueda;
 
-        public C_MaestroContableController(IServicioConsumoAPI<MaestroContableDTOCrear> servicioConsumoAPICrear, IServicioConsumoAPI<MaestroContableDTOCompleto> servicioConsumoAPICompleto, IServicioConsumoAPI<List<MaestroContableDTOCrear>> servicioConsumoAPICrearList)
+        public C_MaestroContableController(IServicioConsumoAPI<MaestroContableDTOCrear> servicioConsumoAPICrear, IServicioConsumoAPI<MaestroContableDTOCompleto> servicioConsumoAPICompleto, IServicioConsumoAPI<List<MaestroContableDTOCrear>> servicioConsumoAPICrearList, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusqueda)
         {
             _servicioConsumoAPICrear = servicioConsumoAPICrear;
             _servicioConsumoAPICompleto = servicioConsumoAPICompleto;
             _servicioConsumoAPICrearList = servicioConsumoAPICrearList;
+            _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
         }
 
         public IActionResult GestionarMaestro()
@@ -35,6 +37,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
                 return View();
             }
 
@@ -51,6 +54,8 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+
                 return View();
             }
 
@@ -88,14 +93,18 @@ namespace RecintosHabitacionales.Controllers
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
             if (objUsuarioSesion != null)
+            {
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
                 return View();
+            }
+                
 
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         [HttpPost]
-        public async Task<ActionResult> CargarMaestroDesdeArchivo(string produccion)
+        public async Task<ActionResult> CargarMaestroDesdeArchivo(Guid IdConjunto)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
@@ -103,7 +112,7 @@ namespace RecintosHabitacionales.Controllers
             {
                 List<ModeloArchivoMaestro> listaArchivoLeido = await construirMaestroArchivo(FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion));
 
-                List<MaestroContableDTOCrear> listaMaestro = construirDTOMaestroMayor(objUsuarioSesion, listaArchivoLeido);
+                List<MaestroContableDTOCrear> listaMaestro = construirDTOMaestroMayor(objUsuarioSesion, listaArchivoLeido, IdConjunto);
 
                 HttpResponseMessage respuesta = await _servicioConsumoAPICrearList.consumoAPI(ConstantesConsumoAPI.apiCrearListaMaestro, HttpMethod.Post, listaMaestro);
 
@@ -132,7 +141,7 @@ namespace RecintosHabitacionales.Controllers
             return listaArchivoLeido;
         }
 
-        public List<MaestroContableDTOCrear> construirDTOMaestroMayor(UsuarioSesionDTO objUsuarioSesion, List<ModeloArchivoMaestro> listaArchivoLeido)
+        public List<MaestroContableDTOCrear> construirDTOMaestroMayor(UsuarioSesionDTO objUsuarioSesion, List<ModeloArchivoMaestro> listaArchivoLeido, Guid IdConjunto)
         {
             string usuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
@@ -143,6 +152,7 @@ namespace RecintosHabitacionales.Controllers
                           {
                               CuentaCon = x.ctacont,
                               NombreCuenta = x.nom_cuenta,
+                              IdConjunto = IdConjunto,
                               Grupo = x.grupo=="0" ? false : true,                              
                               UsuarioCreacion = usuarioCreacion,
                               FechaCreacion = DateTime.Now
@@ -166,6 +176,8 @@ namespace RecintosHabitacionales.Controllers
                 if (respuesta.IsSuccessStatusCode)
                 {
                     MaestroContableDTOCompleto objMaestroContable = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(respuesta);
+
+                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
 
                     return View(objMaestroContable);
 
@@ -221,6 +233,8 @@ namespace RecintosHabitacionales.Controllers
                 {
                     MaestroContableDTOCompleto objMaestroContable = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
+                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+
                     return View(objMaestroContable);
                 }
 
@@ -264,7 +278,7 @@ namespace RecintosHabitacionales.Controllers
 
         #region Consultas
         [HttpGet]
-        public async Task<ActionResult> BusquedaMaestroContable()
+        public async Task<ActionResult> BusquedaMaestroContable(MaestroContableBusqueda objBusqueda)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
@@ -274,7 +288,7 @@ namespace RecintosHabitacionales.Controllers
 
                 try
                 {
-                    HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.buscarMaestroContableAvanzado, HttpMethod.Get);
+                    HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarMaestroContableAvanzado, HttpMethod.Get, objBusqueda);
 
                     if (respuesta.IsSuccessStatusCode)
                         listaResultado = await LeerRespuestas<List<MaestroContableDTOCompleto>>.procesarRespuestasConsultas(respuesta);

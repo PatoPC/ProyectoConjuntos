@@ -107,7 +107,8 @@ namespace Utilitarios
         public const string apiCrearListaMaestro = ConstantesAplicacion.pathAPI + "/api/API_MaestroContable/CrearListaMaestro";
         public const string gestionarMaestroContableAPIEditar = ConstantesAplicacion.pathAPI + "/api/API_MaestroContable/Editar?id=";
         public const string gestionarMaestroConableAPIEliminar = ConstantesAplicacion.pathAPI + "/api/API_MaestroContable/Eliminar?id=";
-        public const string buscarMaestroContableAvanzado = ConstantesAplicacion.pathAPI + "/api/API_MaestroContable/ObtenerMaestroContableTodos";
+        public const string buscarMaestroContableTodos = ConstantesAplicacion.pathAPI + "/api/API_MaestroContable/ObtenerMaestroContableTodos";
+        public const string buscarMaestroContableAvanzado = ConstantesAplicacion.pathAPI + "/api/API_MaestroContable/MaestroContableBusquedaAvanzada";
         #endregion
 
         #region Logs
