@@ -22,16 +22,15 @@ namespace RecintosHabitacionales.Controllers
 
                 ViewData["listaAnios"] = listaAnios;
               
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
-
-             
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;            
 
                 return View();
             }
 
-
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
+
+
 
         public static IEnumerable<int> obtenerAnios()
         {

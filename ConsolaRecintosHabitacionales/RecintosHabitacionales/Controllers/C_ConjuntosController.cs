@@ -215,8 +215,7 @@ namespace RecintosHabitacionales.Controllers
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
             if (objUsuarioSesion != null)            
-                return View();
-            
+                return View();            
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }

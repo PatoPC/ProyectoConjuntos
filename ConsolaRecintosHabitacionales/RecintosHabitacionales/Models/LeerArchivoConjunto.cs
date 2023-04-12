@@ -21,12 +21,11 @@ namespace RecintosHabitacionales.Models
                 string rutaCompletaIncluidaMeses = ConstantesAplicacion.rutaArchivosLectura;
                 FuncionesUtiles.validarRuta(rutaCompletaIncluidaMeses);
 
-                rutaCompletaIncluidaMeses += fechaActual.ToString("yyyy") + @"\";
-                Console.WriteLine("Validando " + rutaCompletaIncluidaMeses);
+                rutaCompletaIncluidaMeses += fechaActual.ToString("yyyy") + @"\";                
+
                 FuncionesUtiles.validarRuta(rutaCompletaIncluidaMeses);
 
-                rutaCompletaIncluidaMeses += fechaActual.ToString("MM") + @"\";
-                Console.WriteLine("Validando " + rutaCompletaIncluidaMeses);
+                rutaCompletaIncluidaMeses += fechaActual.ToString("MM") + @"\";                
                 FuncionesUtiles.validarRuta(rutaCompletaIncluidaMeses);
 
                 string nuevoNombreArchivo = fechaActual.ToString("dd-MM-yyyy") + archivo.FileName;
@@ -67,8 +66,30 @@ namespace RecintosHabitacionales.Models
                     objDocumento.Metros_Cuadrados = FuncionesUtiles.convertirADecimal(documentoLeido.GetCellValueAsString(numFila, 8).Replace(".", ","));
                     objDocumento.Valor_Alicuota = FuncionesUtiles.convertirADecimal(documentoLeido.GetCellValueAsString(numFila, 9).Replace(".", ","));
                     objDocumento.Saldo_Inicial = FuncionesUtiles.convertirADecimal(documentoLeido.GetCellValueAsString(numFila, 10).Replace(".", ","));
+                    
                     objDocumento.Tipo_Identificacion_Condomino = documentoLeido.GetCellValueAsString(numFila, 11).Trim();
+
                     objDocumento.Numero_Identificacion_Condomino = documentoLeido.GetCellValueAsString(numFila, 12).Trim();
+
+                    try
+                    {
+                        if (objDocumento.Numero_Identificacion_Condomino.ToUpper() == ConstantesAplicacion.IdentificacionCedula.ToUpper())
+                        {
+                            objDocumento.Numero_Identificacion_Condomino = "0" + objDocumento.Numero_Identificacion_Condomino;
+                        }
+
+                        bool cedulaValida = FuncionesUtiles.validacionNumeroCedula(objDocumento.Numero_Identificacion_Condomino, objDocumento.Tipo_Identificacion_Condomino);
+
+                        if (!cedulaValida)
+                        {
+                            objDocumento.Numero_Identificacion_Condomino = "Cédula no válida";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+
                     objDocumento.Nombre_Condomino = documentoLeido.GetCellValueAsString(numFila, 13).Trim();
                     objDocumento.Apellido_Condomino = documentoLeido.GetCellValueAsString(numFila, 14).Trim();
                     objDocumento.Telefono_Condomino = documentoLeido.GetCellValueAsString(numFila, 15).Trim();
@@ -77,7 +98,28 @@ namespace RecintosHabitacionales.Models
                     objDocumento.Observación_Condomino = documentoLeido.GetCellValueAsString(numFila, 18).Trim();
                     objDocumento.Tipo_Identificacion_Propietario = documentoLeido.GetCellValueAsString(numFila, 19).Trim();
                     objDocumento.Numero_Identificacion_Propietario = documentoLeido.GetCellValueAsString(numFila, 20).Trim();
-                    objDocumento.Nombre_Propietario = documentoLeido.GetCellValueAsString(numFila, 21).Trim();
+
+                    try
+                    {
+                        if (objDocumento.Tipo_Identificacion_Propietario.ToUpper() == ConstantesAplicacion.IdentificacionCedula.ToUpper())
+                        {
+                            objDocumento.Numero_Identificacion_Propietario = "0" + objDocumento.Numero_Identificacion_Propietario;
+                        }
+
+                        bool cedulaValidaPropietario = FuncionesUtiles.validacionNumeroCedula(objDocumento.Tipo_Identificacion_Propietario, objDocumento.Numero_Identificacion_Propietario);
+
+                        if (!cedulaValidaPropietario)
+                        {
+                            objDocumento.Numero_Identificacion_Propietario = "Cédula no válida";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+
+                    
+
+                        objDocumento.Nombre_Propietario = documentoLeido.GetCellValueAsString(numFila, 21).Trim();
                     objDocumento.Apellido_Propietario = documentoLeido.GetCellValueAsString(numFila, 22).Trim();
                     objDocumento.Telefono_Propietario = documentoLeido.GetCellValueAsString(numFila, 23).Trim();
                     objDocumento.Celular_Propietario = documentoLeido.GetCellValueAsString(numFila, 24).Trim();

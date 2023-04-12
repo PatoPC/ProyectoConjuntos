@@ -179,14 +179,31 @@ namespace RecintosHabitacionales.Controllers
 
                     HttpResponseMessage respuesta = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.TodosConjuntos, HttpMethod.Get);
 
-                    List<ResultadoBusquedaConjuntos> listaConjuntosAcceso = await LeerRespuestas<List<ResultadoBusquedaConjuntos>>.procesarRespuestasConsultas(respuesta);
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        List<ResultadoBusquedaConjuntos> listaConjuntosAcceso = await LeerRespuestas<List<ResultadoBusquedaConjuntos>>.procesarRespuestasConsultas(respuesta);
 
-                    SelectList SelectListaConjuntos = new SelectList(listaConjuntosAcceso, "IdConjunto", "NombreConjunto", objUsuarioSesion.IdConjuntoDefault);
+                        SelectList SelectListaConjuntos = new SelectList(listaConjuntosAcceso, "IdConjunto", "NombreConjunto", objUsuarioSesion.IdConjuntoDefault);
 
-                    objUsuarioSesion.ListaConjuntosAcceso = listaConjuntosAcceso;
-                    objUsuarioSesion.ListaConjuntos = _mapper.Map<CustomSelectConjuntos>(SelectListaConjuntos);
+                        objUsuarioSesion.ListaConjuntosAcceso = listaConjuntosAcceso;
+                        objUsuarioSesion.ListaConjuntos = _mapper.Map<CustomSelectConjuntos>(SelectListaConjuntos);
 
-                    ViewData["listaConjuntos"] = SelectListaConjuntos;
+                        ViewData["listaConjuntos"] = SelectListaConjuntos;
+
+                    }
+                    else
+                    {
+                        List<ResultadoBusquedaConjuntos> listaConjuntosAcceso = new List<ResultadoBusquedaConjuntos>();
+
+                        SelectList SelectListaConjuntos = new SelectList(listaConjuntosAcceso, "IdConjunto", "NombreConjunto", objUsuarioSesion.IdConjuntoDefault);
+
+                        objUsuarioSesion.ListaConjuntosAcceso = listaConjuntosAcceso;
+                        objUsuarioSesion.ListaConjuntos = _mapper.Map<CustomSelectConjuntos>(SelectListaConjuntos);
+
+                        ViewData["listaConjuntos"] = SelectListaConjuntos;
+
+                    }
+                    
 
                     SesionExtensions.SetObject(HttpContext.Session, ConstantesAplicacion.nombreSesion, objUsuarioSesion);
                 }

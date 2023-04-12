@@ -36,15 +36,16 @@
             <div class="col-md-12">
                 <div class="row">
                     <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <input asp-for="CuentaCon" type="text" class="form-control form-control-solid" placeholder="Cuenta" />
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <input asp-for="NombreCuenta" type="text" class="form-control form-control-solid" placeholder="Nombre Cuenta" />
                     </div>
+                    
                 </div>
             </div>
         </div>
