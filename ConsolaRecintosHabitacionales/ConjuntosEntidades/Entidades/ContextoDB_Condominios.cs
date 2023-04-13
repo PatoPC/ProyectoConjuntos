@@ -25,6 +25,7 @@ namespace ConjuntosEntidades.Entidades
         public virtual DbSet<DetalleContabilidad> DetalleContabilidads { get; set; } = null!;
         public virtual DbSet<EncabezadoContabilidad> EncabezadoContabilidads { get; set; } = null!;
         public virtual DbSet<FacturaCompra> FacturaCompras { get; set; } = null!;
+        public virtual DbSet<Parametro> Parametros { get; set; } = null!;
         public virtual DbSet<Persona> Personas { get; set; } = null!;
         public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
         public virtual DbSet<ReciboCabecera> ReciboCabeceras { get; set; } = null!;
@@ -603,6 +604,68 @@ namespace ConjuntosEntidades.Entidades
                     .WithMany(p => p.FacturaCompras)
                     .HasForeignKey(d => d.IdProveedor)
                     .HasConstraintName("FK_FACTURA__REFERENCE_PROVEEDO");
+            });
+
+            modelBuilder.Entity<Parametro>(entity =>
+            {
+                entity.HasKey(e => e.IdParametro);
+
+                entity.ToTable("PARAMETRO");
+
+                entity.Property(e => e.IdParametro)
+                    .HasColumnName("ID_PARAMETRO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.CtaCont1)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("CTA_CONT1");
+
+                entity.Property(e => e.CtaCont2)
+                    .HasMaxLength(10)
+                    .HasColumnName("CTA_CONT2");
+
+                entity.Property(e => e.CtaCont3)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("CTA_CONT3");
+
+                entity.Property(e => e.CtaCont4)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("CTA_CONT4");
+
+                entity.Property(e => e.Estado).HasColumnName("ESTADO");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.IdCatParametro).HasColumnName("ID_CAT_PARAMETRO");
+
+                entity.Property(e => e.IdConjunto)
+                    .HasColumnName("ID_CONJUNTO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_CREACION");
+
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.HasOne(d => d.IdConjuntoNavigation)
+                    .WithMany(p => p.Parametros)
+                    .HasForeignKey(d => d.IdConjunto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PARAMETR_REFERENCE_CONJUNTO");
             });
 
             modelBuilder.Entity<Persona>(entity =>
