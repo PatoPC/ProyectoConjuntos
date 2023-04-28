@@ -1,0 +1,77 @@
+﻿@using Utilitarios;
+@model DTOs.MaestroContable.MaestroContableBusqueda
+
+
+<form action="@ConstantesAplicacion.pathConsola/C_MaestroContable/BusquedaMaestroContable"
+      data-ajax="true"
+      data-ajax-method="Get"
+      data-ajax-loading="#imagenCargando"
+      data-ajax-update="#resultSearch"
+      data-ajax-begin="emptyLastResults('resultSearch')"
+      data-ajax-success="ordenarTabla('idTablaConjutos')"
+      id="AjaxFormSend"
+      method="post">
+    <div class="card">
+        <div class="card-header card-header-stretch">
+            <div class="card-title d-flex align-items-center">
+                <div class="row">
+                    <div class="col-md-7">
+                        <h3 class="fw-bolder m-0 text-gray-800">
+                            <i class="fas fa-calculator text-primary fs-2qx"></i>
+                           Administrar Parametros
+                        </h3>
+                    </div>
+
+                    <div class="col-md-3">
+                        <a class="btn btn-success" asp-action="CrearParametro">Nuevo</a>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body border-top">
+            <div class="col-md-12">
+                <div class="row">
+                    <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
+                    <div class="col-md-4">
+                        @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                    </div>
+                    <div class="col-md-3">
+                        <input asp-for="CuentaCon" type="text" class="form-control form-control-solid" placeholder="Cuenta" />
+                    </div>
+                    <div class="col-md-3">
+                        <input asp-for="NombreCuenta" type="text" class="form-control form-control-solid" placeholder="Nombre Cuenta" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <center><img src="~/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
+</form>
+
+<div id="resultSearch">
+</div>
+
+@section scripts{
+
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+    <script src="~/js/JSBusquedaDocumentos.js"></script>
+    <script src="~/js/cargadatosdocumentospersona.js"></script>
+
+
+    <script type="text/javascript">
+
+
+    </script>
+}

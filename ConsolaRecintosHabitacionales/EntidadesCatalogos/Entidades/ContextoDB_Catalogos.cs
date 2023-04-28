@@ -35,6 +35,22 @@ public partial class ContextoDB_Catalogos : DbContext
             entity.Property(e => e.CodigoCatalogo)
                 .HasMaxLength(8)
                 .HasColumnName("CODIGO_CATALOGO");
+            entity.Property(e => e.Ctacont1)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("CTACONT1");
+            entity.Property(e => e.Ctacont2)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("CTACONT2");
+            entity.Property(e => e.Ctacont3)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("CTACONT3");
+            entity.Property(e => e.Ctacont4)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("CTACONT4");
             entity.Property(e => e.DatoAdicional)
                 .HasMaxLength(80)
                 .HasColumnName("DATO_ADICIONAL");

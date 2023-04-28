@@ -37,6 +37,14 @@ public partial class Catalogo
 
     public string UsuarioModificacion { get; set; } = null!;
 
+    public string? Ctacont1 { get; set; }
+
+    public string? Ctacont2 { get; set; }
+
+    public string? Ctacont3 { get; set; }
+
+    public string? Ctacont4 { get; set; }
+
     public virtual Catalogo? IdCatalogopadreNavigation { get; set; }
 
     public virtual ICollection<Catalogo> InverseIdCatalogopadreNavigation { get; } = new List<Catalogo>();
