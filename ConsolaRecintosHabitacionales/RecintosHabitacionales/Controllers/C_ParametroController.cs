@@ -78,6 +78,7 @@ namespace RecintosHabitacionales.Controllers
                     objModeloVista.NivelCatalogo = 0;
                 }
 
+                objModeloVista.CodigoCatalogo = FuncionesUtiles.GenerarCadena();
 
                 HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosCreate, HttpMethod.Post, objModeloVista);
 
