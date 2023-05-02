@@ -1,8 +1,10 @@
-﻿using DTOs.MaestroContable;
+﻿using DTOs.CatalogoGeneral;
+using DTOs.MaestroContable;
 using DTOs.Parametro;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
 using RecintosHabitacionales.Servicio;
+using RecintosHabitacionales.Servicio.Implementar;
 using RecintosHabitacionales.Servicio.Interface;
 using Utilitarios;
 
@@ -60,7 +62,24 @@ namespace RecintosHabitacionales.Controllers
             {
                 objModeloVista.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
-                HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarMaestroContableAPI, HttpMethod.Post, objModeloVista);
+                if (objModeloVista.IdCatalogopadre != null && objModeloVista.IdCatalogopadre != ConstantesAplicacion.guidNulo)
+                {
+                    HttpResponseMessage respuestaCatlogoPadre = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorIdCatalogo + objModeloVista.IdCatalogopadre, HttpMethod.Get);
+
+                    CatalogoDTOCompleto objCatalogoPadre = await LeerRespuestas<CatalogoDTOCompleto>.procesarRespuestasConsultas(respuestaCatlogoPadre);
+
+                    if (objCatalogoPadre != null)
+                    {
+                        objModeloVista.NivelCatalogo = objCatalogoPadre.NivelCatalogo + 1;
+                    }
+                }
+                else
+                {
+                    objModeloVista.NivelCatalogo = 0;
+                }
+
+
+                HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosCreate, HttpMethod.Post, objModeloVista);
 
                 if (respuesta.IsSuccessStatusCode)
                 {
