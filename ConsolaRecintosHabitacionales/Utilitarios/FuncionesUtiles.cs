@@ -11,6 +11,22 @@ namespace Utilitarios
 {
     public class FuncionesUtiles
     {
+        public static string GenerarCadena()
+        {
+            const string caracteresPermitidos = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            var random = new Random();
+            var cadena = new StringBuilder();
+
+            for (int i = 0; i < 8; i++)
+            {
+                int indiceCaracter = random.Next(caracteresPermitidos.Length);
+                char caracterAleatorio = caracteresPermitidos[indiceCaracter];
+                cadena.Append(caracterAleatorio);
+            }
+
+            return cadena.ToString();
+        }
+
         public static string construirUsuarioAuditoria(UsuarioSesionDTO objUsuarioSesion)
         {
             try
