@@ -12,8 +12,8 @@ namespace APICondominios.Perfil
             CreateMap<CatalogoDTOCrear, Catalogo>();
 
             CreateMap<Catalogo, CatalogoDTOCompleto>().
-                ForMember(x => x.CodigoCatalogoPadre, y => y.MapFrom(fuente => fuente.IdCatalogopadreNavigation.CodigoCatalogo)).
-                ForMember(x => x.NombreCatalogoPadre, y => y.MapFrom(fuente => fuente.IdCatalogopadreNavigation.NombreCatalogo));
+                ForMember(x => x.CodigoCatalogoPadre, y => y.MapFrom(fuente => fuente.IdCatalogopadreNavigation!=null ? fuente.IdCatalogopadreNavigation.CodigoCatalogo : default)).
+                ForMember(x => x.NombreCatalogoPadre, y => y.MapFrom(fuente => fuente.IdCatalogopadreNavigation!=null ? fuente.IdCatalogopadreNavigation.NombreCatalogo : default));
             CreateMap<CatalogoDTOCompleto, Catalogo>();
 
             CreateMap<Catalogo, CatalogoDTOActualizar>();
