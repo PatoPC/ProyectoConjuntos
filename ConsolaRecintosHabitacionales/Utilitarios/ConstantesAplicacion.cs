@@ -63,5 +63,7 @@ namespace Utilitarios
 
         public const string rutaArchivosLectura = @"ArchivosConjuntos\";
         public const string nombreRolCondominos = "Condomino";
+        public const string nombrePadreParam = "PARAM";
+
     }
 }

@@ -75,11 +75,16 @@ namespace RecintosHabitacionales.Controllers
                 }
                 else
                 {
+
+                    HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.nombrePadreParam, HttpMethod.Get);
+
+                    CatalogoDTOResultadoBusqueda objCatalogoParam = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogo);
+                    objModeloVista.IdCatalogopadre = objCatalogoParam.IdCatalogo;
                     objModeloVista.NivelCatalogo = 0;
                 }
-
+              
                 objModeloVista.CodigoCatalogo = FuncionesUtiles.GenerarCadena();
-
+                objModeloVista.Estado = true;
                 HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosCreate, HttpMethod.Post, objModeloVista);
 
                 if (respuesta.IsSuccessStatusCode)
@@ -96,5 +101,35 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
         #endregion
+        [HttpGet]
+        public async Task<ActionResult> BusquedaParametros()
+        {
+
+
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+                List<CatalogoDTOResultadoBusqueda> listaCatalogo = new List<CatalogoDTOResultadoBusqueda>();
+
+                try
+                {
+                    HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.nombrePadreParam, HttpMethod.Get);
+
+                    listaCatalogo = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuesta);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                if (listaCatalogo == null)
+                    listaCatalogo = new List<CatalogoDTOResultadoBusqueda>();
+
+                return View("_ListaMaestroContable", listaCatalogo);
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
     }
 }
