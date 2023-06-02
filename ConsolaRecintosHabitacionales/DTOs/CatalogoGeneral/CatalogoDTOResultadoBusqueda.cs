@@ -21,6 +21,14 @@ namespace DTOs.CatalogoGeneral
         public string? DatoIcono { get; set; }
         public bool Estado { get; set; }
 
+        public string? Ctacont1 { get; set; }
+
+        public string? Ctacont2 { get; set; }
+
+        public string? Ctacont3 { get; set; }
+
+        public string? Ctacont4 { get; set; }
+
         public List<CatalogoDTOResultadoBusqueda>? InverseIdCatalogopadreNavigation { get; set; }
         //public CatalogoCompleteDTO IdCatalogopadreNavigation { get; set; }
     }

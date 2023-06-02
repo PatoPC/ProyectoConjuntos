@@ -1,0 +1,82 @@
+﻿@model IEnumerable<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda>
+
+@{
+    Layout = "";
+}
+
+<div class="card card-flush">
+    <div class="card card-body">
+        @await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+
+        @if (Model.Count() > 0)
+        {
+            <table border="1" id="idTablaMaestro" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <th>
+                            <span class="badge badge-light text-dark">Nombre</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">cuenta1</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">cuenta2</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">cuenta3</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">cuenta4</span>
+                        </th>
+
+                        <th>
+                            <span class="badge badge-light text-dark">
+                                Acción
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="fw-bold text-gray-600">
+                    @if (Model != null)
+                    {
+                        foreach (var dato in Model)
+                        {
+                            <tr>
+                                <td data-title="Nombre">
+                                    <span>@dato.NombreCatalogo</span>
+                                </td>
+                                <td data-title="cuenta1">
+                                    <span>@dato.Ctacont1</span>
+                                </td>
+                                <td data-title="cuenta2">
+                                    <span>@dato.Ctacont2</span>
+                                </td>
+                                <td data-title="cuenta3">
+                                    <span>@dato.Ctacont3</span>
+                                </td>
+                                <td data-title="cuenta4">
+                                    <span>@dato.Ctacont4</span>
+                                </td>
+
+
+
+
+
+                                   <td data-title="Acción">
+                                    <div>
+                                        <a href="~/C_MaestroContable/EditarMaestroContable?idMaestro=@dato.IdCatalogo" target="_self" class="badge badge-light-primary">Editar<i class="far fa-edit" style="color: #009ef7"></i></a>
+                                    </div>
+                                    <div>
+                                        <a href="~/C_MaestroContable/EliminarMaestroContable?idMaestro=@dato.IdCatalogo" target="_self" class="badge badge-light-danger">Eliminar<i class="fas fa-trash-alt" style="color: #ff0000"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

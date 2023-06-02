@@ -1,4 +1,5 @@
-﻿using DTOs.Proveedor;
+﻿using DTOs.Adeudo;
+using DTOs.Proveedor;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
 using Utilitarios;
@@ -29,7 +30,24 @@ namespace RecintosHabitacionales.Controllers
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
+        [HttpPost]
+        public IActionResult GenearAdeudo(GenerarAdeudo variable)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
+            if (objUsuarioSesion != null)
+            {
+                List<int> listaAnios = obtenerAnios().ToList();
+
+                ViewData["listaAnios"] = listaAnios;
+
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+
+                return View();
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
 
 
         public static IEnumerable<int> obtenerAnios()

@@ -1,4 +1,5 @@
 ﻿@using Utilitarios;
+@model DTOs.Adeudo.GenerarAdeudo;
 @{
     int anioActual = Convert.ToInt16(DateTime.Now.ToString("yyyy"));
     short mesActual = Convert.ToInt16(DateTime.Now.ToString("MM"));
@@ -17,7 +18,8 @@
 <div class="post d-flex flex-column-fluid" id="kt_post">
     <!--begin::Container-->
     <div id="kt_content_container" class="container-xxl">
-        <form action="@ConstantesAplicacion.pathConsola/C_Adeudo/RespuestaRolPagosEmpleado">
+  
+            <form asp-action="GenearAdeudo" id="GenearAdeudo">
             <div class="card">
                 <div class="card-header card-header-stretch">
                     <div class="card-title d-flex align-items-center">
@@ -56,7 +58,7 @@
                         </div>
 
                         <div class="col-md-3">
-                            <select for="mes" aria-label="Selecionar" data-control="select2" , data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
+                            <select name="mes" id="mes" aria-label="Selecionar" data-control="select2" , data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
                                 <option value="1">Enero</option>
                                 <option value="2">Febrero</option>
                                 <option value="3">Marzo</option>
@@ -72,14 +74,25 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <select id="tipoGeneracion" class="form-select form-select-solid form-select-lg">
+                            <select id="tipoGeneracion" name="tipoGeneracion"  class="form-select form-select-solid form-select-lg">
                                 <option value="0">Todos</option>
                                 <option value="1">Individual</option>
                             </select>
                         </div>
 
-                        <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary me-3">Buscar</button>
+                        <div class="row">
+                            <div class="col-xl-12 fv-row">
+                                <center>
+                                    <button type="button" onclick="sendFormAjax(this, 'GenearAdeudo', undefined,undefined,'btn_Procesar')" class="btn btn-primary" id="btn_Procesar">
+                                        <span class="indicator-label">
+                                            <i class="far fa-save  fs-md-2qx"></i> Procesar
+                                        </span>
+                                        <span class="indicator-progress">
+                                            Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </button>
+                                </center>
+                            </div>
                         </div>
                     </div>
 

@@ -19,7 +19,15 @@ namespace DTOs.CatalogoGeneral
         public string? DatoIcono { get; set; }
         public string? Datoadicional { get; set; }        
         public string? UsuarioCreacion { get; set; }
-        
+
+        public string? Ctacont1 { get; set; }
+
+        public string? Ctacont2 { get; set; }
+
+        public string? Ctacont3 { get; set; }
+
+        public string? Ctacont4 { get; set; }
+
         public List<CatalogoDTOCrear>? InverseIdCatalogopadreNavigation { get; set; }
     }
 }

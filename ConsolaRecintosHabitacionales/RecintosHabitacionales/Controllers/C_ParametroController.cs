@@ -126,7 +126,7 @@ namespace RecintosHabitacionales.Controllers
                 if (listaCatalogo == null)
                     listaCatalogo = new List<CatalogoDTOResultadoBusqueda>();
 
-                return View("_ListaMaestroContable", listaCatalogo);
+                return View("_ListaParametros", listaCatalogo);
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
