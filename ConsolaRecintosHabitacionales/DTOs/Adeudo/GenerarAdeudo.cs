@@ -11,7 +11,7 @@ namespace DTOs.Adeudo
     {
         public Guid? IdDepartamento { get; set; }
 
-        public string IdConjunto { get; set; } = null!;
+        public Guid? IdConjunto { get; set; } = null!;
         public int  anio { get; set; }
         public int mes { get; set; }
         

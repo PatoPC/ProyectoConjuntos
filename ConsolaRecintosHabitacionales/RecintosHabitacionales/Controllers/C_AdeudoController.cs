@@ -1,13 +1,23 @@
 ﻿using DTOs.Adeudo;
 using DTOs.Proveedor;
+using DTOs.Torre;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
+using RecintosHabitacionales.Servicio;
+using RecintosHabitacionales.Servicio.Interface;
 using Utilitarios;
 
 namespace RecintosHabitacionales.Controllers
 {
     public class C_AdeudoController : Controller
     {
+        private readonly IServicioConsumoAPI<BusquedaTorres> _servicioConsumoAPIBusqueda;
+
+        public C_AdeudoController(IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusqueda)
+        {
+            _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
+        }
+
         public IActionResult GestionarAdeudo()
         {
             return View();
@@ -31,17 +41,36 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
         [HttpPost]
-        public IActionResult GenearAdeudo(GenerarAdeudo variable)
+        public async Task<ActionResult> GenearAdeudo(GenerarAdeudo variable)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
             if (objUsuarioSesion != null)
             {
-                List<int> listaAnios = obtenerAnios().ToList();
+                if (variable.IdConjunto!=null)
+                {
 
-                ViewData["listaAnios"] = listaAnios;
+                    BusquedaTorres objBusquedaTorres = new BusquedaTorres();
+                    objBusquedaTorres.IdConjunto = (Guid) variable.IdConjunto;
 
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                    List<TorreDTOCompleto> listaResultado = new List<TorreDTOCompleto>();
+
+                    HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarTorresAvanzado, HttpMethod.Get, objBusquedaTorres);
+
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        listaResultado = await LeerRespuestas<List<TorreDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+
+                        foreach (TorreDTOCompleto torre in listaResultado)
+                        {
+                            foreach (var Departamento in torre.Departamentos)
+                            {
+
+                            }
+                        }
+                    }
+                       
+                }
 
                 return View();
             }
