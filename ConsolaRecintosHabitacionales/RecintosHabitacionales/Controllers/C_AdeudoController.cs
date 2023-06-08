@@ -63,8 +63,13 @@ namespace RecintosHabitacionales.Controllers
 
                         foreach (TorreDTOCompleto torre in listaResultado)
                         {
-                            foreach (var Departamento in torre.Departamentos)
+                            foreach (var departamento in torre.Departamentos)
                             {
+                                AdeudoDTOCrear objAduedo = new AdeudoDTOCrear();
+
+                                objAduedo.IdDepartamento = departamento.IdDepartamento;
+                                objAduedo.MontoAdeudos = departamento.AliqDepartamento;
+                                //objAduedo.FechaAdeudos = departamento.IdFecha;
 
                             }
                         }
