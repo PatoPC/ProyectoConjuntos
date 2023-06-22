@@ -238,5 +238,16 @@ namespace Utilitarios
 
             return texto;
         }
+
+        public static DateTime ObtenerUltimoDiaDelMes(int mes, int año)
+        {
+            // Crear una instancia de DateTime con el primer día del mes siguiente
+            DateTime primerDiaDelMesSiguiente = new DateTime(año, mes, 1).AddMonths(1);
+
+            // Restar un día a la fecha obtenida para obtener el último día del mes actual
+            DateTime ultimoDiaDelMesActual = primerDiaDelMesSiguiente.AddDays(-1);
+
+            return ultimoDiaDelMesActual;
+        }
     }
 }

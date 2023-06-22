@@ -1,4 +1,5 @@
 ﻿using DTOs.Adeudo;
+using DTOs.CatalogoGeneral;
 using DTOs.Proveedor;
 using DTOs.Torre;
 using DTOs.Usuarios;
@@ -47,6 +48,8 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
+                List<AdeudoDTOCrear> listaAdeudos = new List<AdeudoDTOCrear>();
+                DateTime fechaADeudoActual = FuncionesUtiles.ObtenerUltimoDiaDelMes(variable.mes, variable.anio);
                 if (variable.IdConjunto!=null)
                 {
 
@@ -57,6 +60,11 @@ namespace RecintosHabitacionales.Controllers
 
                     HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarTorresAvanzado, HttpMethod.Get, objBusquedaTorres);
 
+
+                    CatalogoDTOResultadoBusqueda objCataArrendatario = await tipoPersonaDepartmento(ConstantesAplicacion.tipoPersonaCondomino);
+
+                    //CatalogoDTOResultadoBusqueda objCataDueno = await tipoPersonaDepartmento(ConstantesAplicacion.tipoPersonaPropietario);
+
                     if (respuesta.IsSuccessStatusCode)
                     {
                         listaResultado = await LeerRespuestas<List<TorreDTOCompleto>>.procesarRespuestasConsultas(respuesta);
@@ -65,12 +73,33 @@ namespace RecintosHabitacionales.Controllers
                         {
                             foreach (var departamento in torre.Departamentos)
                             {
-                                AdeudoDTOCrear objAduedo = new AdeudoDTOCrear();
+                                AdeudoDTOCrear objAdeudo = new AdeudoDTOCrear();
 
-                                objAduedo.IdDepartamento = departamento.IdDepartamento;
-                                objAduedo.MontoAdeudos = departamento.AliqDepartamento;
-                                //objAduedo.FechaAdeudos = departamento.IdFecha;
+                                objAdeudo.IdDepartamento = departamento.IdDepartamento;
+                                objAdeudo.MontoAdeudos = departamento.AliqDepartamento;
+                                objAdeudo.EstadoAdeudos = false;
+                                objAdeudo.FechaAdeudos = fechaADeudoActual;
+                                objAdeudo.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
+                                if (departamento.TipoPersonas != null)
+                                {
+                                    if (departamento.TipoPersonas.Count>0)
+                                    {
+                                        var personaArrend = departamento.TipoPersonas.Where(x => x.IdTipoPersonaDepartamento == objCataArrendatario.IdCatalogo).FirstOrDefault();
+
+                                        if (personaArrend != null)
+                                        {
+                                            objAdeudo.IdPersona = (Guid)personaArrend.IdPersona;
+                                        }
+                                        else
+                                        {
+                                            objAdeudo.IdPersona = (Guid)departamento.TipoPersonas.FirstOrDefault().IdPersona;
+                                        } 
+
+                                        listaAdeudos.Add(objAdeudo);
+                                    }
+
+                                }
                             }
                         }
                     }
@@ -83,6 +112,19 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
+        /// <summary>
+        /// Recpera los catalogos de acuerdo al codigo catalogo, para saber si es un arrendatario o un dueño de departamento
+        /// </summary>
+        /// <param name="codigoPersona"></param>
+        private async Task<CatalogoDTOResultadoBusqueda> tipoPersonaDepartmento(string codigoPersona)
+        {
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + codigoPersona, HttpMethod.Get);
+
+            var objCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuesta);
+
+            return objCatalogo;
+
+        }
 
         public static IEnumerable<int> obtenerAnios()
         {
