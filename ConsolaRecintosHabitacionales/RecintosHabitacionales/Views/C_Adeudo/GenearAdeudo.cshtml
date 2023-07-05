@@ -19,7 +19,16 @@
     <!--begin::Container-->
     <div id="kt_content_container" class="container-xxl">
   
-            <form asp-action="GenearAdeudo" id="GenearAdeudo">
+            @*<form asp-action="GenearAdeudo" id="GenearAdeudo">*@
+        <form action="@ConstantesAplicacion.pathConsola/C_Adeudo/GenearAdeudo"
+              data-ajax="true"
+              data-ajax-method="Post"
+              data-ajax-loading="#imagenCargando"
+              data-ajax-update="#resultSearch"
+              data-ajax-begin="emptyLastResults('resultSearch')"
+              data-ajax-success="ordenarTabla('idTablaPersonas')"
+              id="AjaxFormSend"
+              method="post">
             <div class="card">
                 <div class="card-header card-header-stretch">
                     <div class="card-title d-flex align-items-center">
@@ -80,18 +89,11 @@
                             </select>
                         </div>
 
-                        <div class="row">
-                            <div class="col-xl-12 fv-row">
-                                <center>
-                                    <button type="button" onclick="sendFormAjax(this, 'GenearAdeudo', undefined,undefined,'btn_Procesar')" class="btn btn-primary" id="btn_Procesar">
-                                        <span class="indicator-label">
-                                            <i class="far fa-save  fs-md-2qx"></i> Procesar
-                                        </span>
-                                        <span class="indicator-progress">
-                                            Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                        </span>
-                                    </button>
-                                </center>
+                        <div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Generar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -106,3 +108,16 @@
 
     </div>
 </div>
+
+
+@section scripts{
+
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+
+
+    <script type="text/javascript">
+
+
+    </script>
+}

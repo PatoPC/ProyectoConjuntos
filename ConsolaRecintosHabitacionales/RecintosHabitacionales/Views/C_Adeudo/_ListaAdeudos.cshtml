@@ -1,0 +1,76 @@
+﻿@model IEnumerable<DTOs.Adeudo.AdeudoDTOCrear>
+@using Utilitarios;
+
+@{
+	Layout = "";
+}
+
+
+<div class="card card-flush">
+    <div class="card card-body">
+        @await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+
+        @if (Model.Count() > 0)
+        {
+            <table border="1" id="idTablaPersonas" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <th>
+                            <span class="badge badge-light text-dark">Conjunto</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Departamento</span>
+                        </th>
+
+                        <th>
+                            <span class="badge badge-light text-dark">Nombres Apellido</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Valor</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Fecha</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Estado</span>
+                        </th>
+                        
+
+                    </tr>
+                </thead>
+                <tbody class="fw-bold text-gray-600">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td data-title="Conjunto">
+                                    @item.NombreConjunto
+                                </td>
+                                <td data-title="Departamento">
+                                    @item.Departamento
+                                </td>
+                                <td data-title="Nombres Apellido">
+                                    @item.NombresPersona
+                                </td>
+                                <td data-title="Valor">
+                                    <div>
+                                        @item.MontoAdeudos
+                                    </div>
+                                   
+                                </td>
+                                <td data-title="Fecha">
+                                    @item.FechaAdeudos.ToString("dd-MMM-yyyy")
+                                </td>
+                                <td data-title="Estado">
+                                   @item.EstadoAdeudos
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

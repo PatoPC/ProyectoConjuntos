@@ -11,6 +11,7 @@ namespace DTOs.Torre
     {
         public Guid IdTorres { get; set; }
         public Guid IdConjunto { get; set; }
+        public string NombreConjunto { get; set; } = null!;
         public string NombreTorres { get; set; } = null!;
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }

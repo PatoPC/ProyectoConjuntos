@@ -8,6 +8,8 @@ namespace DTOs.Adeudo
 {
     public class AdeudoDTOCrear
     {
+        public string? NombreConjunto { get; set; } = null;
+        public string? Departamento { get; set; } = null;
         public Guid IdDepartamento { get; set; }
         public Guid IdPersona { get; set; }
         public DateTime FechaAdeudos { get; set; }

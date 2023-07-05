@@ -27,6 +27,7 @@ namespace RecintosHabitacionales.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult GenearAdeudo()
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
@@ -79,6 +80,8 @@ namespace RecintosHabitacionales.Controllers
                                 AdeudoDTOCrear objAdeudo = new AdeudoDTOCrear();
 
                                 objAdeudo.IdDepartamento = departamento.IdDepartamento;
+                                objAdeudo.Departamento = departamento.CodigoDepartamento;
+                                objAdeudo.NombreConjunto = torre.NombreConjunto;
                                 objAdeudo.MontoAdeudos = departamento.AliqDepartamento;
                                 objAdeudo.EstadoAdeudos = false;
                                 objAdeudo.FechaAdeudos = fechaADeudoActual;
@@ -115,12 +118,12 @@ namespace RecintosHabitacionales.Controllers
 
                             if (httpCrearAdeudo.IsSuccessStatusCode)
                             {
-                                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta));
+
+                                return View("_ListaAdeudos", listaAdeudos);
                             }
                             else
                             {
-                                MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                                return new JsonResult(objMensajeRespuesta);
+                                return View("_ListaAdeudo", new List<AdeudoDTOCrear>());
                             }
                         }
                     }

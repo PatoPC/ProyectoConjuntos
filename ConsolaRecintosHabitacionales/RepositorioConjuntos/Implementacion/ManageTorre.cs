@@ -30,6 +30,7 @@ namespace RepositorioConjuntos.Implementacion
                 var conjuntos = await _context.Torres
                     .Where(
                     x => x.IdConjunto==objBusquedaTorreo.IdConjunto)
+                    .Include(x => x.IdConjuntoNavigation)
                     .Include(x => x.Departamentos)
                     .ThenInclude(x => x.TipoPersonas)
                     .ThenInclude(x => x.IdPersonaNavigation).ToListAsync();
