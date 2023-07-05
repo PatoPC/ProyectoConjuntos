@@ -77,6 +77,25 @@ namespace RepositorioConjuntos.Implementacion
             }
         }
 
+        public async Task<(bool estado, string mensajeError)> saveRangeAdeudo(List<Adeudo> lista)
+        {
+            try
+            {
+                await _context.AddRangeAsync(lista);
+
+                var created = await _context.SaveChangesAsync();
+
+                return (created > 0, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                string mensajeError = "";
+                if (ex.InnerException != null)
+                    mensajeError = ex.InnerException.Message;
+
+                return (false, mensajeError);
+            }
+        }
         public void Edit(T obj)
         {
             try

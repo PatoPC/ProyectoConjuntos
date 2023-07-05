@@ -1,3 +1,4 @@
+using DTOs.Adeudo;
 using DTOs.CatalogoGeneral;
 using DTOs.Conjunto;
 using DTOs.Departamento;
@@ -85,6 +86,7 @@ builder.Services.AddScoped(typeof(MaestroContableBusqueda));
 builder.Services.AddScoped(typeof(List<MaestroContableDTOCrear>));
 
 builder.Services.AddScoped(typeof(ParametroCrearDTO));
+builder.Services.AddScoped(typeof(List<AdeudoDTOCrear>));
 
 //builder.Services.AddScoped(typeof(ConexionApi));
 builder.Services.AddControllersWithViews();

@@ -13,6 +13,7 @@ namespace RepositorioConjuntos.Interface
         public void Add(T obj);
         public Task<(bool estado, string mensajeError)> saveRangeConjunto(List<Conjunto> listaConjuntos);
         public Task<(bool estado, string mensajeError)> saveRangeMaestro(List<ConMst> listaMaestro);
+        public Task<(bool estado, string mensajeError)> saveRangeAdeudo(List<Adeudo> listaMaestro);
         
         public void Edit(T obj);
         public void Delete(T obj);

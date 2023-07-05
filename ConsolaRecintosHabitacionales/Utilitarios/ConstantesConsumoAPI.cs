@@ -111,7 +111,17 @@ namespace Utilitarios
         public const string buscarMaestroContableAvanzado = ConstantesAplicacion.pathAPI + "/api/API_MaestroContable/MaestroContableBusquedaAvanzada";
         #endregion
 
-        
+
+        #region Adeudo
+        public const string gestionarAdeudoAPI = ConstantesAplicacion.pathAPI + "/api/adeudo/";
+        //public const string gestionarPersonaAPIEditar = ConstantesAplicacion.pathAPI + "/api/persona/Editar?id=";
+        //public const string gestionarPersonaAPIEliminar = ConstantesAplicacion.pathAPI + "/api/persona/Eliminar?id=";
+        //public const string buscarPersonaAvanzado = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaAvanzado";
+        //public const string crearPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/CrearPersonaDepartamento";
+        //public const string consultaTipoPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/ConsultaPersonaDepartamento";
+
+        #endregion
+
 
         #region Logs
         public const string crearLogs = ConstantesAplicacion.pathAPI + "/api/Logs/Create";
