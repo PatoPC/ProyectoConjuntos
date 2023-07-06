@@ -24,7 +24,36 @@ namespace RecintosHabitacionales.Controllers
 
         public IActionResult GestionarAdeudo()
         {
-            return View();
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+                List<int> listaAnios = obtenerAnios().ToList();
+
+                ViewData["listaAnios"] = listaAnios;
+
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+
+                return View();
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+        [HttpPost]
+         public IActionResult GestionarAdeudo(GenerarAdeudo variable)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+                DateTime fechaADeudoActual = FuncionesUtiles.ObtenerUltimoDiaDelMes(variable.mes, variable.anio);
+
+                variable.fechaADeudoActual = fechaADeudoActual;
+
+                return View();
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         [HttpGet]

@@ -1,68 +1,124 @@
 ﻿@using Utilitarios;
+@{
+    int anioActual = Convert.ToInt16(DateTime.Now.ToString("yyyy"));
+    short mesActual = Convert.ToInt16(DateTime.Now.ToString("MM"));
+    int mes = 0;
+
+    List<int> listaAnios = new List<int>();
+
+    if (ViewData["listaAnios"] != null)
+    {
+        listaAnios = (List<int>)ViewData["listaAnios"];
+    }
+
+    mes = mesActual;
+}
 
 
-<form action="@ConstantesAplicacion.pathConsola/C_MaestroContable/BusquedaMaestroContable"
-      data-ajax="true"
-      data-ajax-method="Get"
-      data-ajax-loading="#imagenCargando"
-      data-ajax-update="#resultSearch"
-      data-ajax-begin="emptyLastResults('resultSearch')"
-      data-ajax-success="ordenarTabla('idTablaConjutos')"
-      id="AjaxFormSend"
-      method="post">
-    <div class="card">
-        <div class="card-header card-header-stretch">
-            <div class="card-title d-flex align-items-center">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3 class="fw-bolder m-0 text-gray-800">
-                            <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
-                            Gestionar Adeudo
-                        </h3>
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-xxl">
+
+        @*<form asp-action="GenearAdeudo" id="GenearAdeudo">*@
+        <form action="@ConstantesAplicacion.pathConsola/C_Adeudo/GestoinarAdeudo"
+              data-ajax="true"
+              data-ajax-method="Post"
+              data-ajax-loading="#imagenCargando"
+              data-ajax-update="#resultSearch"
+              data-ajax-begin="emptyLastResults('resultSearch')"
+              data-ajax-success="ordenarTabla('idTablaPersonas')"
+              id="AjaxFormSend"
+              method="post">
+            <div class="card">
+                <div class="card-header card-header-stretch">
+                    <div class="card-title d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="fw-bolder m-0 text-gray-800">
+                                    <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                                    Gestionar Adeudo
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a class="btn btn-success" asp-action="GenearAdeudo">Generar</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <a class="btn btn-success" asp-action="GenearAdeudo">Generar</a>
-                    </div>               
-                </div>
-            </div>
-        </div>
+                <div class="card-body border-top">
+                    <label class="fs-6 form-label fw-bolder text-dark">Busqueda Información</label>
+                    <div class="row">
+                        <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
+                        <div class="col-md-3">
+                            @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                        </div>
 
-        <div class="card-body border-top">
-            <div class="col-md-12">
-                <div class="row">
-                    @*<label class="fs-6 form-label fw-bolder text-dark">Datos</label>
-                    <div class="col-md-2">
-                    <input asp-for="NombreConjunto" type="text" class="form-control form-control-solid" placeholder="Nombre" />
+                        <div class="col-md-3">
+                            <select name="anio" id="anio" aria-label="Selecionar" data-control="select2" , data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
+                                @foreach (var anio in listaAnios)
+                                {
+                                    if (anio == anioActual)
+                                    {
+                                        <option value="@anio" selected="selected">@anio</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@anio">@anio</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <select name="mes" id="mes" aria-label="Selecionar" data-control="select2" , data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                        </div>
+                       @* <div class="col-md-3">
+                            <select id="tipoGeneracion" name="tipoGeneracion" class="form-select form-select-solid form-select-lg">
+                                <option value="0">Todos</option>
+                                <option value="1">Individual</option>
+                            </select>
+                        </div>*@
+
+                        <div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Consultar</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                    <input asp-for="RucConjunto" type="text" class="form-control form-control-solid" placeholder="RUC" />
-                    </div>*@
+
                 </div>
             </div>
+            <center><img src="~/assets/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
+        </form>
+
+        <div id="resultSearch">
         </div>
 
-        <div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Buscar</button>
-                </div>
-            </div>
-        </div>
     </div>
-    <center><img src="~/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
-</form>
-
-<div id="resultSearch">
 </div>
+
 
 @section scripts{
 
     <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
     <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
-    <script src="~/js/JSBusquedaDocumentos.js"></script>
-    <script src="~/js/cargadatosdocumentospersona.js"></script>
 
 
     <script type="text/javascript">
