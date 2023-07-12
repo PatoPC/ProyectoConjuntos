@@ -116,7 +116,7 @@ namespace Utilitarios
         public const string gestionarAdeudoAPI = ConstantesAplicacion.pathAPI + "/api/adeudo/";
         //public const string gestionarPersonaAPIEditar = ConstantesAplicacion.pathAPI + "/api/persona/Editar?id=";
         //public const string gestionarPersonaAPIEliminar = ConstantesAplicacion.pathAPI + "/api/persona/Eliminar?id=";
-        //public const string buscarPersonaAvanzado = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaAvanzado";
+        public const string buscarAdeudoAvanzado = ConstantesAplicacion.pathAPI + "/api/adeudo/BusquedaAvanzadaAdeudo";
         //public const string crearPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/CrearPersonaDepartamento";
         //public const string consultaTipoPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/ConsultaPersonaDepartamento";
 

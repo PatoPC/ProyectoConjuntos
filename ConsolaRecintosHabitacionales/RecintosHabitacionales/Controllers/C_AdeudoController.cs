@@ -1,5 +1,6 @@
 ﻿using DTOs.Adeudo;
 using DTOs.CatalogoGeneral;
+using DTOs.Conjunto;
 using DTOs.Persona;
 using DTOs.Proveedor;
 using DTOs.Torre;
@@ -14,12 +15,14 @@ namespace RecintosHabitacionales.Controllers
     public class C_AdeudoController : Controller
     {
         private readonly IServicioConsumoAPI<BusquedaTorres> _servicioConsumoAPIBusqueda;
+        private readonly IServicioConsumoAPI<GenerarAdeudo> _servicioConsumoBusqueda;
         private readonly IServicioConsumoAPI<List<AdeudoDTOCrear>> _servicioConsumoAPICrear;
 
-        public C_AdeudoController(IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusqueda, IServicioConsumoAPI<List<AdeudoDTOCrear>> servicioConsumoAPICrear)
+        public C_AdeudoController(IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusqueda, IServicioConsumoAPI<List<AdeudoDTOCrear>> servicioConsumoAPICrear, IServicioConsumoAPI<GenerarAdeudo> servicioConsumoBusqueda)
         {
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
             _servicioConsumoAPICrear = servicioConsumoAPICrear;
+            _servicioConsumoBusqueda = servicioConsumoBusqueda;
         }
 
         public IActionResult GestionarAdeudo()
@@ -40,17 +43,33 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
         [HttpPost]
-         public IActionResult GestionarAdeudo(GenerarAdeudo variable)
+        public async Task<ActionResult> BusquedaAvanzadaAdeudo(GenerarAdeudo variable)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
+            List<AdeudoDTOCrear> listaResultado = new List<AdeudoDTOCrear>();
             if (objUsuarioSesion != null)
             {
                 DateTime fechaADeudoActual = FuncionesUtiles.ObtenerUltimoDiaDelMes(variable.mes, variable.anio);
 
                 variable.fechaADeudoActual = fechaADeudoActual;
 
-                return View();
+                try
+                {
+                    HttpResponseMessage respuesta = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.buscarAdeudoAvanzado, HttpMethod.Get, variable);
+
+                    if (respuesta.IsSuccessStatusCode)
+                        listaResultado = await LeerRespuestas<List<AdeudoDTOCrear>>.procesarRespuestasConsultas(respuesta);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                if (listaResultado == null)
+                    listaResultado = new List<AdeudoDTOCrear>();
+
+                return View("_ListaAdeudos", listaResultado);
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
@@ -66,8 +85,8 @@ namespace RecintosHabitacionales.Controllers
                 List<int> listaAnios = obtenerAnios().ToList();
 
                 ViewData["listaAnios"] = listaAnios;
-              
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;            
+
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
 
                 return View();
             }
@@ -83,11 +102,11 @@ namespace RecintosHabitacionales.Controllers
             {
                 List<AdeudoDTOCrear> listaAdeudos = new List<AdeudoDTOCrear>();
                 DateTime fechaADeudoActual = FuncionesUtiles.ObtenerUltimoDiaDelMes(variable.mes, variable.anio);
-                if (variable.IdConjunto!=null)
+                if (variable.IdConjunto != null)
                 {
 
                     BusquedaTorres objBusquedaTorres = new BusquedaTorres();
-                    objBusquedaTorres.IdConjunto = (Guid) variable.IdConjunto;
+                    objBusquedaTorres.IdConjunto = (Guid)variable.IdConjunto;
 
                     List<TorreDTOCompleto> listaResultado = new List<TorreDTOCompleto>();
 
@@ -118,7 +137,7 @@ namespace RecintosHabitacionales.Controllers
 
                                 if (departamento.TipoPersonas != null)
                                 {
-                                    if (departamento.TipoPersonas.Count>0)
+                                    if (departamento.TipoPersonas.Count > 0)
                                     {
                                         var personaArrend = departamento.TipoPersonas.Where(x => x.IdTipoPersonaDepartamento == objCataArrendatario.IdCatalogo).FirstOrDefault();
                                         objAdeudo.FechaCreacion = DateTime.Now;
@@ -126,13 +145,13 @@ namespace RecintosHabitacionales.Controllers
                                         {
                                             objAdeudo.IdPersona = (Guid)personaArrend.IdPersona;
                                             objAdeudo.NombresPersona = personaArrend.NombrePersona;
-                                           
+
                                         }
                                         else
                                         {
                                             objAdeudo.IdPersona = (Guid)departamento.TipoPersonas.FirstOrDefault().IdPersona;
                                             objAdeudo.NombresPersona = departamento.TipoPersonas.FirstOrDefault().NombrePersona;
-                                        } 
+                                        }
 
                                         listaAdeudos.Add(objAdeudo);
                                     }
@@ -156,7 +175,7 @@ namespace RecintosHabitacionales.Controllers
                             }
                         }
                     }
-                       
+
                 }
 
                 return View();

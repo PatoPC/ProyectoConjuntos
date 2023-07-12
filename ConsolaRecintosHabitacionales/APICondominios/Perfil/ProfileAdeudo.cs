@@ -13,6 +13,8 @@ namespace APICondominios.Perfil
             CreateMap<Adeudo, AdeudoDTOCrear>();
             CreateMap<AdeudoDTOCrear, Adeudo>();
 
+            CreateMap<Adeudo, AdeudoDTOCompleto>();
+
            
            
         }

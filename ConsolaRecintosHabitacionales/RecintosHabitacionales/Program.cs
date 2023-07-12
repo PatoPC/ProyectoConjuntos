@@ -86,6 +86,7 @@ builder.Services.AddScoped(typeof(MaestroContableBusqueda));
 builder.Services.AddScoped(typeof(List<MaestroContableDTOCrear>));
 
 builder.Services.AddScoped(typeof(ParametroCrearDTO));
+builder.Services.AddScoped(typeof(GenerarAdeudo));
 builder.Services.AddScoped(typeof(List<AdeudoDTOCrear>));
 
 //builder.Services.AddScoped(typeof(ConexionApi));
