@@ -25,27 +25,17 @@ namespace RepositorioConjuntos.Implementacion
             try
             {
                 List<Adeudo> listaAdeudos = new List<Adeudo>();
+                
+                string fechaFormateada = objBusqueda.fechaADeudoActual.ToString("yyyy-MM-dd");
 
-                //listaAdeudos = await _context.Adeudos.ToListAsync();
+                listaAdeudos = await _context.Adeudos
+                    .Where(x => x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto && 
+                    x.FechaAdeudos == objBusqueda.fechaADeudoActual)
+                    .Include(x => x.IdDepartamentoNavigation)
+                    .ThenInclude(x => x.IdTorresNavigation)
+                    .ToListAsync();
 
-                listaAdeudos = await _context.Adeudos.Where(x => x.FechaAdeudos.ToString("yyyy-MM-dd") == ((DateTime)objBusqueda.fechaADeudoActual).ToString("yyyyy-MM-dd")
-            ).Include(x => x.IdDepartamentoNavigation)
-            .ThenInclude(x => x.IdTorresNavigation)
-            .ToListAsync();
-
-                listaAdeudos = await _context.Adeudos.Where(x => x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto
-           ).Include(x => x.IdDepartamentoNavigation)
-           .ThenInclude(x => x.IdTorresNavigation)
-           .ToListAsync();
-
-
-                //     listaAdeudos = await _context.Adeudos.Where(x => x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto
-                //&& x.FechaAdeudos.ToString("MMyyyy") == ((DateTime)objBusqueda.fechaADeudoActual).ToString("MMyyyy")
-                //).Include(x => x.IdDepartamentoNavigation)
-                //.ThenInclude(x => x.IdTorresNavigation)
-                //.ToListAsync();
-
-
+               
 
                 return listaAdeudos;
             }

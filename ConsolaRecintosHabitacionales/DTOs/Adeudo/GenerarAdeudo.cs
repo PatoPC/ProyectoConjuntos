@@ -16,7 +16,7 @@ namespace DTOs.Adeudo
         public int mes { get; set; }
         
          public int tipoGeneracion { get; set; }
-        public DateTime? fechaADeudoActual { get; set; } = null;
+        public DateTime fechaADeudoActual { get; set; }
 
     }
 }
