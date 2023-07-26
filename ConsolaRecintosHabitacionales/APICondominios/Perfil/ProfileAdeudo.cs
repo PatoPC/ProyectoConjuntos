@@ -10,13 +10,18 @@ namespace APICondominios.Perfil
     {
         public ProfileAdeudo()
         {
-            CreateMap<Adeudo, AdeudoDTOCrear>();
+            CreateMap<Adeudo, AdeudoDTOCrear>();                
             CreateMap<AdeudoDTOCrear, Adeudo>();
 
-            CreateMap<Adeudo, AdeudoDTOCompleto>();
+            CreateMap<Adeudo, AdeudoDTOCompleto>()
+                .ForMember(x => x.Nombre, y => y.MapFrom(fuente => fuente.IdPersonaNavigation.NombresPersona))
+                .ForMember(x => x.Apellido, y => y.MapFrom(fuente => fuente.IdPersonaNavigation.ApellidosPersona))
+                .ForMember(x => x.NombreConjunto, y => y.MapFrom(fuente => fuente.IdDepartamentoNavigation.IdTorresNavigation.IdConjuntoNavigation.NombreConjunto))
+                .ForMember(x => x.Torre, y => y.MapFrom(fuente => fuente.IdDepartamentoNavigation.IdTorresNavigation.NombreTorres))
+                .ForMember(x => x.Departamento, y => y.MapFrom(fuente => fuente.IdDepartamentoNavigation.CodigoDepartamento));
 
-           
-           
+
+
         }
        
     }

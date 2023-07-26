@@ -1,4 +1,5 @@
-﻿using DTOs.Adeudo;
+﻿using AutoMapper;
+using DTOs.Adeudo;
 using DTOs.CatalogoGeneral;
 using DTOs.Conjunto;
 using DTOs.Persona;
@@ -17,12 +18,13 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<BusquedaTorres> _servicioConsumoAPIBusqueda;
         private readonly IServicioConsumoAPI<GenerarAdeudo> _servicioConsumoBusqueda;
         private readonly IServicioConsumoAPI<List<AdeudoDTOCrear>> _servicioConsumoAPICrear;
-
-        public C_AdeudoController(IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusqueda, IServicioConsumoAPI<List<AdeudoDTOCrear>> servicioConsumoAPICrear, IServicioConsumoAPI<GenerarAdeudo> servicioConsumoBusqueda)
+        private readonly IMapper _mapper;
+        public C_AdeudoController(IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusqueda, IServicioConsumoAPI<List<AdeudoDTOCrear>> servicioConsumoAPICrear, IServicioConsumoAPI<GenerarAdeudo> servicioConsumoBusqueda, IMapper mapper)
         {
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
             _servicioConsumoAPICrear = servicioConsumoAPICrear;
             _servicioConsumoBusqueda = servicioConsumoBusqueda;
+            _mapper = mapper;
         }
 
         public IActionResult GestionarAdeudo()
@@ -47,7 +49,7 @@ namespace RecintosHabitacionales.Controllers
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            List<AdeudoDTOCrear> listaResultado = new List<AdeudoDTOCrear>();
+            List<AdeudoDTOCompleto> listaResultado = new List<AdeudoDTOCompleto>();
             if (objUsuarioSesion != null)
             {
                 DateTime fechaADeudoActual = FuncionesUtiles.ObtenerUltimoDiaDelMes(variable.mes, variable.anio);
@@ -59,7 +61,7 @@ namespace RecintosHabitacionales.Controllers
                     HttpResponseMessage respuesta = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.buscarAdeudoAvanzado, HttpMethod.Get, variable);
 
                     if (respuesta.IsSuccessStatusCode)
-                        listaResultado = await LeerRespuestas<List<AdeudoDTOCrear>>.procesarRespuestasConsultas(respuesta);
+                        listaResultado = await LeerRespuestas<List<AdeudoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
                 }
                 catch (Exception ex)
                 {
@@ -67,7 +69,7 @@ namespace RecintosHabitacionales.Controllers
                 }
 
                 if (listaResultado == null)
-                    listaResultado = new List<AdeudoDTOCrear>();
+                    listaResultado = new List<AdeudoDTOCompleto>();
 
                 return View("_ListaAdeudos", listaResultado);
             }
@@ -132,6 +134,7 @@ namespace RecintosHabitacionales.Controllers
                                 objAdeudo.NombreConjunto = torre.NombreConjunto;
                                 objAdeudo.MontoAdeudos = departamento.AliqDepartamento;
                                 objAdeudo.EstadoAdeudos = false;
+                                objAdeudo.Torre = torre.NombreTorres;
                                 objAdeudo.FechaAdeudos = fechaADeudoActual;
                                 objAdeudo.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
@@ -166,8 +169,11 @@ namespace RecintosHabitacionales.Controllers
 
                             if (httpCrearAdeudo.IsSuccessStatusCode)
                             {
+                                
 
-                                return View("_ListaAdeudos", listaAdeudos);
+                              List<AdeudoDTOCompleto> listaMostrar = _mapper.Map<List<AdeudoDTOCompleto>>(listaAdeudos);
+
+                                return View("_ListaAdeudos", listaMostrar);
                             }
                             else
                             {

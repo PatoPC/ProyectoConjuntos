@@ -26,16 +26,14 @@ namespace RepositorioConjuntos.Implementacion
             {
                 List<Adeudo> listaAdeudos = new List<Adeudo>();
                 
-                string fechaFormateada = objBusqueda.fechaADeudoActual.ToString("yyyy-MM-dd");
-
                 listaAdeudos = await _context.Adeudos
                     .Where(x => x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto && 
                     x.FechaAdeudos == objBusqueda.fechaADeudoActual)
                     .Include(x => x.IdDepartamentoNavigation)
                     .ThenInclude(x => x.IdTorresNavigation)
-                    .ToListAsync();
-
-               
+                    .ThenInclude(x => x.IdConjuntoNavigation)
+                    .Include(x => x.IdPersonaNavigation)
+                    .ToListAsync();               
 
                 return listaAdeudos;
             }

@@ -13,6 +13,7 @@ namespace DTOs.Adeudo
         public Guid IdDepartamento { get; set; }
         public Guid IdPersona { get; set; }
         public DateTime FechaAdeudos { get; set; }
+        public string Torre { get; set; } = null!;
         public string? NombresPersona { get; set; } = null!;
         public string? ApellidosPersona { get; set; } = null!;
         public decimal MontoAdeudos { get; set; }
