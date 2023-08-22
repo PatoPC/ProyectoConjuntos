@@ -19,6 +19,7 @@ namespace ConjuntosEntidades.Entidades
         public virtual DbSet<Adeudo> Adeudos { get; set; } = null!;
         public virtual DbSet<AreasDepartamento> AreasDepartamentos { get; set; } = null!;
         public virtual DbSet<Banco> Bancos { get; set; } = null!;
+        public virtual DbSet<Comunicado> Comunicados { get; set; } = null!;
         public virtual DbSet<ConMst> ConMsts { get; set; } = null!;
         public virtual DbSet<Conjunto> Conjuntos { get; set; } = null!;
         public virtual DbSet<Departamento> Departamentos { get; set; } = null!;
@@ -156,6 +157,64 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("NOMBRE_BANCOS");
 
                 entity.Property(e => e.StatusBancos).HasColumnName("STATUS_BANCOS");
+            });
+
+            modelBuilder.Entity<Comunicado>(entity =>
+            {
+                entity.HasKey(e => e.IdComunicado);
+
+                entity.ToTable("COMUNICADO");
+
+                entity.Property(e => e.IdComunicado)
+                    .HasColumnName("ID_COMUNICADO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Descripcion)
+                    .HasColumnType("text")
+                    .HasColumnName("DESCRIPCION");
+
+                entity.Property(e => e.Estado).HasColumnName("ESTADO");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaFin)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_FIN");
+
+                entity.Property(e => e.FechaInicio)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_INICIO");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.IdConjunto)
+                    .HasColumnName("ID_CONJUNTO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Titulo)
+                    .HasMaxLength(80)
+                    .IsUnicode(false)
+                    .HasColumnName("TITULO");
+
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_CREACION");
+
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.HasOne(d => d.IdConjuntoNavigation)
+                    .WithMany(p => p.Comunicados)
+                    .HasForeignKey(d => d.IdConjunto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_COMUNICA_REFERENCE_CONJUNTO");
             });
 
             modelBuilder.Entity<ConMst>(entity =>

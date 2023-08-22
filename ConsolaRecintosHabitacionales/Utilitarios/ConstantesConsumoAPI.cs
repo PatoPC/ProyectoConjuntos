@@ -129,5 +129,14 @@ namespace Utilitarios
         public const string busquedaLogsPorID = ConstantesAplicacion.pathAPI + "/api/Logs/";
         #endregion
 
+
+        #region Comunicado
+        public const string CrearComunicado = ConstantesAplicacion.pathAPI + "/api/Comunicado/";
+        public const string BuscarComunicadoAvanzado = ConstantesAplicacion.pathAPI + "/api/Comunicado/BusquedaAvanzadaComunicado";
+        public const string BuscarComunicadoPorID = ConstantesAplicacion.pathAPI + "/api/Comunicado/";
+        public const string EditarComunicadoID = ConstantesAplicacion.pathAPI + "/api/Comunicado/Editar?id=";
+        public const string EditarComunicadoEliminar = ConstantesAplicacion.pathAPI + "/api/Comunicado/Eliminar?id=";
+        #endregion
+
     }
 }

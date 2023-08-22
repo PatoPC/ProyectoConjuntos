@@ -1,5 +1,6 @@
 using DTOs.Adeudo;
 using DTOs.CatalogoGeneral;
+using DTOs.Comunicado;
 using DTOs.Conjunto;
 using DTOs.Departamento;
 using DTOs.Logs;
@@ -89,6 +90,9 @@ builder.Services.AddScoped(typeof(ParametroCrearDTO));
 builder.Services.AddScoped(typeof(GenerarAdeudo));
 builder.Services.AddScoped(typeof(List<AdeudoDTOCrear>));
 
+builder.Services.AddScoped(typeof(ComunicadoDTOCrear));
+builder.Services.AddScoped(typeof(ComunicadoDTOEditar));
+builder.Services.AddScoped(typeof(BusquedaComunicadoDTO));
 //builder.Services.AddScoped(typeof(ConexionApi));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

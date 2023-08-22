@@ -1,0 +1,195 @@
+﻿@model DTOs.Comunicado.ComunicadoDTOCompleto;
+
+<div class="card mb-10 mb-xl-12">
+    <div class="card-header card-header-stretch">
+        <div class="card-title d-flex align-items-center">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3 class="fw-bolder m-0 text-gray-800">
+                        <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                        Editar Comunicado
+                    </h3>
+                </div>
+                <div class="col-md-12">
+                    <a class="btn btn-success" asp-action="GestionarComunicado"><i class="fas fa-undo-alt"></i><b> Ver lista</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body border-top">
+
+        <div class="row p-lg-10">
+            <form asp-action="EditarComunicado" id="FormCrear">
+                @Html.HiddenFor(x => x.IdComunicado)
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="NombreProveedor" class="control-label">
+                                            Comunicado
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-10 fv-row">
+                                    @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Titulo" class="control-label">
+                                            Título
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-10 fv-row">
+                                    <input type="text" asp-for="Titulo" class="form-control form-control-solid" placeholder="Nombre/Razón Social" required="required" maxlength="60" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="FechaInicio" class="control-label">
+                                            Fecha Inicio
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-10 fv-row">
+                                    <input asp-for="FechaInicio" class="form-control form-control-solid" required="required" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="FechaFin" class="control-label">
+                                            Fecha Fin
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-10 fv-row">
+                                    <input asp-for="FechaFin" class="form-control form-control-solid" required="required" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Estado" class="control-label">
+                                            Habilitado
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-10 fv-row">
+                                    <div class="col-lg-8 d-flex align-items-center">
+                                        <label>
+                                            <input type="radio" class="btn-check" name="Estado" value="true" @(Model.Estado ? "checked= \"checked\"" : "") />
+                                            <span class="btn btn btn-color-muted  btn-active-primary fw-bolder px-md-7">Si</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" class="btn-check" name="Estado" value="false" @(!Model.Estado ? "checked= \"checked\"" : "") />
+                                            <span class="btn btn btn-color-muted  btn-active-danger fw-bolder px-md-7">No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-1">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Descripcion" class="control-label">
+                                            Descripcion:
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-11 fv-row">
+                                    <textarea asp-for=Descripcion class="form-select form-select-solid"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-12 fv-row">
+                        <center>
+                            <button type="button" onclick="sendFormAjax(this, 'FormCrear', undefined,undefined,'btn_CrearProveedor')" class="btn btn-primary" id="btn_CrearProveedor">
+                                <span class="indicator-label">
+                                    <i class="far fa-save fs-md-2qx"></i>Guardar Cambios
+                                </span>
+                                <span class="indicator-progress">
+                                    Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </center>
+                    </div>
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/site.js"></script>
+    <script type="text/javascript">
+        $("#FechaInicio").flatpickr({
+            defaultDate: "today"
+        });
+        $("#FechaFin").flatpickr({
+            defaultDate: "today"
+        });
+
+        $(document).ready(function () {
+            const select = document.querySelector('#IdConjunto');
+            if (select.options.length === 1) {
+                select.selectedIndex = 0;
+            }
+        })
+
+    </script>
+}

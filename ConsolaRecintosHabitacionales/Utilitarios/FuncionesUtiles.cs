@@ -249,5 +249,23 @@ namespace Utilitarios
 
             return ultimoDiaDelMesActual;
         }
+
+        public static string ResumirString(string texto, int max, int min = 5)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                return string.Empty;
+            }
+
+            string[] words = texto.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (words.Length < min)
+            {
+                return texto; // No truncar si tiene menos de 5 palabras
+            }
+
+            int endIndex = Math.Min(max, words.Length);
+            return string.Join(" ", words.Take(endIndex));
+        }
     }
 }

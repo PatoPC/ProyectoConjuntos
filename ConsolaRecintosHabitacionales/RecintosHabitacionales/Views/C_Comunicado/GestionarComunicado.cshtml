@@ -1,0 +1,90 @@
+﻿@model DTOs.Comunicado.BusquedaComunicadoDTO;
+@using Utilitarios;
+
+@{
+    List<DTOs.Comunicado.ComunicadoDTOCompleto> listaResultado = new List<DTOs.Comunicado.ComunicadoDTOCompleto>();
+
+    if (ViewData["listaComunicados"] != null)
+    {
+        listaResultado = (List<DTOs.Comunicado.ComunicadoDTOCompleto>)ViewData["listaComunicados"];
+    }
+}
+
+<form action="@ConstantesAplicacion.pathConsola/C_Comunicado/BusquedaAvanzadaComunicado"
+      data-ajax="true"
+      data-ajax-method="Get"
+      data-ajax-loading="#imagenCargando"
+      data-ajax-update="#resultSearch"
+      data-ajax-begin="emptyLastResults('resultSearch')"
+      data-ajax-success="ordenarTabla('idTablaConjutos')"
+      id="AjaxFormSend"
+      method="post">
+    <div class="card">
+        <div class="card-header card-header-stretch">
+            <div class="card-title d-flex align-items-center">
+                <div class="row">
+                    <div class="col-md-10">
+                        <h3 class="fw-bolder m-0 text-gray-800">
+                            <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                            Comunicado
+                        </h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <a class="btn btn-success" asp-action="CrearComunicado">Nuevo</a>
+                    </div>                   
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body border-top">
+            <div class="col-md-12">
+                <div class="row">
+                    <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
+                    <div class="col-md-3">
+                        @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                    </div>
+                    <div class="col-md-3">
+                        <input asp-for="Titulo" type="text" class="form-control form-control-solid" placeholder="TITULO" />
+                    </div>
+                    <div class="col-md-3">
+                        <input asp-for="Descripcion" type="text" class="form-control form-control-solid" placeholder="DESCRIPCIÓN" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <center><img src="~/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
+
+</form>
+
+<div id="resultSearch">
+    @if (listaResultado.Count > 0)
+    {
+        @await Html.PartialAsync("_ListaComunicados", listaResultado)
+    }
+</div>
+
+@section scripts{
+
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+    <script src="~/js/JSBusquedaDocumentos.js"></script>
+    <script src="~/js/cargadatosdocumentospersona.js"></script>
+
+
+    <script type="text/javascript">
+
+
+    </script>
+}

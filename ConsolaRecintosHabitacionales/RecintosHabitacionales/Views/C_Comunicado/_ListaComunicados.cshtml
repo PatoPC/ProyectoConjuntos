@@ -1,0 +1,77 @@
+﻿@model IEnumerable<DTOs.Comunicado.ComunicadoDTOCompleto>;
+@using Utilitarios;
+@{
+    Layout = "";
+}
+<div class="card card-flush">
+    <div class="card card-body">
+        @await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+
+        @if (Model.Count() > 0)
+        {
+            <table border="1" id="idTablaPersonas" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <th>
+                            <span class="badge badge-light text-dark">Conjunto</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Titulo</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Descipción</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">F. Inicio</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">F. Final</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Acción</span>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody class="fw-bold text-gray-600">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td data-title="Conjunto">
+                                    @item.NombreConjunto
+                                </td>
+                                <td data-title="Titulo">
+                                    @item.Titulo
+                                </td>
+                                <td data-title="Descripcion">
+                                    @item.Descripcion
+                                </td>
+                                <td data-title="F. Inicio">
+                                    @item.FechaCreacion
+                                </td>
+                                <td data-title="F. Final">
+                                    @item.FechaModificacion
+                                </td>
+                                <td data-title="Acción">
+                                   <div>
+                                        <a href="~/C_Comunicado/EditarComunicado?IdComunicado=@item.IdComunicado" target="_self" class="badge badge-light-primary">Editar<i class="far fa-edit" style="color: #009ef7; cursor:pointer"></i></a>
+                                    </div>
+                                   <div>
+                                        <a href="~/C_Comunicado/DetalleComunicado?IdComunicado=@item.IdComunicado" target="_self" class="badge badge-light-dark">Detalle<i class="far fa-eye" style="color: black"></i></a>
+                                    </div>
+                                      <div>
+                                        <a href="~/C_Comunicado/EliminarComunicado?IdComunicado=@item.IdComunicado" target="_self" class="badge badge-light-danger">Eliminar<i class="fas fa-trash-alt" style="color: #f1416c"></i></a>
+                                    </div>
+                                    @*}*@
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
