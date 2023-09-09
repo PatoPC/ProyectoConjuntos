@@ -22,7 +22,7 @@
         <div class="row p-lg-10">
 
             <form asp-action="EditarConjuntos" id="EditarConjuntos">
-               @Html.HiddenFor(x => x.IdConjunto)
+                @Html.HiddenFor(x => x.IdConjunto)
                 <div class="row">
                     <div class="col-md-6">
                         <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
@@ -38,7 +38,7 @@
                                 <div class="col-xl-8 fv-row">
                                     <input type="text" asp-for="NombreConjunto" class="form-control form-control-solid" placeholder="Conjunto Uno" />
                                 </div>
-                            </div>                         
+                            </div>
 
                             <div class="row mb-12">
                                 <div class="col-xl-4">
@@ -130,37 +130,54 @@
             <hr style="color: #009ef7;" />
             <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 mb-5">
                 <li class="nav-item">
-                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#tab_datos_departamento">
+                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#tab_Torres">
                         <i class="fas fa-archway"></i> Torres
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#tab_AreaComunal">
+                        <i class="fas fa-archway"></i> Area Comunal
                     </a>
                 </li>
             </ul>
 
-           <div class="col-md-3"> 
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="MostrarModal('modal_Create_Torre')">
-                Añadir Torre
-                <i class="fas fa-plus fs-md-1qx"></i>
-            </button>
-           </div>
             @await Html.PartialAsync("Departamento/_CrearDepartamentoModal", new DTOs.Departamento.DepartamentoDTOCrear(Model.IdConjunto))
             @await Html.PartialAsync("Departamento/_GestionarDepartamentoModal", new DTOs.Departamento.DepartamentoDTOEditar(Model.IdConjunto))
-
+            @await Html.PartialAsync("Torre/_Modal_GestionTorres", new DTOs.Torre.TorreDTOEditar())
         </div>
 
         <div class="row">
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="tab_datos_departamento" role="tabpanel">
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="tab_Torres" role="tabpanel">
+
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="MostrarModal('modal_Create_Torre')">
+                            Añadir Torre
+                            <i class="fas fa-plus fs-md-1qx"></i>
+                        </button>
+                    </div>
                     @await Html.PartialAsync("Torre/_ModalCrearTorre", new DTOs.Torre.TorreDTOCrear(Model.IdConjunto))
-                </div>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="tab_datos_departamento" role="tabpanel">
-                        @await Html.PartialAsync("Torre/_Modal_GestionTorres", new DTOs.Torre.TorreDTOEditar())
+
+                    <div id="resultadoListaTorres">
+                        @await Html.PartialAsync("Torre/_ListaTorres", Model.Torres)
                     </div>
                 </div>
 
-                <div id="resultadoListaTorres">
-                    @await Html.PartialAsync("Torre/_ListaTorres", Model.Torres)
+                <div class="tab-pane fade show" id="tab_AreaComunal" role="tabpanel">
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="MostrarModal('modal_Gestionar_AreaComunal')">
+                            Añadir Area
+                            <i class="fas fa-plus fs-md-1qx"></i>
+                        </button>
+                    </div>
+                    @await Html.PartialAsync("AreaComunal/_Modal_CrearAreaComunal", new DTOs.AreaComunal.AreaComunalDTOCrear(Model.IdConjunto))
+                    @await Html.PartialAsync("AreaComunal/_Modal_GestionarAreaComunal", new DTOs.AreaComunal.AreaComunalDTOEditar())
+                    <div id="resultadoListaAreaComunal">
+                        @await Html.PartialAsync("AreaComunal/_ListaAreaComunal", Model.AreaComunals)
+                    </div>
                 </div>
+
+               
             </div>
         </div>
 
@@ -173,4 +190,5 @@
     <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
     <script src="~/js/gestiontorres.js"></script>
     <script src="~/js/personadepartamentojs.js"></script>
+    <script src="~/js/gestionarareacomunal.js"></script>
 }

@@ -1,8 +1,69 @@
-﻿@{
+﻿@*@using IEnumerable<DTOs.Comunicado.ComunicadoDTOCompleto>;*@
+@{
     ViewData["Title"] = "Home Page";
+    int contador = 0;
+
+    List<DTOs.Comunicado.ComunicadoDTOCompleto> listaComunicados = new List<DTOs.Comunicado.ComunicadoDTOCompleto>();
+
+    if(ViewData["listaComunicados"] != null)
+    {
+        listaComunicados = (List<DTOs.Comunicado.ComunicadoDTOCompleto>)ViewData["listaComunicados"];
+
+    }
 }
 
 <div class="text-center">
     <h1 class="display-4">Bienvenidos</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core xd xd</a>.</p>
+    
+</div>
+
+<div class="card card-flush">
+    <div class="card card-body">
+     
+
+        @if (listaComunicados.Count() > 0)
+        {
+            <table border="1" id="idTablaPersonas" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <th>
+                            <span class="badge badge-light text-dark">Conjunto</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Titulo</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Descipción</span>
+                        </th>
+                        
+                    </tr>
+                </thead>
+                <tbody class="fw-bold text-gray-600">
+                    @if (listaComunicados != null)
+                    {
+                        foreach (var item in listaComunicados)
+                        {
+                            <tr class="@(contador==0 ? "alert alert-success" : "" ) ">
+                                <td data-title="Conjunto">
+
+                                    <span class="text-muted fw-semibold d-block fs-7">@item.NombreConjunto</span>
+
+                                </td>
+                                <td data-title="Titulo">
+                                    @item.Titulo
+                                </td>
+                                <td data-title="Descripcion">
+                                    @item.Descripcion
+                                </td>
+
+                            </tr>
+
+
+                            contador++;
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
 </div>

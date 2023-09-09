@@ -1,0 +1,52 @@
+﻿@model IEnumerable<DTOs.AreaComunal.AreaComunalDTOCompleto>;
+@using Utilitarios;
+@{
+    Layout = "";
+}
+<div class="card card-flush">
+    <div class="card card-body">
+        @await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+
+        @if (Model.Count() > 0)
+        {
+            <table border="1" id="idTablaAreaComunal" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <th>
+                            <span class="badge badge-light text-dark">Nombre</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Hora Inicio</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Hora Fin</span>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody class="fw-bold text-gray-600">
+                    @if (Model != null)
+                    {
+                        foreach (var areaComunal in Model)
+                        {
+                            <tr>
+                                <td data-title="Nombre">
+                                    <div onclick="mostrarModalEditarAreaComunal('ModalGestionarAreaComunal', '@areaComunal.IdAreaComunal', 'Editar', '/C_Conjuntos/RecuperarListaAreaComunalPorConjuntoID?idConjunto=@areaComunal.IdConjunto')" class="badge badge-light-primary hover" style="cursor:pointer">
+                                        <span>@areaComunal.NombreArea</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    @areaComunal.HoraInicio
+                                </td>
+                                <td>
+                                    @areaComunal.HoraFin
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

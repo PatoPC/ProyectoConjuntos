@@ -1,4 +1,5 @@
 using DTOs.Adeudo;
+using DTOs.AreaComunal;
 using DTOs.CatalogoGeneral;
 using DTOs.Comunicado;
 using DTOs.Conjunto;
@@ -93,6 +94,10 @@ builder.Services.AddScoped(typeof(List<AdeudoDTOCrear>));
 builder.Services.AddScoped(typeof(ComunicadoDTOCrear));
 builder.Services.AddScoped(typeof(ComunicadoDTOEditar));
 builder.Services.AddScoped(typeof(BusquedaComunicadoDTO));
+
+builder.Services.AddScoped(typeof(AreaComunalDTOCrear));
+builder.Services.AddScoped(typeof(BusquedaAreaComunal));
+builder.Services.AddScoped(typeof(AreaComunalDTOEditar));
 //builder.Services.AddScoped(typeof(ConexionApi));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

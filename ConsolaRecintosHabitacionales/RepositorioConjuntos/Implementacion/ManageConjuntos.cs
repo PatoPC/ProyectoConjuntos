@@ -26,8 +26,10 @@ namespace RepositorioConjuntos.Implementacion
             {
                 Conjunto condominio = await _context.Conjuntos
                     .Where(x => x.IdConjunto == idConjunto)
-                    .Include(x => x.Torres)
-                    .ThenInclude(x => x.Departamentos).FirstOrDefaultAsync();
+                    .Include(x => x.Torres)                    
+                    .ThenInclude(x => x.Departamentos)
+                    .Include(x => x.AreaComunals)
+                    .FirstOrDefaultAsync();
 
                 return condominio;
             }

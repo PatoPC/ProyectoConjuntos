@@ -1,8 +1,8 @@
 ﻿using APICondominios.Model;
 using AutoMapper;
 using ConjuntosEntidades.Entidades;
+using DTOs.AreaComunal;
 using DTOs.Comunicado;
-using DTOs.Proveedor;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RepositorioConjuntos.Interface;
@@ -12,34 +12,34 @@ using Utilitarios;
 namespace APICondominios.Controllers
 {
     
-    [Route("api/Comunicado")]
+    [Route("api/AreaComunal")]
     [ApiController]
-    public class API_ComunicadoController : ControllerBase
+    public class API_AreaComunalController : ControllerBase
     {
-        private readonly IManageConjuntosCRUD<Comunicado> _CRUD_Comunicado;      
-        private readonly IManageComunicado _ConsultaComunicado;
+        private readonly IManageConjuntosCRUD<AreaComunal> _CRUD_Comunicado;      
+        private readonly IManageAreaComunal _ConsultaAreaComunal;
         private readonly IMapper _mapper;
         private readonly IManageLogError _logError;
 
-        public API_ComunicadoController(IMapper mapper, IManageConjuntosCRUD<Comunicado> CRUD_Comunicado, IManageLogError logError, IManageComunicado consultaAdeudo)
+        public API_AreaComunalController(IMapper mapper, IManageConjuntosCRUD<AreaComunal> CRUD_Comunicado, IManageLogError logError, IManageAreaComunal consultaAdeudo)
         {
             _mapper = mapper;
             _CRUD_Comunicado = CRUD_Comunicado;
             _logError = logError;
-            _ConsultaComunicado = consultaAdeudo;
+            _ConsultaAreaComunal = consultaAdeudo;
         }
 
-        [HttpGet("{id}", Name = "GetComunicadoID")]
-        public async Task<IActionResult> GetComunicadoID(Guid id)
+        [HttpGet("{id}", Name = "GetAreaComunal")]
+        public async Task<IActionResult> GetAreaComunal(Guid id)
         {
             try
             {
-                var objRepositorio = await _ConsultaComunicado.obtenerPorIDComunicado(id);
+                var objRepositorio = await _ConsultaAreaComunal.obtenerPorIDAreaComunal(id);
 
                 if (objRepositorio == null)
                     return NotFound(MensajesRespuesta.sinResultados());
 
-                ComunicadoDTOCompleto objDTO = _mapper.Map<ComunicadoDTOCompleto>(objRepositorio);
+                AreaComunalDTOCompleto objDTO = _mapper.Map<AreaComunalDTOCompleto>(objRepositorio);
 
                 return Ok(objDTO);
             }
@@ -52,14 +52,14 @@ namespace APICondominios.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ComunicadoDTOCrear objDTO)
+        public async Task<IActionResult> Post([FromBody] AreaComunalDTOCrear objDTO)
         {
             try
             {
                 if (objDTO == null)                
                     return BadRequest(MensajesRespuesta.noSePermiteObjNulos());                
 
-                Comunicado objComunicado = _mapper.Map<Comunicado>(objDTO);
+                AreaComunal objComunicado = _mapper.Map<AreaComunal>(objDTO);
 
                 _CRUD_Comunicado.Add(objComunicado);
 
@@ -81,11 +81,11 @@ namespace APICondominios.Controllers
 
         #region Editar
         [HttpPost("Editar")]
-        public async Task<IActionResult> Editar(Guid id, ComunicadoDTOEditar objDTO)
+        public async Task<IActionResult> Editar(Guid id, AreaComunalDTOEditar objDTO)
         {
             try
             {
-                var objRepositorio = await _ConsultaComunicado.obtenerPorIDComunicado(id);
+                var objRepositorio = await _ConsultaAreaComunal.obtenerPorIDAreaComunal(id);
                 _mapper.Map(objDTO, objRepositorio);
 
                 _CRUD_Comunicado.Edit(objRepositorio);
@@ -112,7 +112,7 @@ namespace APICondominios.Controllers
         [HttpPost("Eliminar")]
         public async Task<IActionResult> Eliminar(Guid id)
         {
-            var objRepositorio = await _ConsultaComunicado.obtenerPorIDComunicado(id);
+            var objRepositorio = await _ConsultaAreaComunal.obtenerPorIDAreaComunal(id);
 
             _CRUD_Comunicado.Delete(objRepositorio);
             var result = await _CRUD_Comunicado.save();
@@ -130,25 +130,25 @@ namespace APICondominios.Controllers
 
         #region Busquedas
 
-        [HttpGet("BusquedaAvanzadaComunicado")]
-        public async Task<ActionResult<List<ComunicadoDTOCompleto>>> BusquedaAvanzadaComunicado(BusquedaComunicadoDTO objBusqueda)
+        [HttpGet("BusquedaAvanzadaAreaComu")]
+        public async Task<ActionResult<List<AreaComunalDTOCompleto>>> BusquedaAvanzadaAreaComu(BusquedaAreaComunal objBusqueda)
         {
             try
             {
-                List<Comunicado> listaResultado = new List<Comunicado>();
-                listaResultado = await _ConsultaComunicado.obtenerAvanzado(objBusqueda);
+                List<AreaComunal> listaResultado = new List<AreaComunal>();
+                listaResultado = await _ConsultaAreaComunal.obtenerAvanzado(objBusqueda);
 
                 if (listaResultado.Count < 1)
                     return NotFound(MensajesRespuesta.sinResultados());
 
 
-                List<ComunicadoDTOCompleto> listaResultadoDTO = _mapper.Map<List<ComunicadoDTOCompleto>>(listaResultado);
+                List<AreaComunalDTOCompleto> listaResultadoDTO = _mapper.Map<List<AreaComunalDTOCompleto>>(listaResultado);
 
                 return Ok(listaResultadoDTO);
             }
             catch (Exception ex)
             {
-
+                await guardarLogs(JsonConvert.SerializeObject(objBusqueda), ex.ToString());
             }
 
             return StatusCode(StatusCodes.Status500InternalServerError);

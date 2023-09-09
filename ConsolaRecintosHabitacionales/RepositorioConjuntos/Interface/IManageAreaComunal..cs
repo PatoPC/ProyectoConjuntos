@@ -1,4 +1,5 @@
 ﻿using ConjuntosEntidades.Entidades;
+using DTOs.AreaComunal;
 using DTOs.Comunicado;
 using DTOs.Torre;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace RepositorioConjuntos.Interface
 {
-    public interface IManageComunicado
+    public interface IManageAreaComunal
     {
-        public Task<Comunicado> obtenerPorIDComunicado(Guid idComunicado);
-        public Task<List<Comunicado>> obtenerAvanzado(BusquedaComunicadoDTO objBusqueda);
+        public Task<AreaComunal> obtenerPorIDAreaComunal(Guid idAreaComunal);
+        public Task<List<AreaComunal>> obtenerAvanzado(BusquedaAreaComunal objBusqueda);
     }
 }

@@ -51,6 +51,7 @@ builder.Services.AddScoped<IManageProveedor, ManageProveedor>();
 builder.Services.AddScoped<IManageConMST, ManageConMST>();
 builder.Services.AddScoped<IManageAdeudo, ManageAdeudo>();
 builder.Services.AddScoped<IManageComunicado, ManageComunicado>();
+builder.Services.AddScoped<IManageAreaComunal, ManageAreaComunal>();
         
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

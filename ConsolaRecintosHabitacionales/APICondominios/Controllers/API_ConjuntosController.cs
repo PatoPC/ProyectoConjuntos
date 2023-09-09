@@ -41,10 +41,9 @@ namespace APICondominios.Controllers
             try
             {
                 Conjunto objRepositorio = await _Conjuntos.obtenerPorIDConjuntos(id);
-                if (objRepositorio == null)
-                {
-                    return NotFound(MensajesRespuesta.sinResultados());
-                }
+
+                if (objRepositorio == null)                
+                    return NotFound(MensajesRespuesta.sinResultados());                
 
                 ConjuntoDTOCompleto objDTO = _mapper.Map<ConjuntoDTOCompleto>(objRepositorio);
 

@@ -175,11 +175,7 @@ namespace RecintosHabitacionales.Controllers
         public async Task<JsonResult> BusquedaPorTorresID(Guid IdTorres)
         {
             TorreDTOCompleto objTorre = new TorreDTOCompleto();
-            //var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
-
-            //if (objUsuarioSesion != null)
-            //{
-
+            
             HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.GestionarTorres + IdTorres, HttpMethod.Get);
 
             if (respuesta.IsSuccessStatusCode)

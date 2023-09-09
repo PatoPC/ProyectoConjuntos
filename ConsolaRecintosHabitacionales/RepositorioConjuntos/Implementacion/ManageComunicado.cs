@@ -22,7 +22,6 @@ namespace RepositorioConjuntos.Implementacion
        
         public async Task<Comunicado> obtenerPorIDComunicado(Guid idComunicado)
         {
-
             try
             {
                 Comunicado objRepositorio = await _context.Comunicados
@@ -38,10 +37,19 @@ namespace RepositorioConjuntos.Implementacion
             return default;
         }
 
-        public async Task<List<Comunicado>> obtenerPorIDComunicado(BusquedaComunicadoDTO objBusqueda)
+        public async Task<List<Comunicado>> obtenerAvanzado(BusquedaComunicadoDTO objBusqueda)
         {
-            List<Comunicado> objRepositorio = await _context.Comunicados
-                   .Where(x => x.IdConjunto == objBusqueda.IdConjunto).ToListAsync();
+            List<Comunicado> objRepositorio = new List<Comunicado>();
+
+            if (objBusqueda.IdConjunto!=Guid.Empty)
+            {
+                objRepositorio = await _context.Comunicados
+                           .Where(x => x.IdConjunto == objBusqueda.IdConjunto).ToListAsync(); 
+            }
+            else
+            {
+                objRepositorio = await _context.Comunicados.ToListAsync();
+            }
 
             if (!string.IsNullOrEmpty(objBusqueda.Titulo))
             {

@@ -1,4 +1,5 @@
-﻿using DTOs.Torre;
+﻿using DTOs.AreaComunal;
+using DTOs.Torre;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace DTOs.Conjunto
         public string? UsuarioCreacion { get; set; } 
         public string? UsuarioModificacion { get; set; }
         public List<TorreDTOCompleto>? Torres { get; set; }
+        public List<AreaComunalDTOCompleto>? AreaComunals { get; set; }
 
     }
 }

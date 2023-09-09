@@ -600,3 +600,40 @@ function divConIconoArchivo(urlArchivo) {
     return divImagenIcono
 }
 
+
+function asignarCampoBanderaModal(idCampoDTO, valorBandera) {
+    let campoDTOBandera = document.getElementById(idCampoDTO)
+
+    if (campoDTOBandera != undefined) {
+        campoDTOBandera.value = valorBandera
+    }
+    else {
+        console.log("Error no se encontró campo " + idCampoDTO +" asignarCampoBanderaModal")
+    }
+}
+
+function asignarCampoActivadoDesactivado(nombrecampoBool, valorCampoBool, idCampoOculto) {
+
+    let campoActivado = document.getElementsByName(nombrecampoBool)
+    let campoOculto = document.getElementById(idCampoOculto)
+    if (campoActivado != undefined) {
+        if (campoActivado.length > 0) {
+            if (valorCampoBool != undefined) {
+
+                let booleano = (valorCampoBool && valorCampoBool.toLowerCase() === "true") ? true : false;
+
+                if (booleano) {
+                    campoActivado[0].checked = true
+                    campoActivado[1].checked = false
+                    campoOculto.value = "True"
+                }
+                else {
+                    campoActivado[0].checked = false
+                    campoActivado[1].checked = true
+                    campoOculto.value = "False"
+                }
+            }
+
+        }
+    }
+}

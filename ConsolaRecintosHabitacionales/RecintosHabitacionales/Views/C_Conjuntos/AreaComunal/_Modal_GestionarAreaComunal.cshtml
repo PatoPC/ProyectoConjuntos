@@ -1,0 +1,147 @@
+﻿@model DTOs.AreaComunal.AreaComunalDTOEditar
+
+@{
+    Layout = "";
+}
+
+<div class="modal fade" id="ModalGestionarAreaComunal" tabindex="-1" aria-labelledby="modalHorarios" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="fw-bolder m-0 text-gray-800">
+                    <i class="fas fa-archway text-primary fs-2qx"></i>
+                    Editar Area Comunal
+                </h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModal('ModalGestionarAreaComunal')"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form method="post" id="formularioEditarGestionarAreaComunal">                   
+                        <input asp-for="IdAreaComunalEditar" type="hidden" />
+                        <input asp-for="IdConjuntoAreaComunal" type="hidden" />
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-12">
+                                    <div class="col-xl-4">
+                                        <div class="fs-6 fw-bold">
+                                            <label asp-for="NombreAreaEditar" class="control-label">
+                                                Nombre
+                                                @await Html.PartialAsync("_AsteriscoObligatorio")
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8 fv-row">
+                                        <input type="text" asp-for="NombreAreaEditar" class="form-control form-control-solid" placeholder="Nombre" required="required" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-12">
+                                    <div class="col-xl-4">
+                                        <div class="fs-6 fw-bold">
+                                            <label asp-for="HoraInicioEditar" class="control-label">
+                                                Hora Inicio:
+                                                @await Html.PartialAsync("_AsteriscoObligatorio")
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8 fv-row">
+                                        <input type="text" asp-for="HoraInicioEditar" class="form-control form-control-solid" placeholder="Hora Inicio" required="required" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="row mb-12">
+                                    <div class="col-xl-4">
+                                        <div class="fs-6 fw-bold">
+                                            <label for="HoraFin" class="control-label">
+                                                Hora Fin
+                                                @await Html.PartialAsync("_AsteriscoObligatorio")
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8 fv-row">
+                                        <input type="text" asp-for="HoraFinEditar" class="form-control form-control-solid" placeholder="Hora Fin" required="required" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-12">
+                                    <div class="col-xl-4">
+                                        <div class="fs-6 fw-bold">
+                                            <label for="HoraFin" class="control-label">
+                                                Estado
+                                                @await Html.PartialAsync("_AsteriscoObligatorio")
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-8 fv-row">
+                                        <input type="hidden" asp-for="EstadoEditar" />
+                                        <label>
+                                            <input type="radio" class="btn-check" name="EstadoTemporal" value="true" onclick="asignarCampoBanderaModal('EstadoEditar','True')" />
+                                            <span class="btn btn btn-color-muted  btn-active-success fw-bolder px-md-2">Activado</span>
+                                        </label>
+
+                                        <label>
+                                            <input type="radio" class="btn-check" name="EstadoTemporal" value="false" onclick="asignarCampoBanderaModal('EstadoEditar','False')" />
+                                            <span class="btn btn btn-color-muted  btn-active-primary fw-bolder px-md-2">Desactivado</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row mb-12">
+                                    <div class="col-xl-2">
+                                        <div class="fs-6 fw-bold">
+                                            <label asp-for="ObservacionEditar" class="control-label">
+                                                Observación
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-10 fv-row">
+                                        <textarea asp-for="ObservacionEditar" class="form-control form-control-solid"> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <center>
+                                    <button type="button" class="btn btn-primary me-12" id="btnEditarGestionarAreaComunal">
+                                        <span class="indicator-label" id="btnEditarGestionarAreaComunalSpan">
+                                            Guarda Cambios
+                                        </span>
+                                        <span class="indicator-progress">
+                                            Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                        </span>
+                                    </button>
+                                </center>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModal('ModalGestionarAreaComunal')"><i class="fas fa-times fs-md-2qx"></i> Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

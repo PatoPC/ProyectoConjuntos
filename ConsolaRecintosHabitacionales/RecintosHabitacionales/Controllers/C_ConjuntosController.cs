@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using RecintosHabitacionales.Servicio.Implementar;
 using AutoMapper;
 using DTOs.Roles;
+using DTOs.AreaComunal;
 
 namespace RecintosHabitacionales.Controllers
 {
@@ -32,6 +33,7 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<ConjuntoDTOEditar> _servicioConsumoAPICrearEditar;
         private readonly IServicioConsumoAPI<BusquedaConjuntos> _servicioConsumoAPIBusqueda;
         private readonly IServicioConsumoAPI<BusquedaTorres> _servicioConsumoAPIBusquedaTorres;
+        private readonly IServicioConsumoAPI<BusquedaAreaComunal> _servicioBusqueAreaComunal;
 
         private readonly IServicioConsumoAPI<ObjetoBusquedaPersona> _servicioConsumoAPIBusquedaPersona;
         private readonly IServicioConsumoAPI<PersonaDTOCrear> _servicioConsumoAPICrearPersona;
@@ -44,7 +46,7 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<CatalogoDTODropDown> _servicioConsumoAPICatalogos;
         private readonly IServicioConsumoAPI<CatalogoDTOCrear> _servicioConsumoAPICrearCatalogos;
         private readonly IMapper _mapper;
-        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IServicioConsumoAPI<List<ConjuntoDTOCrear>> servicioConsumoAPICrearLista, IServicioConsumoAPI<List<UsuarioConjuntoDTO>> servicioConsumoAPIUsuarioConjuntoLista, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusquedaPersona, IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrearPersona, IServicioConsumoAPI<TipoPersonaDTO> servicioConsumoAPICrearTipoPersona, IMapper mapper, IServicioConsumoAPI<CatalogoDTOCrear> servicioConsumoAPICrearCatalogos, IServicioConsumoAPI<UsuarioDTOCrear> usuarioDTOCrearUsuario)
+        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IServicioConsumoAPI<List<ConjuntoDTOCrear>> servicioConsumoAPICrearLista, IServicioConsumoAPI<List<UsuarioConjuntoDTO>> servicioConsumoAPIUsuarioConjuntoLista, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusquedaPersona, IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrearPersona, IServicioConsumoAPI<TipoPersonaDTO> servicioConsumoAPICrearTipoPersona, IMapper mapper, IServicioConsumoAPI<CatalogoDTOCrear> servicioConsumoAPICrearCatalogos, IServicioConsumoAPI<UsuarioDTOCrear> usuarioDTOCrearUsuario, IServicioConsumoAPI<BusquedaAreaComunal> servicioBusqueAreaComunal)
         {
             _servicioConsumoAPICrear = servicioConsumoAPIConjunto;
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
@@ -62,6 +64,7 @@ namespace RecintosHabitacionales.Controllers
             _mapper = mapper;
             _servicioConsumoAPICrearCatalogos = servicioConsumoAPICrearCatalogos;
             UsuarioDTOCrearUsuario = usuarioDTOCrearUsuario;
+            _servicioBusqueAreaComunal = servicioBusqueAreaComunal;
         }
 
         #region CRUD
@@ -214,8 +217,8 @@ namespace RecintosHabitacionales.Controllers
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (objUsuarioSesion != null)            
-                return View();            
+            if (objUsuarioSesion != null)
+                return View();
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
@@ -303,9 +306,9 @@ namespace RecintosHabitacionales.Controllers
                         return new JsonResult(objMensajeRespuesta);
                     }
                 }
-                else                
+                else
                     return new JsonResult(MensajesRespuesta.errorNoExisteRol());
-                
+
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
@@ -408,7 +411,49 @@ namespace RecintosHabitacionales.Controllers
         }
 
 
-        public async Task<IActionResult> RecuperarListaTorresPorConjutoID(Guid idConjuto)
+        public async Task<IActionResult> RecuperarListaTorresPorConjuntoID(Guid idConjunto)
+        {
+            BusquedaTorres objBusquedaTorres = new BusquedaTorres();
+
+            objBusquedaTorres.IdConjunto = idConjunto;
+
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusquedaTorres.consumoAPI(ConstantesConsumoAPI.buscarTorresAvanzado, HttpMethod.Get, objBusquedaTorres);
+
+            List<TorreDTOCompleto> listaResultado = await LeerRespuestas<List<TorreDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+
+            if (listaResultado == null)
+                listaResultado = new List<TorreDTOCompleto>();
+
+            if (listaResultado != null)
+            {
+                return View("Torre/_ListaTorres", listaResultado);
+            }
+
+            return View("Torre/_ListaTorres", new List<TorreDTOCompleto>());
+        }
+
+        public async Task<IActionResult> RecuperarListaAreaComunalPorConjuntoID(Guid idConjunto)
+        {
+            BusquedaAreaComunal objBusqueda = new BusquedaAreaComunal();
+
+            objBusqueda.IdConjunto = idConjunto;
+
+            HttpResponseMessage respuesta = await _servicioBusqueAreaComunal.consumoAPI(ConstantesConsumoAPI.BuscarAreaComunalAvanzado, HttpMethod.Get, objBusqueda);
+
+            List<AreaComunalDTOCompleto> listaResultado = await LeerRespuestas<List<AreaComunalDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+
+            if (listaResultado == null)
+                listaResultado = new List<AreaComunalDTOCompleto>();
+
+            if (listaResultado != null)
+            {
+                return View("AreaComunal/_ListaAreaComunal", listaResultado);
+            }
+
+            return View("AreaComunal/_ListaAreaComunal", new List<AreaComunalDTOCompleto>());
+        }
+
+        public async Task<IActionResult> RecuperarListaAreaComunicadoPorConjuntoID(Guid idConjuto)
         {
             BusquedaTorres objBusquedaTorres = new BusquedaTorres();
 
@@ -428,7 +473,6 @@ namespace RecintosHabitacionales.Controllers
 
             return View("Torre/_ListaTorres", new List<TorreDTOCompleto>());
         }
-
         #endregion
 
         #region ProcesarArchivo
@@ -543,12 +587,12 @@ namespace RecintosHabitacionales.Controllers
                         {
 
                         }
-                        if (listaAreas!=null)
+                        if (listaAreas != null)
                         {
                             if (listaAreas.Count > 0)
                             {
                                 departamento.AreasDepartamentos = listaAreas;
-                            } 
+                            }
                         }
                     }
                 }

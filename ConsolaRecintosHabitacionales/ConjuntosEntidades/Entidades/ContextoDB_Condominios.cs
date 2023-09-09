@@ -17,6 +17,7 @@ namespace ConjuntosEntidades.Entidades
         }
 
         public virtual DbSet<Adeudo> Adeudos { get; set; } = null!;
+        public virtual DbSet<AreaComunal> AreaComunals { get; set; } = null!;
         public virtual DbSet<AreasDepartamento> AreasDepartamentos { get; set; } = null!;
         public virtual DbSet<Banco> Bancos { get; set; } = null!;
         public virtual DbSet<Comunicado> Comunicados { get; set; } = null!;
@@ -103,6 +104,60 @@ namespace ConjuntosEntidades.Entidades
                     .HasConstraintName("FK_ADEUDOS_REFERENCE_PERSONA");
             });
 
+            modelBuilder.Entity<AreaComunal>(entity =>
+            {
+                entity.HasKey(e => e.IdAreaComunal);
+
+                entity.ToTable("AREA_COMUNAL");
+
+                entity.Property(e => e.IdAreaComunal)
+                    .HasColumnName("ID_AREA_COMUNAL")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Estado).HasColumnName("ESTADO");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.HoraFin).HasColumnName("HORA_FIN");
+
+                entity.Property(e => e.HoraInicio).HasColumnName("HORA_INICIO");
+
+                entity.Property(e => e.IdConjunto)
+                    .HasColumnName("ID_CONJUNTO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.NombreArea)
+                    .HasMaxLength(60)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE_AREA");
+
+                entity.Property(e => e.Observacion)
+                    .HasColumnType("text")
+                    .HasColumnName("OBSERVACION");
+
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_CREACION");
+
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.HasOne(d => d.IdConjuntoNavigation)
+                    .WithMany(p => p.AreaComunals)
+                    .HasForeignKey(d => d.IdConjunto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AREA_COM_REFERENCE_CONJUNTO");
+            });
+
             modelBuilder.Entity<AreasDepartamento>(entity =>
             {
                 entity.HasKey(e => e.IdAreasDepartamentos);
@@ -120,7 +175,7 @@ namespace ConjuntosEntidades.Entidades
                 entity.Property(e => e.IdTipoArea).HasColumnName("ID_TIPO_AREA");
 
                 entity.Property(e => e.MetrosCuadrados)
-                    .HasColumnType("decimal(38, 0)")
+                    .HasColumnType("decimal(18, 0)")
                     .HasColumnName("METROS_CUADRADOS");
 
                 entity.HasOne(d => d.IdDepartamentoNavigation)

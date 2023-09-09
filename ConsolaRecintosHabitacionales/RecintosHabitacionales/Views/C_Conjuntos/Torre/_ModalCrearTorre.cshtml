@@ -16,8 +16,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <form asp-action="CrearTorres" asp-controller="C_Torres" method="post" id="formularioCrearTorreModal" enctype="multipart/form-data">
-                       
+                    <form asp-action="CrearTorres" asp-controller="C_Torres" method="post" id="formularioCrearTorreModal" enctype="multipart/form-data">                       
                         <input asp-for="IdConjunto" type="hidden" />
 
                         <div class="row">
@@ -42,7 +41,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <center>
-                                    <button type="button" class="btn btn-primary me-12" id="btnCrearTorreoModal" onclick="sendFormAjax(this, 'formularioCrearTorreModal','resultadoListaTorres','/C_Conjuntos/RecuperarListaTorresPorConjutoID?idConjuto=@Model.IdConjunto','btnCrearTorreoModal','idTablaTorres','modal_Create_Torre')">
+                                    <button type="button" class="btn btn-primary me-12" id="btnCrearTorreoModal" onclick="sendFormAjax(this, 'formularioCrearTorreModal','resultadoListaTorres','/C_Conjuntos/RecuperarListaTorresPorConjuntoID?idConjuto=@Model.IdConjunto','btnCrearTorreoModal','idTablaTorres','modal_Create_Torre')">
                                         <span class="indicator-label">
                                             Agregar Torre
                                         </span>

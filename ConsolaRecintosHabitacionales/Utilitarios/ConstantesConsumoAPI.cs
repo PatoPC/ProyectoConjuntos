@@ -25,7 +25,7 @@ namespace Utilitarios
         public const string TorresPorIDEditar = ConstantesAplicacion.pathAPI + "/api/API_Torre/Editar?id=";
         public const string TorresPorIDEliminar = ConstantesAplicacion.pathAPI + "/api/API_Torre/Eliminar?id=";
         public const string buscarTorresPorConjunto = ConstantesAplicacion.pathAPI + "/api/API_Torre/ObtenerTorresPorIDConjunto?idConjunto=";
-        
+
         #endregion
 
         #region Departamento
@@ -90,7 +90,7 @@ namespace Utilitarios
         public const string getGetRolCreate = ConstantesAplicacion.pathAPI + "/api/Rol/Create";
         public const string getGetRolEditar = ConstantesAplicacion.pathAPI + "/api/Rol/Edit?idRol=";
         public const string getGetRolEliminar = ConstantesAplicacion.pathAPI + "/api/Rol/Delete?idRol=";
-        public const string endPointRolByID = ConstantesAplicacion.pathAPI + "/api/Rol/";        
+        public const string endPointRolByID = ConstantesAplicacion.pathAPI + "/api/Rol/";
         public const string getRolPorNombre = ConstantesAplicacion.pathAPI + "/api/Rol/GetRolPorNombre?nombreRol=";
         public const string getRolPorNombreExacto = ConstantesAplicacion.pathAPI + "/api/Rol/GetRolPorNombreExacto?nombreRolExacto=";
         #endregion
@@ -111,7 +111,6 @@ namespace Utilitarios
         public const string buscarMaestroContableAvanzado = ConstantesAplicacion.pathAPI + "/api/API_MaestroContable/MaestroContableBusquedaAvanzada";
         #endregion
 
-
         #region Adeudo
         public const string gestionarAdeudoAPI = ConstantesAplicacion.pathAPI + "/api/adeudo/";
         //public const string gestionarPersonaAPIEditar = ConstantesAplicacion.pathAPI + "/api/persona/Editar?id=";
@@ -122,13 +121,11 @@ namespace Utilitarios
 
         #endregion
 
-
         #region Logs
         public const string crearLogs = ConstantesAplicacion.pathAPI + "/api/Logs/Create";
         public const string busquedaLogs = ConstantesAplicacion.pathAPI + "/api/Logs/BusquedaAvanzada";
         public const string busquedaLogsPorID = ConstantesAplicacion.pathAPI + "/api/Logs/";
         #endregion
-
 
         #region Comunicado
         public const string CrearComunicado = ConstantesAplicacion.pathAPI + "/api/Comunicado/";
@@ -138,5 +135,12 @@ namespace Utilitarios
         public const string EditarComunicadoEliminar = ConstantesAplicacion.pathAPI + "/api/Comunicado/Eliminar?id=";
         #endregion
 
+        #region AreaComunal
+        public const string CrearAreaComunal = ConstantesAplicacion.pathAPI + "/api/AreaComunal/";
+        public const string BuscarAreaComunalAvanzado = ConstantesAplicacion.pathAPI + "/api/AreaComunal/BusquedaAvanzadaAreaComu";
+        public const string BuscarAreaComunalPorID = ConstantesAplicacion.pathAPI + "/api/AreaComunal/";
+        public const string EditarAreaComunalEditar = ConstantesAplicacion.pathAPI + "/api/AreaComunal/Editar?id=";
+        public const string EditarAreaComunalEliminar = ConstantesAplicacion.pathAPI + "/api/AreaComunal/Eliminar?id=";
+        #endregion
     }
 }
