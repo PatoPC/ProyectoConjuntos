@@ -3,6 +3,13 @@
 @{
     Layout = "";
 }
+<style>
+    .div-interno {
+        width: 100px;
+        height: 100px;
+       
+    }
+</style>
 <div class="card card-flush">
     <div class="card card-body">
         @await Html.PartialAsync("_MensajesBusqueda", Model.Count())
@@ -21,6 +28,9 @@
                         <th>
                             <span class="badge badge-light text-dark">Hora Fin</span>
                         </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Acción</span>
+                        </th>
 
                     </tr>
                 </thead>
@@ -31,8 +41,13 @@
                         {
                             <tr>
                                 <td data-title="Nombre">
-                                    <div onclick="mostrarModalEditarAreaComunal('ModalGestionarAreaComunal', '@areaComunal.IdAreaComunal', 'Editar', '/C_Conjuntos/RecuperarListaAreaComunalPorConjuntoID?idConjunto=@areaComunal.IdConjunto')" class="badge badge-light-primary hover" style="cursor:pointer">
-                                        <span>@areaComunal.NombreArea</span>
+                                    <div style="display: flex;">
+                                        <div onclick="mostrarModalEditarAreaComunal('ModalGestionarAreaComunal', '@areaComunal.IdAreaComunal', 'Editar', '/C_Conjuntos/RecuperarListaAreaComunalPorConjuntoID?idConjunto=@areaComunal.IdConjunto')" class="badge badge-light-primary hover div-interno" style="cursor:pointer">
+                                            <span>@areaComunal.NombreArea</span>
+                                        </div>
+                                        <div onclick="mostrarModalEditarAreaComunal('ModalGestionarAreaComunal', '@areaComunal.IdAreaComunal', 'eliminar', '/C_Conjuntos/RecuperarListaAreaComunalPorConjuntoID?idConjuto=@areaComunal.IdConjunto')" class="div-interno">
+                                            <i class="fas fa-window-close" style="color:red; cursor:pointer"></i>
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
@@ -40,6 +55,10 @@
                                 </td>
                                 <td>
                                     @areaComunal.HoraFin
+                                </td>
+                                <td>
+                                    <a href="~/C_AreaComunal/DetalleAreaComunal?idAreaComunal=@areaComunal.IdAreaComunal" target="_self" class="badge badge-light-primary">Detalle<i class="far fa-edit" style="color: #009ef7"></i></a>
+
                                 </td>
 
                             </tr>

@@ -103,7 +103,6 @@ namespace RecintosHabitacionales.Controllers
         #endregion
       
         #region Editar
-
         public async Task<ActionResult> EditarComunicado(Guid IdComunicado)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
@@ -152,7 +151,6 @@ namespace RecintosHabitacionales.Controllers
 
 
         #region Eliminar Comunicado
-
         public async Task<ActionResult> EliminarComunicado(Guid IdComunicado)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);

@@ -1,9 +1,11 @@
 ﻿using DTOs.AreaComunal;
+using DTOs.CatalogoGeneral;
 using DTOs.Conjunto;
 using DTOs.Torre;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
 using RecintosHabitacionales.Servicio;
+using RecintosHabitacionales.Servicio.Implementar;
 using RecintosHabitacionales.Servicio.Interface;
 using Utilitarios;
 
@@ -31,7 +33,7 @@ namespace RecintosHabitacionales.Controllers
                 HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.CrearAreaComunal, HttpMethod.Post, objDTO);
 
                 if (respuesta.IsSuccessStatusCode)
-                {                   
+                {
                     return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta));
                 }
                 else
@@ -44,6 +46,7 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
+
         [HttpPost]
         public async Task<ActionResult> EditarAreaComunal(AreaComunalDTOEditar objDTO, Guid IdAreaComunalEditar)
         {
@@ -53,10 +56,7 @@ namespace RecintosHabitacionales.Controllers
             {
                 objDTO.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
-                //if (IdTorre == ConstantesAplicacion.guidNulo)
-                //    IdTorre = objDTO.IdTorresEditar;
-
-                HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.EditarAreaComunalEditar + IdAreaComunalEditar, HttpMethod.Post, objDTO);
+                HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.EditarAreaComunal + IdAreaComunalEditar, HttpMethod.Post, objDTO);
 
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -71,6 +71,50 @@ namespace RecintosHabitacionales.Controllers
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
+
+        
+        [HttpPost]
+        public async Task<ActionResult> EliminarAreaComunal(AreaComunalDTOEditar objDTO, Guid IdAreaComunalEditar)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+                objDTO.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+
+                HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.EliminarAreaComunal + IdAreaComunalEditar, HttpMethod.Post, objDTO);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta,"","",true));
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+
+
+        public async Task<ActionResult> DetalleAreaComunal(Guid idAreaComunal)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+                HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.BuscarAreaComunalPorID + idAreaComunal, HttpMethod.Get);
+
+                AreaComunalDTOCompleto objDTO = await LeerRespuestas<AreaComunalDTOCompleto>.procesarRespuestasConsultas(respuesta);
+
+                return View(objDTO);
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+
 
         [HttpGet]
         public async Task<JsonResult> BusquedaPorAreaComunalID(Guid IdAreaComunal)

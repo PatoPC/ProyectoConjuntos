@@ -24,7 +24,7 @@
             btnAccionFormulario.classList.add("btn-danger")
             btnAccionFormulario.classList.remove("btn-primary");
 
-            formulario.action = pathConsola + "/C_AreaComunal/EliminarTorres";
+            formulario.action = pathConsola + "/C_AreaComunal/EliminarAreaComunal";
 
             let accionBotonEliminar = "sendFormAjaxEliminar(this,'" + nombreFormularioEditar + "','" + nombreDIVResultadosTorres + "','" + accion + "','" + nombreBTNFormularioEditar + "','" + nombreTablaTorres + "','" + idModal + "')"
 
