@@ -79,5 +79,22 @@ namespace RepositorioConjuntos.Implementacion
 
             return default;
         }
+
+        public async Task<List<AreaComunal>> obtenerAreasComunalesPorIdConjunto (Guid IdConjunto) 
+        {
+            try
+            {
+               List<AreaComunal> ListRepositorio = await _context.AreaComunals
+                    .Where(x => x.IdConjunto == IdConjunto).ToListAsync();
+
+                return ListRepositorio;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return default;
+        }
     }
 }

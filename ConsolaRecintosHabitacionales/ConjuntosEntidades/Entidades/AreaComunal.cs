@@ -5,6 +5,11 @@ namespace ConjuntosEntidades.Entidades
 {
     public partial class AreaComunal
     {
+        public AreaComunal()
+        {
+            ReservaAreas = new HashSet<ReservaArea>();
+        }
+
         public Guid IdAreaComunal { get; set; }
         public Guid IdConjunto { get; set; }
         public string NombreArea { get; set; } = null!;
@@ -18,5 +23,6 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioModificacion { get; set; } = null!;
 
         public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;
+        public virtual ICollection<ReservaArea> ReservaAreas { get; set; }
     }
 }

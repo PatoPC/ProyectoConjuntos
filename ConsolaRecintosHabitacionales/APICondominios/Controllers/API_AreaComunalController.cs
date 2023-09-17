@@ -153,6 +153,31 @@ namespace APICondominios.Controllers
 
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
+
+        [HttpGet("BuscarAreasComunalesPorIdConjunto")]
+        public async Task<ActionResult<List<AreaComunalDTOCompleto>>> BuscarAreasComunalesPorIdConjunto(Guid IdConjunto)
+        {
+            try
+            {
+                List<AreaComunal> listaResultado = new List<AreaComunal>();
+                listaResultado = await _ConsultaAreaComunal.obtenerAreasComunalesPorIdConjunto(IdConjunto);
+
+                if (listaResultado.Count < 1)
+                    return NotFound(MensajesRespuesta.sinResultados());
+
+
+                List<AreaComunalDTOCompleto> listaResultadoDTO = _mapper.Map<List<AreaComunalDTOCompleto>>(listaResultado);
+
+                return Ok(listaResultadoDTO);
+            }
+            catch (Exception ex)
+            {
+                await guardarLogs(JsonConvert.SerializeObject(IdConjunto), ex.ToString());
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
+
+        }
         #endregion
 
         #region Varios

@@ -1,0 +1,42 @@
+﻿@using Utilitarios;
+
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <div id="kt_content_container" class="container-xxl">
+
+        <div class="card mb-xl-3 mb-3">
+
+            <div class="card-header card-header-stretch encabezadoTablasNegroPlantilla ">
+                <div class="card-title d-flex align-items-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="fw-bolder m-0" style="color:white;">
+                                <i class="fa-solid fa-bars-progress fs-2qx"></i>
+                                Reservar de Áreas Comunales
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 ">
+                <div class="card card-flush h-xl-100">
+                    <div class="card-body pt-6">
+                        <div class="row">
+                            <div class="col-md-4 h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                                <b><label >Conjunto: </label></b>
+                                @Html.DropDownList("ListaIdEstadoLogistica", ViewData["ListaConjustosAcceso"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg"})
+                            </div>
+                            <div class="col-md-4 h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                                <b><label>Areas comunales disponibles: </label></b>
+                                @Html.DropDownList("ListaIdEstadoLogistica", ViewData["listaAreasComunales"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg"})
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

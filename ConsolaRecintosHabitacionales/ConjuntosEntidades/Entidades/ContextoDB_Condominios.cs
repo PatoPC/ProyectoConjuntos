@@ -31,6 +31,7 @@ namespace ConjuntosEntidades.Entidades
         public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
         public virtual DbSet<ReciboCabecera> ReciboCabeceras { get; set; } = null!;
         public virtual DbSet<ReciboDetalle> ReciboDetalles { get; set; } = null!;
+        public virtual DbSet<ReservaArea> ReservaAreas { get; set; } = null!;
         public virtual DbSet<TipoPersona> TipoPersonas { get; set; } = null!;
         public virtual DbSet<Torre> Torres { get; set; } = null!;
 
@@ -969,6 +970,68 @@ namespace ConjuntosEntidades.Entidades
                     .WithMany(p => p.ReciboDetalles)
                     .HasForeignKey(d => new { d.IdReciboCab, d.NroReciboReciboCab })
                     .HasConstraintName("FK_RECIBO_D_REFERENCE_RECIBO_C");
+            });
+
+            modelBuilder.Entity<ReservaArea>(entity =>
+            {
+                entity.HasKey(e => e.IdReservaArea);
+
+                entity.ToTable("RESERVA_AREA");
+
+                entity.Property(e => e.IdReservaArea)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID_RESERVA_AREA");
+
+                entity.Property(e => e.Apellido)
+                    .HasMaxLength(50)
+                    .HasColumnName("APELLIDO");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaFin)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_FIN");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.FechaReserva)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_RESERVA");
+
+                entity.Property(e => e.IdAreaComunal)
+                    .HasColumnName("ID_AREA_COMUNAL")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdPersona).HasColumnName("ID_PERSONA");
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE");
+
+                entity.Property(e => e.Observaciones)
+                    .HasColumnType("text")
+                    .HasColumnName("OBSERVACIONES");
+
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_CREACION");
+
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(70)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.HasOne(d => d.IdAreaComunalNavigation)
+                    .WithMany(p => p.ReservaAreas)
+                    .HasForeignKey(d => d.IdAreaComunal)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RESERVA__REFERENCE_AREA_COM");
             });
 
             modelBuilder.Entity<TipoPersona>(entity =>
