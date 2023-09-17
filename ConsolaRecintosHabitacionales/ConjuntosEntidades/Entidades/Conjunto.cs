@@ -10,6 +10,7 @@ namespace ConjuntosEntidades.Entidades
             AreaComunals = new HashSet<AreaComunal>();
             Comunicados = new HashSet<Comunicado>();
             ConMsts = new HashSet<ConMst>();
+            Parametros = new HashSet<Parametro>();
             Proveedores = new HashSet<Proveedore>();
             Torres = new HashSet<Torre>();
         }
@@ -28,6 +29,7 @@ namespace ConjuntosEntidades.Entidades
         public virtual ICollection<AreaComunal> AreaComunals { get; set; }
         public virtual ICollection<Comunicado> Comunicados { get; set; }
         public virtual ICollection<ConMst> ConMsts { get; set; }
+        public virtual ICollection<Parametro> Parametros { get; set; }
         public virtual ICollection<Proveedore> Proveedores { get; set; }
         public virtual ICollection<Torre> Torres { get; set; }
     }

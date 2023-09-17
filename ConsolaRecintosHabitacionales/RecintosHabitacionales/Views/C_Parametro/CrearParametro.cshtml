@@ -23,126 +23,143 @@
 
         <div class="card-body border-top">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="row p-lg-10">
-
-                <form asp-action="CrearParametro" id="CrearParametroForm">
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
-                                <div class="row mb-12">
-                                    <div class="col-xl-4">
-                                        <div class="fs-6 fw-bold mt-2 mb-3">
-                                            <label for="CuentaCon" class="control-label required">
-                                                Conjunto
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-8 fv-row">
-                                        @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
-                                    </div>
-                                </div>
-
-                                <div class="row mb-12">
-                                    <div class="col-xl-4">
-                                        <div class="fs-6 fw-bold mt-2 mb-3">
-                                            <label for="Ctacont1" class="control-label required">
-                                                Cuenta Contable 1
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-8 fv-row">
-                                        <input type="text" asp-for="Ctacont1" class="form-control form-control-solid" placeholder="Cuenta" required="required" />
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
+            <form asp-action="CrearParametro" id="CrearParametroForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
                             <div class="row mb-12">
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="NombreCatalogo" class="control-label required">
+                                        <label for="IdConjunto" class="control-label">
+                                            Conjunto
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="NombreParametro" class="control-label">
                                             Nombre
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
-
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    <input asp-for="NombreCatalogo" class="form-control form-control-solid" maxlength="60" required="required" />
+                                    <input asp-for="NombreParametro" class="form-control form-control-solid" maxlength="60" required="required" />
+                                   
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
                             <div class="row mb-12">
                                 <div class="col-xl-4">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="Ctacont2" class="control-label required">
-                                            Cuenta Contable 2
+                                        <label for="Ctacont1" class="control-label">
+                                            Cuenta Contable 1
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
                                         </label>
                                     </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">                                   
+                                    @Html.DropDownList("Ctacont1", ViewData["listaTipoIdentificacion"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
+                                </div>
+                            </div>
 
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Ctacont2" class="control-label">
+                                            Cuenta Contable 2
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                      <input asp-for="Ctacont2" class="form-control form-control-solid"
-                                      placeholder="Cuenta 2"/> 
+                                    @Html.DropDownList("Ctacont2", ViewData["listaTipoIdentificacion"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
+                                  
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row mb-12">
-                            <div class="col-xl-4">
-                                <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="Ctacont3" class="control-label required">
-                                        Cuenta Contable 3
-                                    </label>
-                                </div>
-
-                            </div>
-                            <div class="col-xl-8 fv-row">
-                                <input asp-for="Ctacont3" class="form-control form-control-solid"
-                                   placeholder="Cuenta 3" />
-                            </div>
-                        </div>
-
-                        <div class="row mb-12">
-                            <div class="col-xl-4">
-                                <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="Ctacont4" class="control-label required">
-                                        Cuenta Contable 4
-                                    </label>
-                                </div>
-
-                            </div>
-                            <div class="col-xl-8 fv-row">
-                                <input asp-for="Ctacont4" class="form-control form-control-solid"
-                                   placeholder="Cuenta 4" />
-                            </div>
-                        </div>
-                  
-
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xl-12 fv-row">
-                            <center>
-                                <button type="button" onclick="sendFormAjax(this, 'CrearParametroForm', undefined,undefined,'btn_CrearNuevo')" class="btn btn-primary" id="btn_CrearNuevo">
-                                    <span class="indicator-label">
-                                        <i class="far fa-save fs-md-2qx"></i>Guardar Nuevo
-                                    </span>
-                                    <span class="indicator-progress">
-                                        Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-                                    </span>
-                                </button>
-                            </center>
                         </div>
                     </div>
-                </form>
+                </div>
 
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Ctacont3" class="control-label">
+                                            Cuenta Contable 3
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    @Html.DropDownList("Ctacont3", ViewData["listaTipoIdentificacion"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
+                                </div>
+                            </div>
 
-            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-4">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Ctacont4" class="control-label">
+                                            Cuenta Contable 4
+                                            @await Html.PartialAsync("_AsteriscoObligatorio")
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    @Html.DropDownList("Ctacont4", ViewData["listaTipoIdentificacion"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-12 fv-row">
+                        <center>
+                            <button type="button" onclick="sendFormAjax(this, 'CrearParametroForm', undefined,undefined,'btn_CrearNuevo')" class="btn btn-primary" id="btn_CrearNuevo">
+                                <span class="indicator-label">
+                                    <i class="far fa-save fs-md-2qx"></i>Guardar Nuevo
+                                </span>
+                                <span class="indicator-progress">
+                                    Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </center>
+                    </div>
+                </div>
+            </form>
+
         </div>
     </div>
 

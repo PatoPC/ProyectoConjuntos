@@ -62,28 +62,6 @@ namespace RecintosHabitacionales.Controllers
             {
                 objModeloVista.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
-                if (objModeloVista.IdCatalogopadre != null && objModeloVista.IdCatalogopadre != ConstantesAplicacion.guidNulo)
-                {
-                    HttpResponseMessage respuestaCatlogoPadre = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorIdCatalogo + objModeloVista.IdCatalogopadre, HttpMethod.Get);
-
-                    CatalogoDTOCompleto objCatalogoPadre = await LeerRespuestas<CatalogoDTOCompleto>.procesarRespuestasConsultas(respuestaCatlogoPadre);
-
-                    if (objCatalogoPadre != null)
-                    {
-                        objModeloVista.NivelCatalogo = objCatalogoPadre.NivelCatalogo + 1;
-                    }
-                }
-                else
-                {
-
-                    HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.nombrePadreParam, HttpMethod.Get);
-
-                    CatalogoDTOResultadoBusqueda objCatalogoParam = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogo);
-                    objModeloVista.IdCatalogopadre = objCatalogoParam.IdCatalogo;
-                    objModeloVista.NivelCatalogo = 0;
-                }
-              
-                objModeloVista.CodigoCatalogo = FuncionesUtiles.GenerarCadena();
                 objModeloVista.Estado = true;
                 HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosCreate, HttpMethod.Post, objModeloVista);
 
