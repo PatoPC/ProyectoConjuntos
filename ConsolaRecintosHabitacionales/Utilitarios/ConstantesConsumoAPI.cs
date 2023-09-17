@@ -141,6 +141,7 @@ namespace Utilitarios
         public const string BuscarAreaComunalPorID = ConstantesAplicacion.pathAPI + "/api/AreaComunal/";
         public const string EditarAreaComunal = ConstantesAplicacion.pathAPI + "/api/AreaComunal/Editar?id=";
         public const string EliminarAreaComunal = ConstantesAplicacion.pathAPI + "/api/AreaComunal/Eliminar?id=";
+        public const string BuscarAreasComunalesPorIdConjunto = ConstantesAplicacion.pathAPI + "/api/AreaComunal/BuscarAreasComunalesPorIdConjunto?IdConjunto=";
         #endregion
     }
 }

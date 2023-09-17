@@ -14,5 +14,6 @@ namespace RepositorioConjuntos.Interface
     {
         public Task<AreaComunal> obtenerPorIDAreaComunal(Guid idAreaComunal);
         public Task<List<AreaComunal>> obtenerAvanzado(BusquedaAreaComunal objBusqueda);
+        public  Task<List<AreaComunal>> obtenerAreasComunalesPorIdConjunto(Guid IdConjunto);
     }
 }
