@@ -486,8 +486,6 @@ function consultarDesdeAPIControlador(idSelectPadre, idSelectHijo, controlador, 
                         }
                         selectHijo.add(option);
                     }
-
-
                 }
                 else {
                    

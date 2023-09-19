@@ -1,4 +1,5 @@
 ﻿using DTOs.AreasDepartamento;
+using DTOs.CatalogoGeneral;
 using DTOs.Conjunto;
 using DTOs.Departamento;
 using DTOs.MaestroContable;
@@ -6,6 +7,7 @@ using DTOs.MaestroContable.Archivo;
 using DTOs.Torre;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RecintosHabitacionales.Models;
 using RecintosHabitacionales.Servicio;
 using RecintosHabitacionales.Servicio.Interface;
@@ -305,6 +307,39 @@ namespace RecintosHabitacionales.Controllers
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+
+
+        public async Task<JsonResult> cargarListaCuentasContables(Guid idConjunto)
+        {
+            MaestroContableBusqueda objBusqueda = new MaestroContableBusqueda();
+            List<CatalogoDTODropDown> listaFinal = new List<CatalogoDTODropDown>();
+
+            objBusqueda.IdConjunto = idConjunto;
+            objBusqueda.Grupo = false;
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarMaestroContableAvanzado, HttpMethod.Get, objBusqueda);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                try
+                {
+                    string responseJSON = await LeerRespuestas<HttpResponseMessage>.procesarRespuestasJSON(respuesta);
+                    var listaResultado = JsonConvert.DeserializeObject<List<MaestroContableDTOCompleto>>(responseJSON);
+
+                    listaFinal = listaResultado.Select(x => new CatalogoDTODropDown
+                    {
+                        IdCatalogo = x.IdConMst,
+                        Nombrecatalogo = x.NombreCuenta
+                    }).ToList();
+                }
+                catch (Exception ex)
+                {
+                    listaFinal = new List<CatalogoDTODropDown>();
+                }
+            }
+           
+
+            return new JsonResult(listaFinal);
         }
 
         #endregion
