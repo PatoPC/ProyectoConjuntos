@@ -2,6 +2,7 @@
 using ConjuntosEntidades.Entidades;
 using DTOs.Adeudo;
 using DTOs.Parametro;
+using DTOs.Proveedor;
 
 namespace APICondominios.Perfil
 {
@@ -13,6 +14,9 @@ namespace APICondominios.Perfil
 
             CreateMap<Parametro, ParametroCrearDTO>();
             CreateMap<ParametroCrearDTO, Parametro>();
+
+            CreateMap<Parametro, ParametroEditarDTO>();
+            CreateMap<ParametroEditarDTO, Parametro>();
 
 
         }

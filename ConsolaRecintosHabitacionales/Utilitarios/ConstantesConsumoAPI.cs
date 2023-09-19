@@ -147,7 +147,7 @@ namespace Utilitarios
         
         #region Parametro
         public const string CrearParametro = ConstantesAplicacion.pathAPI + "/api/Parametro/";
-        public const string BuscarParamtroAvanzado = ConstantesAplicacion.pathAPI + "/api/Parametro/BusquedaAvanzadaAreaComu";
+        public const string BuscarParamtroAvanzado = ConstantesAplicacion.pathAPI + "/api/Parametro/BusquedaAvanzaParametro";
         public const string BuscarParametroPorID = ConstantesAplicacion.pathAPI + "/api/Parametro/";
         public const string EditarParametro = ConstantesAplicacion.pathAPI + "/api/Parametro/Editar?id=";
         public const string EliminarParametro = ConstantesAplicacion.pathAPI + "/api/Parametro/Eliminar?id=";

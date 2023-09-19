@@ -18,11 +18,15 @@ namespace RecintosHabitacionales.Controllers
         private const string accionActual = "AdministrarParametros";
         private readonly IServicioConsumoAPI<MaestroContableBusqueda> _servicioConsumoAPIBusqueda;
         private readonly IServicioConsumoAPI<ParametroCrearDTO> _servicioConsumoAPICrear;
+        private readonly IServicioConsumoAPI<BusquedaParametro> _servicioConsumoAPIParametro;
+        private readonly IServicioConsumoAPI<ParametroEditarDTO> _servicioConsumoCompleto;
 
-        public C_ParametroController(IServicioConsumoAPI<ParametroCrearDTO> servicioConsumoAPICrear, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusqueda)
+        public C_ParametroController(IServicioConsumoAPI<ParametroCrearDTO> servicioConsumoAPICrear, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusqueda, IServicioConsumoAPI<BusquedaParametro> servicioConsumoAPIParametro, IServicioConsumoAPI<ParametroEditarDTO> servicioConsumoCompleto)
         {
             _servicioConsumoAPICrear = servicioConsumoAPICrear;
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
+            _servicioConsumoAPIParametro = servicioConsumoAPIParametro;
+            _servicioConsumoCompleto = servicioConsumoCompleto;
         }
 
         public IActionResult AdministrarParametros()
@@ -90,6 +94,8 @@ namespace RecintosHabitacionales.Controllers
         public async Task<ActionResult> EditarParametro(Guid IdParametro)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+            ParametroCompletoDTO objMaestroContable = new ParametroCompletoDTO();
+
 
             if (objUsuarioSesion != null)
             {
@@ -97,7 +103,7 @@ namespace RecintosHabitacionales.Controllers
 
                 if (respuesta.IsSuccessStatusCode)
                 {
-                    ParametroCompletoDTO objMaestroContable = await LeerRespuestas<ParametroCompletoDTO>.procesarRespuestasConsultas(respuesta);
+                    objMaestroContable = await LeerRespuestas<ParametroCompletoDTO>.procesarRespuestasConsultas(respuesta);
 
                     MaestroContableBusqueda objBusqueda = new MaestroContableBusqueda();
                     List<CatalogoDTODropDown> listaFinal = new List<CatalogoDTODropDown>();
@@ -125,42 +131,36 @@ namespace RecintosHabitacionales.Controllers
                     ViewData["listaCuentas4"] = listaCuentas4;
                 }
 
-                    List<MaestroContableDTOCompleto> listaResultado = new List<MaestroContableDTOCompleto>();
+                List<MaestroContableDTOCompleto> listaResultado = new List<MaestroContableDTOCompleto>();
 
                 ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
 
-                
-
-
-                
-
-                return View();
+                return View(objMaestroContable);
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
         [HttpPost]
-        public async Task<ActionResult> EditarParametro(ParametroCompletoDTO objModeloVista)
+        public async Task<ActionResult> EditarParametro(Guid IdParametro, ParametroEditarDTO objModeloVista)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
             if (objUsuarioSesion != null)
             {
-                objModeloVista.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                objModeloVista.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
-                objModeloVista.Estado = true;
-                //HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.CrearParametro, HttpMethod.Post, objModeloVista);
+                HttpResponseMessage respuesta = await _servicioConsumoCompleto.consumoAPI(ConstantesConsumoAPI.EditarParametro+ IdParametro, HttpMethod.Post, objModeloVista);
 
-                //if (respuesta.IsSuccessStatusCode)
-                //{
-                //    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
-                //}
-                //else
-                //{
-                //    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                //    return new JsonResult(objMensajeRespuesta);
-                //}
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
@@ -169,32 +169,69 @@ namespace RecintosHabitacionales.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult> BusquedaParametros()
+        public async Task<ActionResult> BusquedaParametros(BusquedaParametro objBusqueda)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
             if (objUsuarioSesion != null)
             {
-                List<CatalogoDTOResultadoBusqueda> listaCatalogo = new List<CatalogoDTOResultadoBusqueda>();
+                List<ParametroCompletoDTO> listaParametros = new List<ParametroCompletoDTO>();
 
                 try
                 {
-                    HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.nombrePadreParam, HttpMethod.Get);
+                    HttpResponseMessage respuesta = await _servicioConsumoAPIParametro.consumoAPI(ConstantesConsumoAPI.BuscarParamtroAvanzado, HttpMethod.Get, objBusqueda);
 
-                    listaCatalogo = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuesta);
+                    listaParametros = await LeerRespuestas<List<ParametroCompletoDTO>>.procesarRespuestasConsultas(respuesta);
+
+                    foreach (var parametro in listaParametros)
+                    {
+                        MaestroContableDTOCompleto objCuenta1 = await recuperarNombreCuenta(parametro.CtaCont1);
+
+                        parametro.Cuenta1 = objCuenta1.NombreCuenta;
+
+                        if (parametro.CtaCont2 != Guid.Empty && parametro.CtaCont2!=null)
+                        {
+                            MaestroContableDTOCompleto objCuenta2 = await recuperarNombreCuenta((Guid)parametro.CtaCont2);
+
+                            parametro.Cuenta2 = objCuenta2.NombreCuenta;
+                        }
+
+                        if (parametro.CtaCont3 != Guid.Empty && parametro.CtaCont3 != null)
+                        {
+                            MaestroContableDTOCompleto objCuenta3 = await recuperarNombreCuenta((Guid)parametro.CtaCont3);
+
+                            parametro.Cuenta3 = objCuenta3.NombreCuenta;
+                        }
+
+                        if (parametro.CtaCont4 != Guid.Empty && parametro.CtaCont4 != null)
+                        {
+                            MaestroContableDTOCompleto objCuenta = await recuperarNombreCuenta((Guid)parametro.CtaCont4);
+
+                            parametro.Cuenta4 = objCuenta.NombreCuenta;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
 
                 }
 
-                if (listaCatalogo == null)
-                    listaCatalogo = new List<CatalogoDTOResultadoBusqueda>();
+                if (listaParametros == null)
+                    listaParametros = new List<ParametroCompletoDTO>();
 
-                return View("_ListaParametros", listaCatalogo);
+                return View("_ListaParametros", listaParametros);
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+
+        private async Task<MaestroContableDTOCompleto> recuperarNombreCuenta(Guid CtaCont)
+        {
+            HttpResponseMessage respuestaMaestro = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarMaestroContableAPI + CtaCont, HttpMethod.Get);
+
+            MaestroContableDTOCompleto objMaestroContable = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(respuestaMaestro);
+
+            return objMaestroContable;
         }
     }
 }

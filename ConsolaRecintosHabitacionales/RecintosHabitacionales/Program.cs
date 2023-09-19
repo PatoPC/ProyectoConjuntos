@@ -98,7 +98,10 @@ builder.Services.AddScoped(typeof(BusquedaComunicadoDTO));
 builder.Services.AddScoped(typeof(AreaComunalDTOCrear));
 builder.Services.AddScoped(typeof(BusquedaAreaComunal));
 builder.Services.AddScoped(typeof(AreaComunalDTOEditar));
-//builder.Services.AddScoped(typeof(ConexionApi));
+
+builder.Services.AddScoped(typeof(BusquedaParametro));
+builder.Services.AddScoped(typeof(ParametroEditarDTO));
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 

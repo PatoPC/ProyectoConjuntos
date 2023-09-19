@@ -84,11 +84,11 @@ namespace APICondominios.Controllers
 
 
         [HttpPost("Editar")]
-        public async Task<IActionResult> Editar(Guid id, ProveedorDTOEditar objDTO)
+        public async Task<IActionResult> Editar(Guid id, ParametroEditarDTO objDTO)
         {
             try
             {
-                var objRepository = await _Parametro.obtenerPorIDParametro(id);
+                Parametro objRepository = await _Parametro.obtenerPorIDParametro(id);
                 _mapper.Map(objDTO, objRepository);
 
                 _CRUD_Parametro.Edit(objRepository);
@@ -132,19 +132,19 @@ namespace APICondominios.Controllers
             return BadRequest();
         }
 
-        [HttpGet("BusquedaAvanzadaProveedor")]
-        public async Task<ActionResult<List<ProveedorDTOCompleto>>> BusquedaAvanzadaProveedor(BusquedaProveedor objBusqueda)
+        [HttpGet("BusquedaAvanzaParametro")]
+        public async Task<ActionResult<List<ProveedorDTOCompleto>>> BusquedaAvanzaParametro(BusquedaParametro objBusqueda)
         {
             try
             {
                 List<Parametro> listaResultado = new List<Parametro>();
-                //listaResultado = await _Parametro.busquedaAvanzada(objBusqueda);
+                listaResultado = await _Parametro.busquedaAvanzada(objBusqueda);
 
                 if (listaResultado.Count < 1)                
                     return NotFound(MensajesRespuesta.sinResultados());
                 
 
-                List<ProveedorDTOCompleto> listaResultadoDTO = _mapper.Map<List<ProveedorDTOCompleto>>(listaResultado);
+                List<ParametroCompletoDTO> listaResultadoDTO = _mapper.Map<List<ParametroCompletoDTO>>(listaResultado);
 
                 return Ok(listaResultadoDTO);
             }

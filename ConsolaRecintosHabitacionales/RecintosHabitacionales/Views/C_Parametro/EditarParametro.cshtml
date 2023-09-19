@@ -1,4 +1,4 @@
-﻿@model DTOs.Parametro.ParametroCrearDTO
+﻿@model DTOs.Parametro.ParametroCompletoDTO
 
 @{
 
@@ -23,6 +23,7 @@
     <div class="card-body border-top">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <form asp-action="EditarParametro" id="CrearParametroForm">
+            @Html.HiddenFor(x => x.IdParametro)
             <div class="row">
                 <div class="col-md-6">
                     <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
@@ -95,7 +96,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
-                                @Html.DropDownList("Ctacont2", ViewData["listaCuentas2"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
+                                @Html.DropDownList("Ctacont2", ViewData["listaCuentas2"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
                             </div>
                         </div>
                     </div>
@@ -114,7 +115,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
-                                @Html.DropDownList("Ctacont3", ViewData["listaCuentas3"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
+                                @Html.DropDownList("Ctacont3", ViewData["listaCuentas3"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
                             </div>
                         </div>
 
@@ -132,7 +133,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
-                                @Html.DropDownList("Ctacont4", ViewData["listaCuentas4"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
+                                @Html.DropDownList("Ctacont4", ViewData["listaCuentas4"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
                             </div>
                         </div>
                     </div>
