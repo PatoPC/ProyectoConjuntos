@@ -167,6 +167,83 @@ namespace RecintosHabitacionales.Controllers
         }
         #endregion
 
+        
+        #region Eliminar
+        [HttpGet]
+        public async Task<ActionResult> EliminarParametro(Guid IdParametro)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+            ParametroCompletoDTO objMaestroContable = new ParametroCompletoDTO();
+
+
+            if (objUsuarioSesion != null)
+            {
+                HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.BuscarParametroPorID + IdParametro, HttpMethod.Get);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    objMaestroContable = await LeerRespuestas<ParametroCompletoDTO>.procesarRespuestasConsultas(respuesta);
+
+                    MaestroContableBusqueda objBusqueda = new MaestroContableBusqueda();
+                    List<CatalogoDTODropDown> listaFinal = new List<CatalogoDTODropDown>();
+
+                    objBusqueda.IdConjunto = objMaestroContable.IdConjunto;
+                    objBusqueda.Grupo = false;
+                    HttpResponseMessage respuestaCuentas = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarMaestroContableAvanzado, HttpMethod.Get, objBusqueda);
+
+                    var listaCuentas = await LeerRespuestas<List<MaestroContableDTOCompleto>>.procesarRespuestasConsultas(respuestaCuentas);
+
+                    var listaCuentas1 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont1);
+
+                    ViewData["listaCuentas1"] = listaCuentas1;
+
+                    var listaCuentas2 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont2);
+
+                    ViewData["listaCuentas2"] = listaCuentas2;
+
+                    var listaCuentas3 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont3);
+
+                    ViewData["listaCuentas3"] = listaCuentas3;
+
+                    var listaCuentas4 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont4);
+
+                    ViewData["listaCuentas4"] = listaCuentas4;
+                }
+
+                List<MaestroContableDTOCompleto> listaResultado = new List<MaestroContableDTOCompleto>();
+
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+
+                return View(objMaestroContable);
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EliminarParametro(Guid IdParametro, bool eliminar)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {             
+                HttpResponseMessage respuesta = await _servicioConsumoCompleto.consumoAPI(ConstantesConsumoAPI.EliminarParametro + IdParametro, HttpMethod.Post);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual,true));
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+        #endregion
+
 
         [HttpGet]
         public async Task<ActionResult> BusquedaParametros(BusquedaParametro objBusqueda)
@@ -182,6 +259,9 @@ namespace RecintosHabitacionales.Controllers
                     HttpResponseMessage respuesta = await _servicioConsumoAPIParametro.consumoAPI(ConstantesConsumoAPI.BuscarParamtroAvanzado, HttpMethod.Get, objBusqueda);
 
                     listaParametros = await LeerRespuestas<List<ParametroCompletoDTO>>.procesarRespuestasConsultas(respuesta);
+
+                    if (listaParametros == null)
+                        listaParametros = new List<ParametroCompletoDTO>();
 
                     foreach (var parametro in listaParametros)
                     {
@@ -216,8 +296,7 @@ namespace RecintosHabitacionales.Controllers
 
                 }
 
-                if (listaParametros == null)
-                    listaParametros = new List<ParametroCompletoDTO>();
+              
 
                 return View("_ListaParametros", listaParametros);
             }

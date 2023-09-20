@@ -1,0 +1,171 @@
+﻿@model DTOs.Parametro.ParametroCompletoDTO
+
+@{
+
+}
+<div class="card mb-10 mb-xl-12">
+    <div class="card-header card-header-stretch">
+        <div class="card-title d-flex align-items-center">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3 class="fw-bolder m-0 text-gray-800">
+                        <i class="fas fa-calculator text-primary fs-2qx"></i>
+                        Eliminar Parametros
+                    </h3>
+                </div>
+                <div class="col-md-12">
+                    <a class="btn btn-success" asp-action="AdministrarParametros"><i class="fas fa-undo-alt"></i><b>Regresar</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body border-top">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="EliminarParametro" id="CrearParametroForm">
+            @Html.HiddenFor(x => x.IdParametro)
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="IdConjunto" class="control-label">
+                                        Conjunto
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @onchange="cargarCuentas('IdConjunto')" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="NombreParametro" class="control-label">
+                                        Nombre
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                <input asp-for="NombreParametro" class="form-control form-control-solid" maxlength="60" required="required" />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="Ctacont1" class="control-label">
+                                        Cuenta Contable 1
+                                        @await Html.PartialAsync("_AsteriscoObligatorio")
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                @Html.DropDownList("Ctacont1", ViewData["listaCuentas1"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="Ctacont2" class="control-label">
+                                        Cuenta Contable 2
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                @Html.DropDownList("Ctacont2", ViewData["listaCuentas2"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="Ctacont3" class="control-label">
+                                        Cuenta Contable 3
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                @Html.DropDownList("Ctacont3", ViewData["listaCuentas3"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                        <div class="row mb-12">
+                            <div class="col-xl-4">
+                                <div class="fs-6 fw-bold mt-2 mb-3">
+                                    <label for="Ctacont4" class="control-label">
+                                        Cuenta Contable 4
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xl-8 fv-row">
+                                @Html.DropDownList("Ctacont4", ViewData["listaCuentas4"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12 fv-row">
+                    <center>
+                        <button type="button" onclick="sendFormAjaxEliminar(this, 'CrearParametroForm', undefined,undefined,'btn_CrearNuevo')" class="btn btn-danger" id="btn_CrearNuevo">
+                            <span class="indicator-label">
+                                <i class="far fa-save fs-md-2qx"></i>Eliminar
+                            </span>
+                            <span class="indicator-progress">
+                                Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </center>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script type="text/javascript">
+        // window.onload = function () {
+        //     cargarCuentas("IdConjunto")
+        // };
+
+       
+    </script>
+    }
