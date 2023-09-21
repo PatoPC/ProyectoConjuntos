@@ -329,7 +329,7 @@ namespace RecintosHabitacionales.Controllers
                     listaFinal = listaResultado.Select(x => new CatalogoDTODropDown
                     {
                         IdCatalogo = x.IdConMst,
-                        Nombrecatalogo = x.NombreCuenta
+                        Nombrecatalogo = x.CuentaCon+" "+x.NombreCuenta
                     }).ToList();
                 }
                 catch (Exception ex)

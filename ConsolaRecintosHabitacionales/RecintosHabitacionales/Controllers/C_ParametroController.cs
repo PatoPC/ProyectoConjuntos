@@ -267,27 +267,27 @@ namespace RecintosHabitacionales.Controllers
                     {
                         MaestroContableDTOCompleto objCuenta1 = await recuperarNombreCuenta(parametro.CtaCont1);
 
-                        parametro.Cuenta1 = objCuenta1.NombreCuenta;
+                        parametro.Cuenta1 = objCuenta1.CuentaCon+" "+ objCuenta1.NombreCuenta;
 
                         if (parametro.CtaCont2 != Guid.Empty && parametro.CtaCont2!=null)
                         {
                             MaestroContableDTOCompleto objCuenta2 = await recuperarNombreCuenta((Guid)parametro.CtaCont2);
 
-                            parametro.Cuenta2 = objCuenta2.NombreCuenta;
+                            parametro.Cuenta2 = objCuenta2.CuentaCon + " " + objCuenta2.NombreCuenta;
                         }
 
                         if (parametro.CtaCont3 != Guid.Empty && parametro.CtaCont3 != null)
                         {
                             MaestroContableDTOCompleto objCuenta3 = await recuperarNombreCuenta((Guid)parametro.CtaCont3);
 
-                            parametro.Cuenta3 = objCuenta3.NombreCuenta;
+                            parametro.Cuenta3 = objCuenta3.CuentaCon + " " + objCuenta3.NombreCuenta;
                         }
 
                         if (parametro.CtaCont4 != Guid.Empty && parametro.CtaCont4 != null)
                         {
-                            MaestroContableDTOCompleto objCuenta = await recuperarNombreCuenta((Guid)parametro.CtaCont4);
+                            MaestroContableDTOCompleto objCuenta4 = await recuperarNombreCuenta((Guid)parametro.CtaCont4);
 
-                            parametro.Cuenta4 = objCuenta.NombreCuenta;
+                            parametro.Cuenta4 = objCuenta4.CuentaCon + " " + objCuenta4.NombreCuenta;
                         }
                     }
                 }
