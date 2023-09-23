@@ -45,7 +45,7 @@
 
             if (jsonObject != undefined) {
                 document.getElementById("IdConjuntoAreaComunal").value = jsonObject.idConjunto
-                
+
                 document.getElementById("IdAreaComunalEditar").value = jsonObject.idAreaComunal
                 document.getElementById("NombreAreaEditar").value = jsonObject.nombreArea
                 document.getElementById("HoraInicioEditar").value = jsonObject.horaFin
@@ -64,4 +64,57 @@
     });
 
     MostrarModal(idModal)
+}
+
+ function buscarAreaComunalPorConjuntoselectConjunto(selectConjunto, selectArearComunal) {
+    let SelectConjunto = document.getElementById(selectConjunto)
+    let SelectAreaComunal = document.getElementById(selectArearComunal)
+
+    var options = document.querySelectorAll('#' + selectArearComunal + ' option');
+    options.forEach(o => o.remove());
+    option = document.createElement('option');
+    option.text = "Seleccionar";
+     SelectAreaComunal.add(option);
+
+    return $.ajax({
+
+        url: pathConsola + "/C_ReservaAreas/recuperarAreasComunalesPorIdConjunto?idConjunto= " + SelectConjunto.value,
+        type: "get",
+        /*                data: formData,*/
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (result) {
+            let responseRead = JSON.stringify(result);
+            let Lista = JSON.parse(responseRead);
+            if (Lista.length > 0) {
+                let contadorOpciones = 0
+                for (var item of Lista) {
+                    option = document.createElement('option');
+
+                    option.text = item.nombreArea;
+                    option.value = item.idAreaComunal;
+
+                    SelectAreaComunal.add(option);
+
+                }
+            } else {
+                Swal.fire({
+                    title: 'Advertencia',
+                    text: "No existen áreas comunales para el conjunto seleccionado.",
+                    icon: 'info',
+                })
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            Swal.fire({
+                title: 'Error Inesperado',
+                text: "Ocurrió un error al recuperar los Proveedores, por favor intente más tarde.",
+                icon: 'error',
+            })
+        },
+        complete: function (data) {
+
+        }
+    });
 }

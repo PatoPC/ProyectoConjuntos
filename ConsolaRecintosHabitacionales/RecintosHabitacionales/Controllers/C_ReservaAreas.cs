@@ -48,11 +48,18 @@ namespace RecintosHabitacionales.Controllers
 
             return View();
         }
-          
 
-        
-    
 
-      
+
+        public async Task<JsonResult> recuperarAreasComunalesPorIdConjunto(Guid idConjunto)
+        {
+            List<AreaComunalDTOCompleto> listaResultadoDTO = new();
+            HttpResponseMessage respuestaAreaComunal = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.BuscarAreasComunalesPorIdConjunto + idConjunto, HttpMethod.Get);
+
+            listaResultadoDTO = await LeerRespuestas<List<AreaComunalDTOCompleto>>.procesarRespuestasConsultas(respuestaAreaComunal);
+            return new JsonResult(listaResultadoDTO);
+        }
+
+
     }
 }
