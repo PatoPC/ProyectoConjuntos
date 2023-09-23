@@ -1,4 +1,4 @@
-﻿@model DTOs.Parametro.ParametroCrearDTO
+﻿@model DTOs.Parametro.ParametroCompletoDTO
 
 @{
 
@@ -10,7 +10,7 @@
                 <div class="col-md-9">
                     <h3 class="fw-bolder m-0 text-gray-800">
                         <i class="fas fa-calculator text-primary fs-2qx"></i>
-                        Parametros
+                        Editar Parametros
                     </h3>
                 </div>
                 <div class="col-md-12">
@@ -22,7 +22,8 @@
 
     <div class="card-body border-top">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <form asp-action="CrearParametro" id="CrearParametroForm">
+        <form asp-action="EditarParametro" id="CrearParametroForm">
+            @Html.HiddenFor(x => x.IdParametro)
             <div class="row">
                 <div class="col-md-6">
                     <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
@@ -76,9 +77,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
-                                <select id="Ctacont1" name="Ctacont1" class="form-select form-select-solid form-select-lg" aria-label="Seleccionar" data-control="select2" data-placeholder="Seleccionar" required="required">
-                                    <option value="">Seleccionar</option>
-                                </select>
+                                @Html.DropDownList("Ctacont1", ViewData["listaCuentas1"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
 
                             </div>
                         </div>
@@ -97,10 +96,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
-
-                                <select id="Ctacont2" name="Ctacont2" class="form-select form-select-solid form-select-lg" aria-label="Seleccionar" data-control="select2" data-placeholder="Seleccionar">
-                                    <option value="">Seleccionar</option>
-                                </select>
+                                @Html.DropDownList("Ctacont2", ViewData["listaCuentas2"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
                             </div>
                         </div>
                     </div>
@@ -119,9 +115,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
-                                <select id="Ctacont3" name="Ctacont3" class="form-select form-select-solid form-select-lg" aria-label="Seleccionar" data-control="select2" data-placeholder="Seleccionar">
-                                    <option value="">Seleccionar</option>
-                                </select>
+                                @Html.DropDownList("Ctacont3", ViewData["listaCuentas3"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
                             </div>
                         </div>
 
@@ -139,9 +133,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
-                                <select id="Ctacont4" name="Ctacont4" class="form-select form-select-solid form-select-lg" aria-label="Seleccionar" data-control="select2" data-placeholder="Seleccionar">
-                                    <option value="">Seleccionar</option>
-                                </select>
+                                @Html.DropDownList("Ctacont4", ViewData["listaCuentas4"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
                             </div>
                         </div>
                     </div>
@@ -170,16 +162,10 @@
 
 @section Scripts {
     <script type="text/javascript">
-        window.onload = function () {
-            cargarCuentas("IdConjunto")
-        };
+        // window.onload = function () {
+        //     cargarCuentas("IdConjunto")
+        // };
 
-        function cargarCuentas(idConjunto) {
-
-            consultarDesdeAPIControlador(idConjunto, 'Ctacont1', 'C_MaestroContable', 'cargarListaCuentasContables', 'idConjunto')
-            consultarDesdeAPIControlador(idConjunto, 'Ctacont2', 'C_MaestroContable', 'cargarListaCuentasContables', 'idConjunto')
-            consultarDesdeAPIControlador(idConjunto, 'Ctacont3', 'C_MaestroContable', 'cargarListaCuentasContables', 'idConjunto')
-            consultarDesdeAPIControlador(idConjunto, 'Ctacont4', 'C_MaestroContable', 'cargarListaCuentasContables', 'idConjunto')
-        }
+       
     </script>
     }

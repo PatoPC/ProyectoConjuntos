@@ -6,18 +6,15 @@ using System.Threading.Tasks;
 
 namespace DTOs.Parametro
 {
-   public class ParametroCrearDTO
-
+   public class BusquedaParametro
     {
-        public string NombreParametro { get; set; } = null!;
+        public Guid IdParametro { get; set; }
         public Guid IdConjunto { get; set; }
+        public string? NombreParametro { get; set; } = null!;
         public Guid CtaCont1 { get; set; }
         public Guid? CtaCont2 { get; set; }
         public Guid? CtaCont3 { get; set; }
         public Guid? CtaCont4 { get; set; }
-        public bool Estado { get; set; }
-        public string UsuarioCreacion { get; set; } = null!;
-    
-
+        public bool Estado { get; set; }      
     }
 }

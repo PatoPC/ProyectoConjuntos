@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda>
+﻿@model IEnumerable<DTOs.Parametro.ParametroCompletoDTO>
 
 @{
     Layout = "";
@@ -17,16 +17,16 @@
                             <span class="badge badge-light text-dark">Nombre</span>
                         </th>
                         <th>
-                            <span class="badge badge-light text-dark">cuenta1</span>
+                            <span class="badge badge-light text-dark">Cuenta 1</span>
                         </th>
                         <th>
-                            <span class="badge badge-light text-dark">cuenta2</span>
+                            <span class="badge badge-light text-dark">Cuenta 2</span>
                         </th>
                         <th>
-                            <span class="badge badge-light text-dark">cuenta3</span>
+                            <span class="badge badge-light text-dark">Cuenta 3</span>
                         </th>
                         <th>
-                            <span class="badge badge-light text-dark">cuenta4</span>
+                            <span class="badge badge-light text-dark">Cuenta 4</span>
                         </th>
 
                         <th>
@@ -43,31 +43,26 @@
                         {
                             <tr>
                                 <td data-title="Nombre">
-                                    <span>@dato.NombreCatalogo</span>
+                                    <span>@dato.NombreParametro</span>
                                 </td>
-                                <td data-title="cuenta1">
-                                    <span>@dato.Ctacont1</span>
+                                <td data-title="cuenta1">                                 
+                                    <span>@dato.Cuenta1</span>
                                 </td>
                                 <td data-title="cuenta2">
-                                    <span>@dato.Ctacont2</span>
+                                    <span>@dato.Cuenta2</span>
                                 </td>
                                 <td data-title="cuenta3">
-                                    <span>@dato.Ctacont3</span>
+                                    <span>@dato.Cuenta3</span>
                                 </td>
                                 <td data-title="cuenta4">
-                                    <span>@dato.Ctacont4</span>
+                                    <span>@dato.Cuenta4</span>
                                 </td>
-
-
-
-
-
-                                   <td data-title="Acción">
+                                <td data-title="Acción">
                                     <div>
-                                        <a href="~/C_MaestroContable/EditarMaestroContable?idMaestro=@dato.IdCatalogo" target="_self" class="badge badge-light-primary">Editar<i class="far fa-edit" style="color: #009ef7"></i></a>
+                                        <a href="~/C_Parametro/EditarParametro?IdParametro=@dato.IdParametro" target="_self" class="badge badge-light-primary">Editar<i class="far fa-edit" style="color: #009ef7"></i></a>
                                     </div>
                                     <div>
-                                        <a href="~/C_MaestroContable/EliminarMaestroContable?idMaestro=@dato.IdCatalogo" target="_self" class="badge badge-light-danger">Eliminar<i class="fas fa-trash-alt" style="color: #ff0000"></i></a>
+                                        <a href="~/C_Parametro/EliminarParametro?IdParametro=@dato.IdParametro" target="_self" class="badge badge-light-danger">Eliminar<i class="fas fa-trash-alt" style="color: #ff0000"></i></a>
                                     </div>
                                 </td>
                             </tr>

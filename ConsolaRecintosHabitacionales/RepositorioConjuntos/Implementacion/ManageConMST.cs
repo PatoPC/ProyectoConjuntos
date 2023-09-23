@@ -34,7 +34,7 @@ namespace RepositorioConjuntos.Implementacion
                 .Where(x => x.CuentaCon.Contains(numeroCuenta)).ToListAsync();
 
             return listaRepositorio;
-        }        
+        }
 
         public async Task<List<ConMst>> obtenerPorNombreCuenta(string nombre)
         {
@@ -53,7 +53,7 @@ namespace RepositorioConjuntos.Implementacion
 
         public async Task<List<ConMst>> busquedaAvanzada(MaestroContableBusqueda objBusqueda)
         {
-            List<ConMst> listaRepositorio = await _context.ConMsts.Where(x => x.IdConjunto==objBusqueda.IdConjunto).ToListAsync();
+            List<ConMst> listaRepositorio = await _context.ConMsts.Where(x => x.IdConjunto == objBusqueda.IdConjunto).ToListAsync();
 
             if (!string.IsNullOrEmpty(objBusqueda.NombreCuenta))
             {
@@ -66,7 +66,11 @@ namespace RepositorioConjuntos.Implementacion
                     .Where(x => x.CuentaCon.Trim().Contains(objBusqueda.CuentaCon.Trim())).ToList();
             }
 
-
+            if (objBusqueda.Grupo != null)
+            {
+                listaRepositorio = listaRepositorio
+                .Where(x => x.Grupo == (bool)objBusqueda.Grupo).ToList();
+            }
 
             return listaRepositorio;
         }
