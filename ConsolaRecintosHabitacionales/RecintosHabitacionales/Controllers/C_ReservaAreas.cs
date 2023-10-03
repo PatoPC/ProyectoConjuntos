@@ -29,6 +29,9 @@ namespace RecintosHabitacionales.Controllers
 
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
+            if(objUsuarioSesion==null)
+                return RedirectToAction("Ingresar", "C_Ingreso");
+
             HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.BuscarAreasComunalesPorIdConjunto + objUsuarioSesion.IdConjuntoDefault, HttpMethod.Get);
             List<AreaComunalDTOCompleto> listAreaComunal = new();
             if (respuesta.IsSuccessStatusCode)
