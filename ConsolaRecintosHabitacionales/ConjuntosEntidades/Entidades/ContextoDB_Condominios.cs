@@ -60,7 +60,7 @@ namespace ConjuntosEntidades.Entidades
                 entity.Property(e => e.EstadoAdeudos).HasColumnName("ESTADO_ADEUDOS");
 
                 entity.Property(e => e.FechaAdeudos)
-                    .HasColumnType("datetime")
+                    .HasColumnType("date")
                     .HasColumnName("FECHA_ADEUDOS");
 
                 entity.Property(e => e.FechaCreacion)
@@ -82,6 +82,10 @@ namespace ConjuntosEntidades.Entidades
                 entity.Property(e => e.MontoAdeudos)
                     .HasColumnType("money")
                     .HasColumnName("MONTO_ADEUDOS");
+
+                entity.Property(e => e.SaldoPendiente)
+                    .HasColumnType("money")
+                    .HasColumnName("SALDO_PENDIENTE");
 
                 entity.Property(e => e.UsuarioCreacion)
                     .HasMaxLength(60)
@@ -397,10 +401,11 @@ namespace ConjuntosEntidades.Entidades
                     .IsUnicode(false)
                     .HasColumnName("CODIGO_DEPARTAMENTO");
 
-                entity.Property(e => e.Estado)
-                    .IsRequired()
-                    .HasColumnName("ESTADO")
-                    .HasDefaultValueSql("((1))");
+                entity.Property(e => e.ConIdConMst)
+                    .HasColumnName("CON_ID_CON_MST")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Estado).HasColumnName("ESTADO");
 
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
@@ -409,6 +414,10 @@ namespace ConjuntosEntidades.Entidades
                 entity.Property(e => e.FechaModificacion)
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.IdConMst)
+                    .HasColumnName("ID_CON_MST")
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.IdTorres)
                     .HasColumnName("ID_TORRES")
@@ -431,6 +440,16 @@ namespace ConjuntosEntidades.Entidades
                     .HasMaxLength(60)
                     .IsUnicode(false)
                     .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.HasOne(d => d.ConIdConMstNavigation)
+                    .WithMany(p => p.DepartamentoConIdConMstNavigations)
+                    .HasForeignKey(d => d.ConIdConMst)
+                    .HasConstraintName("FK_DEPARTAM_CON_MST");
+
+                entity.HasOne(d => d.IdConMstNavigation)
+                    .WithMany(p => p.DepartamentoIdConMstNavigations)
+                    .HasForeignKey(d => d.IdConMst)
+                    .HasConstraintName("FK_DEPARTAM_REFERENCE_CON_MST");
 
                 entity.HasOne(d => d.IdTorresNavigation)
                     .WithMany(p => p.Departamentos)

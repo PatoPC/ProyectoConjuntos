@@ -14,6 +14,9 @@ namespace ConjuntosEntidades.Entidades
 
         public Guid IdDepartamento { get; set; }
         public Guid IdTorres { get; set; }
+        public Guid? IdConMst { get; set; }
+        public Guid? ConIdConMst { get; set; }
+        public bool Estado { get; set; }
         public decimal AliqDepartamento { get; set; }
         public string CodigoDepartamento { get; set; } = null!;
         public decimal MetrosDepartamento { get; set; }
@@ -22,8 +25,9 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioCreacion { get; set; } = null!;
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
-        public bool? Estado { get; set; }
 
+        public virtual ConMst? ConIdConMstNavigation { get; set; }
+        public virtual ConMst? IdConMstNavigation { get; set; }
         public virtual Torre IdTorresNavigation { get; set; } = null!;
         public virtual ICollection<Adeudo> Adeudos { get; set; }
         public virtual ICollection<AreasDepartamento> AreasDepartamentos { get; set; }
