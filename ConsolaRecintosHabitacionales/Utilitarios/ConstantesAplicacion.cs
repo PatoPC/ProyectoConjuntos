@@ -59,6 +59,13 @@ namespace Utilitarios
         public const string padreTipoAreas = "TIPAREAS";
         #endregion
 
+        #region MÓDULOS CONTABLES
+        public const string padreModulosContables = "MDLSCONT"; //Padre
+
+        public const string adeudoModulosContables = "MDLSADUD";
+        //public const string padreModulosContables = "MDLSCONT";
+        #endregion
+
         public const string mensajeSesionCaducada = "?sesionCaducada=Tu sesión ha caducado";
 
         public const string rutaArchivosLectura = @"ArchivosConjuntos\";

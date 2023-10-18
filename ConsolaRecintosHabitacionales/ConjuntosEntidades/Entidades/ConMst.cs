@@ -7,8 +7,7 @@ namespace ConjuntosEntidades.Entidades
     {
         public ConMst()
         {
-            DepartamentoConIdConMstNavigations = new HashSet<Departamento>();
-            DepartamentoIdConMstNavigations = new HashSet<Departamento>();
+            Departamentos = new HashSet<Departamento>();
         }
 
         public Guid IdConMst { get; set; }
@@ -22,7 +21,6 @@ namespace ConjuntosEntidades.Entidades
         public string? UsuarioModificacion { get; set; }
 
         public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;
-        public virtual ICollection<Departamento> DepartamentoConIdConMstNavigations { get; set; }
-        public virtual ICollection<Departamento> DepartamentoIdConMstNavigations { get; set; }
+        public virtual ICollection<Departamento> Departamentos { get; set; }
     }
 }

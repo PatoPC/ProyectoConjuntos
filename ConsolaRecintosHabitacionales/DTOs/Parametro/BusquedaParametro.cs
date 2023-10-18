@@ -15,6 +15,7 @@ namespace DTOs.Parametro
         public Guid? CtaCont2 { get; set; }
         public Guid? CtaCont3 { get; set; }
         public Guid? CtaCont4 { get; set; }
-        public bool Estado { get; set; }      
+        public bool Estado { get; set; }
+        public Guid? IdModulo { get; set; } //Se busca un catalogo que se trata como un modulo
     }
 }

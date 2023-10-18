@@ -17,6 +17,7 @@ namespace ConjuntosEntidades.Entidades
         public DateTime? FechaModificacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
         public string UsuarioModificacion { get; set; } = null!;
+        public Guid? IdModulo { get; set; }
 
         public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;
     }

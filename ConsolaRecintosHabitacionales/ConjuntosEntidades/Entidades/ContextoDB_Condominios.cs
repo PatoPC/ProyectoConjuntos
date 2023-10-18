@@ -401,10 +401,6 @@ namespace ConjuntosEntidades.Entidades
                     .IsUnicode(false)
                     .HasColumnName("CODIGO_DEPARTAMENTO");
 
-                entity.Property(e => e.ConIdConMst)
-                    .HasColumnName("CON_ID_CON_MST")
-                    .HasDefaultValueSql("(newid())");
-
                 entity.Property(e => e.Estado).HasColumnName("ESTADO");
 
                 entity.Property(e => e.FechaCreacion)
@@ -441,13 +437,8 @@ namespace ConjuntosEntidades.Entidades
                     .IsUnicode(false)
                     .HasColumnName("USUARIO_MODIFICACION");
 
-                entity.HasOne(d => d.ConIdConMstNavigation)
-                    .WithMany(p => p.DepartamentoConIdConMstNavigations)
-                    .HasForeignKey(d => d.ConIdConMst)
-                    .HasConstraintName("FK_DEPARTAM_CON_MST");
-
                 entity.HasOne(d => d.IdConMstNavigation)
-                    .WithMany(p => p.DepartamentoIdConMstNavigations)
+                    .WithMany(p => p.Departamentos)
                     .HasForeignKey(d => d.IdConMst)
                     .HasConstraintName("FK_DEPARTAM_REFERENCE_CON_MST");
 
@@ -771,6 +762,8 @@ namespace ConjuntosEntidades.Entidades
                 entity.Property(e => e.IdConjunto)
                     .HasColumnName("ID_CONJUNTO")
                     .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdModulo).HasColumnName("ID_MODULO");
 
                 entity.Property(e => e.NombreParametro)
                     .HasMaxLength(50)

@@ -18,6 +18,7 @@ namespace DTOs.Departamento
         public Guid IdTorresCrearDepartamento { get; set; }        
 
         public Guid IdConjuntoCrearDepartamento { get; set; }
+        public Guid? IdConMst { get; set; }
         public decimal? AliqDepartamento { get; set; }
         public string CodigoDepartamento { get; set; } = null!;
         public decimal? MetrosDepartamento { get; set; }

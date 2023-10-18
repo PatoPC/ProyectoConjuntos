@@ -9,6 +9,7 @@ namespace DTOs.Parametro
    public class ParametroCrearDTO
 
     {
+        public Guid? IdModulo { get; set; }
         public string NombreParametro { get; set; } = null!;
         public Guid IdConjunto { get; set; }
         public Guid CtaCont1 { get; set; }

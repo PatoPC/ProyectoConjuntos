@@ -45,5 +45,12 @@ namespace RepositorioConjuntos.Implementacion
 
             return listaRespositorio;
         }
+
+        public async Task<Parametro> obtenerParametroPorIDCatalogo(Guid idModuloCatalogo)
+        {
+            var parametro = await _context.Parametros.Where(x => x.IdModulo == idModuloCatalogo).FirstOrDefaultAsync();
+
+            return parametro;
+        }
     }
 }

@@ -4,6 +4,7 @@ using DTOs.Parametro;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using RecintosHabitacionales.Models;
 using RecintosHabitacionales.Servicio;
 using RecintosHabitacionales.Servicio.Implementar;
 using RecintosHabitacionales.Servicio.Interface;
@@ -20,13 +21,15 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<ParametroCrearDTO> _servicioConsumoAPICrear;
         private readonly IServicioConsumoAPI<BusquedaParametro> _servicioConsumoAPIParametro;
         private readonly IServicioConsumoAPI<ParametroEditarDTO> _servicioConsumoCompleto;
+        private readonly IServicioConsumoAPI<CatalogoDTODropDown> _servicioConsumoAPICatalogos;
 
-        public C_ParametroController(IServicioConsumoAPI<ParametroCrearDTO> servicioConsumoAPICrear, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusqueda, IServicioConsumoAPI<BusquedaParametro> servicioConsumoAPIParametro, IServicioConsumoAPI<ParametroEditarDTO> servicioConsumoCompleto)
+        public C_ParametroController(IServicioConsumoAPI<ParametroCrearDTO> servicioConsumoAPICrear, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusqueda, IServicioConsumoAPI<BusquedaParametro> servicioConsumoAPIParametro, IServicioConsumoAPI<ParametroEditarDTO> servicioConsumoCompleto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos)
         {
             _servicioConsumoAPICrear = servicioConsumoAPICrear;
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
             _servicioConsumoAPIParametro = servicioConsumoAPIParametro;
             _servicioConsumoCompleto = servicioConsumoCompleto;
+            _servicioConsumoAPICatalogos = servicioConsumoAPICatalogos;
         }
 
         public IActionResult AdministrarParametros()
@@ -45,7 +48,7 @@ namespace RecintosHabitacionales.Controllers
 
         #region Crear
         [HttpGet]
-        public IActionResult CrearParametro()
+        public async Task<ActionResult> CrearParametro()
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
@@ -54,6 +57,9 @@ namespace RecintosHabitacionales.Controllers
                 List<MaestroContableDTOCompleto> listaResultado = new List<MaestroContableDTOCompleto>();
 
                 ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+
+                ViewData["listaModulos"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreModulosContables, "IdCatalogo", "Nombrecatalogo");
+
 
                 return View();
             }
@@ -134,6 +140,9 @@ namespace RecintosHabitacionales.Controllers
                 List<MaestroContableDTOCompleto> listaResultado = new List<MaestroContableDTOCompleto>();
 
                 ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+
+                ViewData["listaModulos"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreModulosContables, "IdCatalogo", "Nombrecatalogo");
+
 
                 return View(objMaestroContable);
             }

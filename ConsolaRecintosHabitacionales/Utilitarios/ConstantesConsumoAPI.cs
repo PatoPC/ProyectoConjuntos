@@ -151,6 +151,7 @@ namespace Utilitarios
         public const string BuscarParametroPorID = ConstantesAplicacion.pathAPI + "/api/Parametro/";
         public const string EditarParametro = ConstantesAplicacion.pathAPI + "/api/Parametro/Editar?id=";
         public const string EliminarParametro = ConstantesAplicacion.pathAPI + "/api/Parametro/Eliminar?id=";
+        public const string obtenerParametroPorCatalogo = ConstantesAplicacion.pathAPI + "/api/Parametro/RecuperarParametroModulo?idModuloCatalogo=";
         //public const string BuscarParametroPorIdConjunto = ConstantesAplicacion.pathAPI + "/api/Parametro/BuscarAreasComunalesPorIdConjunto?IdConjunto=";
         #endregion
 
