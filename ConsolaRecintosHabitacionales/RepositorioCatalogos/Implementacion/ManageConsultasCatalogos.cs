@@ -143,14 +143,17 @@ namespace RepositorioCatalogos.Implementacion
         {
             if (idConjunto != ConstantesAplicacion.guidNulo)
             {
-                var listaCatalogos = await _context.Catalogos.Where(x => x.CodigoCatalogo.Trim().ToUpper() == code.Trim().ToUpper() && x.IdConjunto == idConjunto)
+                var listaCatalogos = await _context.Catalogos
+                    .Where(x => x.CodigoCatalogo.Trim().ToUpper() == code.Trim().ToUpper() && x.IdConjunto == idConjunto)
                         .Include(x => x.InverseIdCatalogopadreNavigation)
-                        .SelectMany(y => y.InverseIdCatalogopadreNavigation).OrderBy(x => x.NombreCatalogo).ToListAsync();
+                        .SelectMany(y => y.InverseIdCatalogopadreNavigation)
+                        .OrderBy(x => x.NombreCatalogo).ToListAsync();
                 return listaCatalogos;
             }
             else
             {
-                var listaCatalogos = await _context.Catalogos.Where(x => x.CodigoCatalogo.Trim().ToUpper() == code.Trim().ToUpper())
+                var listaCatalogos = await _context.Catalogos
+                    .Where(x => x.CodigoCatalogo.Trim().ToUpper() == code.Trim().ToUpper())
                         .Include(x => x.InverseIdCatalogopadreNavigation)
                         .SelectMany(y => y.InverseIdCatalogopadreNavigation).OrderBy(x => x.NombreCatalogo).ToListAsync();
                 return listaCatalogos;
@@ -162,9 +165,11 @@ namespace RepositorioCatalogos.Implementacion
         {
             List<Catalogo> lista = new List<Catalogo>();
 
-            lista = await _context.Catalogos.Where(x => x.IdCatalogo == idCodigoPadreCatalgo)
+            lista = await _context.Catalogos
+                .Where(x => x.IdCatalogo == idCodigoPadreCatalgo)
                     .Include(x => x.InverseIdCatalogopadreNavigation)
-                    .SelectMany(y => y.InverseIdCatalogopadreNavigation).OrderBy(x => x.NombreCatalogo).ToListAsync();
+                    .SelectMany(y => y.InverseIdCatalogopadreNavigation)
+                    .OrderBy(x => x.NombreCatalogo).ToListAsync();
 
 
             return lista;

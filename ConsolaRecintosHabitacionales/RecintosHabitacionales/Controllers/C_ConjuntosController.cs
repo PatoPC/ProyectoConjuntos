@@ -17,6 +17,9 @@ using RecintosHabitacionales.Servicio.Implementar;
 using AutoMapper;
 using DTOs.Roles;
 using DTOs.AreaComunal;
+using System.Net.Http;
+using DTOs.Parametro;
+using DTOs.MaestroContable;
 
 namespace RecintosHabitacionales.Controllers
 {
@@ -342,6 +345,49 @@ namespace RecintosHabitacionales.Controllers
                     }
 
                     objDTO.AreasDepartamentos = listaAreasDepartamentos;
+                }
+
+                HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPIBusquedaTorres.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.adeudoModulosContables, HttpMethod.Get);
+
+                if (respuestaCatalogo.IsSuccessStatusCode)
+                {
+                    CatalogoDTOResultadoBusqueda objAdeudo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogo);
+
+                    HttpResponseMessage respuestaParametro = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.obtenerParametroPorCatalogo + objAdeudo.IdCatalogo, HttpMethod.Get);
+
+                    if (respuestaParametro.IsSuccessStatusCode)
+                    {
+                        ParametroCompletoDTO objMaestroContable = await LeerRespuestas<ParametroCompletoDTO>.procesarRespuestasConsultas(respuestaParametro);
+
+                        ParametroCrearDTO objNuevoParametro = new ParametroCrearDTO(); 
+
+                        //objNuevoParametro.CtaCont1 = objMaestroContable.CtaCont1;
+
+                        HttpResponseMessage respuestaContable = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarMaestroContableAPI + objMaestroContable.CtaCont1, HttpMethod.Get);
+
+                        if (respuestaContable.IsSuccessStatusCode)
+                        {
+                            MaestroContableDTOCompleto dtoMaestroCompleto = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(respuestaContable);
+
+                            MaestroContableDTOCrear objDTOMaestro = new MaestroContableDTOCrear();
+
+                            objDTOMaestro.Grupo = false;
+                            objDTOMaestro.IdConjunto = objMaestroContable.IdConjunto;
+                            objDTOMaestro.CuentaCon = dtoMaestroCompleto.CuentaCon;
+
+                        }
+
+                    }
+                    else
+                    {
+                        MensajesRespuesta objMensajeRespuesta = await respuestaParametro.ExceptionResponse();
+                        return new JsonResult(objMensajeRespuesta);
+                    }
+                }
+                else
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuestaCatalogo.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
                 }
 
                 HttpResponseMessage respuesta = await _servicioConsumoAPIDepartamento.consumoAPI(ConstantesConsumoAPI.gestionarDepartamentoAPI, HttpMethod.Post, objDTO);

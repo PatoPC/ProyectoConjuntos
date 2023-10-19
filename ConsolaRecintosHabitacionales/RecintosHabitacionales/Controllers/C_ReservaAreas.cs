@@ -32,6 +32,9 @@ namespace RecintosHabitacionales.Controllers
             if (objUsuarioSesion == null)
                 return RedirectToAction("Ingresar", "C_Ingreso");
 
+            if(objUsuarioSesion==null)
+                return RedirectToAction("Ingresar", "C_Ingreso");
+
             HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.BuscarAreasComunalesPorIdConjunto + objUsuarioSesion.IdConjuntoDefault, HttpMethod.Get);
 
             List<AreaComunalDTOCompleto> listAreaComunal = new();

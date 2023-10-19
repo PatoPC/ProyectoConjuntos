@@ -5,6 +5,11 @@ namespace ConjuntosEntidades.Entidades
 {
     public partial class ConMst
     {
+        public ConMst()
+        {
+            Departamentos = new HashSet<Departamento>();
+        }
+
         public Guid IdConMst { get; set; }
         public Guid IdConjunto { get; set; }
         public string CuentaCon { get; set; } = null!;
@@ -16,5 +21,6 @@ namespace ConjuntosEntidades.Entidades
         public string? UsuarioModificacion { get; set; }
 
         public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;
+        public virtual ICollection<Departamento> Departamentos { get; set; }
     }
 }

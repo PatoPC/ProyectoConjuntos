@@ -12,8 +12,8 @@ namespace RepositorioConjuntos.Interface
 {
     public interface IManageParametro
     {
-        public Task<Parametro> obtenerPorIDParametro(Guid idParametro);
+        public Task<Parametro> obtenerPorIDParametro(Guid idParametro);        
         public Task<List<Parametro>> busquedaAvanzada(BusquedaParametro objBusqueda);
-       
+        public Task<Parametro> obtenerParametroPorIDCatalogo(Guid idModuloCatalogo);
     }
 }

@@ -8,7 +8,7 @@ namespace DTOs.Parametro
 {
    public class ParametroEditarDTO
     {
-      
+        public Guid? IdModulo { get; set; }
         public Guid? IdConjunto { get; set; }
         public string NombreParametro { get; set; } = null!;
         public string? Cuenta1 { get; set; } = null!;

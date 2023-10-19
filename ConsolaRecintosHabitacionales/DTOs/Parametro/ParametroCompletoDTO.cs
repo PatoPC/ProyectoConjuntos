@@ -11,6 +11,7 @@ namespace DTOs.Parametro
         public Guid IdParametro { get; set; }
         public Guid IdConjunto { get; set; }
         public string NombreParametro { get; set; } = null!;
+        public Guid? IdModulo { get; set; }
         public string Cuenta1 { get; set; } = null!;
         public Guid CtaCont1 { get; set; }
         public string Cuenta2 { get; set; } = null!;

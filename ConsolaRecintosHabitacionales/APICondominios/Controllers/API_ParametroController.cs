@@ -82,7 +82,6 @@ namespace APICondominios.Controllers
             return BadRequest(MensajesRespuesta.guardarError());
         }
 
-
         [HttpPost("Editar")]
         public async Task<IActionResult> Editar(Guid id, ParametroEditarDTO objDTO)
         {
@@ -109,7 +108,6 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status406NotAcceptable);
         }
 
-
         [HttpPost("Eliminar")]
         public async Task<IActionResult> Eliminar(Guid id)
         {
@@ -132,6 +130,27 @@ namespace APICondominios.Controllers
             return BadRequest();
         }
 
+        [HttpGet("RecuperarParametroModulo")]
+        public async Task<IActionResult> RecuperarParametroModulo(Guid idModuloCatalogo)
+        {
+            try
+            {
+                Parametro objRepositorio = await _Parametro.obtenerParametroPorIDCatalogo(idModuloCatalogo);
+
+                if (objRepositorio == null)
+                    return NotFound(MensajesRespuesta.sinResultados());
+
+                ParametroCompletoDTO objDTO = _mapper.Map<ParametroCompletoDTO>(objRepositorio);
+
+                return Ok(objDTO);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
         [HttpGet("BusquedaAvanzaParametro")]
         public async Task<ActionResult<List<ProveedorDTOCompleto>>> BusquedaAvanzaParametro(BusquedaParametro objBusqueda)
         {
@@ -141,8 +160,7 @@ namespace APICondominios.Controllers
                 listaResultado = await _Parametro.busquedaAvanzada(objBusqueda);
 
                 if (listaResultado.Count < 1)                
-                    return NotFound(MensajesRespuesta.sinResultados());
-                
+                    return NotFound(MensajesRespuesta.sinResultados());                
 
                 List<ParametroCompletoDTO> listaResultadoDTO = _mapper.Map<List<ParametroCompletoDTO>>(listaResultado);
 

@@ -12,6 +12,7 @@ namespace DTOs.Departamento
     {
         public Guid IdDepartamento { get; set; }
         public Guid IdTorres { get; set; }
+        public Guid? IdConMst { get; set; }
         public decimal AliqDepartamento { get; set; }
         public string CodigoDepartamento { get; set; } = null!;
         public decimal MetrosDepartamento { get; set; }
