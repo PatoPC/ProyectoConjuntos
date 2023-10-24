@@ -116,6 +116,7 @@ namespace Utilitarios
         //public const string gestionarPersonaAPIEditar = ConstantesAplicacion.pathAPI + "/api/persona/Editar?id=";
         //public const string gestionarPersonaAPIEliminar = ConstantesAplicacion.pathAPI + "/api/persona/Eliminar?id=";
         public const string buscarAdeudoAvanzado = ConstantesAplicacion.pathAPI + "/api/adeudo/BusquedaAvanzadaAdeudo";
+        
         //public const string crearPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/CrearPersonaDepartamento";
         //public const string consultaTipoPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/ConsultaPersonaDepartamento";
 
@@ -155,6 +156,10 @@ namespace Utilitarios
         //public const string BuscarParametroPorIdConjunto = ConstantesAplicacion.pathAPI + "/api/Parametro/BuscarAreasComunalesPorIdConjunto?IdConjunto=";
         #endregion
 
-
+        #region Configuracion Cuenta
+        public const string buscarConfiguracion = ConstantesAplicacion.pathAPI + "/api/ConfiguracionCuenta/GetConfigCuentaByIDConjunto?idConjunto=";
+        public const string gestionarConfiguracionAPI = ConstantesAplicacion.pathAPI + "/api/ConfiguracionCuenta/";
+        public const string gestionarConfiguracionAPIEditar = ConstantesAplicacion.pathAPI + "/api/ConfiguracionCuenta/Editar?id=";
+        #endregion
     }
 }

@@ -303,6 +303,8 @@ namespace ConjuntosEntidades.Entidades
 
                 entity.Property(e => e.Grupo).HasColumnName("GRUPO");
 
+                entity.Property(e => e.IdConMstPadre).HasColumnName("ID_CON_MST_PADRE");
+
                 entity.Property(e => e.IdConjunto)
                     .HasColumnName("ID_CONJUNTO")
                     .HasDefaultValueSql("(newid())");
@@ -321,6 +323,11 @@ namespace ConjuntosEntidades.Entidades
                     .HasMaxLength(70)
                     .IsUnicode(false)
                     .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.HasOne(d => d.IdConMstPadreNavigation)
+                    .WithMany(p => p.InverseIdConMstPadreNavigation)
+                    .HasForeignKey(d => d.IdConMstPadre)
+                    .HasConstraintName("CON_MST_FK");
 
                 entity.HasOne(d => d.IdConjuntoNavigation)
                     .WithMany(p => p.ConMsts)

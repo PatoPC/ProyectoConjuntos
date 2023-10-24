@@ -12,6 +12,7 @@ namespace DTOs.MaestroContable
         public string CuentaCon { get; set; } = null!;
         public string NombreCuenta { get; set; } = null!;
         public bool Grupo { get; set; }
+        public Guid IdConMstPadre { get; set; }
         public string UsuarioModificacion { get; set; } = null!;
     }
 }

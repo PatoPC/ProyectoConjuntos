@@ -8,6 +8,7 @@ namespace ConjuntosEntidades.Entidades
         public ConMst()
         {
             Departamentos = new HashSet<Departamento>();
+            InverseIdConMstPadreNavigation = new HashSet<ConMst>();
         }
 
         public Guid IdConMst { get; set; }
@@ -19,8 +20,11 @@ namespace ConjuntosEntidades.Entidades
         public DateTime? FechaModificacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
+        public Guid? IdConMstPadre { get; set; }
 
+        public virtual ConMst? IdConMstPadreNavigation { get; set; }
         public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;
         public virtual ICollection<Departamento> Departamentos { get; set; }
+        public virtual ICollection<ConMst> InverseIdConMstPadreNavigation { get; set; }
     }
 }

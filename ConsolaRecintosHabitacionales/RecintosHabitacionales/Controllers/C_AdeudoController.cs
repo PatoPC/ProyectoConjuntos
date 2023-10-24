@@ -44,6 +44,7 @@ namespace RecintosHabitacionales.Controllers
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
+
         [HttpPost]
         public async Task<ActionResult> BusquedaAvanzadaAdeudo(GenerarAdeudo variable)
         {

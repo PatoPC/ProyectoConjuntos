@@ -1,0 +1,82 @@
+﻿@using Utilitarios;
+
+@{
+    DTOs.ConfiguracionCuenta.ConfiguraCuentasDTOCompleto objConfiguracion = new DTOs.ConfiguracionCuenta.ConfiguraCuentasDTOCompleto();
+
+    if (ViewData["objConfigurarCuenta"] != null)
+    {
+        objConfiguracion = (DTOs.ConfiguracionCuenta.ConfiguraCuentasDTOCompleto)ViewData["objConfigurarCuenta"];
+    }
+}
+
+
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-xxl">
+
+        @*<form asp-action="GenearAdeudo" id="GenearAdeudo">*@
+        <form action="@ConstantesAplicacion.pathConsola/C_ConfigCuenta/BusquedaAvanzadaConfigCuenta"
+              data-ajax="true"
+              data-ajax-method="Post"
+              data-ajax-loading="#imagenCargando"
+              data-ajax-update="#resultSearch"
+              data-ajax-begin="emptyLastResults('resultSearch')"
+              data-ajax-success="ordenarTabla('idTablaPersonas')"
+              id="AjaxFormSend"
+              method="post">
+            <div class="card">
+                <div class="card-header card-header-stretch">
+                    <div class="card-title d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="fw-bolder m-0 text-gray-800">
+                                    <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                                    Gestionar Parámetros
+                                </h3>
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+                <div class="card-body border-top">
+                    <label class="fs-6 form-label fw-bolder text-dark">Busqueda Información</label>
+                    <div class="row">
+                        <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
+                        <div class="col-md-3">
+                            @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                        </div>
+
+                       
+                        <div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Consultar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <center><img src="~/assets/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
+        </form>
+
+        <div id="resultSearch">
+            @await Html.PartialAsync("_ConfiugracionCuenta", objConfiguracion)            
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+
+
+    <script type="text/javascript">
+
+
+    </script>
+}

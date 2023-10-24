@@ -61,20 +61,15 @@ namespace APICondominios.Controllers
                     return BadRequest(MensajesRespuesta.noSePermiteObjNulos());
                 
 
-                List<Adeudo> listaRepositorio = _mapper.Map<List<Adeudo>>(listaDTO);
-               
+                List<Adeudo> listaRepositorio = _mapper.Map<List<Adeudo>>(listaDTO);               
 
                 var result = await _CRUD_Persona.saveRangeAdeudo(listaRepositorio);
 
                 if (result.estado)
-                {
-
                     return Ok();
-                }
                 else
-                {
                     await guardarLogs(JsonConvert.SerializeObject(listaDTO), result.mensajeError);
-                }
+                
             }
             catch (Exception ExValidation)
             {

@@ -17,6 +17,8 @@ public partial class ContextoDB_Catalogos : DbContext
 
     public virtual DbSet<Catalogo> Catalogos { get; set; }
 
+    public virtual DbSet<Configuracioncuentum> Configuracioncuenta { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("server=181.39.23.33;database=Catalogo_Conjunto;persist security info=True; Encrypt=False;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
@@ -87,6 +89,35 @@ public partial class ContextoDB_Catalogos : DbContext
             entity.HasOne(d => d.IdCatalogopadreNavigation).WithMany(p => p.InverseIdCatalogopadreNavigation)
                 .HasForeignKey(d => d.IdCatalogopadre)
                 .HasConstraintName("FK_CATALOGO_FK_CATALO_CATALOGO");
+        });
+
+        modelBuilder.Entity<Configuracioncuentum>(entity =>
+        {
+            entity.HasKey(e => e.IdConfiguracionCuenta);
+
+            entity.ToTable("CONFIGURACIONCUENTA");
+
+            entity.Property(e => e.IdConfiguracionCuenta)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("ID_CONFIGURACION_CUENTA");
+            entity.Property(e => e.FechaCreacion)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("FECHA_CREACION");
+            entity.Property(e => e.FechaModificacion)
+                .HasColumnType("datetime")
+                .HasColumnName("FECHA_MODIFICACION");
+            entity.Property(e => e.IdConjunto).HasColumnName("ID_CONJUNTO");
+            entity.Property(e => e.Parametrizacion)
+                .HasMaxLength(60)
+                .IsUnicode(false)
+                .HasColumnName("PARAMETRIZACION");
+            entity.Property(e => e.UsuarioCreacion)
+                .HasMaxLength(100)
+                .HasColumnName("USUARIO_CREACION");
+            entity.Property(e => e.UsuarioModificacion)
+                .HasMaxLength(100)
+                .HasColumnName("USUARIO_MODIFICACION");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -2,6 +2,7 @@ using DTOs.Adeudo;
 using DTOs.AreaComunal;
 using DTOs.CatalogoGeneral;
 using DTOs.Comunicado;
+using DTOs.ConfiguracionCuenta;
 using DTOs.Conjunto;
 using DTOs.Departamento;
 using DTOs.Logs;
@@ -101,6 +102,9 @@ builder.Services.AddScoped(typeof(AreaComunalDTOEditar));
 
 builder.Services.AddScoped(typeof(BusquedaParametro));
 builder.Services.AddScoped(typeof(ParametroEditarDTO));
+
+builder.Services.AddScoped(typeof(ConfiguraCuentasDTOCrear));
+builder.Services.AddScoped(typeof(ConfiguraCuentasDTOEditar));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

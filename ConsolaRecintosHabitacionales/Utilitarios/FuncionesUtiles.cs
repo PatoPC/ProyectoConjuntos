@@ -11,6 +11,39 @@ namespace Utilitarios
 {
     public class FuncionesUtiles
     {
+        public static string FormatoCuentaContable(string cadenaOriginal, string formato)
+        {
+            string[] partesFormato = formato.Split('.');
+            string resultado = "";
+            int indiceCadena = 0;
+
+            try
+            {
+                foreach (string parte in partesFormato)
+                {
+                    if (parte.Length == 1)
+                    {
+                        resultado += cadenaOriginal.Substring(indiceCadena, 1) + ".";
+                        indiceCadena++;
+                    }
+                    else
+                    {
+                        resultado += cadenaOriginal.Substring(indiceCadena, 2) + ".";
+                        indiceCadena += 2;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            // Eliminar el último punto
+            resultado = resultado.TrimEnd('.');
+
+            return resultado;
+        }
+
         public static string GenerarCadena()
         {
             const string caracteresPermitidos = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -223,13 +256,32 @@ namespace Utilitarios
 
         }
 
-        public static string quitarTildes(string texto)
+        public static string QuitarTildes(string texto)
         {
             try
             {
                 string sinTildes = texto.Normalize(NormalizationForm.FormD).Replace("\u0301", string.Empty);
 
                 return sinTildes;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return texto;
+        }
+
+        public static string LimpiarCadenaTexto(string texto)
+        {
+            try
+            {
+                string textoLimpio = texto.Replace(".", string.Empty);
+                textoLimpio = texto.Replace("-", string.Empty);
+                textoLimpio = texto.Replace("_", string.Empty);
+                textoLimpio = texto.Replace(" ", string.Empty);
+
+                return textoLimpio;
             }
             catch (Exception ex)
             {

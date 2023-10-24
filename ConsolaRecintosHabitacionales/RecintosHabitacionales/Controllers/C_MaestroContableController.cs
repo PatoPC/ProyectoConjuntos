@@ -1,5 +1,6 @@
 ﻿using DTOs.AreasDepartamento;
 using DTOs.CatalogoGeneral;
+using DTOs.ConfiguracionCuenta;
 using DTOs.Conjunto;
 using DTOs.Departamento;
 using DTOs.MaestroContable;
@@ -112,9 +113,11 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
+                ConfiguraCuentasDTOCompleto objConfigurar = await recuperarRegistro(IdConjunto);
+
                 List<ModeloArchivoMaestro> listaArchivoLeido = await construirMaestroArchivo(FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion));
 
-                List<MaestroContableDTOCrear> listaMaestro = construirDTOMaestroMayor(objUsuarioSesion, listaArchivoLeido, IdConjunto);
+                List<MaestroContableDTOCrear> listaMaestro = construirDTOMaestroMayor(objUsuarioSesion, listaArchivoLeido, IdConjunto, objConfigurar);                
 
                 HttpResponseMessage respuesta = await _servicioConsumoAPICrearList.consumoAPI(ConstantesConsumoAPI.apiCrearListaMaestro, HttpMethod.Post, listaMaestro);
 
@@ -143,11 +146,18 @@ namespace RecintosHabitacionales.Controllers
             return listaArchivoLeido;
         }
 
-        public List<MaestroContableDTOCrear> construirDTOMaestroMayor(UsuarioSesionDTO objUsuarioSesion, List<ModeloArchivoMaestro> listaArchivoLeido, Guid IdConjunto)
+        public List<MaestroContableDTOCrear> construirDTOMaestroMayor(UsuarioSesionDTO objUsuarioSesion, List<ModeloArchivoMaestro> listaArchivoLeido, Guid IdConjunto, ConfiguraCuentasDTOCompleto objConfigurar)
         {
             string usuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
             List<MaestroContableDTOCrear> lista = new List<MaestroContableDTOCrear>();
+
+            foreach (var cuenta in listaArchivoLeido)
+            {
+                string parametroLimpio = FuncionesUtiles.LimpiarCadenaTexto(objConfigurar.Parametrizacion);
+
+                string resultado = FuncionesUtiles.FormatoCuentaContable(cuenta.ctacont,objConfigurar.Parametrizacion);
+            }
 
             lista = listaArchivoLeido.GroupBy(x => x.ctacont, (key, group) => group.First()).
                           Select(x => new MaestroContableDTOCrear
@@ -343,5 +353,24 @@ namespace RecintosHabitacionales.Controllers
         }
 
         #endregion
+
+        private async Task<ConfiguraCuentasDTOCompleto> recuperarRegistro(Guid IdConjunto)
+        {
+            ConfiguraCuentasDTOCompleto objConfigurar = new ConfiguraCuentasDTOCompleto();
+
+            try
+            {
+                HttpResponseMessage respuesta = await _servicioConsumoAPICrearList.consumoAPI(ConstantesConsumoAPI.buscarConfiguracion + IdConjunto, HttpMethod.Get);
+
+                if (respuesta.IsSuccessStatusCode)
+                    objConfigurar = await LeerRespuestas<ConfiguraCuentasDTOCompleto>.procesarRespuestasConsultas(respuesta);
+            }
+            catch (Exception ex)
+            {
+                objConfigurar = new ConfiguraCuentasDTOCompleto();
+            }
+
+            return objConfigurar;
+        }
     }
 }
