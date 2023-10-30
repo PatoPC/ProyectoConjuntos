@@ -63,7 +63,7 @@ namespace RepositorioConjuntos.Implementacion
             if (!string.IsNullOrEmpty(objBusqueda.CuentaCon))
             {
                 listaRepositorio = listaRepositorio
-                    .Where(x => x.CuentaCon.Trim().Contains(objBusqueda.CuentaCon.Trim())).ToList();
+                    .Where(x => x.CuentaCon.Trim() == objBusqueda.CuentaCon.Trim()).ToList();
             }
 
             if (objBusqueda.Grupo != null)

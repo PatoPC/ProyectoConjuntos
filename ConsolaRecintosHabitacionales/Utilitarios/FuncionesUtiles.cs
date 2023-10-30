@@ -11,39 +11,49 @@ namespace Utilitarios
 {
     public class FuncionesUtiles
     {
-        public static string FormatoCuentaContable(string cadenaOriginal, string formato)
-        {
-            string[] partesFormato = formato.Split('.');
-            string resultado = "";
-            int indiceCadena = 0;
+        public static string FormatearCadenaCuenta(string nuevaCuenta, string parametrizacion)
+        {         
+            string cadenaFormateada = "";
+            int posicionInicial = 0;
+            string[] cadenaParametrizacion = parametrizacion.Split('.');
 
-            try
+            for (int i = 0; i < cadenaParametrizacion.Length; i++)
             {
-                foreach (string parte in partesFormato)
+                string parametro = cadenaParametrizacion[i];
+
+                try
                 {
-                    if (parte.Length == 1)
-                    {
-                        resultado += cadenaOriginal.Substring(indiceCadena, 1) + ".";
-                        indiceCadena++;
-                    }
-                    else
-                    {
-                        resultado += cadenaOriginal.Substring(indiceCadena, 2) + ".";
-                        indiceCadena += 2;
-                    }
+                    string cuentaActual = nuevaCuenta.Substring(posicionInicial, parametro.Length);
+
+                    posicionInicial += parametro.Length;
+
+                    cadenaFormateada += cuentaActual + ".";
+
                 }
+                catch (Exception ex)
+                {
+                    break;
+                }
+                
             }
-            catch (Exception ex)
-            {
 
-            }
+            //for(int i=0; i<nuevaCuenta.Length;i++)
+            //{
+            //    char cuenta = nuevaCuenta[i];
+            //    char paramTemp = parametrizacion[indexParametro];                
 
-            // Eliminar el último punto
-            resultado = resultado.TrimEnd('.');
+            //    if (paramTemp == '.')                
+            //        cadenaFormateada += '.';                
 
-            return resultado;
+            //    cadenaFormateada += cuenta;
+
+            //    indexParametro++;
+            //}
+
+            cadenaFormateada = cadenaFormateada.TrimEnd('.');
+
+            return cadenaFormateada;
         }
-
         public static string GenerarCadena()
         {
             const string caracteresPermitidos = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -277,9 +287,9 @@ namespace Utilitarios
             try
             {
                 string textoLimpio = texto.Replace(".", string.Empty);
-                textoLimpio = texto.Replace("-", string.Empty);
-                textoLimpio = texto.Replace("_", string.Empty);
-                textoLimpio = texto.Replace(" ", string.Empty);
+                textoLimpio = textoLimpio.Replace("-", string.Empty);
+                textoLimpio = textoLimpio.Replace("_", string.Empty);
+                textoLimpio = textoLimpio.Replace(" ", string.Empty);
 
                 return textoLimpio;
             }

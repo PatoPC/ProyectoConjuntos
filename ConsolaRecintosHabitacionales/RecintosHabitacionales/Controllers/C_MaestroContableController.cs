@@ -1,18 +1,17 @@
-﻿using DTOs.AreasDepartamento;
-using DTOs.CatalogoGeneral;
+﻿using DTOs.CatalogoGeneral;
 using DTOs.ConfiguracionCuenta;
-using DTOs.Conjunto;
-using DTOs.Departamento;
 using DTOs.MaestroContable;
 using DTOs.MaestroContable.Archivo;
-using DTOs.Torre;
+using DTOs.Select;
 using DTOs.Usuarios;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using RecintosHabitacionales.Models;
 using RecintosHabitacionales.Servicio;
 using RecintosHabitacionales.Servicio.Interface;
 using Utilitarios;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using XAct;
 
 namespace RecintosHabitacionales.Controllers
 {
@@ -22,29 +21,76 @@ namespace RecintosHabitacionales.Controllers
         private const string accionActual = "GestionarMaestro";
 
         private readonly IServicioConsumoAPI<MaestroContableDTOCrear> _servicioConsumoAPICrear;
-        private readonly IServicioConsumoAPI<List<MaestroContableDTOCrear>> _servicioConsumoAPICrearList;
+
         private readonly IServicioConsumoAPI<MaestroContableDTOCompleto> _servicioConsumoAPICompleto;
         private readonly IServicioConsumoAPI<MaestroContableBusqueda> _servicioConsumoAPIBusqueda;
 
-        public C_MaestroContableController(IServicioConsumoAPI<MaestroContableDTOCrear> servicioConsumoAPICrear, IServicioConsumoAPI<MaestroContableDTOCompleto> servicioConsumoAPICompleto, IServicioConsumoAPI<List<MaestroContableDTOCrear>> servicioConsumoAPICrearList, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusqueda)
+        public C_MaestroContableController(IServicioConsumoAPI<MaestroContableDTOCrear> servicioConsumoAPICrear, IServicioConsumoAPI<MaestroContableDTOCompleto> servicioConsumoAPICompleto, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusqueda)
         {
             _servicioConsumoAPICrear = servicioConsumoAPICrear;
             _servicioConsumoAPICompleto = servicioConsumoAPICompleto;
-            _servicioConsumoAPICrearList = servicioConsumoAPICrearList;
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
         }
-
-        public IActionResult GestionarMaestro()
+       
+        public async Task<ActionResult> GestionarMaestro()
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
             if (objUsuarioSesion != null)
             {
+                MaestroContableBusqueda objBusqueda = new MaestroContableBusqueda();
+                objBusqueda.IdConjunto = objUsuarioSesion.IdConjuntoDefault;
+
+                List<MaestroContableDTOCompleto> listaResultado = await BuscarMaestroContable(objBusqueda);
+
+                listaResultado = listaResultado.Where(x => x.IdConMstPadre == Guid.Empty).ToList();
+
+                ConfiguraCuentasDTOCompleto objConfigurar = new ConfiguraCuentasDTOCompleto();
+
+                try
+                {
+                    HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.buscarConfiguracion + objUsuarioSesion.IdConjuntoDefault, HttpMethod.Get);
+
+                    if (respuesta.IsSuccessStatusCode)
+                        objConfigurar = await LeerRespuestas<ConfiguraCuentasDTOCompleto>.procesarRespuestasConsultas(respuesta);
+                }
+                catch (Exception ex)
+                {
+                    objConfigurar = new ConfiguraCuentasDTOCompleto();
+                }
+
+                if (!string.IsNullOrEmpty(objConfigurar.Parametrizacion))
+                {
+                    foreach (var cuenta in listaResultado)
+                    {
+                        cuenta.CuentaCon = FuncionesUtiles.FormatearCadenaCuenta(cuenta.CuentaCon, objConfigurar.Parametrizacion);
+
+                        if (cuenta.InverseIdConMstPadreNavigation != null)
+                        {
+                            FormatearCuentasRecursivo(cuenta.InverseIdConMstPadreNavigation, objConfigurar.Parametrizacion);
+                        }
+                    } 
+                }
+
+                ViewData["listaCuentas"] = listaResultado;
                 ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
                 return View();
             }
 
             return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+
+        private void FormatearCuentasRecursivo(IEnumerable<MaestroContableDTOCompleto> listaCuentas, string parametrizacion)
+        {
+            foreach (var subCuentas in listaCuentas)
+            {
+                subCuentas.CuentaCon = FuncionesUtiles.FormatearCadenaCuenta(subCuentas.CuentaCon, parametrizacion);
+
+                if (subCuentas.InverseIdConMstPadreNavigation.Count>0)
+                {
+                    FormatearCuentasRecursivo(subCuentas.InverseIdConMstPadreNavigation, parametrizacion);
+                }
+            }
         }
 
         #region CRUD
@@ -100,7 +146,7 @@ namespace RecintosHabitacionales.Controllers
                 ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
                 return View();
             }
-                
+
 
 
             return RedirectToAction("Ingresar", "C_Ingreso");
@@ -117,9 +163,7 @@ namespace RecintosHabitacionales.Controllers
 
                 List<ModeloArchivoMaestro> listaArchivoLeido = await construirMaestroArchivo(FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion));
 
-                List<MaestroContableDTOCrear> listaMaestro = construirDTOMaestroMayor(objUsuarioSesion, listaArchivoLeido, IdConjunto, objConfigurar);                
-
-                HttpResponseMessage respuesta = await _servicioConsumoAPICrearList.consumoAPI(ConstantesConsumoAPI.apiCrearListaMaestro, HttpMethod.Post, listaMaestro);
+                HttpResponseMessage respuesta = await construirDTOMaestroMayor(objUsuarioSesion, listaArchivoLeido, IdConjunto, objConfigurar);
 
                 return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
             }
@@ -146,31 +190,73 @@ namespace RecintosHabitacionales.Controllers
             return listaArchivoLeido;
         }
 
-        public List<MaestroContableDTOCrear> construirDTOMaestroMayor(UsuarioSesionDTO objUsuarioSesion, List<ModeloArchivoMaestro> listaArchivoLeido, Guid IdConjunto, ConfiguraCuentasDTOCompleto objConfigurar)
+        public async Task<HttpResponseMessage> construirDTOMaestroMayor(UsuarioSesionDTO objUsuarioSesion, List<ModeloArchivoMaestro> listaArchivoLeido, Guid IdConjunto, ConfiguraCuentasDTOCompleto objConfigurar)
         {
+            HttpResponseMessage respuesta = new HttpResponseMessage();
             string usuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
             List<MaestroContableDTOCrear> lista = new List<MaestroContableDTOCrear>();
 
             foreach (var cuenta in listaArchivoLeido)
             {
-                string parametroLimpio = FuncionesUtiles.LimpiarCadenaTexto(objConfigurar.Parametrizacion);
+                MaestroContableDTOCrear objCrearTemporal = new MaestroContableDTOCrear();
 
-                string resultado = FuncionesUtiles.FormatoCuentaContable(cuenta.ctacont,objConfigurar.Parametrizacion);
+                string cuentaFormateda = FuncionesUtiles.FormatearCadenaCuenta(cuenta.ctacont, objConfigurar.Parametrizacion);
+
+                if (cuentaFormateda=="2")
+                {
+
+                }
+
+                string[] partesCuenta = cuentaFormateda.Split('.');
+
+                objCrearTemporal.CuentaCon = cuenta.ctacont;
+                objCrearTemporal.NombreCuenta = cuenta.nom_cuenta;
+                objCrearTemporal.IdConjunto = IdConjunto;
+                objCrearTemporal.Grupo = cuenta.grupo == "0" ? false : true;
+                objCrearTemporal.UsuarioCreacion = usuarioCreacion;
+                objCrearTemporal.FechaCreacion = DateTime.Now;
+
+                int posicionAlta = partesCuenta.Length - 1;
+
+                MaestroContableBusqueda objBusqueda = new MaestroContableBusqueda();
+
+                try
+                {
+                    if (cuentaFormateda.Length == 1)
+                    {
+                        objBusqueda.CuentaCon = cuentaFormateda;
+                    }
+
+                    for (int i=0; i<posicionAlta;i++)
+                    {
+                        objBusqueda.CuentaCon += partesCuenta[i];
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+                objBusqueda.IdConjunto = IdConjunto;
+
+                List<MaestroContableDTOCompleto> listaResultado = await BuscarMaestroContable(objBusqueda);
+
+                if (listaResultado.Count > 0)
+                {
+                    var cuentaPadre = listaResultado.FirstOrDefault();
+
+                    objCrearTemporal.IdConMstPadre = cuentaPadre.IdConMst;
+                }
+
+                //respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.apiCrearListaMaestro, HttpMethod.Post, objCrearTemporal);
+                respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarMaestroContableAPI, HttpMethod.Post, objCrearTemporal);
+
+
+
             }
 
-            lista = listaArchivoLeido.GroupBy(x => x.ctacont, (key, group) => group.First()).
-                          Select(x => new MaestroContableDTOCrear
-                          {
-                              CuentaCon = x.ctacont,
-                              NombreCuenta = x.nom_cuenta,
-                              IdConjunto = IdConjunto,
-                              Grupo = x.grupo=="0" ? false : true,                              
-                              UsuarioCreacion = usuarioCreacion,
-                              FechaCreacion = DateTime.Now
-                          }).ToList();
-           
-            return lista;
+            return respuesta;
         }
 
         #endregion
@@ -190,6 +276,30 @@ namespace RecintosHabitacionales.Controllers
                     MaestroContableDTOCompleto objMaestroContable = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
                     ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+
+                    MaestroContableBusqueda objBusqueda = new MaestroContableBusqueda();
+                    objBusqueda.IdConjunto = objMaestroContable.IdConjunto;
+                    objBusqueda.Grupo = true;
+
+                    List<MaestroContableDTOCompleto> listaResultado = await BuscarMaestroContable(objBusqueda);
+
+                    List<ObjetoSelectDropDown> listaSelect = new List<ObjetoSelectDropDown>();
+
+
+                    listaSelect = listaResultado.Select(x => new ObjetoSelectDropDown { id = x.IdConMst.ToString(), texto = x.CuentaCon }).ToList();
+
+                    SelectList objListaCuentas; 
+                    if (objMaestroContable.IdConMstPadre != Guid.Empty)
+                    {
+                         objListaCuentas = new SelectList(listaSelect, "id", "texto", objMaestroContable.IdConMstPadre);
+                    }
+                    else
+                    {
+                        objListaCuentas = new SelectList(Enumerable.Empty<SelectListItem>());
+                    }
+                    
+
+                    ViewData["listaCuentas"] = objListaCuentas;
 
                     return View(objMaestroContable);
 
@@ -296,22 +406,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                List<MaestroContableDTOCompleto> listaResultado = new List<MaestroContableDTOCompleto>();
-
-                try
-                {
-                    HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarMaestroContableAvanzado, HttpMethod.Get, objBusqueda);
-
-                    if (respuesta.IsSuccessStatusCode)
-                        listaResultado = await LeerRespuestas<List<MaestroContableDTOCompleto>>.procesarRespuestasConsultas(respuesta);
-                }
-                catch (Exception ex)
-                {
-
-                }
-
-                if (listaResultado == null)
-                    listaResultado = new List<MaestroContableDTOCompleto>();
+                List<MaestroContableDTOCompleto> listaResultado = await BuscarMaestroContable(objBusqueda);
 
                 return View("_ListaMaestroContable", listaResultado);
             }
@@ -319,6 +414,27 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
+        private async Task<List<MaestroContableDTOCompleto>> BuscarMaestroContable(MaestroContableBusqueda objBusqueda)
+        {
+            List<MaestroContableDTOCompleto> listaResultado = new List<MaestroContableDTOCompleto>();
+
+            try
+            {
+                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarMaestroContableAvanzado, HttpMethod.Get, objBusqueda);
+
+                if (respuesta.IsSuccessStatusCode)
+                    listaResultado = await LeerRespuestas<List<MaestroContableDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            if (listaResultado == null)
+                listaResultado = new List<MaestroContableDTOCompleto>();
+
+            return listaResultado;
+        }
 
         public async Task<JsonResult> cargarListaCuentasContables(Guid idConjunto)
         {
@@ -339,7 +455,7 @@ namespace RecintosHabitacionales.Controllers
                     listaFinal = listaResultado.Select(x => new CatalogoDTODropDown
                     {
                         IdCatalogo = x.IdConMst,
-                        Nombrecatalogo = x.CuentaCon+" "+x.NombreCuenta
+                        Nombrecatalogo = x.CuentaCon + " " + x.NombreCuenta
                     }).ToList();
                 }
                 catch (Exception ex)
@@ -347,7 +463,7 @@ namespace RecintosHabitacionales.Controllers
                     listaFinal = new List<CatalogoDTODropDown>();
                 }
             }
-           
+
 
             return new JsonResult(listaFinal);
         }
@@ -360,7 +476,7 @@ namespace RecintosHabitacionales.Controllers
 
             try
             {
-                HttpResponseMessage respuesta = await _servicioConsumoAPICrearList.consumoAPI(ConstantesConsumoAPI.buscarConfiguracion + IdConjunto, HttpMethod.Get);
+                HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.buscarConfiguracion + IdConjunto, HttpMethod.Get);
 
                 if (respuesta.IsSuccessStatusCode)
                     objConfigurar = await LeerRespuestas<ConfiguraCuentasDTOCompleto>.procesarRespuestasConsultas(respuesta);

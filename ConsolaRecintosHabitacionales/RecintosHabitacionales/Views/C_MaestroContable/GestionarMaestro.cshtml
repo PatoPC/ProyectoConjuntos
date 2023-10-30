@@ -1,6 +1,15 @@
 ﻿@using Utilitarios;
 @model DTOs.MaestroContable.MaestroContableBusqueda
 
+@{
+    List<DTOs.MaestroContable.MaestroContableDTOCompleto> listaCuentas = new List<DTOs.MaestroContable.MaestroContableDTOCompleto>();
+
+    if (ViewData["listaCuentas"] != null)
+    {
+        listaCuentas = (List<DTOs.MaestroContable.MaestroContableDTOCompleto>)ViewData["listaCuentas"];
+    }
+
+}
 
 <form action="@ConstantesAplicacion.pathConsola/C_MaestroContable/BusquedaMaestroContable"
       data-ajax="true"
@@ -21,16 +30,16 @@
                             Maestro Contable
                         </h3>
                     </div>
-                
+
                     <div class="col-md-3">
                         <a class="btn btn-success" asp-action="CrearMaestroContable">Nuevo</a>
                     </div>
                     <div class="col-md-1">
                         <a class="btn btn-primary" asp-action="CargarMaestroDesdeArchivo"><span class="fas fa-file"></span></a>
                     </div>
-                </div>           
+                </div>
+            </div>
         </div>
-    </div>
 
         <div class="card-body border-top">
             <div class="col-md-12">
@@ -45,7 +54,7 @@
                     <div class="col-md-3">
                         <input asp-for="NombreCuenta" type="text" class="form-control form-control-solid" placeholder="Nombre Cuenta" />
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -62,6 +71,7 @@
 </form>
 
 <div id="resultSearch">
+    @await Html.PartialAsync("_ListaCuentas", listaCuentas)
 </div>
 
 @section scripts{
@@ -73,7 +83,10 @@
 
 
     <script type="text/javascript">
+        // $(document).ready(function () {
 
+            
+        // })
 
     </script>
 }
