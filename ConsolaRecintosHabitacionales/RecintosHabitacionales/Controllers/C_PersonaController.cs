@@ -318,6 +318,16 @@ namespace RecintosHabitacionales.Controllers
 
         #endregion
 
+
+        public async Task<List<ObjetoBusquedaPersona>> recuperarPersonaAutoCompletar(string termino)
+        {           
+            List<ObjetoBusquedaPersona> listaPersonas = await DropDownsCatalogos<ObjetoBusquedaPersona>.procesarRespuestasConsultaCatlogoObjeto(_servicioConsumoAPIBusqueda, ConstantesConsumoAPI.consultaPersonaAutocompletar + termino);
+
+            return listaPersonas;
+        }
+
+
+
         [HttpGet]
         public async Task<ActionResult> BusquedaAvanzadaPersona(ObjetoBusquedaPersona objBusquedaConjuntos)
         {

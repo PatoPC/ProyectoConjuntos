@@ -35,6 +35,41 @@ namespace RepositorioConjuntos.Implementacion
             return objRepositorio;
         }
 
+        public async Task<List<Persona>> obtenerPersonaAutoCompletar(string terminio)
+        {
+            string terminioLimpio = terminio.Trim().ToUpper();
+            List<Persona> lista = new List<Persona>();
+
+            List<Persona> objRepositorio = await _context.Personas.ToListAsync();
+
+            string[] variasPalabras = terminioLimpio.Split(" ");
+
+            if (variasPalabras.Count() == 2)
+            {
+                List<Persona> listaTemporal = new List<Persona>();
+
+                listaTemporal = objRepositorio
+                    .Where(
+                    x => x.NombresPersona.ToUpper().Contains(variasPalabras[0])
+                    && x.ApellidosPersona.ToUpper().Contains(variasPalabras[1])
+                    ).ToList();
+
+                lista = listaTemporal.Distinct().ToList();
+            }
+            else
+            {
+                lista = objRepositorio
+                        .Where(
+                        x => x.NombresPersona.ToUpper().Contains(terminioLimpio)
+                        || x.ApellidosPersona.ToUpper().Contains(terminioLimpio)
+                        || x.IdentificacionPersona.Contains(terminioLimpio)
+                        ).ToList();
+            }
+
+            return lista;
+
+        }
+
 
         public Task<List<Persona>> obtenerPersonaPorNombre(string nombrePersona)
         {

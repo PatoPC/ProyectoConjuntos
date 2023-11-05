@@ -19,5 +19,25 @@ namespace DTOs.MaestroContable
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
         public List<MaestroContableDTOCompleto> InverseIdConMstPadreNavigation { get; set; }
+
+        public int CuentaContable
+        {
+            get {
+                int nuevaCuenta = 0;
+                try
+                {
+                    if (!string.IsNullOrEmpty(CuentaCon))
+                    {
+                        nuevaCuenta = Convert.ToInt32(CuentaCon);
+                    }
+                }
+                catch
+                {
+                    nuevaCuenta = 0;
+                }
+
+                return nuevaCuenta;
+            }
+        }
     }
 }

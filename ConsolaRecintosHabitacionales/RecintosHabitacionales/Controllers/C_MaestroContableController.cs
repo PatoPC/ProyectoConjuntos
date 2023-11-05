@@ -452,6 +452,34 @@ namespace RecintosHabitacionales.Controllers
                     string responseJSON = await LeerRespuestas<HttpResponseMessage>.procesarRespuestasJSON(respuesta);
                     var listaResultado = JsonConvert.DeserializeObject<List<MaestroContableDTOCompleto>>(responseJSON);
 
+                    ConfiguraCuentasDTOCompleto objConfigurar = new ConfiguraCuentasDTOCompleto();
+
+                    try
+                    {
+                        HttpResponseMessage respuestaConfigurar = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.buscarConfiguracion + idConjunto, HttpMethod.Get);
+
+                        if (respuestaConfigurar.IsSuccessStatusCode)
+                            objConfigurar = await LeerRespuestas<ConfiguraCuentasDTOCompleto>.procesarRespuestasConsultas(respuestaConfigurar);
+                    }
+                    catch (Exception ex)
+                    {
+                        objConfigurar = new ConfiguraCuentasDTOCompleto();
+                    }
+
+
+                    if (!string.IsNullOrEmpty(objConfigurar.Parametrizacion))
+                    {
+                        foreach (var cuenta in listaResultado)
+                        {
+                            cuenta.CuentaCon = FuncionesUtiles.FormatearCadenaCuenta(cuenta.CuentaCon, objConfigurar.Parametrizacion);
+
+                            if (cuenta.InverseIdConMstPadreNavigation != null)
+                            {
+                                FormatearCuentasRecursivo(cuenta.InverseIdConMstPadreNavigation, objConfigurar.Parametrizacion);
+                            }
+                        }
+                    }
+
                     listaFinal = listaResultado.Select(x => new CatalogoDTODropDown
                     {
                         IdCatalogo = x.IdConMst,

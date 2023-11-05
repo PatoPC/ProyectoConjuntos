@@ -29,11 +29,11 @@ namespace Utilitarios
         #endregion
 
         #region Departamento
-        public const string gestionarDepartamentoAPI = ConstantesAplicacion.pathAPI + "/api/API_Departamento/";
-        public const string gestionarDepartamentoAPIEditar = ConstantesAplicacion.pathAPI + "/api/API_Departamento/Editar?id=";
-        public const string gestionarDepartamentoAPIEliminar = ConstantesAplicacion.pathAPI + "/api/API_Departamento/Eliminar?id=";
-        public const string buscarDepartamentoAvanzado = ConstantesAplicacion.pathAPI + "/api/ API_Departamento/ObtenerTorresAvanzado";
-        public const string buscarDepartamentosPorIDTorre = ConstantesAplicacion.pathAPI + "/api/API_Departamento/ObtenerDepartamentoPorIDTorre?idTorre=";
+        public const string gestionarDepartamentoAPI = ConstantesAplicacion.pathAPI + "/api/APIDepartamento/";
+        public const string gestionarDepartamentoAPIEditar = ConstantesAplicacion.pathAPI + "/api/APIDepartamento/Editar?id=";
+        public const string gestionarDepartamentoAPIEliminar = ConstantesAplicacion.pathAPI + "/api/APIDepartamento/Eliminar?id=";
+        public const string buscarDepartamentoAvanzado = ConstantesAplicacion.pathAPI + "/api/ APIDepartamento/ObtenerTorresAvanzado";
+        public const string buscarDepartamentosPorIDTorre = ConstantesAplicacion.pathAPI + "/api/APIDepartamento/ObtenerDepartamentoPorIDTorre?idTorre=";
 
         #endregion
 
@@ -44,6 +44,7 @@ namespace Utilitarios
         public const string buscarPersonaAvanzado = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaAvanzado";
         public const string crearPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/CrearPersonaDepartamento";
         public const string consultaTipoPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/ConsultaPersonaDepartamento";
+        public const string consultaPersonaAutocompletar = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaAutoCompletar?termino=";
 
         #endregion
 

@@ -16,6 +16,8 @@ namespace DTOs.Persona
         public string? NombrePersona { get; set; } = null!;
         public string? UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
+        public DateTime FechaCreacion { get; set; }
+        public DateTime FechaModificacion { get; set; }
         public PersonaDTOCompleto? IdPersonaNavigation { get; set; } = null!;
     }
 }

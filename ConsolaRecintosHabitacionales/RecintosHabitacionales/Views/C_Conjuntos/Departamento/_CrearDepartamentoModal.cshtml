@@ -25,9 +25,8 @@
                                         <div class="row mb-12">
                                             <div class="col-xl-4">
                                                 <div class="fs-6 fw-bold mt-2 mb-3">
-                                                    <label asp-for="CodigoDepartamento" class="control-label">
+                                                    <label asp-for="CodigoDepartamento" class="control-label required">
                                                         # Depart.
-                                                        @await Html.PartialAsync("_AsteriscoObligatorio")
                                                     </label>
                                                 </div>
                                             </div>
@@ -39,9 +38,8 @@
                                         <div class="row mb-12">
                                             <div class="col-xl-4">
                                                 <div class="fs-6 fw-bold mt-2 mb-3">
-                                                    <label asp-for="MetrosDepartamento" class="control-label">
+                                                    <label asp-for="MetrosDepartamento" class="control-label required">
                                                         Metros Dept.
-                                                        @await Html.PartialAsync("_AsteriscoObligatorio")
                                                     </label>
 
                                                 </div>
@@ -57,22 +55,20 @@
                                     <div class="row mb-12">
                                         <div class="col-xl-4">
                                             <div class="fs-6 fw-bold mt-2 mb-3">
-                                                <label asp-for="AliqDepartamento" class="control-label">
+                                                <label asp-for="AliqDepartamento" class="control-label required">
                                                     Alicuota
-                                                    @await Html.PartialAsync("_AsteriscoObligatorio")
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-xl-8 fv-row">
-                                            <input asp-for="AliqDepartamento" class="form-control form-control-solid" type="number" required="required" />
+                                            <input asp-for="AliqDepartamento" class="form-control form-control-solid" type="number" />
                                         </div>
                                     </div>
                                     <div class="row mb-12">
                                         <div class="col-xl-4">
                                             <div class="fs-6 fw-bold mt-2 mb-3">
-                                                <label asp-for="SaldoInicialAnual" class="control-label">
+                                                <label asp-for="SaldoInicialAnual" class="control-label required">
                                                     Saldo Inicial
-                                                    @await Html.PartialAsync("_AsteriscoObligatorio")
                                                 </label>
                                             </div>
                                         </div>
@@ -84,6 +80,52 @@
                             </div>
 
                             <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row mb-12">
+                                        <div class="col-xl-4">
+                                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                                <label for="IdTipoAreaDepartamento" class="control-label required">
+                                                    Propietario
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-8 fv-row">
+                                            <input id="IdPropietario" type="text" class="form-control form-control-lg form-control-solid"
+                                                   placeholder="Escribe"
+                                                   onkeyup="autoCompletePersona('IdPropietario','contenedorResultadosBusqueda','IdPropietario','idPersonaPropietario')" />
+                                            <input id="idPersonaPropietario" name="idPersonaPropietario" type="hidden" />
+                                            <div id="contenedorResultadosBusqueda" class="campoAutocompletar" style="display:none">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row mb-12">
+                                        <div class="col-xl-4">
+                                            <div class="fs-6 fw-bold mt-2 mb-3">
+                                                <label for="IdCondomino" class="control-label">
+                                                    Condomino
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-8 fv-row">
+                                            <input id="IdCondomino" type="text" class="form-control form-control-lg form-control-solid"
+                                                   placeholder="Escribe"
+                                                   onkeyup="autoCompletePersona('IdCondomino','contendResultadosBusquedaCondomino','IdCondominoTemp','idPersonaCondomino')" />
+                                            <input id="idPersonaCondomino" name="idPersonaCondomino" type="hidden" />
+                                            <div id="contendResultadosBusquedaCondomino" class="campoAutocompletar" style="display:none">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
                                 <div class="col-md-6">
                                     <div class="row mb-12">
                                         <div class="col-xl-4">
@@ -102,6 +144,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row" id="divAreasDepartamento">                                
                                 <input type="hidden" id="idCantidadAreasDepartamentos" value="0" />
                             </div>
@@ -109,7 +152,7 @@
                             <div class="row">
                                 <div class="col-xl-6 fv-row">
                                     <center>
-                                        <button type="button" class="btn btn-primary me-12" id="btnCrearTorreoModal" onclick="sendFormAjax(this, 'CrearDepartamentoModal','resultadoListaTorres','/C_Conjuntos/RecuperarListaTorresPorConjuntoID?idConjuto=@Model.IdConjuntoCrearDepartamento','btnCrearTorreoModal','idTablaTorres','modal_Create_Departamento')">
+                                        <button type="button" class="btn btn-primary me-12" id="btnCrearTorreoModal" onclick="sendFormAjax(this, 'CrearDepartamentoModal','resultadoListaTorres','/C_Conjuntos/RecuperarListaTorresPorConjuntoID?idConjunto=@Model.IdConjuntoCrearDepartamento','btnCrearTorreoModal','idTablaTorres','modal_Create_Departamento')">
                                             <span class="indicator-label">
                                                 Agregar Departamento
                                             </span>

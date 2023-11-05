@@ -635,3 +635,20 @@ function asignarCampoActivadoDesactivado(nombrecampoBool, valorCampoBool, idCamp
         }
     }
 }
+
+function crearDivDocumento(clase) {
+    let divNuevoDiv = document.createElement('DIV');
+    divNuevoDiv.setAttribute("class", clase);
+
+    return divNuevoDiv
+}
+
+function crearCampoOculto(nombreCampoOculto, valorCampoOculto) {
+    let divNuevoDiv = document.createElement('INPUT');
+    divNuevoDiv.setAttribute("name", nombreCampoOculto);
+    divNuevoDiv.setAttribute("value", valorCampoOculto);
+    divNuevoDiv.setAttribute("type", "hidden");
+    //divNuevoDiv.setAttribute("type", "text");
+
+    return divNuevoDiv
+}

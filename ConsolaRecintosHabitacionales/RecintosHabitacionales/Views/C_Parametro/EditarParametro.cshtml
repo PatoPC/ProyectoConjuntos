@@ -30,9 +30,8 @@
                         <div class="row mb-12">
                             <div class="col-xl-4">
                                 <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="IdConjunto" class="control-label">
+                                    <label for="IdConjunto" class="control-label required">
                                         Conjunto
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
                                     </label>
                                 </div>
                             </div>
@@ -49,15 +48,13 @@
                         <div class="row mb-12">
                             <div class="col-xl-4">
                                 <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="NombreParametro" class="control-label">
+                                    <label for="NombreParametro" class="control-label required">
                                         Nombre
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
                                     </label>
                                 </div>
                             </div>
                             <div class="col-xl-8 fv-row">
                                 <input asp-for="NombreParametro" class="form-control form-control-solid" maxlength="60" required="required" />
-
                             </div>
                         </div>
                     </div>
@@ -78,7 +75,6 @@
                             </div>
                             <div class="col-xl-8 fv-row">
                                 @Html.DropDownList("Ctacont1", ViewData["listaCuentas1"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @required = "required" })
-
                             </div>
                         </div>
 
@@ -182,10 +178,16 @@
 
 @section Scripts {
     <script type="text/javascript">
-        // window.onload = function () {
-        //     cargarCuentas("IdConjunto")
-        // };
+        window.onload = function () {
+            cargarCuentas("IdConjunto")
+        };
 
-       
+        function cargarCuentas(idConjunto) {
+
+            consultarDesdeAPIControlador(idConjunto, 'Ctacont1', 'C_MaestroContable', 'cargarListaCuentasContables', 'idConjunto')
+            consultarDesdeAPIControlador(idConjunto, 'Ctacont2', 'C_MaestroContable', 'cargarListaCuentasContables', 'idConjunto')
+            consultarDesdeAPIControlador(idConjunto, 'Ctacont3', 'C_MaestroContable', 'cargarListaCuentasContables', 'idConjunto')
+            consultarDesdeAPIControlador(idConjunto, 'Ctacont4', 'C_MaestroContable', 'cargarListaCuentasContables', 'idConjunto')
+        }
     </script>
-    }
+}

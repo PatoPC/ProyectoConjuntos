@@ -29,9 +29,8 @@
                         <div class="row mb-12">
                             <div class="col-xl-4">
                                 <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="IdConjunto" class="control-label">
+                                    <label for="IdConjunto" class="control-label required">
                                         Conjunto
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
                                     </label>
                                 </div>
                             </div>
@@ -48,9 +47,8 @@
                         <div class="row mb-12">
                             <div class="col-xl-4">
                                 <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="NombreParametro" class="control-label">
+                                    <label for="NombreParametro" class="control-label required">
                                         Nombre
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
                                     </label>
                                 </div>
                             </div>
@@ -69,9 +67,8 @@
                         <div class="row mb-12">
                             <div class="col-xl-4">
                                 <div class="fs-6 fw-bold mt-2 mb-3">
-                                    <label for="Ctacont1" class="control-label">
+                                    <label for="Ctacont1" class="control-label required">
                                         Cuenta Contable 1
-                                        @await Html.PartialAsync("_AsteriscoObligatorio")
                                     </label>
                                 </div>
                             </div>
@@ -202,4 +199,4 @@
             consultarDesdeAPIControlador(idConjunto, 'Ctacont4', 'C_MaestroContable', 'cargarListaCuentasContables', 'idConjunto')
         }
     </script>
-    }
+}

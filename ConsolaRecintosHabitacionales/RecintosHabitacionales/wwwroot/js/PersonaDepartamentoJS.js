@@ -1,4 +1,130 @@
 ﻿
+function autoCompletePersona(nombreCampoBusqueda, contenedorResultadosBusqueda, idAtributoARecibir, idContenedorSeleccion) {
+
+    let campoTextoBusqueda = document.getElementById(nombreCampoBusqueda)
+    let contendorResultados = document.getElementById(contenedorResultadosBusqueda)
+
+    if (campoTextoBusqueda != undefined && contendorResultados != undefined) {
+        let texto = campoTextoBusqueda.value
+        if (texto.length > 3) {
+
+            $.ajax({
+                url: pathConsola + "/C_Persona/recuperarPersonaAutoCompletar?termino=" + texto,
+                type: "get",
+                //data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    let responseRead = JSON.stringify(result);
+                    let jsonObject = JSON.parse(responseRead);
+
+                    let nombreDivContenerdor = "divPrincipal" + idAtributoARecibir
+                    let nombreDivDatosPersona = "divDatosPersona" + idAtributoARecibir
+                    let campoIDPersonaResultado = "campoOcultoSelect" + idAtributoARecibir
+
+                    contendorResultados.innerHTML = "";
+
+                    if (jsonObject != undefined) {
+                        contendorResultados.classList.remove("d-none");
+                        // Hide results
+                        //contendorResultados.classList.add("d-none");
+                        if (jsonObject.length > 0) {
+                            for (var i = 0; i < jsonObject.length; i++) {
+                                let idPesona = jsonObject[i].idPersona
+                                let nombres = jsonObject[i].nombresPersona + " " + jsonObject[i].apellidosPersona
+
+                                //console.log("nombres: " + nombres)
+
+                                nombreDivContenerdor += i
+                                nombreDivDatosPersona += i
+                                campoIDPersonaResultado += i
+
+                                let nuevoDivDatos = crearDivDocumento("d-flex align-items-center p-3 rounded-1 border-hover border border-solid border-gray-600 cursor-pointer mb-1 alert alert-success\" data-kt-search-element=\"customer\"")
+
+                                nuevoDivDatos.setAttribute("id", nombreDivContenerdor)
+                                nuevoDivDatos.setAttribute("onclick", "seleccionarPersona('" + nombreCampoBusqueda + "','" + contenedorResultadosBusqueda + "','" + nombreDivDatosPersona + "','" + idContenedorSeleccion + "','" + campoIDPersonaResultado+"')")
+                                ///Div para mostrar los nombres
+                                let nuevoDivDatosPersonales = crearDivDocumento("")
+                                nuevoDivDatosPersonales.setAttribute("id", nombreDivDatosPersona)
+                                nuevoDivDatosPersonales.innerHTML = nombres
+
+                                let nuevoNombreCampoOculto = crearCampoOculto(campoIDPersonaResultado, idPesona)
+                                nuevoNombreCampoOculto.setAttribute("id", campoIDPersonaResultado)
+                                nuevoNombreCampoOculto.setAttribute("value", idPesona)
+
+                                nuevoDivDatos.appendChild(nuevoDivDatosPersonales)                              
+                                nuevoDivDatos.appendChild(nuevoNombreCampoOculto)                              
+
+                                contendorResultados.appendChild(nuevoDivDatos)
+
+                                contendorResultados.style.display = "block";
+                            }
+                        }
+                        else {
+                            mostrarMensajeNoExistenResultados(idDIVlistaResponsables, idAtributoARecibir, nombreDivDatosPersona, nombreCampoOculto)
+                        }
+                    }
+                    else {
+                        mostrarMensajeNoExistenResultados(idDIVlistaResponsables, idAtributoARecibir, nombreDivDatosPersona, nombreCampoOculto)
+                    }
+                },
+                error: function (xhr, textStatus, error) {
+                    console.log(xhr.statusText);
+                },
+                failure: function (response) {
+                    console.log("failure " + response.responseText);
+                },
+                complete: function (response) {
+
+                }
+            });
+        }
+    }
+}
+
+
+function seleccionarPersona(nombreCampoBusqueda, resultadoBusqueda, nombreDivDatosPersona, idContenedorSeleccion, campoIDPersonaResultado) {
+    try {
+      
+        let resultadoBusquedaCampo = document.getElementById(resultadoBusqueda)
+        let nombreDivDatosPersonaCampo = document.getElementById(nombreDivDatosPersona)
+        let idPersonaResultado = document.getElementById(campoIDPersonaResultado)
+        let idCampoContenedorSeleccion = document.getElementById(idContenedorSeleccion)
+
+        let campoBusquedaPrincipal = document.getElementById(nombreCampoBusqueda)
+
+        if (campoBusquedaPrincipal)
+            campoBusquedaPrincipal.value = ""
+
+        if (nombreDivDatosPersonaCampo != undefined) {
+            campoBusquedaPrincipal.value = nombreDivDatosPersonaCampo.innerHTML
+        }
+
+        if (idCampoContenedorSeleccion != undefined) {
+            idCampoContenedorSeleccion.value = idPersonaResultado.value
+        }
+
+        resultadoBusquedaCampo.innerHTML = ""
+        resultadoBusquedaCampo.style.display = "none";
+
+        
+    }
+    catch (ex) {
+        console.log("Error JSDepartamento -> seleccionarPersona error: " + ex)
+
+    }
+
+    try {
+        resultadoBusquedaCampo.innerHTML = ""
+    }
+    catch {
+        resultadoBusqueda.innerHTML = ""
+    }
+}
+
+
+
 
 function validarDepartamentoPersonaDuplicado(btnSubmit, formAjax, idDIVCargar, rutaCargarSubVista, id_BTN_Formulario, campoDepartamento, campoTipoPersonaDepartamento) {
 

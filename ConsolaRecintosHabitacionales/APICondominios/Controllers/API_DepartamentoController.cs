@@ -12,7 +12,7 @@ using Utilitarios;
 
 namespace APICondominios.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/APIDepartamento")]
     [ApiController]
     public class API_DepartamentoController : ControllerBase
     {

@@ -11,8 +11,21 @@ namespace Utilitarios
 {
     public class FuncionesUtiles
     {
+        public static string TruncarString(string input, int length)
+        {
+            if (input.Length <= length)
+            {
+                return input; // Si la longitud es menor o igual a 4, no hay necesidad de truncar
+            }
+            else
+            {
+                int startIndex = input.Length - length; // Calcular el índice de inicio para la subcadena
+                return input.Substring(startIndex); // Obtener la subcadena desde el índice calculado hasta el final
+            }
+        }
+
         public static string FormatearCadenaCuenta(string nuevaCuenta, string parametrizacion)
-        {         
+        {
             string cadenaFormateada = "";
             int posicionInicial = 0;
             string[] cadenaParametrizacion = parametrizacion.Split('.');
@@ -34,22 +47,8 @@ namespace Utilitarios
                 {
                     break;
                 }
-                
+
             }
-
-            //for(int i=0; i<nuevaCuenta.Length;i++)
-            //{
-            //    char cuenta = nuevaCuenta[i];
-            //    char paramTemp = parametrizacion[indexParametro];                
-
-            //    if (paramTemp == '.')                
-            //        cadenaFormateada += '.';                
-
-            //    cadenaFormateada += cuenta;
-
-            //    indexParametro++;
-            //}
-
             cadenaFormateada = cadenaFormateada.TrimEnd('.');
 
             return cadenaFormateada;
