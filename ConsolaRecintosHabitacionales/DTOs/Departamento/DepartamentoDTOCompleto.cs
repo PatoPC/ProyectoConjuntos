@@ -14,6 +14,8 @@ namespace DTOs.Departamento
         public Guid IdTorres { get; set; }
         public Guid? IdConMst { get; set; }
         public decimal AliqDepartamento { get; set; }
+        public string CuentaCon { get; set; } = null!;
+        public string NombreCuenta { get; set; } = null!;
         public string CodigoDepartamento { get; set; } = null!;
         public decimal MetrosDepartamento { get; set; }
         public decimal? SaldoInicialAnual { get; set; }
@@ -23,5 +25,13 @@ namespace DTOs.Departamento
         public string? UsuarioModificacion { get; set; }
         public List<TipoPersonaDTO>? TipoPersonas { get; set; }
         public List<AreasDepartamentoDTO>? AreasDepartamentos { get; set; }
+
+        public virtual string NombreCuentaContable
+        {
+            get
+            {
+                return CuentaCon + " " + NombreCuenta;
+            }
+        }
     }
 }

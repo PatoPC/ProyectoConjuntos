@@ -54,8 +54,9 @@ namespace RepositorioConjuntos.Implementacion
             var objRepositorio = await _context.Departamentos
                 .Where(x => x.IdDepartamento == idDepartamento)
                 .Include(x => x.AreasDepartamentos)
-                .Include(x => x.TipoPersonas)
+                .Include(x => x.TipoPersonas)                
                 .ThenInclude(x => x.IdPersonaNavigation)
+                .Include(x => x.IdConMstNavigation)
                 .FirstOrDefaultAsync();
 
             return objRepositorio;

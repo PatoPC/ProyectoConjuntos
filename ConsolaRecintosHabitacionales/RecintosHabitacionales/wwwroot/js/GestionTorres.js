@@ -156,6 +156,7 @@ function mostrarModalDepartamentoEditar(idModal, idDepartamentoEditar, tipoAccio
                 document.getElementById("SaldoInicialAnualEditar").value = jsonObject.saldoInicialAnual
                 document.getElementById("IdDeptoEditar").value = jsonObject.idDepartamento
                 document.getElementById("IdTorresEditarDepartamento").value = jsonObject.idTorres
+                document.getElementById("DatosCuentaDepartamento").value = jsonObject.nombreCuentaContable
 
                 console.log("jsonObject.tipoPersonas " + jsonObject.tipoPersonas)
                 

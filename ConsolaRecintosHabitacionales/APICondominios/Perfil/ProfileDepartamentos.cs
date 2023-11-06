@@ -9,7 +9,10 @@ namespace APICondominios.Perfil
     {
         public ProfileDepartamentos()
         {
-            CreateMap<Departamento, DepartamentoDTOCompleto>();                
+            CreateMap<Departamento, DepartamentoDTOCompleto>().
+                 ForMember(x => x.CuentaCon, y => y.MapFrom(fuente => fuente.IdConMstNavigation != null ? fuente.IdConMstNavigation.CuentaCon : default)).
+                 ForMember(x => x.NombreCuenta, y => y.MapFrom(fuente => fuente.IdConMstNavigation != null ? fuente.IdConMstNavigation.NombreCuenta : default));
+
             CreateMap<DepartamentoDTOCompleto, Departamento>();
 
             CreateMap<Departamento, DepartamentoDTOCrear>();

@@ -432,7 +432,7 @@ namespace RecintosHabitacionales.Controllers
                                         }
 
                                         nuevaCuentaAdeudo = FuncionesUtiles.TruncarString(nuevaCuentaAdeudo, 4);
-                                        objCuentaAdeudo.CuentaCon = nuevaCuentaAdeudo;
+                                        objCuentaAdeudo.CuentaCon = objCuentaPadre.CuentaCon+nuevaCuentaAdeudo;
                                         objCuentaAdeudo.NombreCuenta = nombreNuevaCuenta;
 
                                         objCuentaAdeudo.UsuarioCreacion = usuarioCreacion;
