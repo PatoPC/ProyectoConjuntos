@@ -10,6 +10,7 @@
         listaComunicados = (List<DTOs.Comunicado.ComunicadoDTOCompleto>)ViewData["listaComunicados"];
 
     }
+    string estilo = "";
 }
 
 <div class="text-center">
@@ -43,7 +44,13 @@
                     {
                         foreach (var item in listaComunicados)
                         {
-                            <tr class="@(contador==0 ? "alert alert-success" : "" ) ">
+                            if (item.DiasAntiguedad < 15)
+                                estilo = "alert alert-success";
+                            else
+                                estilo = "";
+
+                    <tr class="@estilo">
+                                
                                 <td data-title="Conjunto">
 
                                     <span class="text-muted fw-semibold d-block fs-7">@item.NombreConjunto</span>
@@ -53,7 +60,9 @@
                                     @item.Titulo
                                 </td>
                                 <td data-title="Descripcion">
-                                    @item.Descripcion
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#descripcionComunicado" data-bs-Descripcion="@item.Descripcion" data-bs-Titulo="@item.Titulo">
+                                        Ver Información
+                                    </button>                                   
                                 </td>
 
                             </tr>
@@ -65,5 +74,49 @@
                 </tbody>
             </table>
         }
+        <div class="modal fade" id="descripcionComunicado" tabindex="-1" aria-labelledby="descripcionComunicadoLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content modal-dialog-scrollable">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="descripcionComunicadoLabel"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Descripción:</label>
+                            </div>
+                            <div class="mb-3 ">      
+                                <textarea class="form-control" id="message-text"></textarea>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    const modalDesc = document.getElementById('descripcionComunicado')
+    if (modalDesc) {
+        modalDesc.addEventListener('show.bs.modal', event => {
+
+            const button = event.relatedTarget
+            const recipient = button.getAttribute('data-bs-Descripcion')
+            const titulo = button.getAttribute('data-bs-Titulo')
+
+            const modalTitle = modalDesc.querySelector('.modal-title')
+            const modalBodyInput = modalDesc.querySelector('.modal-body textarea')
+            //let textoa = document.getElementById('aqui')
+
+            modalTitle.textContent = `${titulo}`
+            modalBodyInput.value = recipient
+            //textoa.innerHTML = recipient
+        })
+    }
+</script>

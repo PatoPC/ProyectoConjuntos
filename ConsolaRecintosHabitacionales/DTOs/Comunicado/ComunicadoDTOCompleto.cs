@@ -20,5 +20,35 @@ namespace DTOs.Comunicado
         public DateTime? FechaModificacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
+
+        public virtual double DiasParaCaducar
+        {
+            get
+            {
+                DateTime fechaActual = DateTime.Now;
+
+                fechaActual = fechaActual.AddHours(-fechaActual.Hour);
+                fechaActual = fechaActual.AddMinutes(-fechaActual.Minute);
+                fechaActual = fechaActual.AddSeconds(-fechaActual.Second);
+                int cantidadDias = Convert.ToInt32((FechaFin - fechaActual).TotalDays);
+                return cantidadDias;
+
+            }
+        }
+
+        public virtual double DiasAntiguedad
+        {
+            get
+            {
+                DateTime fechaActual = DateTime.Now;
+
+                fechaActual = fechaActual.AddHours(-fechaActual.Hour);
+                fechaActual = fechaActual.AddMinutes(-fechaActual.Minute);
+                fechaActual = fechaActual.AddSeconds(-fechaActual.Second);
+                int cantidadDiasAntiguedad = Convert.ToInt32((fechaActual - FechaInicio).TotalDays);
+                return cantidadDiasAntiguedad;
+
+            }
+        }
     }
 }

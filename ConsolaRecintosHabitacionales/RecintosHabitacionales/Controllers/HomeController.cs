@@ -31,12 +31,15 @@ namespace RecintosHabitacionales.Controllers
                 BusquedaComunicadoDTO objBusquedaComunicado = new BusquedaComunicadoDTO();
 
                 objBusquedaComunicado.IdConjunto = objUsuarioSesion.IdConjuntoDefault;
+                List<ComunicadoDTOCompleto> listaResultado = new();
+                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.BuscarComunicadoAvanzado, HttpMethod.Get, objBusquedaComunicado);
+                if (respuesta.IsSuccessStatusCode)
+                    listaResultado = await LeerRespuestas<List<ComunicadoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+                var listaFinal = listaResultado.Where(x => x.DiasParaCaducar >= 0).ToList();
 
-                List<ComunicadoDTOCompleto> listaComunicados = await buscarComunicados(objBusquedaComunicado);
+                listaFinal = await completarObjetoComunicado(listaFinal);                
 
-                
-
-                ViewData["listaComunicados"] = listaComunicados;
+                ViewData["listaComunicados"] = listaFinal;
 
                 return View();
             }
@@ -62,57 +65,36 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
-        private async Task<List<ComunicadoDTOCompleto>> buscarComunicados(BusquedaComunicadoDTO objBusquedaComunicado)
+
+        private async Task<List<ComunicadoDTOCompleto>> completarObjetoComunicado(List<ComunicadoDTOCompleto> listaResultadoDTO)
         {
-            List<ComunicadoDTOCompleto> listaResultadoFinal = new List<ComunicadoDTOCompleto>();
-
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.BuscarComunicadoAvanzado, HttpMethod.Get, objBusquedaComunicado);
-
-            if (respuesta.IsSuccessStatusCode)
+            if (listaResultadoDTO != null)
             {
-                List<ComunicadoDTOCompleto> listaResultado = await LeerRespuestas<List<ComunicadoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
-
-                var listaConjuntos = listaResultado.GroupBy(x => x.IdConjunto).ToList();
-
-                foreach (var conjunto in listaConjuntos)
+                foreach (ComunicadoDTOCompleto dato in listaResultadoDTO)
                 {
-                    HttpResponseMessage respuestaConjunto = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + conjunto.Key, HttpMethod.Get);
 
-                    ConjuntoDTOCompleto objDTO = await LeerRespuestas<ConjuntoDTOCompleto>.procesarRespuestasConsultas(respuestaConjunto);
-
-                    if (respuestaConjunto.IsSuccessStatusCode)
-                    {
-                        if (objDTO != null)
-                        {
-                            List<ComunicadoDTOCompleto> listaTemporal = listaResultado.Where(x => x.IdConjunto == objDTO.IdConjunto)
-                                                            .Select(y => new ComunicadoDTOCompleto
-                                                            {
-                                                                IdComunicado = y.IdComunicado,
-                                                                IdConjunto = y.IdConjunto,
-                                                                NombreConjunto = objDTO.NombreConjunto,
-                                                                Titulo = y.Titulo,
-                                                                Descripcion = FuncionesUtiles.ResumirString(y.Descripcion, 10, 1),
-                                                                FechaCreacion = y.FechaCreacion,
-                                                                FechaModificacion = y.FechaModificacion,
-                                                                UsuarioCreacion = y.UsuarioCreacion,
-                                                                UsuarioModificacion = y.UsuarioModificacion,
-                                                            })
-                                                            .ToList();
-
-                            listaResultadoFinal = listaResultadoFinal.Union(listaTemporal).ToList();
-
-                        }
-                    }
-
+                    await completarObjetoComunicado(dato);
                 }
             }
 
-
-            if (listaResultadoFinal == null)
-                listaResultadoFinal = new List<ComunicadoDTOCompleto>();
-
-            return listaResultadoFinal;
+            return listaResultadoDTO;
         }
+
+        private async Task<ComunicadoDTOCompleto> completarObjetoComunicado(ComunicadoDTOCompleto obj)
+        {
+            if (obj != null)
+            {
+                HttpResponseMessage respuestaConjunto = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + obj.IdConjunto, HttpMethod.Get);
+                if (respuestaConjunto.IsSuccessStatusCode)
+                {
+                    ConjuntoDTOCompleto objDTO = await LeerRespuestas<ConjuntoDTOCompleto>.procesarRespuestasConsultas(respuestaConjunto);
+                    obj.NombreConjunto = objDTO.NombreConjunto;
+                }
+            }
+
+            return obj;
+        }
+       
 
     }
 }

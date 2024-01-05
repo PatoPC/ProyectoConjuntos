@@ -2,6 +2,7 @@
 @using Utilitarios;
 @{
     Layout = "";
+    string estilo = "";
 }
 <div class="card card-flush">
     <div class="card card-body">
@@ -28,6 +29,9 @@
                             <span class="badge badge-light text-dark">F. Final</span>
                         </th>
                         <th>
+                            <span class="badge badge-light text-dark">Días</span>
+                        </th>
+                        <th>
                             <span class="badge badge-light text-dark">Acción</span>
                         </th>
 
@@ -38,7 +42,13 @@
                     {
                         foreach (var item in Model)
                         {
-                            <tr>
+                            if (item.DiasAntiguedad < 15)
+                                estilo = "alert alert-success";
+                            else
+                                estilo = "";
+
+                    <tr class="@estilo">
+                          
                                 <td data-title="Conjunto">
                                     @item.NombreConjunto
                                 </td>
@@ -49,10 +59,22 @@
                                     @item.Descripcion
                                 </td>
                                 <td data-title="F. Inicio">
-                                    @item.FechaCreacion
+                                    @item.FechaInicio.ToString("yyyy-MM-dd")
                                 </td>
                                 <td data-title="F. Final">
-                                    @item.FechaModificacion
+                                    @item.FechaFin.ToString("yyyy-MM-dd")
+                                </td>
+                                <td data-title="Días">
+                                   
+                                        @if (item.DiasParaCaducar <= 30)
+                                        {
+                                            <span class="badge badge-light-danger fs-8 fw-bolder my-2">@item.DiasParaCaducar</span>
+                                        }
+                                        else
+                                        {
+                                        <span class="badge badge-light-primary fs-8 fw-bolder my-2">@item.DiasParaCaducar</span>
+                                        }
+                                    
                                 </td>
                                 <td data-title="Acción">
                                    <div>
