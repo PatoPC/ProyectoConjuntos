@@ -54,6 +54,7 @@ builder.Services.AddScoped<IManageComunicado, ManageComunicado>();
 builder.Services.AddScoped<IManageAreaComunal, ManageAreaComunal>();
 builder.Services.AddScoped<IManageParametro, ManageParametro>();
 builder.Services.AddScoped<IManageConfiguracionCuenta, ManageConfiguracionCuenta>();
+builder.Services.AddScoped<IManageContabilidad, ManageContabilidad>();
         
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
