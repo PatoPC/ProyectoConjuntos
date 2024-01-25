@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DTOs.AreaComunal;
 using DTOs.CatalogoGeneral;
+using DTOs.ReservaArea;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,39 @@ namespace RecintosHabitacionales.Controllers
             return View();
         }
 
+        public async Task<ActionResult> ReservaAreasComunales1()
+        {
+
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion == null)
+                return RedirectToAction("Ingresar", "C_Ingreso");
+
+            if (objUsuarioSesion == null)
+                return RedirectToAction("Ingresar", "C_Ingreso");
+
+            HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.BuscarAreasComunalesPorIdConjunto + objUsuarioSesion.IdConjuntoDefault, HttpMethod.Get);
+
+            List<AreaComunalDTOCompleto> listAreaComunal = new();
+
+            if (respuesta.IsSuccessStatusCode)
+                listAreaComunal = await LeerRespuestas<List<AreaComunalDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+
+            if (listAreaComunal.Count() > 0)
+            {
+                ViewData["listaAreasComunales"] = new SelectList(listAreaComunal, "IdAreaComunal", "NombreArea");
+            }
+            else
+            {
+
+                ViewData["listaAreasComunales"] = "";
+            }
+            ViewData["ListaConjustosAcceso"] = objUsuarioSesion.ConjutosAccesoSelect;
+
+
+            return View();
+        }
+
 
 
         public async Task<JsonResult> recuperarAreasComunalesPorIdConjunto(Guid idConjunto)
@@ -67,6 +101,20 @@ namespace RecintosHabitacionales.Controllers
             listaResultadoDTO = await LeerRespuestas<List<AreaComunalDTOCompleto>>.procesarRespuestasConsultas(respuestaAreaComunal);
             return new JsonResult(listaResultadoDTO);
         }
+
+        public async Task<JsonResult> obtenerReserva(Guid idAreaComunal)
+        {
+            List<ReservaAreaDTOCompleto> listaResultadoDTO = new();
+            HttpResponseMessage respuestaAreaComunal = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.BuscarReservaAreaPorIdArea + idAreaComunal, HttpMethod.Get);
+            if(respuestaAreaComunal.IsSuccessStatusCode)             
+            listaResultadoDTO = await LeerRespuestas<List<ReservaAreaDTOCompleto>>.procesarRespuestasConsultas(respuestaAreaComunal);
+              
+            
+            return new JsonResult(listaResultadoDTO);
+            
+        }
+
+        
 
 
     }

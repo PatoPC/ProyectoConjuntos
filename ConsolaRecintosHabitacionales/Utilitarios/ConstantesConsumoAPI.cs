@@ -162,5 +162,15 @@ namespace Utilitarios
         public const string gestionarConfiguracionAPI = ConstantesAplicacion.pathAPI + "/api/ConfiguracionCuenta/";
         public const string gestionarConfiguracionAPIEditar = ConstantesAplicacion.pathAPI + "/api/ConfiguracionCuenta/Editar?id=";
         #endregion
+             
+        #region ReservaArea
+        public const string CrearReservaArea = ConstantesAplicacion.pathAPI + "/api/ReservaArea/";
+        public const string BuscarReservaAreaAvanzado = ConstantesAplicacion.pathAPI + "/api/ReservaArea/BusquedaAvanzadaReservaArea";
+        public const string BuscarReservaAreaPorID = ConstantesAplicacion.pathAPI + "/api/ReservaArea/";
+        public const string EditarReservaArea = ConstantesAplicacion.pathAPI + "/api/ReservaArea/Editar?id=";
+        public const string EliminarReservaArea = ConstantesAplicacion.pathAPI + "/api/ReservaArea/Eliminar?id=";
+        public const string BuscarReservaAreaPorIdArea = ConstantesAplicacion.pathAPI + "/api/ReservaArea/BuscarReservaAreaPorIdArea?idAreaComunal=";
+        #endregion
+
     }
 }

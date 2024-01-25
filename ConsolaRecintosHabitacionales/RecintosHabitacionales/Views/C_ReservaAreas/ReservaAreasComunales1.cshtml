@@ -1,0 +1,324 @@
+﻿@model DTOs.AreaComunal.BusquedaAreaComunal
+@using Utilitarios;
+
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <div id="kt_content_container" class="container-xxl">
+
+        <div class="card mb-xl-3 mb-3">
+
+            <div class="card-header card-header-stretch encabezadoTablasNegroPlantilla ">
+                <div class="card-title d-flex align-items-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="fw-bolder m-0" style="color:white;">
+                                <i class="fa-solid fa-bars-progress fs-2qx"></i>
+                                Reservar de Áreas Comunales
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 ">
+                <div class="card card-flush h-xl-100">
+                    <div class="card-body pt-6">
+                        <div class="row">
+                            <div class="col-md-4 h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                                <b><label>Conjunto: </label></b>
+                                @Html.DropDownList("IdConjunto", ViewData["ListaConjustosAcceso"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg",@onchange="buscarAreaComunalPorConjuntoselectConjunto('IdConjunto','IdAreaComunal')"} )
+                            </div>
+                            <div class="col-md-4 h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                                <b><label>Areas comunales disponibles: </label></b>
+                                @Html.DropDownList("IdAreaComunal", ViewData["listaAreasComunales"] as SelectList, "Seleccionar", htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @onchange="GetTasks()"})
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!--begin::Content-->
+            <div id="kt_app_content" class="app-content flex-column-fluid">
+                <!--begin::Content container-->
+                <div id="kt_app_content_container" class="app-container container-xxl">
+                    <!--begin::Card-->
+                    <div class="card">
+                        <!--begin::Card header-->
+                        <div class="card-header">
+                            <h2 class="card-title fw-bold">Calendario</h2>
+                            <div class="card-toolbar">
+                                <button class="btn btn-flex btn-primary" data-kt-calendar="add">
+                                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                                    <span class="svg-icon svg-icon-2">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
+                                            <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->Añadir Evento
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div id="divErrors" style="display:none" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>
+                                    <span id="errors"></span>
+                                </strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <hr>
+                            <div class="form-group">
+                                <div class="form-row">
+                                    <div class="col-md-8">
+                                        <div id='calendar'></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card" style="width: 18rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    Details
+                                                    <input id="Id" hidden>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <label>Title</label>
+                                                            <input id="Title" class="form-control" value="-" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <label>Details</label>
+                                                            <textarea id="Details" class="form-control" value="-" disabled></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <label>Expiration Date</label>
+                                                            <input id="ExpirationDate" class="form-control" value="-" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <label>Effort</label>
+                                                            <input id="Effort" class="form-control" value="-" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <label>Remaining Work</label>
+                                                            <select id="RemainingWork" class="form-control"></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <label>State</label>
+                                                            <select id="StateId" class="form-control"></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <label>Activity</label>
+                                                            <input id="Activity" class="form-control" value="-" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <label>Priority</label>
+                                                            <input id="Priority" class="form-control" value="-" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <label>Is Completed</label>
+                                                            <br />
+                                                            <input id="IsCompleted" type="checkbox" class="form-check">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-12">
+                                                            <input type="button" id="Update" name="Update" class="btn btn-primary" value="Update" style="display:none">
+                                                        </div>
+                                                    </div>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>                        
+                        <!--end::Card body-->
+                    </div>
+
+                   
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/js/gestionarareacomunal.js"></script>
+
+
+    <script>
+
+        var projectId = document.getElementById("IdAreaComunal")
+
+        // $(function () {
+        //     GetTasks(projectId);
+
+        //     $('#Update').click(function () {
+        //         UpdateTask();
+        //     });
+        // });
+
+        function UpdateTask() {
+            var json = {
+                'Id': $('#Id').val(),
+                'IsCompleted': $('.IsCompleted').prop('checked') ? true : false,
+                'RemainingWork': $('#RemainingWork').val(),
+                'StateId': $('#StateId').val()
+            };
+
+            $.post("/Tasks/Update", json).done(function (data) {
+                var isSuccessful = data.IsSuccessful;
+
+                if (isSuccessful) {
+                    swal("Good job!", "The process has been successfully!.", "success");
+                    window.location = '/Tasks/Calendar?projectId=' + projectId;
+                } else {
+                    var errors = data.Errors;
+                    displayValidationErrors(errors);
+                }
+            });
+        }
+
+        function GetTasks() {
+            var projectId = document.getElementById("IdAreaComunal")
+            var events = [];       
+
+
+            $.post(pathConsola + "/C_ReservaAreas/obtenerReserva?idAreaComunal = " + projectId).done(function (data) {
+                var isSuccessful = data.IsSuccessful;
+
+                if (isSuccessful) {
+                    var json = data.ListTasksCalendar;
+                    if (json.length > 0) { 
+                    for (var i = 0; i < json.length; i++) {
+                        events.push({
+                            title: json[i].Title,
+                            start: json[i].Start,
+                            end: json[i].End,
+                            id: json[i].Id,
+                            color: json[i].Color,
+                            allDay: json[i].AllDay,
+                            textColor: json[i].TextColor
+                        });
+                    }
+                    }
+
+                    var calendarEl = document.getElementById('calendar');
+
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        plugins: ['interaction', 'dayGrid'],
+                        header: {
+                            left: 'prevYear,prev,next,nextYear today',
+                            center: 'title',
+                            right: 'dayGridMonth,dayGridWeek,dayGridDay'
+                        },
+                        navLinks: true,
+                        events: events,
+                        eventClick: function (eventObj) {
+                            GetTask(eventObj.event.id);
+                        }
+                    });
+
+                    calendar.render();
+                } else {
+                    var errors = data.Errors;
+                    displayValidationErrors(errors);
+                }
+            });
+        }
+
+        function GetTask(id) {
+            $.post("/Tasks/Details?id=" + id).done(function (data) {
+                var isSuccessful = data.IsSuccessful;
+
+                if (isSuccessful) {
+                    var task = data.Task;
+
+                    $('#Id').val(task.Id);
+                    $('#Title').val(task.Title);
+                    $('#Details').val(task.Details);
+                    $('#ExpirationDate').val(task.ExpirationDate);
+                    $('#Effort').val(task.Effort);
+
+                    $('#State').val(task.State);
+                    $('#Activity').val(task.Activity);
+                    $('#Priority').val(task.Priority);
+
+                    var remainingWork = $("#RemainingWork");
+                    remainingWork.empty();
+
+                    for (var i = task.RemainingWork; i >= 0; i--) {
+                        var option = $("<option />");
+                        option.html(i);
+                        option.val(i);
+                        remainingWork.append(option);
+                    }
+
+                    remainingWork.val(task.RemainingWork);
+
+                    var states = $("#StateId");
+                    states.empty();
+
+                    $(data.States).each(function () {
+                        var option = $("<option />");
+                        option.html(this.Name);
+                        option.val(this.Id);
+                        states.append(option);
+                    });
+
+                    states.val(task.StateId);
+
+                    $("#RemainingWork").prop('min', 0);
+                    $("#RemainingWork").prop('max', task.RemainingWork);
+
+                    $('#Update').css('display', 'block');
+
+                } else {
+                    var errors = data.Errors;
+                    displayValidationErrors(errors);
+                }
+            });
+        }
+
+        function displayValidationErrors(errors) {
+            var $ul = $('<ul>');
+
+            $ul.empty();
+            $.each(errors, function (idx, errorMessage) {
+                $ul.append('<li>' + errorMessage + '</li>');
+            });
+
+            $('#errors').html($ul);
+            $('#divErrors').show();
+        }
+    </script>
+
+    <style>
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+}
