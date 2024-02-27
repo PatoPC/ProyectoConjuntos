@@ -203,32 +203,31 @@
 
         function GetTasks() {
             var projectId = document.getElementById("IdAreaComunal")
-            var events = [];       
+            let idSeleccion = projectId.options[projectId.selectedIndex].value;
+            var events = [];            
 
-
-            $.post(pathConsola + "/C_ReservaAreas/obtenerReserva?idAreaComunal = " + projectId).done(function (data) {
-                var isSuccessful = data.IsSuccessful;
+            $.post(pathConsola + "/C_ReservaAreas/obtenerReserva?idAreaComunal=" + idSeleccion).done(function (data) {
+                var isSuccessful = data.isSuccessful;
 
                 if (isSuccessful) {
-                    var json = data.ListTasksCalendar;
+                    var json = data.listTasksCalendar;
                     if (json.length > 0) { 
                     for (var i = 0; i < json.length; i++) {
                         events.push({
-                            title: json[i].Title,
-                            start: json[i].Start,
-                            end: json[i].End,
-                            id: json[i].Id,
-                            color: json[i].Color,
-                            allDay: json[i].AllDay,
-                            textColor: json[i].TextColor
+                                title: json[i].nombre,
+                                start: json[i].fechaReserva,
+                                end: json[i].fechaFin,
+                                id: json[i].idReservaArea
+                           // color: json[i].Color,
+                           // allDay: json[i].AllDay,
+                           // textColor: json[i].TextColor
                         });
                     }
                     }
 
                     var calendarEl = document.getElementById('calendar');
 
-                    var calendar = new FullCalendar.Calendar(calendarEl, {
-                        plugins: ['interaction', 'dayGrid'],
+                    var calendar = new FullCalendar.Calendar(calendarEl, {                        
                         header: {
                             left: 'prevYear,prev,next,nextYear today',
                             center: 'title',
@@ -250,48 +249,48 @@
         }
 
         function GetTask(id) {
-            $.post("/Tasks/Details?id=" + id).done(function (data) {
-                var isSuccessful = data.IsSuccessful;
+            $.post("/C_ReservaAreas/obtenerReservaPorId?id=" + id).done(function (data) {
+                var isSuccessful = data.isSuccessful;
 
                 if (isSuccessful) {
-                    var task = data.Task;
+                    var task = data.task;
 
-                    $('#Id').val(task.Id);
-                    $('#Title').val(task.Title);
-                    $('#Details').val(task.Details);
-                    $('#ExpirationDate').val(task.ExpirationDate);
-                    $('#Effort').val(task.Effort);
+                    $('#Id').val(task.idReservaArea);
+                    $('#Title').val(task.nombre);
+                    $('#Details').val(task.nombre);
+                    $('#ExpirationDate').val(task.fechaFin);
+                    $('#Effort').val(task.fechaReserva);
 
-                    $('#State').val(task.State);
-                    $('#Activity').val(task.Activity);
-                    $('#Priority').val(task.Priority);
+                  //  $('#State').val(task.State);
+                   // $('#Activity').val(task.Activity);
+                   // $('#Priority').val(task.Priority);
 
                     var remainingWork = $("#RemainingWork");
                     remainingWork.empty();
 
-                    for (var i = task.RemainingWork; i >= 0; i--) {
-                        var option = $("<option />");
-                        option.html(i);
-                        option.val(i);
-                        remainingWork.append(option);
-                    }
+                    // for (var i = task.RemainingWork; i >= 0; i--) {
+                    //     var option = $("<option />");
+                    //     option.html(i);
+                    //     option.val(i);
+                    //     remainingWork.append(option);
+                    // }
 
-                    remainingWork.val(task.RemainingWork);
+                    //remainingWork.val(task.RemainingWork);
 
                     var states = $("#StateId");
                     states.empty();
 
-                    $(data.States).each(function () {
-                        var option = $("<option />");
-                        option.html(this.Name);
-                        option.val(this.Id);
-                        states.append(option);
-                    });
+                    // $(data.States).each(function () {
+                    //     var option = $("<option />");
+                    //     option.html(this.Name);
+                    //     option.val(this.Id);
+                    //     states.append(option);
+                    // });
 
-                    states.val(task.StateId);
+                   // states.val(task.StateId);
 
                     $("#RemainingWork").prop('min', 0);
-                    $("#RemainingWork").prop('max', task.RemainingWork);
+                   // $("#RemainingWork").prop('max', task.RemainingWork);
 
                     $('#Update').css('display', 'block');
 

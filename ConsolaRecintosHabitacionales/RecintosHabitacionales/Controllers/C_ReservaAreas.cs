@@ -16,8 +16,8 @@ namespace RecintosHabitacionales.Controllers
     {
         private readonly IServicioConsumoAPI<CatalogoDTODropDown> _servicioConsumoAPICatalogos;
         private readonly IMapper _mapper;
-        private readonly IServicioConsumoAPI<AreaComunalDTOEditar> _servicioConsumoAPIEditar;
-        public C_ReservaAreas(IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IMapper mapper, IServicioConsumoAPI<AreaComunalDTOEditar> servicioConsumoAPIEditar)
+        private readonly IServicioConsumoAPI<ReservaAreaDTOEditar> _servicioConsumoAPIEditar;
+        public C_ReservaAreas(IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IMapper mapper, IServicioConsumoAPI<ReservaAreaDTOEditar> servicioConsumoAPIEditar)
         {
             _servicioConsumoAPICatalogos = servicioConsumoAPICatalogos;
             _mapper = mapper;
@@ -104,17 +104,63 @@ namespace RecintosHabitacionales.Controllers
 
         public async Task<JsonResult> obtenerReserva(Guid idAreaComunal)
         {
-            List<ReservaAreaDTOCompleto> listaResultadoDTO = new();
-            HttpResponseMessage respuestaAreaComunal = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.BuscarReservaAreaPorIdArea + idAreaComunal, HttpMethod.Get);
-            if(respuestaAreaComunal.IsSuccessStatusCode)             
-            listaResultadoDTO = await LeerRespuestas<List<ReservaAreaDTOCompleto>>.procesarRespuestasConsultas(respuestaAreaComunal);
-              
-            
-            return new JsonResult(listaResultadoDTO);
-            
+            try
+            {
+                List<ReservaAreaDTOCompleto> listaResultadoDTO = new();
+                HttpResponseMessage respuestaAreaComunal = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.BuscarReservaAreaPorIdComunal + idAreaComunal, HttpMethod.Get);
+                if (respuestaAreaComunal.IsSuccessStatusCode)
+                    listaResultadoDTO = await LeerRespuestas<List<ReservaAreaDTOCompleto>>.procesarRespuestasConsultas(respuestaAreaComunal);
+
+
+                // return new JsonResult(listaResultadoDTO);
+
+                var json = Json(new
+                {
+                    ListTasksCalendar = listaResultadoDTO,
+                    IsSuccessful = true
+                });
+                return json;
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    IsSuccessful = false,
+                    Errors = new List<string> { ex.Message }
+                });
+            }
         }
 
-        
+        public async Task<JsonResult> obtenerReservaPorId(Guid id)
+        {
+            try
+            {
+                ReservaAreaDTOCompleto listaResultadoDTO = new();
+                HttpResponseMessage respuestaAreaComunal = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.BuscarReservaAreaPorID + id, HttpMethod.Get);
+                if (respuestaAreaComunal.IsSuccessStatusCode)
+                    listaResultadoDTO = await LeerRespuestas<ReservaAreaDTOCompleto>.procesarRespuestasConsultas(respuestaAreaComunal);
+
+
+                // return new JsonResult(listaResultadoDTO);
+
+                var json = Json(new
+                {
+                    Task = listaResultadoDTO,
+                    IsSuccessful = true
+                });
+                return json;
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    IsSuccessful = false,
+                    Errors = new List<string> { ex.Message }
+                });
+            }
+        }
+
+
 
 
     }

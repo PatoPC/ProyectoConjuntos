@@ -169,7 +169,7 @@ namespace Utilitarios
         public const string BuscarReservaAreaPorID = ConstantesAplicacion.pathAPI + "/api/ReservaArea/";
         public const string EditarReservaArea = ConstantesAplicacion.pathAPI + "/api/ReservaArea/Editar?id=";
         public const string EliminarReservaArea = ConstantesAplicacion.pathAPI + "/api/ReservaArea/Eliminar?id=";
-        public const string BuscarReservaAreaPorIdArea = ConstantesAplicacion.pathAPI + "/api/ReservaArea/BuscarReservaAreaPorIdArea?idAreaComunal=";
+        public const string BuscarReservaAreaPorIdComunal = ConstantesAplicacion.pathAPI + "/api/ReservaArea/BuscarReservaAreaPorIdArea?idAreaComunal=";
         #endregion
 
     }
