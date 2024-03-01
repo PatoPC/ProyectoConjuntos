@@ -289,7 +289,7 @@ namespace ConjuntosEntidades.Entidades
                     .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.CuentaCon)
-                    .HasMaxLength(10)
+                    .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("CUENTA_CON");
 
@@ -1053,11 +1053,12 @@ namespace ConjuntosEntidades.Entidades
                 entity.ToTable("RESERVA_AREA");
 
                 entity.Property(e => e.IdReservaArea)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_RESERVA_AREA");
+                    .HasColumnName("ID_RESERVA_AREA")
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.Apellido)
                     .HasMaxLength(50)
+                    .IsUnicode(false)
                     .HasColumnName("APELLIDO");
 
                 entity.Property(e => e.FechaCreacion)

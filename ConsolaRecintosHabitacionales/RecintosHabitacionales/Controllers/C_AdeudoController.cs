@@ -170,8 +170,6 @@ namespace RecintosHabitacionales.Controllers
 
                             if (httpCrearAdeudo.IsSuccessStatusCode)
                             {
-                                
-
                               List<AdeudoDTOCompleto> listaMostrar = _mapper.Map<List<AdeudoDTOCompleto>>(listaAdeudos);
 
                                 return View("_ListaAdeudos", listaMostrar);
