@@ -47,7 +47,7 @@
                         <div class="card-header">
                             <h2 class="card-title fw-bold">Calendario</h2>
                             <div class="card-toolbar">
-                                <button class="btn btn-flex btn-primary" data-kt-calendar="add">
+                                <button class="btn btn-flex btn-primary" data-kt-calendar="add" data-bs-toggle="modal" data-bs-target="#kt_modal_nuevo_event">
                                     <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
                                     <span class="svg-icon svg-icon-2">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -76,75 +76,112 @@
                                     <div class="col-md-8">
                                         <div id='calendar'></div>
                                     </div>
-                                    <div class="col-md-4">
+
+                                    <div class="modal fade" id="kt_modal_add_event" tabindex="-1" aria-hidden="true">
+                                        <!--begin::Modal dialog-->
+                                        <div class="modal-dialog modal-dialog-centered mw-650px">
+                                            <!--begin::Modal content-->
+                                            <div class="modal-content">
+                                    <div class="col-md-4" id="informacion">
                                         <div class="card" style="width: 18rem;">
                                             <div class="card-body">
                                                 <h5 class="card-title">
-                                                    Details
-                                                    <input id="Id" hidden>
+                                                    Detalle
+                                                    <input id="IdReservaArea" hidden>
+                                                    <input id="IdAreaComunal" hidden>
                                                 </h5>
                                                 <p class="card-text">
                                                     <div class="form-group">
                                                         <div class="col-md-12">
-                                                            <label>Title</label>
-                                                            <input id="Title" class="form-control" value="-" disabled>
+                                                            <label>Nombre</label>
+                                                            <input id="Nombre" class="form-control" value="-" >
+                                                            <input id="IdPersona" class="form-control" >
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="col-md-12">
-                                                            <label>Details</label>
-                                                            <textarea id="Details" class="form-control" value="-" disabled></textarea>
+                                                            <label>Detalle</label>
+                                                            <textarea id="Observacion" class="form-control" value="-" ></textarea>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <div class="col-md-12">
-                                                            <label>Expiration Date</label>
-                                                            <input id="ExpirationDate" class="form-control" value="-" disabled>
+                                                            <label>Fecha Reserva</label>
+                                                            <input id="FechaReserva" class="form-control" value="-" >
                                                         </div>
                                                     </div>
+
                                                     <div class="form-group">
                                                         <div class="col-md-12">
-                                                            <label>Effort</label>
-                                                            <input id="Effort" class="form-control" value="-" disabled>
+                                                            <label>Fecha Expira</label>
+                                                            <input id="FechaFin" class="form-control" value="-" >
                                                         </div>
                                                     </div>
+                                                                <div class="modal-footer">
                                                     <div class="form-group">
                                                         <div class="col-md-12">
-                                                            <label>Remaining Work</label>
-                                                            <select id="RemainingWork" class="form-control"></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="col-md-12">
-                                                            <label>State</label>
-                                                            <select id="StateId" class="form-control"></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="col-md-12">
-                                                            <label>Activity</label>
-                                                            <input id="Activity" class="form-control" value="-" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="col-md-12">
-                                                            <label>Priority</label>
-                                                            <input id="Priority" class="form-control" value="-" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="col-md-12">
-                                                            <label>Is Completed</label>
-                                                            <br />
-                                                            <input id="IsCompleted" type="checkbox" class="form-check">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="col-md-12">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                                             <input type="button" id="Update" name="Update" class="btn btn-primary" value="Update" style="display:none">
                                                         </div>
                                                     </div>
+                                                                </div>
                                                 </p>
+                                            </div>
+                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="kt_modal_nuevo_event" tabindex="-1" aria-hidden="true">
+                                        <!--begin::Modal dialog-->
+                                        <div class="modal-dialog modal-dialog-centered mw-650px">
+                                            <!--begin::Modal content-->
+                                            <div class="modal-content">
+                                                <div class="col-md-4" id="informacion">
+                                                    <div class="card" style="width: 18rem;">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">
+                                                                Detalle     
+                                                            </h5>
+                                                            <p class="card-text">
+                                                                <div class="form-group">
+                                                                    <div class="col-md-12">
+                                                                        <label>Nombre</label>
+                                                                        <input id="NombreNuevo" class="form-control" value="-">                                                                       
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-md-12">
+                                                                        <label>Detalle</label>
+                                                                        <textarea id="ObservacionNuevo" class="form-control" value="-"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-md-12">
+                                                                        <label>Fecha Reserva</label>
+                                                                        <input id="FechaReservaNuevo" class="form-control" value="-">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <div class="col-md-12">
+                                                                        <label>Fecha Expira</label>
+                                                                        <input id="FechaFinNuevo" class="form-control" value="-">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-12">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                                            <input type="button" id="Nuevo" name="Nuevo" class="btn btn-primary" value="Nuevo">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -170,30 +207,108 @@
 
     <script>
 
-        var projectId = document.getElementById("IdAreaComunal")
+        $("#FechaReserva").flatpickr({
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
+        $("#FechaFin").flatpickr({
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
 
-        // $(function () {
+        $("#FechaReservaNuevo").flatpickr({
+            enableTime: true,
+            defaultDate: "today",
+            dateFormat: "Y-m-d H:i",
+        });
+        $("#FechaFinNuevo").flatpickr({
+            enableTime: true,
+            defaultDate: "today",
+            dateFormat: "Y-m-d H:i",
+        });
+
+        var projectId = document.getElementById("IdAreaComunal")
+        let idSeleccion = projectId.options[projectId.selectedIndex].value;
+         $(function () {
+             ocultaDivInformacion();
         //     GetTasks(projectId);
 
-        //     $('#Update').click(function () {
-        //         UpdateTask();
-        //     });
-        // });
+             $('#Update').click(function () {
+                UpdateTask();
+             });
+
+            $('#Nuevo').click(function () {
+                NuevoTask();
+            });
+         });
+
+        function ocultaDivInformacion() {
+            var x = document.getElementById("informacion");
+            x.style.display = "none";            
+        }
+        function mostrarDivInformacion() {
+            var x = document.getElementById("informacion");
+            x.style.display = "block";
+
+            //const myModal = document.getElementById('kt_modal_add_event')
+           // const myInput = document.getElementById('myInput')
+           // myModal.modal('show')
+
+           // const myModal = new bootstrap.Modal('#kt_modal_add_event', {
+            //    keyboard: false
+           // });
+            $('#kt_modal_add_event').modal('show');
+        }
 
         function UpdateTask() {
             var json = {
-                'Id': $('#Id').val(),
-                'IsCompleted': $('.IsCompleted').prop('checked') ? true : false,
-                'RemainingWork': $('#RemainingWork').val(),
-                'StateId': $('#StateId').val()
+                'IdReservaArea': $('#IdReservaArea').val(),
+                'IdAreaComunal': $('#IdAreaComunal').val(),
+                'Nombre': $('#Nombre').val(),
+                'Observaciones': $('#Observacion').val(),
+                'FechaReserva': $('#FechaReserva').val(),
+                'FechaFin': $('#FechaFin').val(),
+                'IdPersona': $('#IdPersona').val()                
             };
 
-            $.post("/Tasks/Update", json).done(function (data) {
+            $.post("/C_ReservaAreas/UpdateReserva", json).done(function (data) {
                 var isSuccessful = data.IsSuccessful;
 
                 if (isSuccessful) {
-                    swal("Good job!", "The process has been successfully!.", "success");
-                    window.location = '/Tasks/Calendar?projectId=' + projectId;
+                    Swal.fire({
+                        title: 'ok',
+                        text: "Se almaceno correctamente!.",
+                        icon: 'success',
+                    });
+                    window.location = '/C_ReservaAreas/ReservaAreasComunales1';
+                } else {
+                    var errors = data.Errors;
+                    displayValidationErrors(errors);
+                }
+            });
+        }
+
+        function NuevoTask() {
+            var projectId = document.getElementById("IdAreaComunal")
+            let idSeleccion = projectId.options[projectId.selectedIndex].value;
+            var json = {
+                'IdAreaComunal': idSeleccion,
+                'Nombre': $('#NombreNuevo').val(),
+                'Observaciones': $('#ObservacionNuevo').val(),
+                'FechaReserva': $('#FechaReservaNuevo').val(),
+                'FechaFin': $('#FechaFinNuevo').val()               
+            };
+
+            $.post("/C_ReservaAreas/NuevoReserva", json).done(function (data) {
+                var isSuccessful = data.IsSuccessful;
+
+                if (isSuccessful) {                   
+                    Swal.fire({
+                        title: 'ok',
+                        text: "Se almaceno correctamente!.",
+                        icon: 'success',
+                    });
+                    // window.location = '/Tasks/Calendar?projectId=' + projectId;
                 } else {
                     var errors = data.Errors;
                     displayValidationErrors(errors);
@@ -213,14 +328,15 @@
                     var json = data.listTasksCalendar;
                     if (json.length > 0) { 
                     for (var i = 0; i < json.length; i++) {
+                        console.log( moment(json[i].fechaReserva).format("YYYY-MM-DD HH:mm:ss"))
                         events.push({
                                 title: json[i].nombre,
-                                start: json[i].fechaReserva,
-                                end: json[i].fechaFin,
-                                id: json[i].idReservaArea
-                           // color: json[i].Color,
-                           // allDay: json[i].AllDay,
-                           // textColor: json[i].TextColor
+                                start: moment(json[i].fechaReserva).format("YYYY-MM-DD HH:mm:ss"),
+                                end: moment(json[i].fechaFin).format("YYYY-MM-DD HH:mm:ss"),
+                                id: json[i].idReservaArea,
+                                 color: "#FFFF00",
+                                    allDay: true,
+                                textColor: "#000000"
                         });
                     }
                     }
@@ -255,18 +371,22 @@
                 if (isSuccessful) {
                     var task = data.task;
 
-                    $('#Id').val(task.idReservaArea);
-                    $('#Title').val(task.nombre);
-                    $('#Details').val(task.nombre);
-                    $('#ExpirationDate').val(task.fechaFin);
-                    $('#Effort').val(task.fechaReserva);
+                    $('#IdReservaArea').val(task.idReservaArea);
+                    $('#IdAreaComunal').val(task.idAreaComunal);
+                    $('#Nombre').val(task.nombre);
+                    $('#Observacion').val(task.observaciones);
+                    $('#FechaReserva').val(task.fechaReserva);
+                    $('#FechaFin').val(task.fechaFin);
+                    $('#IdPersona').val(task.idPersona);
+
+                    mostrarDivInformacion();
 
                   //  $('#State').val(task.State);
                    // $('#Activity').val(task.Activity);
                    // $('#Priority').val(task.Priority);
 
-                    var remainingWork = $("#RemainingWork");
-                    remainingWork.empty();
+                    //var remainingWork = $("#RemainingWork");
+                   // remainingWork.empty();
 
                     // for (var i = task.RemainingWork; i >= 0; i--) {
                     //     var option = $("<option />");
@@ -277,8 +397,8 @@
 
                     //remainingWork.val(task.RemainingWork);
 
-                    var states = $("#StateId");
-                    states.empty();
+                    //var states = $("#StateId");
+                   // states.empty();
 
                     // $(data.States).each(function () {
                     //     var option = $("<option />");
@@ -289,7 +409,7 @@
 
                    // states.val(task.StateId);
 
-                    $("#RemainingWork").prop('min', 0);
+                   // $("#RemainingWork").prop('min', 0);
                    // $("#RemainingWork").prop('max', task.RemainingWork);
 
                     $('#Update').css('display', 'block');

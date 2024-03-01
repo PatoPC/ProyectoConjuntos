@@ -17,11 +17,13 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<CatalogoDTODropDown> _servicioConsumoAPICatalogos;
         private readonly IMapper _mapper;
         private readonly IServicioConsumoAPI<ReservaAreaDTOEditar> _servicioConsumoAPIEditar;
-        public C_ReservaAreas(IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IMapper mapper, IServicioConsumoAPI<ReservaAreaDTOEditar> servicioConsumoAPIEditar)
+        private readonly IServicioConsumoAPI<ReservaAreaDTOCrear> _servicioConsumoAPICrear;
+        public C_ReservaAreas(IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IMapper mapper, IServicioConsumoAPI<ReservaAreaDTOEditar> servicioConsumoAPIEditar, IServicioConsumoAPI<ReservaAreaDTOCrear> servicioConsumoAPICrear)
         {
             _servicioConsumoAPICatalogos = servicioConsumoAPICatalogos;
             _mapper = mapper;
             _servicioConsumoAPIEditar = servicioConsumoAPIEditar;
+            _servicioConsumoAPICrear = servicioConsumoAPICrear;
         }
 
         // GET: C_ReservaAreas
@@ -159,6 +161,117 @@ namespace RecintosHabitacionales.Controllers
                 });
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateReserva(ReservaAreaDTOEditar objDTO)
+        {
+            try
+            {
+                var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+                if (objUsuarioSesion != null)
+                {
+                    objDTO.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                    objDTO.IdPersona = objUsuarioSesion.IdPersona;
+
+                    HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.EditarReservaArea + objDTO.IdReservaArea, HttpMethod.Post, objDTO);
+
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta));
+                    }
+                    else
+                    {
+                        MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                        return new JsonResult(objMensajeRespuesta);
+                    }
+
+                }
+
+                return RedirectToAction("Ingresar", "C_Ingreso");
+
+
+
+                //if (!ModelState.IsValid)
+                //    return Json(new Models.ResponseViewModel
+                //    {
+                //        IsSuccessful = false,
+                //        Errors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList()
+                //    });
+
+                //Logica.BL.Tasks tasks = new Logica.BL.Tasks();
+                //tasks.UpdateTasks(model.Id,
+                //    model.IsCompleted,
+                //    model.RemainingWork,
+                //    model.StateId);
+
+                //var json = Json(new
+                //{
+                //    IsSuccessful = true
+                //});
+
+                //return json;
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    IsSuccessful = false,
+                    Errors = new List<string> { ex.Message }
+                });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> NuevoReserva(ReservaAreaDTOCrear objDTO)
+        {
+            try
+            {
+                var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+                if (objUsuarioSesion != null)
+                {
+                    objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                    objDTO.IdPersona = objUsuarioSesion.IdPersona;
+
+                    HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.CrearReservaArea , HttpMethod.Post, objDTO);
+
+                    if (respuesta.IsSuccessStatusCode)
+                    {
+                        return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta));
+                    }
+                    else
+                    {
+                        MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                        return new JsonResult(objMensajeRespuesta);
+                    }
+
+                }
+
+                return RedirectToAction("Ingresar", "C_Ingreso");
+               
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    IsSuccessful = false,
+                    Errors = new List<string> { ex.Message }
+                });
+            }
+        }
+
+        //public async Task<ActionResult> ReservaAreasComunales1(Guid id)
+        //{
+        //    ReservaAreaDTOCompleto listaResultadoDTO = new();
+        //    HttpResponseMessage respuestaAreaComunal = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.BuscarReservaAreaPorID + id, HttpMethod.Get);
+        //    if (respuestaAreaComunal.IsSuccessStatusCode)
+        //        listaResultadoDTO = await LeerRespuestas<ReservaAreaDTOCompleto>.procesarRespuestasConsultas(respuestaAreaComunal);
+
+        //    ViewBag.Project = listaResultadoDTO;
+        //    return View();
+        //}
 
 
 
