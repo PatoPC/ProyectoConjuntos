@@ -50,8 +50,7 @@ namespace RecintosHabitacionales.Controllers
                 ViewData["listaAreasComunales"] = new SelectList(listAreaComunal, "IdAreaComunal", "NombreArea");
             }
             else 
-            {
-                
+            {                
                 ViewData["listaAreasComunales"] = "";
             }
             ViewData["ListaConjustosAcceso"] = objUsuarioSesion.ConjutosAccesoSelect;
