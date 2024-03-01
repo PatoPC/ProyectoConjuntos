@@ -10,6 +10,7 @@ using DTOs.MaestroContable;
 using DTOs.Parametro;
 using DTOs.Persona;
 using DTOs.Proveedor;
+using DTOs.ReservaArea;
 using DTOs.Roles;
 using DTOs.Torre;
 using DTOs.Usuarios;
@@ -105,6 +106,10 @@ builder.Services.AddScoped(typeof(ParametroEditarDTO));
 
 builder.Services.AddScoped(typeof(ConfiguraCuentasDTOCrear));
 builder.Services.AddScoped(typeof(ConfiguraCuentasDTOEditar));
+
+builder.Services.AddScoped(typeof(ReservaAreaDTOCrear));
+builder.Services.AddScoped(typeof(ReservaAreaDTOEditar));
+builder.Services.AddScoped(typeof(ReservaAreaDTOCompleto));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
