@@ -178,12 +178,23 @@ namespace RecintosHabitacionales.Controllers
 
                     if (respuesta.IsSuccessStatusCode)
                     {
-                        return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta));
+                       // return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta));
+
+                        var json = Json(new
+                        {
+                            IsSuccessful = true
+                        });
+
+                        return json;
                     }
                     else
                     {
-                        MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                        return new JsonResult(objMensajeRespuesta);
+                        return Json(new
+                        {
+                            IsSuccessful = false,
+                            Errors = "Error"
+                        });
+
                     }
 
                 }
@@ -239,7 +250,13 @@ namespace RecintosHabitacionales.Controllers
 
                     if (respuesta.IsSuccessStatusCode)
                     {
-                        return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta));
+                       //return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta));
+                        var json = Json(new
+                        {
+                            IsSuccessful = true
+                        });
+
+                        return json;
                     }
                     else
                     {
