@@ -54,7 +54,7 @@ namespace APICondominios.Controllers
         }
 
 
-        #region CRUD
+        #region CRUD 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EncabezContDTOCrear objDTO)
         {
