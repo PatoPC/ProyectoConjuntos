@@ -55,11 +55,14 @@ namespace RecintosHabitacionales.Controllers
             }
             ViewData["ListaConjustosAcceso"] = objUsuarioSesion.ConjutosAccesoSelect;
 
+            ViewData["nombre"] = objUsuarioSesion.Nombre;
+            ViewData["apellido"] = objUsuarioSesion.Apellido;
+
 
             return View();
         }
 
-        public async Task<ActionResult> ReservaAreasComunales1()
+        public async Task<ActionResult> ReservaAreasComunales2()
         {
 
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
@@ -88,6 +91,8 @@ namespace RecintosHabitacionales.Controllers
             }
             ViewData["ListaConjustosAcceso"] = objUsuarioSesion.ConjutosAccesoSelect;
 
+            ViewData["nombre"] = objUsuarioSesion.Nombre;
+            ViewData["apellido"] = objUsuarioSesion.Apellido;
 
             return View();
         }
