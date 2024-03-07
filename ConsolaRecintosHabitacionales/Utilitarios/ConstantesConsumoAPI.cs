@@ -145,7 +145,6 @@ namespace Utilitarios
         public const string EliminarAreaComunal = ConstantesAplicacion.pathAPI + "/api/AreaComunal/Eliminar?id=";
         public const string BuscarAreasComunalesPorIdConjunto = ConstantesAplicacion.pathAPI + "/api/AreaComunal/BuscarAreasComunalesPorIdConjunto?IdConjunto=";
         #endregion
-
         
         #region Parametro
         public const string CrearParametro = ConstantesAplicacion.pathAPI + "/api/Parametro/";
@@ -162,7 +161,7 @@ namespace Utilitarios
         public const string gestionarConfiguracionAPI = ConstantesAplicacion.pathAPI + "/api/ConfiguracionCuenta/";
         public const string gestionarConfiguracionAPIEditar = ConstantesAplicacion.pathAPI + "/api/ConfiguracionCuenta/Editar?id=";
         #endregion
-             
+
         #region ReservaArea
         public const string CrearReservaArea = ConstantesAplicacion.pathAPI + "/api/ReservaArea/";
         public const string BuscarReservaAreaAvanzado = ConstantesAplicacion.pathAPI + "/api/ReservaArea/BusquedaAvanzadaReservaArea";
@@ -171,6 +170,17 @@ namespace Utilitarios
         public const string EliminarReservaArea = ConstantesAplicacion.pathAPI + "/api/ReservaArea/Eliminar?id=";
         public const string BuscarReservaAreaPorIdComunal = ConstantesAplicacion.pathAPI + "/api/ReservaArea/BuscarReservaAreaPorIdArea?idAreaComunal=";
         #endregion
+
+        #region Contabilidad
+        public const string CabeceraContabilidad = ConstantesAplicacion.pathAPI + "/api/API_Contabilidad/";
+        
+        //public const string buscarConjuntosAvanzado = ConstantesAplicacion.pathAPI + "/api/API_Contabilidad/ObtenerConjutosAvanzado";
+        
+        //public const string EditarConjuntosPorID = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Editar?id=";
+        //public const string EditarConjuntosEliminar = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Eliminar?id=";
+        //public const string TodosConjuntos = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/ObtenerTodosConjuntos";
+        #endregion
+
 
     }
 }

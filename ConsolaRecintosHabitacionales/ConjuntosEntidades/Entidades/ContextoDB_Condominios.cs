@@ -466,16 +466,12 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("ID_DET_CONT")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.ChequeDetCont).HasColumnName("CHEQUE_DET_CONT");
-
-                entity.Property(e => e.CodigoProvDetCont).HasColumnName("CODIGO_PROV_DET_CONT");
-
                 entity.Property(e => e.CreditoDetCont)
                     .HasColumnType("money")
                     .HasColumnName("CREDITO_DET_CONT");
 
                 entity.Property(e => e.CtacontDetCont)
-                    .HasMaxLength(10)
+                    .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("CTACONT_DET_CONT");
 
@@ -500,26 +496,13 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_MODIFICACION");
 
-                entity.Property(e => e.FechaVenciDetCont)
-                    .HasColumnType("date")
-                    .HasColumnName("FECHA_VENCI_DET_CONT");
-
                 entity.Property(e => e.IdEncCont)
                     .HasColumnName("ID_ENC_CONT")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.NCompDetCont).HasColumnName("N_COMP_DET_CONT");
-
-                entity.Property(e => e.NnroExternoDetCont)
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("NNRO_EXTERNO_DET_CONT");
-
-                entity.Property(e => e.NroIntDetCont).HasColumnName("NRO_INT_DET_CONT");
-
-                entity.Property(e => e.TipoCodDetCont).HasColumnName("TIPO_COD_DET_CONT");
-
-                entity.Property(e => e.TipoDocNDetCont).HasColumnName("TIPO_DOC_N_DET_CONT");
+                entity.Property(e => e.NroIntDetCont)
+                    .HasMaxLength(10)
+                    .HasColumnName("NRO_INT_DET_CONT");
 
                 entity.Property(e => e.UsuarioCreacion)
                     .HasMaxLength(70)
@@ -556,11 +539,6 @@ namespace ConjuntosEntidades.Entidades
                     .IsUnicode(false)
                     .HasColumnName("CONCEPTO_ENC_CONT");
 
-                entity.Property(e => e.CtacontEncCont)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("CTACONT_ENC_CONT");
-
                 entity.Property(e => e.FecAnulaEncCont)
                     .HasColumnType("datetime")
                     .HasColumnName("FEC_ANULA_ENC_CONT");
@@ -573,9 +551,11 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_ENC_CONT");
 
-                entity.Property(e => e.NCompEncCont).HasColumnName("N_COMP_ENC_CONT");
+                entity.Property(e => e.IdConjunto)
+                    .HasColumnName("ID_CONJUNTO")
+                    .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.NroRetEncCont).HasColumnName("NRO_RET_ENC_CONT");
+                entity.Property(e => e.NCompEncCont).HasColumnName("N_COMP_ENC_CONT");
 
                 entity.Property(e => e.TipoDocNEncCont).HasColumnName("TIPO_DOC_N_ENC_CONT");
 
@@ -583,6 +563,12 @@ namespace ConjuntosEntidades.Entidades
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("USUARIO_CREACION_ENC_CONT");
+
+                entity.HasOne(d => d.IdConjuntoNavigation)
+                    .WithMany(p => p.EncabezadoContabilidads)
+                    .HasForeignKey(d => d.IdConjunto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ENCABEZA_REFERENCE_CONJUNTO");
             });
 
             modelBuilder.Entity<FacturaCompra>(entity =>

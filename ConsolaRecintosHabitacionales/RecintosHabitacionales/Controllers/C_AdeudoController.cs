@@ -2,6 +2,7 @@
 using DTOs.Adeudo;
 using DTOs.CatalogoGeneral;
 using DTOs.Conjunto;
+using DTOs.Contabilidad;
 using DTOs.Persona;
 using DTOs.Proveedor;
 using DTOs.Torre;
@@ -50,27 +51,11 @@ namespace RecintosHabitacionales.Controllers
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            List<AdeudoDTOCompleto> listaResultado = new List<AdeudoDTOCompleto>();
+
             if (objUsuarioSesion != null)
             {
-                DateTime fechaADeudoActual = FuncionesUtiles.ObtenerUltimoDiaDelMes(variable.mes, variable.anio);
 
-                variable.fechaADeudoActual = fechaADeudoActual;
-
-                try
-                {
-                    HttpResponseMessage respuesta = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.buscarAdeudoAvanzado, HttpMethod.Get, variable);
-
-                    if (respuesta.IsSuccessStatusCode)
-                        listaResultado = await LeerRespuestas<List<AdeudoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
-                }
-                catch (Exception ex)
-                {
-
-                }
-
-                if (listaResultado == null)
-                    listaResultado = new List<AdeudoDTOCompleto>();
+                List<AdeudoDTOCompleto> listaResultado = await recuperarListaAdeudos(variable);
 
                 return View("_ListaAdeudos", listaResultado);
             }
@@ -96,6 +81,7 @@ namespace RecintosHabitacionales.Controllers
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
+
         [HttpPost]
         public async Task<ActionResult> GenearAdeudo(GenerarAdeudo variable)
         {
@@ -105,9 +91,10 @@ namespace RecintosHabitacionales.Controllers
             {
                 List<AdeudoDTOCrear> listaAdeudos = new List<AdeudoDTOCrear>();
                 DateTime fechaADeudoActual = FuncionesUtiles.ObtenerUltimoDiaDelMes(variable.mes, variable.anio);
+                List<string> adeudoDuplicados = new List<string>();
+
                 if (variable.IdConjunto != null)
                 {
-
                     BusquedaTorres objBusquedaTorres = new BusquedaTorres();
                     objBusquedaTorres.IdConjunto = (Guid)variable.IdConjunto;
 
@@ -115,10 +102,7 @@ namespace RecintosHabitacionales.Controllers
 
                     HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarTorresAvanzado, HttpMethod.Get, objBusquedaTorres);
 
-
                     CatalogoDTOResultadoBusqueda objCataArrendatario = await tipoPersonaDepartmento(ConstantesAplicacion.tipoPersonaCondomino);
-
-                    //CatalogoDTOResultadoBusqueda objCataDueno = await tipoPersonaDepartmento(ConstantesAplicacion.tipoPersonaPropietario);
 
                     if (respuesta.IsSuccessStatusCode)
                     {
@@ -166,21 +150,70 @@ namespace RecintosHabitacionales.Controllers
 
                         if (listaAdeudos.Count > 0)
                         {
+                            List<AdeudoDTOCompleto> adeudosActuales = await recuperarListaAdeudos(variable);
+
+                            List<AdeudoDTOCompleto> adeudosExistentes = new List<AdeudoDTOCompleto>();
+                            List<AdeudoDTOCompleto> adeudosNuevos = new List<AdeudoDTOCompleto>();
+
+                            foreach (AdeudoDTOCompleto adeudo in adeudosActuales)
+                            {
+                                AdeudoDTOCrear adeudoTemporal = listaAdeudos.Where(x => x.IdDepartamento == adeudo.IdDepartamento && x.IdPersona == adeudo.IdPersona && x.FechaAdeudos == adeudo.FechaAdeudos).FirstOrDefault();
+
+                                if(adeudoTemporal != null)
+                                    adeudosExistentes.Add(adeudo);                           
+                            }
+
+                            if(adeudosExistentes.Count > 0)
+                            {
+                                foreach (var adeudoExistente in adeudosExistentes)
+                                {
+                                    AdeudoDTOCrear adeudoTemporal = listaAdeudos.Where(x => x.IdDepartamento == adeudoExistente.IdDepartamento && x.IdPersona == adeudoExistente.IdPersona && x.FechaAdeudos == adeudoExistente.FechaAdeudos).FirstOrDefault();
+
+                                    if (adeudoTemporal != null)
+                                    {
+                                        string adeudoEliminado = adeudoTemporal.NombresPersona + " " + adeudoTemporal.ApellidosPersona+" Departamento: "+adeudoTemporal.Departamento;
+                                        adeudoDuplicados.Add(adeudoEliminado);
+                                    }
+
+
+                                    listaAdeudos.Remove(adeudoTemporal);
+                                }
+                            }
+
                             HttpResponseMessage httpCrearAdeudo = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoAPI, HttpMethod.Post, listaAdeudos);
 
                             if (httpCrearAdeudo.IsSuccessStatusCode)
                             {
-                              List<AdeudoDTOCompleto> listaMostrar = _mapper.Map<List<AdeudoDTOCompleto>>(listaAdeudos);
+                                List<AdeudoDTOCompleto> listaMostrar = _mapper.Map<List<AdeudoDTOCompleto>>(listaAdeudos);
+
+                                CatalogoDTOResultadoBusqueda objCataGeneracion = await tipoPersonaDepartmento(ConstantesAplicacion.tipoTransaccion);
+
+                                EncabezContDTOCrear objDTO = new EncabezContDTOCrear();
+
+                                objDTO.IdConjunto = variable.IdConjunto;
+                                objDTO.TipoDocNEncCont = objCataGeneracion.IdCatalogo;
+                                objDTO.FechaEncCont = fechaADeudoActual;
+                                objDTO.UsuarioCreacionEncCont = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+
+                                DetalleContabilidadCrear objDetalle = new DetalleContabilidadCrear();
+
+                                objDetalle.FechaDetCont = fechaADeudoActual;
+                                objDetalle.DetalleDetCont = "Generación "+ fechaADeudoActual.ToString("dd-MMM-yyyy");
+
+                                objDetalle.FechaCreacion = DateTime.Now;
+                                objDetalle.FechaModificacion = DateTime.Now;
+                                objDetalle.UsuarioCreacion = objDTO.UsuarioCreacionEncCont;
+                                objDetalle.UsuarioModificacion = objDTO.UsuarioCreacionEncCont;
 
                                 return View("_ListaAdeudos", listaMostrar);
                             }
                             else
                             {
-                                return View("_ListaAdeudo", new List<AdeudoDTOCrear>());
+                                TempData["adeudoDuplicados"] = adeudoDuplicados;
+                                return View("_ListaAdeudos", new List<AdeudoDTOCompleto>());
                             }
                         }
                     }
-
                 }
 
                 return View();
@@ -189,13 +222,40 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
+        private async Task<List<AdeudoDTOCompleto>> recuperarListaAdeudos(GenerarAdeudo variable)
+        {
+            List<AdeudoDTOCompleto> listaResultado = new List<AdeudoDTOCompleto>();
+
+            DateTime fechaADeudoActual = FuncionesUtiles.ObtenerUltimoDiaDelMes(variable.mes, variable.anio);
+
+            variable.fechaADeudoActual = fechaADeudoActual;
+
+            try
+            {
+                HttpResponseMessage respuesta = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.buscarAdeudoAvanzado, HttpMethod.Get, variable);
+
+                if (respuesta.IsSuccessStatusCode)
+                    listaResultado = await LeerRespuestas<List<AdeudoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            if (listaResultado == null)
+                listaResultado = new List<AdeudoDTOCompleto>();
+
+            return listaResultado;
+        }
+
+
         /// <summary>
         /// Recpera los catalogos de acuerdo al codigo catalogo, para saber si es un arrendatario o un dueño de departamento
         /// </summary>
         /// <param name="codigoPersona"></param>
-        private async Task<CatalogoDTOResultadoBusqueda> tipoPersonaDepartmento(string codigoPersona)
+        private async Task<CatalogoDTOResultadoBusqueda> tipoPersonaDepartmento(string codigoCatalogo)
         {
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + codigoPersona, HttpMethod.Get);
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + codigoCatalogo, HttpMethod.Get);
 
             var objCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuesta);
 

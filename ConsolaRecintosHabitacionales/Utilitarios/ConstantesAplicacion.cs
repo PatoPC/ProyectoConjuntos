@@ -42,13 +42,17 @@ namespace Utilitarios
         public const string IdentificacionPasaporte = "Pasaporte";
         #endregion
 
-        #region CódigoCatalogos
+        #region Código Catalogos
         public const string padreModulo = "MDLS";
         public const string padrePermisos = "TPPMS";
         public const string padrePaginasRoles = "HOMEINI";
         public const string padreTipoPersona = "tipPerso";
         public const string tipoPersonaCondomino = "opcInqui";
         public const string tipoPersonaPropietario = "mdueño";
+
+        //Tipos Cabecera Tipo Transacción
+        public const string tipoTransaccion = "PTTCOTP";
+
         #endregion
 
         #region Ciudades

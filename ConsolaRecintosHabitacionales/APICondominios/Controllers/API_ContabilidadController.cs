@@ -13,7 +13,7 @@ using Utilitarios;
 
 namespace APICondominios.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/API_Contabilidad")]
     [ApiController]
     public class API_ContabilidadController : ControllerBase
     {

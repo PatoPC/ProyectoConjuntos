@@ -3885,7 +3885,7 @@ PhysOpts=
 
 [ModelOptions\Default Opts\FRMESOB&lt;&lt;WorkloadGroup&gt;&gt;]
 PhysOpts=</a:ModelOptionsText>
-<a:RepositoryFilename>c:\visual\proyecto_roberto\basedatos\cordova\conjunto_h.pdm</a:RepositoryFilename>
+<a:RepositoryFilename>F:\VisualStudio\Personal\Roberto-Conjuntos\ProyectoConjuntos\BaseDatos\CORDOVA\CONJUNTO_H.pdm</a:RepositoryFilename>
 <c:DBMS>
 <o:Shortcut Id="o3">
 <a:ObjectID>7B970BF8-2436-4D5A-B071-DC8BD099D349</a:ObjectID>
@@ -4332,9 +4332,9 @@ Shadow=0</a:DisplayPreferences>
 <c:Symbols>
 <o:ReferenceSymbol Id="o5">
 <a:CreationDate>1665114092</a:CreationDate>
-<a:ModificationDate>1699407412</a:ModificationDate>
-<a:Rect>((14971,39254), (24877,40504))</a:Rect>
-<a:ListOfPoints>((15371,39879),(24477,39879))</a:ListOfPoints>
+<a:ModificationDate>1709764392</a:ModificationDate>
+<a:Rect>((14746,31616), (24877,32866))</a:Rect>
+<a:ListOfPoints>((15146,32241),(24477,32241))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>1</a:ArrowStyle>
 <a:LineColor>12615680</a:LineColor>
@@ -4886,9 +4886,9 @@ LABL 0 Arial,8,N</a:FontList>
 </o:TableSymbol>
 <o:TableSymbol Id="o6">
 <a:CreationDate>1664641277</a:CreationDate>
-<a:ModificationDate>1699407412</a:ModificationDate>
+<a:ModificationDate>1709764392</a:ModificationDate>
 <a:IconMode>-1</a:IconMode>
-<a:Rect>((-7783,26250), (15371,40940))</a:Rect>
+<a:Rect>((-8008,24750), (15146,39440))</a:Rect>
 <a:AutoAdjustToText>0</a:AutoAdjustToText>
 <a:LineColor>12615680</a:LineColor>
 <a:FillColor>16570034</a:FillColor>
@@ -5936,10 +5936,11 @@ CONCEPTO_ENC_CONT -&gt; generación automatica
 <a:Code>ID_CONJUNTO</a:Code>
 <a:CreationDate>1699407041</a:CreationDate>
 <a:Creator>Usuario01</a:Creator>
-<a:ModificationDate>1699407041</a:ModificationDate>
-<a:Modifier>Usuario01</a:Modifier>
+<a:ModificationDate>1709765640</a:ModificationDate>
+<a:Modifier>patri</a:Modifier>
 <a:DefaultValue>newid()</a:DefaultValue>
 <a:DataType>uniqueidentifier</a:DataType>
+<a:Column.Mandatory>1</a:Column.Mandatory>
 <a:AutoMigrated>1</a:AutoMigrated>
 </o:Column>
 <o:Column Id="o131">
@@ -5948,9 +5949,9 @@ CONCEPTO_ENC_CONT -&gt; generación automatica
 <a:Code>TIPO_DOC_N_ENC_CONT</a:Code>
 <a:CreationDate>1664504621</a:CreationDate>
 <a:Creator>Usuario01</a:Creator>
-<a:ModificationDate>1664507558</a:ModificationDate>
-<a:Modifier>Usuario01</a:Modifier>
-<a:DataType>int</a:DataType>
+<a:ModificationDate>1709765640</a:ModificationDate>
+<a:Modifier>patri</a:Modifier>
+<a:DataType>uniqueidentifier</a:DataType>
 <a:Column.Mandatory>1</a:Column.Mandatory>
 </o:Column>
 <o:Column Id="o132">
@@ -6125,9 +6126,10 @@ CONCEPTO_ENC_CONT -&gt; generación automatica
 <a:Code>NRO_INT_DET_CONT</a:Code>
 <a:CreationDate>1664641394</a:CreationDate>
 <a:Creator>Usuario01</a:Creator>
-<a:ModificationDate>1664644142</a:ModificationDate>
-<a:Modifier>Usuario01</a:Modifier>
-<a:DataType>int</a:DataType>
+<a:ModificationDate>1709767401</a:ModificationDate>
+<a:Modifier>patri</a:Modifier>
+<a:DataType>nvarchar(10)</a:DataType>
+<a:Length>10</a:Length>
 </o:Column>
 <o:Column Id="o146">
 <a:ObjectID>F9000224-0777-4132-A316-5E40E95C7BE5</a:ObjectID>
