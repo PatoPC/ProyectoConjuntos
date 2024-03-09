@@ -10,5 +10,8 @@ namespace RepositorioConjuntos.Interface
     public interface IManageContabilidad
     {
         public Task<EncabezadoContabilidad> EncabezadoContabilidadPorID(Guid IdEncCont);
+        public int GetSecuencialMaximoCabecera();
+
+
     }
 }

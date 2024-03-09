@@ -26,32 +26,42 @@ namespace Utilitarios
 
         public static string FormatearCadenaCuenta(string nuevaCuenta, string parametrizacion)
         {
-            string cadenaFormateada = "";
-            int posicionInicial = 0;
-            string[] cadenaParametrizacion = parametrizacion.Split('.');
-
-            for (int i = 0; i < cadenaParametrizacion.Length; i++)
+            try
             {
-                string parametro = cadenaParametrizacion[i];
+                string cadenaFormateada = "";
+                int posicionInicial = 0;
+                string[] cadenaParametrizacion = parametrizacion.Split('.');
 
-                try
+                for (int i = 0; i < cadenaParametrizacion.Length; i++)
                 {
-                    string cuentaActual = nuevaCuenta.Substring(posicionInicial, parametro.Length);
+                    string parametro = cadenaParametrizacion[i];
 
-                    posicionInicial += parametro.Length;
+                    try
+                    {
+                        string cuentaActual = nuevaCuenta.Substring(posicionInicial, parametro.Length);
 
-                    cadenaFormateada += cuentaActual + ".";
+                        posicionInicial += parametro.Length;
+
+                        cadenaFormateada += cuentaActual + ".";
+
+                    }
+                    catch (Exception ex)
+                    {
+                        break;
+                    }
 
                 }
-                catch (Exception ex)
-                {
-                    break;
-                }
+                cadenaFormateada = cadenaFormateada.TrimEnd('.');
 
+                return cadenaFormateada;
             }
-            cadenaFormateada = cadenaFormateada.TrimEnd('.');
+            catch (Exception ex)
+            {
 
-            return cadenaFormateada;
+                
+            }
+
+            return nuevaCuenta;
         }
         public static string GenerarCadena()
         {

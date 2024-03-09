@@ -52,7 +52,6 @@ namespace Utilitarios
 
         //Tipos Cabecera Tipo Transacción
         public const string tipoTransaccion = "PTTCOTP";
-
         #endregion
 
         #region Ciudades

@@ -19,11 +19,16 @@
             @foreach (var subCuenta in cuenta.InverseIdConMstPadreNavigation)
             {
                 int randomNumber = random.Next(0, 101);
+                string tipoCuenta = "Movimiento";
                 nivelCuenta += 1;
 
                 nombreCuenta = nombreCuenta + nivelCuenta + "_" + randomNumber;
 
                 nombreCuentaEnlace = "#" + nombreCuenta;
+
+                if(subCuenta.Grupo){
+                    tipoCuenta = "Grupo";
+                }
 
                 <div class="mb-4">
                     <div class="d-flex align-items-center ps-10 mb-n1">
@@ -63,7 +68,12 @@
                                 }
                                 else
                                 {
-                                    <div class="mb-0">@subCuenta.CuentaCon | @subCuenta.NombreCuenta</div>
+                                    if(!subCuenta.Grupo){
+                                        <div class="mb-0">@subCuenta.CuentaCon | @subCuenta.NombreCuenta</div>                                        
+                                    }
+                                    else{
+                                        <div class="mb-0">@subCuenta.CuentaCon | @subCuenta.NombreCuenta | @tipoCuenta</div>
+                                    }
                                 }
 
                                 <!--end::Title-->

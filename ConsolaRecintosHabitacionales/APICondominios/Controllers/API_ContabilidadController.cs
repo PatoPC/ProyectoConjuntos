@@ -53,6 +53,22 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
+        [HttpGet("GetSecuencialMaximoCabecera")]
+        public ActionResult<int> GetSecuencialMaximoCabecera()
+        {
+            try
+            {
+                int secuencialMaximo = _consultaContabilidad.GetSecuencialMaximoCabecera();
+
+                return Ok(secuencialMaximo);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
 
         #region CRUD 
         [HttpPost]

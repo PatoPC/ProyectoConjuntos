@@ -18,14 +18,16 @@ namespace RecintosHabitacionales.Controllers
     {
         private readonly IServicioConsumoAPI<BusquedaTorres> _servicioConsumoAPIBusqueda;
         private readonly IServicioConsumoAPI<GenerarAdeudo> _servicioConsumoBusqueda;
+        private readonly IServicioConsumoAPI<EncabezContDTOCrear> _servicioConsumoEncabezado;
         private readonly IServicioConsumoAPI<List<AdeudoDTOCrear>> _servicioConsumoAPICrear;
         private readonly IMapper _mapper;
-        public C_AdeudoController(IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusqueda, IServicioConsumoAPI<List<AdeudoDTOCrear>> servicioConsumoAPICrear, IServicioConsumoAPI<GenerarAdeudo> servicioConsumoBusqueda, IMapper mapper)
+        public C_AdeudoController(IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusqueda, IServicioConsumoAPI<List<AdeudoDTOCrear>> servicioConsumoAPICrear, IServicioConsumoAPI<GenerarAdeudo> servicioConsumoBusqueda, IMapper mapper, IServicioConsumoAPI<EncabezContDTOCrear> servicioConsumoEncabezado)
         {
             _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
             _servicioConsumoAPICrear = servicioConsumoAPICrear;
             _servicioConsumoBusqueda = servicioConsumoBusqueda;
             _mapper = mapper;
+            _servicioConsumoEncabezado = servicioConsumoEncabezado;
         }
 
         public IActionResult GestionarAdeudo()
@@ -102,7 +104,7 @@ namespace RecintosHabitacionales.Controllers
 
                     HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarTorresAvanzado, HttpMethod.Get, objBusquedaTorres);
 
-                    CatalogoDTOResultadoBusqueda objCataArrendatario = await tipoPersonaDepartmento(ConstantesAplicacion.tipoPersonaCondomino);
+                    CatalogoDTOResultadoBusqueda objCataArrendatario = await recuperarCatalogoPorCodigo(ConstantesAplicacion.tipoPersonaCondomino);
 
                     if (respuesta.IsSuccessStatusCode)
                     {
@@ -186,14 +188,27 @@ namespace RecintosHabitacionales.Controllers
                             {
                                 List<AdeudoDTOCompleto> listaMostrar = _mapper.Map<List<AdeudoDTOCompleto>>(listaAdeudos);
 
-                                CatalogoDTOResultadoBusqueda objCataGeneracion = await tipoPersonaDepartmento(ConstantesAplicacion.tipoTransaccion);
+                                CatalogoDTOResultadoBusqueda objCataGeneracion = await recuperarCatalogoPorCodigo(ConstantesAplicacion.tipoTransaccion);
 
-                                EncabezContDTOCrear objDTO = new EncabezContDTOCrear();
+                                HttpResponseMessage respuestaSecuencial = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.SecuencialContabilidad, HttpMethod.Get);
 
-                                objDTO.IdConjunto = variable.IdConjunto;
-                                objDTO.TipoDocNEncCont = objCataGeneracion.IdCatalogo;
-                                objDTO.FechaEncCont = fechaADeudoActual;
-                                objDTO.UsuarioCreacionEncCont = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                                var secuencialMaximo = await LeerRespuestas<string>.procesarRespuestasConsultas(respuesta);
+                                int nuevoSecuencial = Convert.ToInt32(secuencialMaximo) + 1;
+
+                                //Recuperar Cuenta contable
+                                SecuencialCabeceraContDTO objSecuencial = new SecuencialCabeceraContDTO();
+                                objSecuencial.Secuencial = nuevoSecuencial;
+
+                                EncabezContDTOCrear objDTOCabecera = new EncabezContDTOCrear();
+
+                                objDTOCabecera.SecuencialCabeceraConts = new List<SecuencialCabeceraContDTO>();
+                                objDTOCabecera.SecuencialCabeceraConts.Add(objSecuencial);
+
+                                objDTOCabecera.ConceptoEncCont = "Generación Adeudos "+ fechaADeudoActual.ToString("MMMM");
+                                objDTOCabecera.IdConjunto = variable.IdConjunto;
+                                objDTOCabecera.TipoDocNEncCont = objCataGeneracion.IdCatalogo;
+                                objDTOCabecera.FechaEncCont = fechaADeudoActual;
+                                objDTOCabecera.UsuarioCreacionEncCont = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
                                 DetalleContabilidadCrear objDetalle = new DetalleContabilidadCrear();
 
@@ -202,8 +217,14 @@ namespace RecintosHabitacionales.Controllers
 
                                 objDetalle.FechaCreacion = DateTime.Now;
                                 objDetalle.FechaModificacion = DateTime.Now;
-                                objDetalle.UsuarioCreacion = objDTO.UsuarioCreacionEncCont;
-                                objDetalle.UsuarioModificacion = objDTO.UsuarioCreacionEncCont;
+                                objDetalle.UsuarioCreacion = objDTOCabecera.UsuarioCreacionEncCont;
+                                objDetalle.UsuarioModificacion = objDTOCabecera.UsuarioCreacionEncCont;
+                                objDetalle.CreditoDetCont = listaAdeudos.Sum(x => x.MontoAdeudos);
+
+                                objDTOCabecera.DetalleContabilidads = new List<DetalleContabilidadCrear>();
+                                objDTOCabecera.DetalleContabilidads.Add(objDetalle);
+
+                                HttpResponseMessage httpCrearCabecera = await _servicioConsumoEncabezado.consumoAPI(ConstantesConsumoAPI.CabeceraContabilidad, HttpMethod.Post, objDTOCabecera);
 
                                 return View("_ListaAdeudos", listaMostrar);
                             }
@@ -253,7 +274,7 @@ namespace RecintosHabitacionales.Controllers
         /// Recpera los catalogos de acuerdo al codigo catalogo, para saber si es un arrendatario o un dueño de departamento
         /// </summary>
         /// <param name="codigoPersona"></param>
-        private async Task<CatalogoDTOResultadoBusqueda> tipoPersonaDepartmento(string codigoCatalogo)
+        private async Task<CatalogoDTOResultadoBusqueda> recuperarCatalogoPorCodigo(string codigoCatalogo)
         {
             HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + codigoCatalogo, HttpMethod.Get);
 

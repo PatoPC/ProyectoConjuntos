@@ -1,4 +1,5 @@
 ﻿using DTOs.CatalogoGeneral;
+using DTOs.ConfiguracionCuenta;
 using DTOs.MaestroContable;
 using DTOs.Parametro;
 using DTOs.Usuarios;
@@ -17,19 +18,20 @@ namespace RecintosHabitacionales.Controllers
     {
         private const string controladorActual = "C_Parametro";
         private const string accionActual = "AdministrarParametros";
-        private readonly IServicioConsumoAPI<MaestroContableBusqueda> _servicioConsumoAPIBusqueda;
+
         private readonly IServicioConsumoAPI<ParametroCrearDTO> _servicioConsumoAPICrear;
         private readonly IServicioConsumoAPI<BusquedaParametro> _servicioConsumoAPIParametro;
         private readonly IServicioConsumoAPI<ParametroEditarDTO> _servicioConsumoCompleto;
         private readonly IServicioConsumoAPI<CatalogoDTODropDown> _servicioConsumoAPICatalogos;
+        private readonly CargarMaestroContable _servicioMestroContable;
 
-        public C_ParametroController(IServicioConsumoAPI<ParametroCrearDTO> servicioConsumoAPICrear, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusqueda, IServicioConsumoAPI<BusquedaParametro> servicioConsumoAPIParametro, IServicioConsumoAPI<ParametroEditarDTO> servicioConsumoCompleto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos)
+        public C_ParametroController(IServicioConsumoAPI<ParametroCrearDTO> servicioConsumoAPICrear, IServicioConsumoAPI<BusquedaParametro> servicioConsumoAPIParametro, IServicioConsumoAPI<ParametroEditarDTO> servicioConsumoCompleto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, CargarMaestroContable servicioMestroContable)
         {
             _servicioConsumoAPICrear = servicioConsumoAPICrear;
-            _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
             _servicioConsumoAPIParametro = servicioConsumoAPIParametro;
             _servicioConsumoCompleto = servicioConsumoCompleto;
             _servicioConsumoAPICatalogos = servicioConsumoAPICatalogos;
+            _servicioMestroContable = servicioMestroContable;
         }
 
         public IActionResult AdministrarParametros()
@@ -116,23 +118,30 @@ namespace RecintosHabitacionales.Controllers
 
                     objBusqueda.IdConjunto = objMaestroContable.IdConjunto;
                     objBusqueda.Grupo = false;
-                    HttpResponseMessage respuestaCuentas = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarMaestroContableAvanzado, HttpMethod.Get, objBusqueda);
 
-                    var listaCuentas = await LeerRespuestas<List<MaestroContableDTOCompleto>>.procesarRespuestasConsultas(respuestaCuentas);
+                    List<MaestroContableDTOCompleto> listaMestroConta = await _servicioMestroContable.recuperarMaestroContable(objBusqueda);
 
-                    var listaCuentas1 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont1);
+
+
+                    listaFinal = listaMestroConta.Select(x => new CatalogoDTODropDown
+                    {
+                        IdCatalogo = x.IdConMst,
+                        Nombrecatalogo = x.CuentaCon + " " + x.NombreCuenta
+                    }).ToList();
+
+                    var listaCuentas1 = new SelectList(listaFinal, "IdCatalogo", "Nombrecatalogo", objMaestroContable.CtaCont1);
 
                     ViewData["listaCuentas1"] = listaCuentas1;
 
-                    var listaCuentas2 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont2);
+                    var listaCuentas2 = new SelectList(listaFinal, "IdCatalogo", "Nombrecatalogo", objMaestroContable.CtaCont2);
 
                     ViewData["listaCuentas2"] = listaCuentas2;
 
-                    var listaCuentas3 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont3);
+                    var listaCuentas3 = new SelectList(listaFinal, "IdCatalogo", "Nombrecatalogo", objMaestroContable.CtaCont3);
 
                     ViewData["listaCuentas3"] = listaCuentas3;
 
-                    var listaCuentas4 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont4);
+                    var listaCuentas4 = new SelectList(listaFinal, "IdCatalogo", "Nombrecatalogo", objMaestroContable.CtaCont4);
 
                     ViewData["listaCuentas4"] = listaCuentas4;
                 }
@@ -198,23 +207,22 @@ namespace RecintosHabitacionales.Controllers
 
                     objBusqueda.IdConjunto = objMaestroContable.IdConjunto;
                     objBusqueda.Grupo = false;
-                    HttpResponseMessage respuestaCuentas = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarMaestroContableAvanzado, HttpMethod.Get, objBusqueda);
 
-                    var listaCuentas = await LeerRespuestas<List<MaestroContableDTOCompleto>>.procesarRespuestasConsultas(respuestaCuentas);
+                    List<MaestroContableDTOCompleto> listaMestroConta = await _servicioMestroContable.recuperarMaestroContable(objBusqueda);
 
-                    var listaCuentas1 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont1);
+                    var listaCuentas1 = new SelectList(listaMestroConta, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont1);
 
                     ViewData["listaCuentas1"] = listaCuentas1;
 
-                    var listaCuentas2 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont2);
+                    var listaCuentas2 = new SelectList(listaMestroConta, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont2);
 
                     ViewData["listaCuentas2"] = listaCuentas2;
 
-                    var listaCuentas3 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont3);
+                    var listaCuentas3 = new SelectList(listaMestroConta, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont3);
 
                     ViewData["listaCuentas3"] = listaCuentas3;
 
-                    var listaCuentas4 = new SelectList(listaCuentas, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont4);
+                    var listaCuentas4 = new SelectList(listaMestroConta, "IdConMst", "NombreCuenta", objMaestroContable.CtaCont4);
 
                     ViewData["listaCuentas4"] = listaCuentas4;
                 }
@@ -272,29 +280,31 @@ namespace RecintosHabitacionales.Controllers
                     if (listaParametros == null)
                         listaParametros = new List<ParametroCompletoDTO>();
 
+                    ConfiguraCuentasDTOCompleto objConfigurar = await _servicioMestroContable.recuperarParametrizacionMaCont(objBusqueda.IdConjunto);
+
                     foreach (var parametro in listaParametros)
                     {
-                        MaestroContableDTOCompleto objCuenta1 = await recuperarNombreCuenta(parametro.CtaCont1);
+                        MaestroContableDTOCompleto objCuenta1 = await recuperarNombreCuenta(parametro.CtaCont1, objConfigurar.Parametrizacion);
 
                         parametro.Cuenta1 = objCuenta1.CuentaCon+" "+ objCuenta1.NombreCuenta;
 
                         if (parametro.CtaCont2 != Guid.Empty && parametro.CtaCont2!=null)
                         {
-                            MaestroContableDTOCompleto objCuenta2 = await recuperarNombreCuenta((Guid)parametro.CtaCont2);
+                            MaestroContableDTOCompleto objCuenta2 = await recuperarNombreCuenta((Guid)parametro.CtaCont2, objConfigurar.Parametrizacion);
 
                             parametro.Cuenta2 = objCuenta2.CuentaCon + " " + objCuenta2.NombreCuenta;
                         }
 
                         if (parametro.CtaCont3 != Guid.Empty && parametro.CtaCont3 != null)
                         {
-                            MaestroContableDTOCompleto objCuenta3 = await recuperarNombreCuenta((Guid)parametro.CtaCont3);
+                            MaestroContableDTOCompleto objCuenta3 = await recuperarNombreCuenta((Guid)parametro.CtaCont3, objConfigurar.Parametrizacion);
 
                             parametro.Cuenta3 = objCuenta3.CuentaCon + " " + objCuenta3.NombreCuenta;
                         }
 
                         if (parametro.CtaCont4 != Guid.Empty && parametro.CtaCont4 != null)
                         {
-                            MaestroContableDTOCompleto objCuenta4 = await recuperarNombreCuenta((Guid)parametro.CtaCont4);
+                            MaestroContableDTOCompleto objCuenta4 = await recuperarNombreCuenta((Guid)parametro.CtaCont4, objConfigurar.Parametrizacion);
 
                             parametro.Cuenta4 = objCuenta4.CuentaCon + " " + objCuenta4.NombreCuenta;
                         }
@@ -313,11 +323,13 @@ namespace RecintosHabitacionales.Controllers
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
 
-        private async Task<MaestroContableDTOCompleto> recuperarNombreCuenta(Guid CtaCont)
+        private async Task<MaestroContableDTOCompleto> recuperarNombreCuenta(Guid CtaCont, string parametrizacion)
         {
             HttpResponseMessage respuestaMaestro = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarMaestroContableAPI + CtaCont, HttpMethod.Get);
 
-            MaestroContableDTOCompleto objMaestroContable = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(respuestaMaestro);
+            MaestroContableDTOCompleto objMaestroContable = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(respuestaMaestro);            
+
+            objMaestroContable.CuentaCon = FuncionesUtiles.FormatearCadenaCuenta(objMaestroContable.CuentaCon, parametrizacion);
 
             return objMaestroContable;
         }

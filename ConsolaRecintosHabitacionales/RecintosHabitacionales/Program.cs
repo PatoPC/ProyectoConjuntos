@@ -4,6 +4,7 @@ using DTOs.CatalogoGeneral;
 using DTOs.Comunicado;
 using DTOs.ConfiguracionCuenta;
 using DTOs.Conjunto;
+using DTOs.Contabilidad;
 using DTOs.Departamento;
 using DTOs.Logs;
 using DTOs.MaestroContable;
@@ -18,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using RecintosHabitacionales.Conexiones;
+using RecintosHabitacionales.Servicio;
 using RecintosHabitacionales.Servicio.Implementar;
 using RecintosHabitacionales.Servicio.Interface;
 using System.Net.Http.Headers;
@@ -110,6 +112,9 @@ builder.Services.AddScoped(typeof(ConfiguraCuentasDTOEditar));
 builder.Services.AddScoped(typeof(ReservaAreaDTOCrear));
 builder.Services.AddScoped(typeof(ReservaAreaDTOEditar));
 builder.Services.AddScoped(typeof(ReservaAreaDTOCompleto));
+builder.Services.AddScoped(typeof(CargarMaestroContable));
+
+builder.Services.AddScoped(typeof(EncabezContDTOCrear));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

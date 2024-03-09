@@ -24,5 +24,21 @@ namespace RepositorioConjuntos.Implementacion
 
             return objRepositorio;
         }
+
+        public int GetSecuencialMaximoCabecera()
+        {
+            try
+            {
+                int objAnexo = (int)_context.SecuencialCabeceraConts.Max(x => x.Secuencial);
+
+                return objAnexo;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return 0;
+        }
     }
 }

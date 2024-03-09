@@ -35,14 +35,14 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<UsuarioConjuntoDTO> _servicioConsumoAPIUsuarioConjunto;
         private readonly IServicioConsumoAPI<List<UsuarioConjuntoDTO>> _servicioConsumoAPIUsuarioConjuntoLista;
         private readonly IServicioConsumoAPI<ConjuntoDTOEditar> _servicioConsumoAPICrearEditar;
-        private readonly IServicioConsumoAPI<BusquedaConjuntos> _servicioConsumoAPIBusqueda;
+
         private readonly IServicioConsumoAPI<BusquedaTorres> _servicioConsumoAPIBusquedaTorres;
         private readonly IServicioConsumoAPI<BusquedaAreaComunal> _servicioBusqueAreaComunal;
 
         private readonly IServicioConsumoAPI<ObjetoBusquedaPersona> _servicioConsumoAPIBusquedaPersona;
         private readonly IServicioConsumoAPI<PersonaDTOCrear> _servicioConsumoAPICrearPersona;
         private readonly IServicioConsumoAPI<TipoPersonaDTO> _servicioConsumoAPICrearTipoPersona;
-
+        private readonly IServicioConsumoAPI<BusquedaConjuntos> _servicioConsumoAPIBusqueda;
         private readonly IServicioConsumoAPI<DepartamentoDTOEditar> _servicioConsumoAPIDepartamentoEditar;
 
         private readonly IServicioConsumoAPI<DepartamentoDTOCrear> _servicioConsumoAPIDepartamento;
@@ -50,12 +50,13 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<CatalogoDTODropDown> _servicioConsumoAPICatalogos;
         private readonly IServicioConsumoAPI<CatalogoDTOCrear> _servicioConsumoAPICrearCatalogos;
 
+        private readonly CargarMaestroContable _servicioMestroContable;
+
         private readonly IServicioConsumoAPI<MaestroContableBusqueda> _servicioConsumoAPIBusquedaMaestro;
         private readonly IMapper _mapper;
-        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IServicioConsumoAPI<List<ConjuntoDTOCrear>> servicioConsumoAPICrearLista, IServicioConsumoAPI<List<UsuarioConjuntoDTO>> servicioConsumoAPIUsuarioConjuntoLista, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusquedaPersona, IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrearPersona, IServicioConsumoAPI<TipoPersonaDTO> servicioConsumoAPICrearTipoPersona, IMapper mapper, IServicioConsumoAPI<CatalogoDTOCrear> servicioConsumoAPICrearCatalogos, IServicioConsumoAPI<UsuarioDTOCrear> usuarioDTOCrearUsuario, IServicioConsumoAPI<BusquedaAreaComunal> servicioBusqueAreaComunal, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusquedaMaestro)
+        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IServicioConsumoAPI<List<ConjuntoDTOCrear>> servicioConsumoAPICrearLista, IServicioConsumoAPI<List<UsuarioConjuntoDTO>> servicioConsumoAPIUsuarioConjuntoLista, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusquedaPersona, IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrearPersona, IServicioConsumoAPI<TipoPersonaDTO> servicioConsumoAPICrearTipoPersona, IMapper mapper, IServicioConsumoAPI<CatalogoDTOCrear> servicioConsumoAPICrearCatalogos, IServicioConsumoAPI<UsuarioDTOCrear> usuarioDTOCrearUsuario, IServicioConsumoAPI<BusquedaAreaComunal> servicioBusqueAreaComunal, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusquedaMaestro, CargarMaestroContable servicioMestroContable, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda)
         {
             _servicioConsumoAPICrear = servicioConsumoAPIConjunto;
-            _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
             _servicioConsumoAPICrearEditar = servicioConsumoAPIConjuntoEditar;
             _servicioConsumoAPIBusquedaTorres = servicioConsumoAPIBusquedaTorres;
             _servicioConsumoAPIDepartamento = servicioConsumoAPIDepartamento;
@@ -72,6 +73,8 @@ namespace RecintosHabitacionales.Controllers
             UsuarioDTOCrearUsuario = usuarioDTOCrearUsuario;
             _servicioBusqueAreaComunal = servicioBusqueAreaComunal;
             _servicioConsumoAPIBusquedaMaestro = servicioConsumoAPIBusquedaMaestro;
+            _servicioMestroContable = servicioMestroContable;
+            _servicioConsumoAPIBusqueda = servicioConsumoAPIBusqueda;
         }
 
         #region CRUD
@@ -130,7 +133,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + idConjuntos, HttpMethod.Get);
+                HttpResponseMessage respuesta = await _servicioConsumoAPIBusquedaPersona.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + idConjuntos, HttpMethod.Get);
 
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -180,7 +183,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + idConjuntos, HttpMethod.Get);
+                HttpResponseMessage respuesta = await _servicioConsumoAPIBusquedaPersona.consumoAPI(ConstantesConsumoAPI.buscarConjuntosPorID + idConjuntos, HttpMethod.Get);
 
                 if (respuesta.IsSuccessStatusCode)
                 {
@@ -237,7 +240,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                HttpResponseMessage respuestaRol = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getRolPorNombreExacto + ConstantesAplicacion.nombreRolCondominos, HttpMethod.Get);
+                HttpResponseMessage respuestaRol = await _servicioConsumoAPIBusquedaPersona.consumoAPI(ConstantesConsumoAPI.getRolPorNombreExacto + ConstantesAplicacion.nombreRolCondominos, HttpMethod.Get);
 
                 var objRol = await LeerRespuestas<RolDTOBusqueda>.procesarRespuestasConsultas(respuestaRol);
 
@@ -397,18 +400,12 @@ namespace RecintosHabitacionales.Controllers
 
                                 string cuentaActual = FuncionesUtiles.FormatearCadenaCuenta(dtoMaestroCompleto.CuentaCon, objConfigurar.Parametrizacion);
 
-                                HttpResponseMessage respuestaCntPadre = await _servicioConsumoAPIBusquedaMaestro.consumoAPI(ConstantesConsumoAPI.buscarMaestroContableAvanzado, HttpMethod.Get, objBusqueda);
-
-                                List<MaestroContableDTOCompleto> ListaCuentasPadre = new List<MaestroContableDTOCompleto>();
+                                List<MaestroContableDTOCompleto> ListaCuentasPadre = await _servicioMestroContable.recuperarMaestroContable(objBusqueda);
 
                                 MaestroContableDTOCompleto objCuentaPadre = new MaestroContableDTOCompleto();
 
-                                if (respuestaCntPadre.IsSuccessStatusCode)
-                                {
-                                    ListaCuentasPadre = await LeerRespuestas<List<MaestroContableDTOCompleto>>.procesarRespuestasConsultas(respuestaCntPadre);
+                                objCuentaPadre = ListaCuentasPadre.FirstOrDefault();
 
-                                    objCuentaPadre = ListaCuentasPadre.FirstOrDefault();
-                                }
 
 
                                 if (cuentaActual.Length == objConfigurar.Parametrizacion.Length)
@@ -432,7 +429,7 @@ namespace RecintosHabitacionales.Controllers
                                         }
 
                                         nuevaCuentaAdeudo = FuncionesUtiles.TruncarString(nuevaCuentaAdeudo, 4);
-                                        objCuentaAdeudo.CuentaCon = objCuentaPadre.CuentaCon+nuevaCuentaAdeudo;
+                                        objCuentaAdeudo.CuentaCon = objCuentaPadre.CuentaCon + nuevaCuentaAdeudo;
                                         objCuentaAdeudo.NombreCuenta = nombreNuevaCuenta;
 
                                         objCuentaAdeudo.UsuarioCreacion = usuarioCreacion;
@@ -486,15 +483,15 @@ namespace RecintosHabitacionales.Controllers
             Guid idPersonaBuscar = Guid.Empty;
             string numeroIdentificacion = "";
 
-            if (idPersonaCondomino != Guid.Empty)            
+            if (idPersonaCondomino != Guid.Empty)
                 idPersonaBuscar = idPersonaCondomino;
             else
-                idPersonaBuscar = idPersonaPropietario;       
+                idPersonaBuscar = idPersonaPropietario;
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI + idPersonaBuscar, HttpMethod.Get);
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusquedaPersona.consumoAPI(ConstantesConsumoAPI.gestionarPersonaAPI + idPersonaBuscar, HttpMethod.Get);
 
             if (respuesta.IsSuccessStatusCode)
-            {             
+            {
                 PersonaDTOCompleto objDTO = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
                 numeroIdentificacion = objDTO.IdentificacionPersona;
@@ -507,7 +504,7 @@ namespace RecintosHabitacionales.Controllers
         {
             List<TipoPersonaDTO> tipoPersonas = new List<TipoPersonaDTO>();
             //Inicio Personas Departamento
-            List<CatalogoDTODropDown> listaTipoPersona = await DropDownsCatalogos<CatalogoDTODropDown>.procesarRespuestasConsultaCatlogoObjeto(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoPersona);          
+            List<CatalogoDTODropDown> listaTipoPersona = await DropDownsCatalogos<CatalogoDTODropDown>.procesarRespuestasConsultaCatlogoObjeto(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoPersona);
 
             CatalogoDTODropDown objPropietario = listaTipoPersona.Where(x => x.CodigoCatalogo == ConstantesAplicacion.tipoPersonaPropietario).FirstOrDefault();
 
@@ -561,34 +558,30 @@ namespace RecintosHabitacionales.Controllers
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (objUsuarioSesion != null)
+            if (objUsuarioSesion == null)
+                return RedirectToAction("Ingresar", "C_Ingreso");
+
+            List<ResultadoBusquedaConjuntos> listaResultado = new List<ResultadoBusquedaConjuntos>();
+
+            try
+            {
+                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosAvanzado, HttpMethod.Get, objBusquedaConjuntos);
+
+                if (respuesta.IsSuccessStatusCode)
+                    listaResultado = await LeerRespuestas<List<ResultadoBusquedaConjuntos>>.procesarRespuestasConsultas(respuesta);
+            }
+            catch (Exception ex)
             {
 
-                List<ResultadoBusquedaConjuntos> listaResultado = new List<ResultadoBusquedaConjuntos>();
-                //var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
-
-                //if (objUsuarioSesion != null)
-                //{
-
-                try
-                {
-                    HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarConjuntosAvanzado, HttpMethod.Get, objBusquedaConjuntos);
-
-                    if (respuesta.IsSuccessStatusCode)
-                        listaResultado = await LeerRespuestas<List<ResultadoBusquedaConjuntos>>.procesarRespuestasConsultas(respuesta);
-                }
-                catch (Exception ex)
-                {
-
-                }
-
-                if (listaResultado == null)
-                    listaResultado = new List<ResultadoBusquedaConjuntos>();
-
-                return View("_ListaConjutos", listaResultado);
             }
 
-            return RedirectToAction("Ingresar", "C_Ingreso");
+            if (listaResultado == null)
+                listaResultado = new List<ResultadoBusquedaConjuntos>();
+
+            return View("_ListaConjutos", listaResultado);
+
+
+
         }
 
 

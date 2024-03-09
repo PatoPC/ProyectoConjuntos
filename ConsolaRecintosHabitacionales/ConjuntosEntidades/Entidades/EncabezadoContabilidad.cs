@@ -8,12 +8,13 @@ namespace ConjuntosEntidades.Entidades
         public EncabezadoContabilidad()
         {
             DetalleContabilidads = new HashSet<DetalleContabilidad>();
+            SecuencialCabeceraConts = new HashSet<SecuencialCabeceraCont>();
         }
 
         public Guid IdEncCont { get; set; }
         public Guid IdConjunto { get; set; }
         public Guid TipoDocNEncCont { get; set; }
-        public int NCompEncCont { get; set; }
+        public int Mes { get; set; }
         public DateTime FechaEncCont { get; set; }
         public int? ChequeEncCont { get; set; }
         public string ConceptoEncCont { get; set; } = null!;
@@ -24,5 +25,6 @@ namespace ConjuntosEntidades.Entidades
 
         public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;
         public virtual ICollection<DetalleContabilidad> DetalleContabilidads { get; set; }
+        public virtual ICollection<SecuencialCabeceraCont> SecuencialCabeceraConts { get; set; }
     }
 }

@@ -15,6 +15,9 @@ namespace APICondominios.Perfil
 
             CreateMap<EncabezContDTOCompleto, EncabezadoContabilidad>();
             CreateMap<EncabezadoContabilidad, EncabezContDTOCompleto>();
+
+            CreateMap<DetalleContabilidadCrear, DetalleContabilidad>();
+            CreateMap<DetalleContabilidad, DetalleContabilidadCrear>();
         }
        
         

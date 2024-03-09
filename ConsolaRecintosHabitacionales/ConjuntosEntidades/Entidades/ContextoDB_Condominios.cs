@@ -33,6 +33,7 @@ namespace ConjuntosEntidades.Entidades
         public virtual DbSet<ReciboCabecera> ReciboCabeceras { get; set; } = null!;
         public virtual DbSet<ReciboDetalle> ReciboDetalles { get; set; } = null!;
         public virtual DbSet<ReservaArea> ReservaAreas { get; set; } = null!;
+        public virtual DbSet<SecuencialCabeceraCont> SecuencialCabeceraConts { get; set; } = null!;
         public virtual DbSet<TipoPersona> TipoPersonas { get; set; } = null!;
         public virtual DbSet<Torre> Torres { get; set; } = null!;
 
@@ -500,9 +501,9 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("ID_ENC_CONT")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.NroIntDetCont)
+                entity.Property(e => e.NroDepartmentoCont)
                     .HasMaxLength(10)
-                    .HasColumnName("NRO_INT_DET_CONT");
+                    .HasColumnName("NRO_DEPARTMENTO_CONT");
 
                 entity.Property(e => e.UsuarioCreacion)
                     .HasMaxLength(70)
@@ -555,7 +556,7 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("ID_CONJUNTO")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.NCompEncCont).HasColumnName("N_COMP_ENC_CONT");
+                entity.Property(e => e.Mes).HasColumnName("MES");
 
                 entity.Property(e => e.TipoDocNEncCont).HasColumnName("TIPO_DOC_N_ENC_CONT");
 
@@ -1093,6 +1094,28 @@ namespace ConjuntosEntidades.Entidades
                     .HasForeignKey(d => d.IdAreaComunal)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RESERVA__REFERENCE_AREA_COM");
+            });
+
+            modelBuilder.Entity<SecuencialCabeceraCont>(entity =>
+            {
+                entity.HasKey(e => e.IdSecuencialCabeceraCont);
+
+                entity.ToTable("SECUENCIAL_CABECERA_CONT");
+
+                entity.Property(e => e.IdSecuencialCabeceraCont)
+                    .HasColumnName("ID_SECUENCIAL_CABECERA_CONT")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdEncCont)
+                    .HasColumnName("ID_ENC_CONT")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Secuencial).HasColumnName("SECUENCIAL");
+
+                entity.HasOne(d => d.IdEncContNavigation)
+                    .WithMany(p => p.SecuencialCabeceraConts)
+                    .HasForeignKey(d => d.IdEncCont)
+                    .HasConstraintName("FK_SECUENCI_REFERENCE_ENCABEZA");
             });
 
             modelBuilder.Entity<TipoPersona>(entity =>

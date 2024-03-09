@@ -9,7 +9,7 @@ namespace ConjuntosEntidades.Entidades
         public Guid? IdEncCont { get; set; }
         public DateTime FechaDetCont { get; set; }
         public string CtacontDetCont { get; set; } = null!;
-        public string? NroIntDetCont { get; set; }
+        public string? NroDepartmentoCont { get; set; }
         public string DetalleDetCont { get; set; } = null!;
         public decimal? DebitoDetCont { get; set; }
         public decimal? CreditoDetCont { get; set; }

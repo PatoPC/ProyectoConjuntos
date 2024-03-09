@@ -51,6 +51,7 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
+        #region CRUD
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ParametroCrearDTO objDTO)
         {
@@ -129,6 +130,7 @@ namespace APICondominios.Controllers
 
             return BadRequest();
         }
+        #endregion
 
         [HttpGet("RecuperarParametroModulo")]
         public async Task<IActionResult> RecuperarParametroModulo(Guid idModuloCatalogo)

@@ -19,5 +19,6 @@ namespace DTOs.Contabilidad
         public DateTime? FecVenciEncCont { get; set; }
         public string UsuarioCreacionEncCont { get; set; } = null!;
         public List<DetalleContabilidadCrear> DetalleContabilidads { get; set; }
+        public List<SecuencialCabeceraContDTO> SecuencialCabeceraConts { get; set; }
     }
 }
