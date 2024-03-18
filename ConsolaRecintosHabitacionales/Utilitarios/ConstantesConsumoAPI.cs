@@ -174,9 +174,9 @@ namespace Utilitarios
         #region Contabilidad
         public const string CabeceraContabilidad = ConstantesAplicacion.pathAPI + "/api/API_Contabilidad/";
         public const string SecuencialContabilidad = ConstantesAplicacion.pathAPI + "/api/API_Contabilidad/GetSecuencialMaximoCabecera";
-        
-        //public const string buscarConjuntosAvanzado = ConstantesAplicacion.pathAPI + "/api/API_Contabilidad/ObtenerConjutosAvanzado";
-        
+
+        public const string GetBusquedaAvanzadaContabilidad = ConstantesAplicacion.pathAPI + "/api/API_Contabilidad/GetBusquedaAvanzadaContabilidad";
+
         //public const string EditarConjuntosPorID = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Editar?id=";
         //public const string EditarConjuntosEliminar = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Eliminar?id=";
         //public const string TodosConjuntos = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/ObtenerTodosConjuntos";

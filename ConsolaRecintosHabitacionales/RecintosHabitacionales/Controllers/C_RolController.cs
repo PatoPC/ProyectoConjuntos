@@ -297,7 +297,7 @@ namespace RecintosHabitacionales.Controllers
             ViewData["listaPermisos"] = listaPermisos;
 
             List<ResultadoBusquedaConjuntos> ListaConjuntosAcceso = new List<ResultadoBusquedaConjuntos>();
-            foreach (var item in objUsuarioSesion.ConjutosAccesoSelect)
+            foreach (var item in objUsuarioSesion.ConjuntosAccesoSelect)
             {
                 ResultadoBusquedaConjuntos empresaTemporal = new();
 

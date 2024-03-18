@@ -47,7 +47,7 @@ namespace RecintosHabitacionales.Controllers
                 listaMestroConta = listaMestroConta.Where(x => x.IdConMstPadre == Guid.Empty).ToList();               
 
                 ViewData["listaCuentas"] = listaMestroConta;
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
                 return View();
             }
 
@@ -66,7 +66,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 return View();
             }
@@ -106,7 +106,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
                 return View();
             }
 
@@ -235,7 +235,7 @@ namespace RecintosHabitacionales.Controllers
                 {
                     MaestroContableDTOCompleto objMaestroContable = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
-                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                     MaestroContableBusqueda objBusqueda = new MaestroContableBusqueda();
                     objBusqueda.IdConjunto = objMaestroContable.IdConjunto;
@@ -314,7 +314,7 @@ namespace RecintosHabitacionales.Controllers
                 {
                     MaestroContableDTOCompleto objMaestroContable = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
-                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                     return View(objMaestroContable);
                 }

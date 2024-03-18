@@ -20,14 +20,18 @@ namespace RepositorioCatalogos.Implementacion
 
         public async Task<Configuracioncuentum> GetConfiguracionCuenta(Guid idConfiguracionCuenta)
         {
-            var objRepositorio = await _context.Configuracioncuenta.Where(x => x.IdConfiguracionCuenta == idConfiguracionCuenta).FirstOrDefaultAsync();
+            var objRepositorio = 
+                await _context.Configuracioncuenta
+                .Where(x => x.IdConfiguracionCuenta == idConfiguracionCuenta).FirstOrDefaultAsync();
 
             return objRepositorio;
         }
 
         public async Task<Configuracioncuentum> GetConfigCuentaConjunto(Guid idConjunto)
         {
-            var objRepositorio = await _context.Configuracioncuenta.Where(x => x.IdConjunto == idConjunto).FirstOrDefaultAsync();
+            var objRepositorio = 
+                await _context.Configuracioncuenta
+                .Where(x => x.IdConjunto == idConjunto).FirstOrDefaultAsync();
 
             return objRepositorio;
         }

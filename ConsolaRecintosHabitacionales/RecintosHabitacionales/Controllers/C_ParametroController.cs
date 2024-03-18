@@ -40,7 +40,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
                 return View();
             }
 
@@ -58,7 +58,7 @@ namespace RecintosHabitacionales.Controllers
             {
                 List<MaestroContableDTOCompleto> listaResultado = new List<MaestroContableDTOCompleto>();
 
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 ViewData["listaModulos"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreModulosContables, "IdCatalogo", "Nombrecatalogo");
 
@@ -148,7 +148,7 @@ namespace RecintosHabitacionales.Controllers
 
                 List<MaestroContableDTOCompleto> listaResultado = new List<MaestroContableDTOCompleto>();
 
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 ViewData["listaModulos"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreModulosContables, "IdCatalogo", "Nombrecatalogo");
 
@@ -229,7 +229,7 @@ namespace RecintosHabitacionales.Controllers
 
                 List<MaestroContableDTOCompleto> listaResultado = new List<MaestroContableDTOCompleto>();
 
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 return View(objMaestroContable);
             }

@@ -471,11 +471,6 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("money")
                     .HasColumnName("CREDITO_DET_CONT");
 
-                entity.Property(e => e.CtacontDetCont)
-                    .HasMaxLength(30)
-                    .IsUnicode(false)
-                    .HasColumnName("CTACONT_DET_CONT");
-
                 entity.Property(e => e.DebitoDetCont)
                     .HasColumnType("money")
                     .HasColumnName("DEBITO_DET_CONT");
@@ -496,6 +491,8 @@ namespace ConjuntosEntidades.Entidades
                 entity.Property(e => e.FechaModificacion)
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.IdCuentaContable).HasColumnName("ID_CUENTA_CONTABLE");
 
                 entity.Property(e => e.IdEncCont)
                     .HasColumnName("ID_ENC_CONT")
@@ -560,10 +557,10 @@ namespace ConjuntosEntidades.Entidades
 
                 entity.Property(e => e.TipoDocNEncCont).HasColumnName("TIPO_DOC_N_ENC_CONT");
 
-                entity.Property(e => e.UsuarioCreacionEncCont)
-                    .HasMaxLength(50)
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(70)
                     .IsUnicode(false)
-                    .HasColumnName("USUARIO_CREACION_ENC_CONT");
+                    .HasColumnName("USUARIO_CREACION");
 
                 entity.HasOne(d => d.IdConjuntoNavigation)
                     .WithMany(p => p.EncabezadoContabilidads)

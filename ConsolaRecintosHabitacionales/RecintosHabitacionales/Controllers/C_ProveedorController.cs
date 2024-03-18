@@ -45,7 +45,7 @@ namespace RecintosHabitacionales.Controllers
             if (objUsuarioSesion != null)
             {
                 BusquedaProveedor obj = new BusquedaProveedor();
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 //obj.idcon = objUsuarioSesion.IdConjuntoDefault;
 
@@ -66,7 +66,7 @@ namespace RecintosHabitacionales.Controllers
             if (objUsuarioSesion != null)
             {
 
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 await DatosInciales();
 
@@ -130,7 +130,7 @@ namespace RecintosHabitacionales.Controllers
                 {                    
                     ProveedorDTOCompleto objDTO = await LeerRespuestas<ProveedorDTOCompleto>.procesarRespuestasConsultas(respuesta);
 
-                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                     await DatosInciales(objDTO.IdCiudadProveedor);
                     return View(objDTO);
@@ -154,7 +154,7 @@ namespace RecintosHabitacionales.Controllers
                 if (respuesta.IsSuccessStatusCode)
                 {
                     
-                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                     ProveedorDTOCompleto objDTO = await LeerRespuestas<ProveedorDTOCompleto>.procesarRespuestasConsultas(respuesta);
                     await DatosInciales(objDTO.IdCiudadProveedor);
@@ -207,7 +207,7 @@ namespace RecintosHabitacionales.Controllers
                 {
                     ProveedorDTOCompleto objDTO = await LeerRespuestas<ProveedorDTOCompleto>.procesarRespuestasConsultas(respuesta);
                     await DatosInciales(objDTO.IdCiudadProveedor);
-                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                    ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                     return View(objDTO);
                 }

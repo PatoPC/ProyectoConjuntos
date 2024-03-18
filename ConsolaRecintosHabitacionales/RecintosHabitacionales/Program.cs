@@ -115,6 +115,7 @@ builder.Services.AddScoped(typeof(ReservaAreaDTOCompleto));
 builder.Services.AddScoped(typeof(CargarMaestroContable));
 
 builder.Services.AddScoped(typeof(EncabezContDTOCrear));
+builder.Services.AddScoped(typeof(BusquedaContabilidad));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

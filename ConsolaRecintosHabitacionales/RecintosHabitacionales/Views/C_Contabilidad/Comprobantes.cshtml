@@ -1,0 +1,96 @@
+﻿@model DTOs.Contabilidad.BusquedaContabilidad;
+@using Utilitarios;
+
+@{
+
+}
+
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-xxl">
+
+        <form action="@ConstantesAplicacion.pathConsola/C_Contabilidad/BusquedaAvanzadaContabilidad"
+              data-ajax="true"
+              data-ajax-method="Post"
+              data-ajax-loading="#imagenCargando"
+              data-ajax-update="#resultSearch"
+              data-ajax-begin="emptyLastResults('resultSearch')"
+              data-ajax-success="ordenarTabla('idTablaPersonas')"
+              id="AjaxFormSend"
+              method="post">
+
+            <div class="card">
+                <div class="card-header card-header-stretch">
+                    <div class="card-title d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="fw-bolder m-0 text-gray-800">
+                                    <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                                    Comprobantes
+                                </h3>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body border-top">
+                    <label class="fs-6 form-label fw-bolder text-dark">Busqueda Información</label>
+                    <div class="row">                      
+                        <div class="col-md-3">
+                            <label class="fs-6 form-label fw-bolder text-dark" asp-for="IdConjunto">Conjunto</label>
+                            @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="fs-6 form-label fw-bolder text-dark" asp-for="NumeroComprobante"># Comprobante</label>
+                                <input asp-for="NumeroComprobante" type="text" class="form-control form-control-solid" placeholder="# Comprobante" />                           
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="fs-6 form-label fw-bolder text-dark" asp-for="FechaInicioEncCont">FECHA FIN</label>
+                            <input asp-for="FechaInicioEncCont" class="form-control form-control-solid" />
+                        </div>
+                         <div class="col-md-2">
+                            <label class="fs-6 form-label fw-bolder text-dark" asp-for="FechaFinEncCont">FECHA FIN</label>
+                            <input asp-for="FechaFinEncCont" class="form-control form-control-solid" />
+                        </div>
+
+
+                        <div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Consultar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <center><img src="~/media/loading.gif" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
+        </form>
+
+        <div id="resultSearch">
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+
+
+    <script type="text/javascript">
+        $("#FechaInicioEncCont").flatpickr({
+            defaultDate: "today"
+        });
+        $("#FechaFinEncCont").flatpickr({
+            defaultDate: "today"
+        });
+
+    </script>
+}

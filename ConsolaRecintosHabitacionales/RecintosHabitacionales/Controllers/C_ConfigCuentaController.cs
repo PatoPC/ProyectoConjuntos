@@ -26,7 +26,7 @@ namespace RecintosHabitacionales.Controllers
             if (objUsuarioSesion == null)
                 return RedirectToAction("Ingresar", "C_Ingreso");
 
-            ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+            ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
             ConfiguraCuentasDTOCompleto objConfigurar = await recuperarRegistro(objUsuarioSesion.IdConjuntoDefault);
 

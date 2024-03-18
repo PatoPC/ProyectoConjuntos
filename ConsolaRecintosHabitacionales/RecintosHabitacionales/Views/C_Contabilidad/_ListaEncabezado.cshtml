@@ -1,0 +1,76 @@
+﻿@model IEnumerable<DTOs.Contabilidad.EncabezContDTOCompleto>
+
+@{
+    Layout = "";
+}
+
+
+<div class="card card-flush">
+	<div class="card card-body">
+		@await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+
+		@if (Model.Count() > 0)
+		{
+			<table border="1" id="idTablaEncabezado" class="table align-middle table-row-dashed fs-6 gy-5">
+				<thead>
+					<tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+						<th>
+							<span class="badge badge-light text-dark">Fecha</span>
+						</th>
+						<th>
+							<span class="badge badge-light text-dark"># Comprobante</span>
+						</th>
+						<th>
+							<span class="badge badge-light text-dark">Detalle</span>
+						</th>					
+						<th>
+							<span class="badge badge-light text-dark">
+								Acción
+							</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody class="fw-bold text-gray-600">
+					@if (Model != null)
+					{
+						foreach (var cabecera in Model)
+						{
+							<tr>
+								<td data-title="Fecha">
+									<span>@cabecera.FechaEncCont.ToString("dd-MMM-yyyy")</span>
+								</td>
+								<td data-title="# Comprobante">
+									@{
+										var secuencial = cabecera.SecuencialCabeceraConts.FirstOrDefault();
+										if (secuencial != null)
+										{
+											<span>@cabecera.Mes</span>
+											<span>-</span>
+											<span>@secuencial.Secuencial</span>
+										}
+										else
+										{
+											<span>-</span>
+										}
+									}
+								</td>
+								<td data-title="Detalle">
+									<span>@cabecera.ConceptoEncCont</span>
+								</td>								
+								<td data-title="Acción">
+									<div>
+										<a href="~/C_Conjuntos/EditarConjuntos?idConjuntos=@cabecera.IdEncCont" target="_self" class="badge badge-light-primary">Editar<i class="far fa-edit" style="color: #009ef7"></i></a>
+									</div>
+									<div>
+										<a href="~/C_Conjuntos/EliminarConjuntos?idConjuntos=@cabecera.IdEncCont" target="_self" class="badge badge-light-danger">Eliminar<i class="fas fa-trash-alt" style="color: #ff0000"></i></a>
+									</div>
+								</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+		}
+	</div>
+</div>
+

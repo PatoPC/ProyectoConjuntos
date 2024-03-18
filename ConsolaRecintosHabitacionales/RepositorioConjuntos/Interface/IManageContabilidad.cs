@@ -1,4 +1,5 @@
 ﻿using ConjuntosEntidades.Entidades;
+using DTOs.Contabilidad;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace RepositorioConjuntos.Interface
     {
         public Task<EncabezadoContabilidad> EncabezadoContabilidadPorID(Guid IdEncCont);
         public int GetSecuencialMaximoCabecera();
+        public Task<List<EncabezadoContabilidad>> GetBusquedaAvanzadaContabilidad(BusquedaContabilidad objBusqueda);
 
 
     }

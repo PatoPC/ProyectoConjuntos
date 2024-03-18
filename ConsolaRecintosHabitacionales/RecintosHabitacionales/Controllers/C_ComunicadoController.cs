@@ -51,7 +51,7 @@ namespace RecintosHabitacionales.Controllers
                      listaResultado = await LeerRespuestas<List<ComunicadoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
                 listaResultado = await completarObjetoComunicado(listaResultado);
 
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 ViewData["listaComunicados"] = listaResultado;
 
@@ -69,7 +69,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
                 return View();
             }
 
@@ -112,7 +112,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 HttpResponseMessage respuestaConjunto = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.BuscarComunicadoPorID + IdComunicado, HttpMethod.Get);
 
@@ -160,7 +160,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 HttpResponseMessage respuestaConjunto = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.BuscarComunicadoPorID + IdComunicado, HttpMethod.Get);
 
@@ -205,7 +205,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 HttpResponseMessage respuestaConjunto = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.BuscarComunicadoPorID + IdComunicado, HttpMethod.Get);
 

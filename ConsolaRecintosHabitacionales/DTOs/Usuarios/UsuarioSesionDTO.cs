@@ -35,7 +35,7 @@ namespace DTOs.Usuarios
         
         public List<ResultadoBusquedaConjuntos> ListaConjuntosAcceso { get; set; }
 
-        public virtual SelectList ConjutosAccesoSelect
+        public virtual SelectList ConjuntosAccesoSelect
         {
             get
             {

@@ -53,7 +53,7 @@ namespace RecintosHabitacionales.Controllers
             {                
                 ViewData["listaAreasComunales"] = "";
             }
-            ViewData["ListaConjustosAcceso"] = objUsuarioSesion.ConjutosAccesoSelect;
+            ViewData["ListaConjustosAcceso"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
             ViewData["nombre"] = objUsuarioSesion.Nombre;
             ViewData["apellido"] = objUsuarioSesion.Apellido;
@@ -89,7 +89,7 @@ namespace RecintosHabitacionales.Controllers
 
                 ViewData["listaAreasComunales"] = "";
             }
-            ViewData["ListaConjustosAcceso"] = objUsuarioSesion.ConjutosAccesoSelect;
+            ViewData["ListaConjustosAcceso"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
             ViewData["nombre"] = objUsuarioSesion.Nombre;
             ViewData["apellido"] = objUsuarioSesion.Apellido;

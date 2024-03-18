@@ -21,7 +21,7 @@ namespace ConjuntosEntidades.Entidades
         public bool? AnuladoEncCont { get; set; }
         public DateTime? FecAnulaEncCont { get; set; }
         public DateTime? FecVenciEncCont { get; set; }
-        public string UsuarioCreacionEncCont { get; set; } = null!;
+        public string UsuarioCreacion { get; set; } = null!;
 
         public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;
         public virtual ICollection<DetalleContabilidad> DetalleContabilidads { get; set; }

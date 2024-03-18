@@ -1,151 +1,164 @@
 ﻿@model IEnumerable<DTOs.MaestroContable.MaestroContableDTOCompleto>
+@using Utilitarios
+
 @{
-    Layout = "";
+	Layout = "";
 
-    string nombreCuenta = "cuentaCont_";
-    int nivelCuenta = 0;
-    Random random = new Random();
+	string nombreCuenta = "cuentaCont_";
+	int nivelCuenta = 0;
+	Random random = new Random();
 
-    // Generar un número entero aleatorio entre 0 y 100
-    
+	// Generar un número entero aleatorio entre 0 y 100
 
-    nombreCuenta = nombreCuenta + nivelCuenta;
 
-    string nombreCuentaEnlace = "#" + nombreCuenta;
+	nombreCuenta = nombreCuenta + nivelCuenta;
 
-    void RenderSubCuentas(DTOs.MaestroContable.MaestroContableDTOCompleto cuenta, string nombreCuenta, string nombreCuentaEnlace, int nivelCuenta)
-    {
-        <div id="@nombreCuenta" class="collapse show fs-6 ms-1">
-            @foreach (var subCuenta in cuenta.InverseIdConMstPadreNavigation)
-            {
-                int randomNumber = random.Next(0, 101);
-                string tipoCuenta = "Movimiento";
-                nivelCuenta += 1;
+	string nombreCuentaEnlace = "#" + nombreCuenta;
 
-                nombreCuenta = nombreCuenta + nivelCuenta + "_" + randomNumber;
+	void RenderSubCuentas(DTOs.MaestroContable.MaestroContableDTOCompleto cuenta, string nombreCuenta, string nombreCuentaEnlace, int nivelCuenta)
+	{
+		<div id="@nombreCuenta" class="collapse show fs-6 ms-1">
+			@foreach (var subCuenta in cuenta.InverseIdConMstPadreNavigation)
+			{
+				int randomNumber = random.Next(0, 101);
+				string tipoCuenta = "Movimiento";
+				nivelCuenta += 1;
 
-                nombreCuentaEnlace = "#" + nombreCuenta;
+				nombreCuenta = nombreCuenta + nivelCuenta + "_" + randomNumber;
 
-                if(subCuenta.Grupo){
-                    tipoCuenta = "Grupo";
-                }
+				nombreCuentaEnlace = "#" + nombreCuenta;
 
-                <div class="mb-4">
-                    <div class="d-flex align-items-center ps-10 mb-n1">
-                        <!--begin::Heading-->
-                        <div class="m-0">
-                            <!--begin::Heading-->
-                            <div class="d-flex align-items-center collapsible py-3 toggle mb-0" data-bs-toggle="collapse" data-bs-target="@nombreCuentaEnlace">
-                                @if (subCuenta.InverseIdConMstPadreNavigation.Count >0)
-                                {
-                                    <!--begin::Icon-->
-                                    <div class="btn btn-sm btn-icon mw-20px btn-active-color-primary me-5">
-                                        <!--begin::Svg Icon | path: icons/duotune/general/gen036.svg-->
-                                        <span class="svg-icon toggle-on svg-icon-primary svg-icon-1">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-                                                <rect x="6.0104" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                        <!--begin::Svg Icon | path: icons/duotune/general/gen035.svg-->
-                                        <span class="svg-icon toggle-off svg-icon-1">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-                                                <rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="currentColor" />
-                                                <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </div>
-                                    <!--end::Icon-->
-                                }
+				if (subCuenta.Grupo)
+				{
+					tipoCuenta = "Grupo";
+				}
 
-                                <!--begin::Title-->
-                                @if (subCuenta.InverseIdConMstPadreNavigation.Count >0)
-                                {
-                                    <h4 class="text-gray-700 fw-bold cursor-pointer mb-0">@subCuenta.CuentaCon | @subCuenta.NombreCuenta</h4>
-                                }
-                                else
-                                {
-                                    if(!subCuenta.Grupo){
-                                        <div class="mb-0">@subCuenta.CuentaCon | @subCuenta.NombreCuenta</div>                                        
-                                    }
-                                    else{
-                                        <div class="mb-0">@subCuenta.CuentaCon | @subCuenta.NombreCuenta | @tipoCuenta</div>
-                                    }
-                                }
+				<div class="mb-4">
+					<div class="d-flex align-items-center ps-10 mb-n1">
+						<!--begin::Heading-->
+						<div class="m-0">
+							<!--begin::Heading-->
+							<div class="d-flex align-items-center collapsible py-3 toggle mb-0" data-bs-toggle="collapse" data-bs-target="@nombreCuentaEnlace">
+								@if (subCuenta.InverseIdConMstPadreNavigation.Count > 0)
+								{
+									<!--begin::Icon-->
+									<div class="btn btn-sm btn-icon mw-20px btn-active-color-primary me-5">
+										<!--begin::Svg Icon | path: icons/duotune/general/gen036.svg-->
+										<span class="svg-icon toggle-on svg-icon-primary svg-icon-1">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
+												<rect x="6.0104" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
+											</svg>
+										</span>
+										<!--end::Svg Icon-->
+										<!--begin::Svg Icon | path: icons/duotune/general/gen035.svg-->
+										<span class="svg-icon toggle-off svg-icon-1">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
+												<rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="currentColor" />
+												<rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
+											</svg>
+										</span>
+										<!--end::Svg Icon-->
+									</div>
+									<!--end::Icon-->
+								}
 
-                                <!--end::Title-->
-                            </div>
-                            @if (subCuenta.InverseIdConMstPadreNavigation != null)
-                            {
-                                RenderSubCuentas(subCuenta, nombreCuenta, nombreCuentaEnlace, nivelCuenta);
-                                <div class="separator separator-dashed"></div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    }
+								<!--begin::Title-->
+								@if (subCuenta.InverseIdConMstPadreNavigation.Count > 0)
+								{
+									<h4 class="text-gray-700 fw-bold cursor-pointer mb-0">@subCuenta.CuentaCon | @subCuenta.NombreCuenta</h4>
+								}
+								else
+								{
+									if (!subCuenta.Grupo)
+									{
+										<div class="mb-0">
+											<a href="@ConstantesAplicacion.pathConsola/C_MaestroContable/EditarMaestroContable?idMaestro=@subCuenta.IdConMst" target="_self" class="badge badge-light-primary">
+												@subCuenta.CuentaCon | @subCuenta.NombreCuenta
+											</a>
+										</div>
+									}
+									else
+									{
+										<div class="mb-0">
+											<a href="@ConstantesAplicacion.pathConsola/C_MaestroContable/EditarMaestroContable?idMaestro=@subCuenta.IdConMst" target="_self" class="badge badge-light-primary">
+												@subCuenta.CuentaCon | @subCuenta.NombreCuenta | @tipoCuenta
+											</a>
+										</div>
+									}
+								}
+
+								<!--end::Title-->
+							</div>
+							@if (subCuenta.InverseIdConMstPadreNavigation != null)
+							{
+								RenderSubCuentas(subCuenta, nombreCuenta, nombreCuentaEnlace, nivelCuenta);
+								<div class="separator separator-dashed"></div>
+							}
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	}
 }
 
 <div class="card card-flush">
-    <div class="card card-body">
-        @await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+	<div class="card card-body">
+		@await Html.PartialAsync("_MensajesBusqueda", Model.Count())
 
-        @if (Model.Count() > 0)
-        {
-            foreach (var cuenta in Model)
-            {
-                nivelCuenta += 1;
+		@if (Model.Count() > 0)
+		{
+			foreach (var cuenta in Model)
+			{
+				nivelCuenta += 1;
 
-                nombreCuenta = nombreCuenta + nivelCuenta;
+				nombreCuenta = nombreCuenta + nivelCuenta;
 
-                nombreCuentaEnlace = "#" + nombreCuenta;
+				nombreCuentaEnlace = "#" + nombreCuenta;
 
-                <div class="m-0">
-                    <!--begin::Heading-->
-                    <div class="d-flex align-items-center collapsible py-3 toggle mb-0" data-bs-toggle="collapse" data-bs-target="@nombreCuentaEnlace">
-                        @if (cuenta.InverseIdConMstPadreNavigation != null)
-                        {
-                            <!--begin::Icon-->
-                            <div class="btn btn-sm btn-icon mw-20px btn-active-color-primary me-5">
-                                <!--begin::Svg Icon | path: icons/duotune/general/gen036.svg-->
-                                <span class="svg-icon toggle-on svg-icon-primary svg-icon-1">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-                                        <rect x="6.0104" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
-                                    </svg>
-                                </span>
-                                <!--end::Svg Icon-->
-                                <!--begin::Svg Icon | path: icons/duotune/general/gen035.svg-->
-                                <span class="svg-icon toggle-off svg-icon-1">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
-                                        <rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="currentColor" />
-                                        <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
-                                    </svg>
-                                </span>
-                                <!--end::Svg Icon-->
-                            </div>
-                            <!--end::Icon-->
-                        }
+				<div class="m-0">
+					<!--begin::Heading-->
+					<div class="d-flex align-items-center collapsible py-3 toggle mb-0" data-bs-toggle="collapse" data-bs-target="@nombreCuentaEnlace">
+						@if (cuenta.InverseIdConMstPadreNavigation != null)
+						{
+							<!--begin::Icon-->
+							<div class="btn btn-sm btn-icon mw-20px btn-active-color-primary me-5">
+								<!--begin::Svg Icon | path: icons/duotune/general/gen036.svg-->
+								<span class="svg-icon toggle-on svg-icon-primary svg-icon-1">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
+										<rect x="6.0104" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+								<!--begin::Svg Icon | path: icons/duotune/general/gen035.svg-->
+								<span class="svg-icon toggle-off svg-icon-1">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5" fill="currentColor" />
+										<rect x="10.8891" y="17.8033" width="12" height="2" rx="1" transform="rotate(-90 10.8891 17.8033)" fill="currentColor" />
+										<rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
+									</svg>
+								</span>
+								<!--end::Svg Icon-->
+							</div>
+							<!--end::Icon-->
+						}
 
-                        <!--begin::Title-->
-                        <h4 class="text-gray-700 fw-bold cursor-pointer mb-0">
-                            @cuenta.CuentaCon | @cuenta.NombreCuenta
-                        </h4>
-                        <!--end::Title-->
-                    </div>
+						<!--begin::Title-->
+						<h4 class="text-gray-700 fw-bold cursor-pointer mb-0">
+							@cuenta.CuentaCon | @cuenta.NombreCuenta
+						</h4>
+						<!--end::Title-->
+					</div>
 
-                    @if (cuenta.InverseIdConMstPadreNavigation != null)
-                    {
-                        RenderSubCuentas(cuenta, nombreCuenta, nombreCuentaEnlace, nivelCuenta);
-                    }
-                </div>
-            }
-        }
-    </div>
+					@if (cuenta.InverseIdConMstPadreNavigation != null)
+					{
+						RenderSubCuentas(cuenta, nombreCuenta, nombreCuentaEnlace, nivelCuenta);
+					}
+				</div>
+			}
+		}
+	</div>
 </div>

@@ -18,6 +18,12 @@ namespace APICondominios.Perfil
 
             CreateMap<DetalleContabilidadCrear, DetalleContabilidad>();
             CreateMap<DetalleContabilidad, DetalleContabilidadCrear>();
+
+            CreateMap<DetalleContabilidad, DetalleContabilidadCompleto>();
+            CreateMap<DetalleContabilidadCompleto, DetalleContabilidad>();
+
+            CreateMap<SecuencialCabeceraContDTO, SecuencialCabeceraCont>();
+            CreateMap<SecuencialCabeceraCont, SecuencialCabeceraContDTO>();
         }
        
         

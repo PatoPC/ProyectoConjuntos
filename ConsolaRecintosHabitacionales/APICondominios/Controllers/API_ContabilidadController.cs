@@ -163,5 +163,25 @@ namespace APICondominios.Controllers
         }
 
         #endregion
+
+        #region Busqueda
+        [HttpGet("GetBusquedaAvanzadaContabilidad")]
+        public async Task<ActionResult<List<EncabezContDTOCompleto>>> GetBusquedaAvanzadaContabilidad(BusquedaContabilidad objBusqueda)
+        {
+            try
+            {
+                List<EncabezadoContabilidad> listaRepositorioEncabezado = await _consultaContabilidad.GetBusquedaAvanzadaContabilidad(objBusqueda);
+
+                List<EncabezContDTOCompleto> listaEncabezados = _mapper.Map<List<EncabezContDTOCompleto>>(listaRepositorioEncabezado);
+
+                return Ok(listaEncabezados);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+        #endregion
     }
 }

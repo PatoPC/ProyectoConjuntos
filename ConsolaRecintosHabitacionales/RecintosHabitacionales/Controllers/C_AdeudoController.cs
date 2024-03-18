@@ -3,6 +3,8 @@ using DTOs.Adeudo;
 using DTOs.CatalogoGeneral;
 using DTOs.Conjunto;
 using DTOs.Contabilidad;
+using DTOs.MaestroContable;
+using DTOs.Parametro;
 using DTOs.Persona;
 using DTOs.Proveedor;
 using DTOs.Torre;
@@ -40,7 +42,7 @@ namespace RecintosHabitacionales.Controllers
 
                 ViewData["listaAnios"] = listaAnios;
 
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 return View();
             }
@@ -76,7 +78,7 @@ namespace RecintosHabitacionales.Controllers
 
                 ViewData["listaAnios"] = listaAnios;
 
-                ViewData["listaConjuntos"] = objUsuarioSesion.ConjutosAccesoSelect;
+                ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
                 return View();
             }
@@ -205,10 +207,11 @@ namespace RecintosHabitacionales.Controllers
                                 objDTOCabecera.SecuencialCabeceraConts.Add(objSecuencial);
 
                                 objDTOCabecera.ConceptoEncCont = "Generación Adeudos "+ fechaADeudoActual.ToString("MMMM");
-                                objDTOCabecera.IdConjunto = variable.IdConjunto;
+                                objDTOCabecera.IdConjunto =(Guid) variable.IdConjunto;
                                 objDTOCabecera.TipoDocNEncCont = objCataGeneracion.IdCatalogo;
+                                objDTOCabecera.Mes = variable.mes;
                                 objDTOCabecera.FechaEncCont = fechaADeudoActual;
-                                objDTOCabecera.UsuarioCreacionEncCont = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                                objDTOCabecera.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
                                 DetalleContabilidadCrear objDetalle = new DetalleContabilidadCrear();
 
@@ -217,9 +220,32 @@ namespace RecintosHabitacionales.Controllers
 
                                 objDetalle.FechaCreacion = DateTime.Now;
                                 objDetalle.FechaModificacion = DateTime.Now;
-                                objDetalle.UsuarioCreacion = objDTOCabecera.UsuarioCreacionEncCont;
-                                objDetalle.UsuarioModificacion = objDTOCabecera.UsuarioCreacionEncCont;
+                                objDetalle.UsuarioCreacion = objDTOCabecera.UsuarioCreacion;
+                                objDetalle.UsuarioModificacion = objDTOCabecera.UsuarioCreacion;
                                 objDetalle.CreditoDetCont = listaAdeudos.Sum(x => x.MontoAdeudos);
+
+								//Recuperar tipo de cuenta 
+								HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.adeudoModulosContables, HttpMethod.Get);
+
+                                if (respuestaCatalogo.IsSuccessStatusCode)
+                                {
+									CatalogoDTOResultadoBusqueda objAdeudo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogo);
+
+									HttpResponseMessage respuestaParametro = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.obtenerParametroPorCatalogo + objAdeudo.IdCatalogo, HttpMethod.Get);
+
+                                    if (respuestaParametro.IsSuccessStatusCode)
+                                    {
+                                        ParametroCompletoDTO objMaestroContable = await LeerRespuestas<ParametroCompletoDTO>.procesarRespuestasConsultas(respuestaParametro);
+
+                                        HttpResponseMessage httpCuentaContable = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarMaestroContableAPI + objMaestroContable.CtaCont2, HttpMethod.Get);
+
+                                        MaestroContableDTOCompleto objCuenta = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(httpCuentaContable);
+
+                                        objDetalle.IdCuentaContable = (Guid) objMaestroContable.CtaCont2;
+                                        objDetalle.DetalleDetCont = objCuenta.NombreCuenta;
+                                        
+                                    }
+                                }
 
                                 objDTOCabecera.DetalleContabilidads = new List<DetalleContabilidadCrear>();
                                 objDTOCabecera.DetalleContabilidads.Add(objDetalle);
