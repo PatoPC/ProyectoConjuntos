@@ -358,7 +358,7 @@ namespace RecintosHabitacionales.Controllers
 
                     objDTO.AreasDepartamentos = listaAreasDepartamentos;
                 }
-
+                //Recupera los modulos contables para adeudo
                 HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPIBusquedaTorres.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.adeudoModulosContables, HttpMethod.Get);
 
                 if (respuestaCatalogo.IsSuccessStatusCode)
@@ -406,15 +406,13 @@ namespace RecintosHabitacionales.Controllers
 
                                 objCuentaPadre = ListaCuentasPadre.FirstOrDefault();
 
-
-
                                 if (cuentaActual.Length == objConfigurar.Parametrizacion.Length)
                                 {
                                     string[] configuracion = cuentaActual.Split('.');
 
                                     if (objCuentaPadre != null)
                                     {
-                                        objCuentaAdeudo.IdConMstPadre = objCuentaPadre.IdConMstPadre;
+                                        objCuentaAdeudo.IdConMstPadre = objCuentaPadre.IdConMst;
 
                                         if (objCuentaPadre.InverseIdConMstPadreNavigation.Count > 0)
                                         {

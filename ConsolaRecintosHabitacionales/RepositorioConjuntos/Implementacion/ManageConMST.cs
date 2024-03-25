@@ -22,7 +22,8 @@ namespace RepositorioConjuntos.Implementacion
         public async Task<ConMst> obtenerPorIDConMST(Guid idConMST)
         {
             ConMst objRepositorio = await _context.ConMsts
-                .Where(x => x.IdConMst == idConMST).FirstOrDefaultAsync();
+                .Where(x => x.IdConMst == idConMST)
+                .Include(x => x.InverseIdConMstPadreNavigation).FirstOrDefaultAsync();
 
             return objRepositorio;
 
