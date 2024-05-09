@@ -1,5 +1,7 @@
 ﻿using DTOs.CatalogoGeneral;
+using DTOs.ConfiguracionCuenta;
 using DTOs.Contabilidad;
+using DTOs.MaestroContable;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
 using RecintosHabitacionales.Servicio;
@@ -42,5 +44,39 @@ namespace RecintosHabitacionales.Controllers
 
             return View("_ListaEncabezado", listaEncabezado);
         }
-    }
+
+        public async Task<JsonResult> DetalleComprobantesCabecera(Guid IdEncCont)
+		{
+			var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+			HttpResponseMessage respuesta = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.CabeceraContabilidad+ IdEncCont, HttpMethod.Get);
+
+			EncabezContDTOCompleto objCabecera = await LeerRespuestas<EncabezContDTOCompleto>.procesarRespuestasConsultas(respuesta);
+
+            ConfiguraCuentasDTOCompleto objConfigurar = new ConfiguraCuentasDTOCompleto();
+
+            HttpResponseMessage respuestaConfigurar = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.buscarConfiguracion + objCabecera.IdConjunto, HttpMethod.Get);
+
+            if (respuestaConfigurar.IsSuccessStatusCode)
+                objConfigurar = await LeerRespuestas<ConfiguraCuentasDTOCompleto>.procesarRespuestasConsultas(respuestaConfigurar);
+
+
+            foreach (var detalle in objCabecera.DetalleContabilidads)
+            {
+                HttpResponseMessage respuestaCuentaContableAdeudos = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.gestionarMaestroContableAPI + detalle.IdCuentaContable, HttpMethod.Get);
+
+                MaestroContableDTOCompleto objCuentaAdeudo = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(respuestaCuentaContableAdeudos);
+
+                detalle.CuentaContable = objCuentaAdeudo.CuentaCon;
+
+                //Se comenta porque no se va a guardar formateado y separado por puntos
+                string cuentaActual = FuncionesUtiles.FormatearCadenaCuenta(objCuentaAdeudo.CuentaCon, objConfigurar.Parametrizacion);
+
+                detalle.CuentaContable = cuentaActual;
+            }
+
+            return new JsonResult(objCabecera);
+        }
+
+	}
 }

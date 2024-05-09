@@ -1,0 +1,121 @@
+﻿@{
+	Layout = "";
+}
+
+<div class="modal fade" id="modal_Contabilidad_Detalle" tabindex="-1" aria-labelledby="modalHorarios" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="fw-bolder m-0 text-gray-800">
+					<i class="fas fa-archway text-primary fs-2qx"></i>
+					COMPROBANTES
+				</h3>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModal('modal_Contabilidad_Detalle')"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row mb-12">
+							<div class="col-xl-4">
+								<div class="fs-6 fw-bold">
+									<label for="FechaCabecera" class="control-label">
+										Fecha:
+									</label>
+								</div>
+							</div>
+							<div class="col-xl-8 fv-row">
+								<input type="text" id="FechaCabecera" readonly="readonly" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row mb-12">
+							<div class="col-xl-4">
+								<div class="fs-6 fw-bold">
+									<label for="NumeroComprobante" class="control-label">
+										# Comprobante:
+									</label>
+								</div>
+							</div>
+							<div class="col-xl-8 fv-row">
+								<input type="text" id="NumeroComprobante" readonly="readonly" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="row mb-12">
+							<div class="col-xl-4">
+								<div class="fs-6 fw-bold">
+									<label for="MesCabecera" class="control-label">
+										Mes:
+									</label>
+								</div>
+							</div>
+							<div class="col-xl-8 fv-row">
+								<input type="text" id="MesCabecera" readonly="readonly" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="row mb-12">
+							<div class="col-xl-4">
+								<div class="fs-6 fw-bold">
+									<label for="IdConcepto" class="control-label">
+										Concepto:
+									</label>
+								</div>
+							</div>
+							<div class="col-xl-8 fv-row">
+								<input type="text" id="IdConcepto" readonly="readonly" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<hr />
+
+				<table>
+					<thead>
+						<tr>
+							<td class="col-md-2">
+								<b>Fecha</b>
+							</td>
+							<td>
+								<b>Detalle</b>
+							</td>
+							<td>
+								<b>
+									Referencia
+								</b>								
+							</td>
+							<td>
+								<b>Debe</b>
+							</td>
+							<td>
+								<b>Haber</b>
+							</td>
+						</tr>
+					</thead>
+					<tbody id="cuerpoDetalleContabilidad">
+
+					</tbody>
+				</table>
+
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="text-center">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModal('modal_Contabilidad_Detalle')"><i class="fas fa-times fs-md-2qx"></i> Cerrar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

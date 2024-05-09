@@ -73,7 +73,7 @@
 
         <div id="resultSearch">
         </div>
-
+        @await Html.PartialAsync("_ModalGestionarContabilidad")
     </div>
 </div>
 
@@ -82,9 +82,20 @@
 
     <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
     <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
-
+	<script src="~/js/contabilidad.js"></script>
 
     <script type="text/javascript">
+        function cargarDetalleCabeceraContabilidad(IdEncCont) {
+
+            var campoMesCabeceraCampo = document.getElementById("MesCabecera")
+            var campoFechaCabecera = document.getElementById("FechaCabecera")
+            var campoIdConcepto = document.getElementById("IdConcepto")
+            var campoNumeroComprobante = document.getElementById("NumeroComprobante")
+            var campocuerpoDetalleContabilidad = document.getElementById("cuerpoDetalleContabilidad")        
+            
+            
+        }
+
         $("#FechaInicioEncCont").flatpickr({
             defaultDate: "today"
         });

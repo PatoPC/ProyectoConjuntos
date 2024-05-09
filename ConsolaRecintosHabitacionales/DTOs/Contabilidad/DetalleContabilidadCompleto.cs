@@ -18,6 +18,7 @@ namespace DTOs.Contabilidad
         public decimal? CreditoDetCont { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }
+        public string CuentaContable { get; set; } = null!;
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
 

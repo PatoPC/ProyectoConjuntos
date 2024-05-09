@@ -58,11 +58,11 @@
 									<span>@cabecera.ConceptoEncCont</span>
 								</td>								
 								<td data-title="Acción">
+								
 									<div>
-										<a href="~/C_Conjuntos/EditarConjuntos?idConjuntos=@cabecera.IdEncCont" target="_self" class="badge badge-light-primary">Editar<i class="far fa-edit" style="color: #009ef7"></i></a>
-									</div>
-									<div>
-										<a href="~/C_Conjuntos/EliminarConjuntos?idConjuntos=@cabecera.IdEncCont" target="_self" class="badge badge-light-dark">Detalle<i class="far fa-eye" style="color: black"></i></a>
+										<div onclick="mostrarDetallesContabilidad('modal_Detalle_Contabilidad', '@cabecera.IdEncCont')" class="badge badge-light-primary hover" style="cursor:pointer">
+                                                    Detalle
+                                                </div>
 									</div>
 								</td>
 							</tr>

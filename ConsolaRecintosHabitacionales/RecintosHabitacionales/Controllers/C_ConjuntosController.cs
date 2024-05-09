@@ -338,7 +338,8 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion != null)
             {
-                string nuevaCuentaAdeudo = "000";
+                //string nuevaCuentaAdeudo = "000";
+                string nuevaCuentaAdeudo = "0";
                 int cuentaAdeudo = 0;
                 MaestroContableDTOCrear objCuentaAdeudo = new MaestroContableDTOCrear();
 
@@ -363,7 +364,6 @@ namespace RecintosHabitacionales.Controllers
 
                 if (respuestaCatalogo.IsSuccessStatusCode)
                 {
-
                     objDTO.TipoPersonas = await cargarPersonasDepartamento(idPersonaPropietario, idPersonaCondomino, usuarioCreacion);
 
                     string nombreNuevaCuenta = await identificacionNuevaCuenta(idPersonaPropietario, idPersonaCondomino);
@@ -398,6 +398,7 @@ namespace RecintosHabitacionales.Controllers
                                 objBusqueda.IdConjunto = objUsuarioSesion.IdConjuntoDefault;
                                 objBusqueda.CuentaCon = dtoMaestroCompleto.CuentaCon;
 
+                                //Se comenta porque no se va a guardar formateado y separado por puntos
                                 string cuentaActual = FuncionesUtiles.FormatearCadenaCuenta(dtoMaestroCompleto.CuentaCon, objConfigurar.Parametrizacion);
 
                                 List<MaestroContableDTOCompleto> ListaCuentasPadre = await _servicioMestroContable.recuperarMaestroContable(objBusqueda);
@@ -416,18 +417,22 @@ namespace RecintosHabitacionales.Controllers
 
                                         if (objCuentaPadre.InverseIdConMstPadreNavigation.Count > 0)
                                         {
-                                            var cuentasHijas = objCuentaPadre.InverseIdConMstPadreNavigation.Max(x => x.CuentaContable);
+                                            var cuentasHijas = objCuentaPadre.InverseIdConMstPadreNavigation.Count;
 
                                             cuentaAdeudo = cuentasHijas + 1;
-                                            nuevaCuentaAdeudo = nuevaCuentaAdeudo + cuentasHijas;
+
+                                            if(cuentaAdeudo < 10)
+                                                nuevaCuentaAdeudo = dtoMaestroCompleto.CuentaCon+"0" + cuentaAdeudo.ToString();
+                                            else
+                                                nuevaCuentaAdeudo = dtoMaestroCompleto.CuentaCon + cuentaAdeudo.ToString();
                                         }
                                         else
                                         {
-                                            nuevaCuentaAdeudo = nuevaCuentaAdeudo + "1";
+                                            nuevaCuentaAdeudo = dtoMaestroCompleto.CuentaCon + "01";
                                         }
 
-                                        nuevaCuentaAdeudo = FuncionesUtiles.TruncarString(nuevaCuentaAdeudo, 4);
-                                        objCuentaAdeudo.CuentaCon = objCuentaPadre.CuentaCon + nuevaCuentaAdeudo;
+                                        //nuevaCuentaAdeudo = FuncionesUtiles.TruncarString(nuevaCuentaAdeudo, 4);
+                                        objCuentaAdeudo.CuentaCon = nuevaCuentaAdeudo;
                                         objCuentaAdeudo.NombreCuenta = nombreNuevaCuenta;
 
                                         objCuentaAdeudo.UsuarioCreacion = usuarioCreacion;

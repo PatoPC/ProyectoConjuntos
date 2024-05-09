@@ -21,7 +21,10 @@ namespace RepositorioConjuntos.Implementacion
 
         public async Task<EncabezadoContabilidad> EncabezadoContabilidadPorID(Guid IdEncCont)
         {
-            EncabezadoContabilidad objRepositorio = await _context.EncabezadoContabilidads.Where(x => x.IdEncCont == IdEncCont).FirstOrDefaultAsync();
+            EncabezadoContabilidad objRepositorio = await _context.EncabezadoContabilidads
+                .Include(x => x.DetalleContabilidads)
+                .Include(x => x.SecuencialCabeceraConts)
+                .Where(x => x.IdEncCont == IdEncCont).FirstOrDefaultAsync();
 
             return objRepositorio;
         }

@@ -1,0 +1,99 @@
+﻿@{
+	Layout = "";
+}
+
+<div class="modal fade" id="modal_Detalle_Contabilidad" tabindex="-1" aria-labelledby="modalHorarios" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="fw-bolder m-0 text-gray-800">
+					<i class="fas fa-archway text-primary fs-2qx"></i>
+					Detalle Contabilidad
+				</h3>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModal('modal_Detalle_Contabilidad')"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-2">
+						<div class="fs-6 fw-bold mt-2 mb-3">
+							<label for="NombreTorresEditar" class="control-label">
+								Fecha:
+							</label>
+						</div>
+					</div>
+					<div class="col-xl-4">
+						<div>
+							<input id="fechaCabecera" class="form-control form-control-lg form-control-solid" readonly="readonly" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="fs-6 fw-bold mt-2 mb-3">
+							<label for="NombreTorresEditar" class="control-label">
+								# Comprobante:
+							</label>
+						</div>
+					</div>
+					<div class="col-xl-4">
+						<div>
+							<input id="numeroComprobanteCabecera" class="form-control form-control-lg form-control-solid" readonly="readonly" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<div class="fs-6 fw-bold mt-2 mb-3">
+							<label for="NombreTorresEditar" class="control-label">
+								Concepto:
+							</label>
+						</div>
+					</div>
+					<div class="col-xl-10">
+						<div>
+							<input id="conceptoCabecera" class="form-control form-control-lg form-control-solid" readonly="readonly" />
+						</div>
+					</div>
+				</div>
+				<hr />
+				<div class="row">
+					<div class="col-md-12">
+						<table boder="1" class="table align-middle table-row-dashed fs-6 gy-5">
+							<thead>
+								<tr>
+									<th>
+										<b># Cont</b>
+									</th>
+									<th>
+										<b>Concepto</b>
+									</th>
+									<th>
+										<b>Detalle</b>
+									</th>
+									<th>
+										<b>Débito</b>
+									</th>
+									<th>
+										<b>Crédito</b>
+									</th>
+								</tr>
+							</thead>
+							<tbody id="tblDetalleContabilidad">
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<hr />
+				<div class="row">
+					<div class="col-md-12">
+						<div class="text-center">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="cerrarModal('modal_Detalle_Contabilidad')"><i class="fas fa-times fs-md-2qx"></i> Cerrar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

@@ -22,6 +22,12 @@ namespace DTOs.Contabilidad
         public string UsuarioCreacion { get; set; } = null!;
         public List<DetalleContabilidadCompleto> DetalleContabilidads { get; set; }
         public List<SecuencialCabeceraContDTO> SecuencialCabeceraConts { get; set; }
-
+        public string FechaEncContTexto
+        {
+            get
+            {
+                return FechaEncCont.ToString("dd-MMM-yyyy").ToUpper();
+            }
+        }
     }
 }
