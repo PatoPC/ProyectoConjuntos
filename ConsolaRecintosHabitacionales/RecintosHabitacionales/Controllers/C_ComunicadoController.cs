@@ -32,8 +32,6 @@ namespace RecintosHabitacionales.Controllers
             _servicioConsumoAPIEditar = servicioConsumoAPIConjuntoEditar;
         }
 
-        #region CRUD
-
         [HttpGet]
         public async Task<ActionResult> GestionarComunicado()
         {
@@ -45,10 +43,10 @@ namespace RecintosHabitacionales.Controllers
                 BusquedaComunicadoDTO objBusquedaComunicado = new BusquedaComunicadoDTO();
 
                 objBusquedaComunicado.IdConjunto = objUsuarioSesion.IdConjuntoDefault;
-               List<ComunicadoDTOCompleto> listaResultado = new();
+                List<ComunicadoDTOCompleto> listaResultado = new();
                 HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.BuscarComunicadoAvanzado, HttpMethod.Get, objBusquedaComunicado);
                 if (respuesta.IsSuccessStatusCode)
-                     listaResultado = await LeerRespuestas<List<ComunicadoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+                    listaResultado = await LeerRespuestas<List<ComunicadoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
                 listaResultado = await completarObjetoComunicado(listaResultado);
 
                 ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
@@ -60,6 +58,10 @@ namespace RecintosHabitacionales.Controllers
 
             return RedirectToAction("Ingresar", "C_Ingreso");
         }
+
+
+        #region CRUD
+
 
 
         #region Crear

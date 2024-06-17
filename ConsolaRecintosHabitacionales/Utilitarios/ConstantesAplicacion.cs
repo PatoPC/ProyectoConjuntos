@@ -46,9 +46,9 @@ namespace Utilitarios
         public const string padreModulo = "MDLS";
         public const string padrePermisos = "TPPMS";
         public const string padrePaginasRoles = "HOMEINI";
-        public const string padreTipoPersona = "tipPerso";
-        public const string tipoPersonaCondomino = "opcInqui";
-        public const string tipoPersonaPropietario = "mdueño";
+        public const string padreTipoPersona = "TIPPERSO";
+        public const string tipoPersonaCondomino = "OPCINQUI";
+        public const string tipoPersonaPropietario = "MDUEÑO";
 
         //Tipos Cabecera Tipo Transacción
         public const string tipoTransaccion = "PTTCOTP";

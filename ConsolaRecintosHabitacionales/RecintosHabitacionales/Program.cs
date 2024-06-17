@@ -132,7 +132,7 @@ builder.Services.AddHttpClient<ConexionApi>(client =>
     client.BaseAddress = new Uri("http://localhost:5181");
 
     //Producción    
-    //client.BaseAddress = new Uri("http://181.39.23.33/");
+    //client.BaseAddress = new Uri("http://DESKTOP-26QEGBC\\SQLEXPRESS/");
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
 
