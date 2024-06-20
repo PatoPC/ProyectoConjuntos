@@ -25,14 +25,17 @@ namespace RecintosHabitacionales.Servicio
 
             if (!string.IsNullOrEmpty(objConfigurar.Parametrizacion))
             {
-                foreach (var cuenta in listaMaestro)
+                if (listaMaestro != null)
                 {
-                    cuenta.CuentaCon = FuncionesUtiles.FormatearCadenaCuenta(cuenta.CuentaCon, objConfigurar.Parametrizacion);
-
-                    if (cuenta.InverseIdConMstPadreNavigation != null)
+                    foreach (var cuenta in listaMaestro)
                     {
-                        FormatearCuentasRecursivo(cuenta.InverseIdConMstPadreNavigation, objConfigurar.Parametrizacion);
-                    }
+                        cuenta.CuentaCon = FuncionesUtiles.FormatearCadenaCuenta(cuenta.CuentaCon, objConfigurar.Parametrizacion);
+
+                        if (cuenta.InverseIdConMstPadreNavigation != null)
+                        {
+                            FormatearCuentasRecursivo(cuenta.InverseIdConMstPadreNavigation, objConfigurar.Parametrizacion);
+                        }
+                    } 
                 }
             }
 

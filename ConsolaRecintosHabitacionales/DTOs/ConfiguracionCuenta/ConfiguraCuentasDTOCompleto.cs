@@ -11,6 +11,7 @@ namespace DTOs.ConfiguracionCuenta
         public Guid IdConfiguracionCuenta { get; set; }
 
         public Guid IdConjunto { get; set; }
+        public string NombreConjunto { get; set; }
 
         public string Parametrizacion { get; set; } = null!;
 

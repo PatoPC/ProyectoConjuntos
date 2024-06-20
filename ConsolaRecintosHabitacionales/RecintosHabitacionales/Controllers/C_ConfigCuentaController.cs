@@ -1,5 +1,6 @@
 ﻿using DTOs.Adeudo;
 using DTOs.ConfiguracionCuenta;
+using DTOs.Conjunto;
 using DTOs.Usuarios;
 using Microsoft.AspNetCore.Mvc;
 using RecintosHabitacionales.Servicio;
@@ -29,6 +30,19 @@ namespace RecintosHabitacionales.Controllers
             ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
             ConfiguraCuentasDTOCompleto objConfigurar = await recuperarRegistro(objUsuarioSesion.IdConjuntoDefault);
+
+            if(objConfigurar.Parametrizacion!= null)
+            {
+                foreach (var item in objUsuarioSesion.ListaConjuntosAcceso)
+                {
+                    if (objConfigurar.IdConjunto == item.IdConjunto)                    
+                        objConfigurar.NombreConjunto = item.NombreConjunto;                    
+                }
+            }
+            else
+            {
+                objConfigurar.IdConjunto = objUsuarioSesion.IdConjuntoDefault;
+            }
 
             ViewData["objConfigurarCuenta"] = objConfigurar;
 
