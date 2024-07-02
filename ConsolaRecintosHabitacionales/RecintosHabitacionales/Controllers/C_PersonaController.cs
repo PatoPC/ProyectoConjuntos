@@ -387,6 +387,8 @@ namespace RecintosHabitacionales.Controllers
         public async Task DatosInciales()
         {
             ViewData["listaTipoIdentificacion"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoIdentificacion, "IdCatalogo", "Nombrecatalogo");
+
+
         }
 
     }

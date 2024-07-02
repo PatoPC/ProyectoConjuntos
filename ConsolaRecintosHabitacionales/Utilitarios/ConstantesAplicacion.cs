@@ -30,10 +30,10 @@ namespace Utilitarios
 
         #region Códigos Persona
         public const string padreTipoIdentificacion = "TIPIDENT";
-        #endregion
-
-        #region Códigos Proveedor
-        public const string padreTipoIdentificacionProveedor = "tidenprv";
+		#endregion
+		
+		#region Códigos Proveedor
+		public const string padreTipoIdentificacionProveedor = "tidenprv";
         #endregion
 
         #region Tipo Identificación

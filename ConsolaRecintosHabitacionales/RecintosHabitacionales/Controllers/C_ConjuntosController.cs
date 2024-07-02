@@ -407,8 +407,8 @@ namespace RecintosHabitacionales.Controllers
 
                                 objCuentaPadre = ListaCuentasPadre.FirstOrDefault();
 
-                                if (cuentaActual.Length == objConfigurar.Parametrizacion.Length)
-                                {
+                                //if (cuentaActual.Length == objConfigurar.Parametrizacion.Length)
+                                //{
                                     string[] configuracion = cuentaActual.Split('.');
 
                                     if (objCuentaPadre != null)
@@ -441,7 +441,7 @@ namespace RecintosHabitacionales.Controllers
                                         objCuentaAdeudo.FechaModificacion = DateTime.Now;
                                     }
 
-                                }
+                                //}
                             }
 
                         }

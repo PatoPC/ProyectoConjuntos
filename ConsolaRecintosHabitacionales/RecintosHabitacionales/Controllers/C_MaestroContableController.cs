@@ -50,7 +50,9 @@ namespace RecintosHabitacionales.Controllers
 
             listaMestroConta = listaMestroConta.Where(x => x.IdConMstPadre == Guid.Empty).ToList();
 
-            ViewData["listaCuentas"] = listaMestroConta;
+			listaMestroConta = listaMestroConta.OrderBy(x => x.CuentaCon).ToList();
+
+			ViewData["listaCuentas"] = listaMestroConta;
             ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
             return View();
