@@ -42,7 +42,7 @@ namespace ConjuntosEntidades.Entidades
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server=DESKTOP-6EB8AME\\SQLEXPRESS;database=Condominios;persist security info=True;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer("server=DESKTOP-26QEGBC\\SQLEXPRESS;database=Condominios;persist security info=True;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
             }
         }
 
@@ -285,6 +285,8 @@ namespace ConjuntosEntidades.Entidades
 
                 entity.ToTable("CON_MST");
 
+                entity.HasComment("Maestro contable (plan de cuentas)");
+
                 entity.Property(e => e.IdConMst)
                     .HasColumnName("ID_CON_MST")
                     .HasDefaultValueSql("(newid())");
@@ -304,7 +306,9 @@ namespace ConjuntosEntidades.Entidades
 
                 entity.Property(e => e.Grupo).HasColumnName("GRUPO");
 
-                entity.Property(e => e.IdConMstPadre).HasColumnName("ID_CON_MST_PADRE");
+                entity.Property(e => e.IdConMstPadre)
+                    .HasColumnName("ID_CON_MST_PADRE")
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.IdConjunto)
                     .HasColumnName("ID_CONJUNTO")
@@ -328,7 +332,7 @@ namespace ConjuntosEntidades.Entidades
                 entity.HasOne(d => d.IdConMstPadreNavigation)
                     .WithMany(p => p.InverseIdConMstPadreNavigation)
                     .HasForeignKey(d => d.IdConMstPadre)
-                    .HasConstraintName("CON_MST_FK");
+                    .HasConstraintName("FK_CON_MST_REFERENCE_CON_MST");
 
                 entity.HasOne(d => d.IdConjuntoNavigation)
                     .WithMany(p => p.ConMsts)
@@ -346,6 +350,11 @@ namespace ConjuntosEntidades.Entidades
                 entity.Property(e => e.IdConjunto)
                     .HasColumnName("ID_CONJUNTO")
                     .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.CtaGrupo)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("CTA_GRUPO");
 
                 entity.Property(e => e.DireccionConjunto)
                     .HasColumnType("text")
@@ -396,6 +405,8 @@ namespace ConjuntosEntidades.Entidades
 
                 entity.ToTable("DEPARTAMENTOS");
 
+                entity.HasComment("ESTADO = Para controlar si se debe generar el Adeudo del mes, porque puede estar en mantenimiento.");
+
                 entity.Property(e => e.IdDepartamento)
                     .HasColumnName("ID_DEPARTAMENTO")
                     .HasDefaultValueSql("(newid())");
@@ -419,9 +430,7 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_MODIFICACION");
 
-                entity.Property(e => e.IdConMst)
-                    .HasColumnName("ID_CON_MST")
-                    .HasDefaultValueSql("(newid())");
+                entity.Property(e => e.IdConMst).HasColumnName("ID_CON_MST");
 
                 entity.Property(e => e.IdTorres)
                     .HasColumnName("ID_TORRES")
@@ -462,6 +471,8 @@ namespace ConjuntosEntidades.Entidades
                 entity.HasKey(e => e.IdDetCont);
 
                 entity.ToTable("DETALLE_CONTABILIDAD");
+
+                entity.HasComment("CTACONT_DET_CONT -> cuenta contable de Adeudo");
 
                 entity.Property(e => e.IdDetCont)
                     .HasColumnName("ID_DET_CONT")
@@ -523,6 +534,8 @@ namespace ConjuntosEntidades.Entidades
                 entity.HasKey(e => e.IdEncCont);
 
                 entity.ToTable("ENCABEZADO_CONTABILIDAD");
+
+                entity.HasComment("1 Ingreso/deposito\r\n   2 egreso/pagos\r\n   3 asientos de diarios\r\n   9 comprobante generado automaticamente\r\n   \r\n   N_COMP_ENC_CONT -> mes del año\r\n   CONCEPTO_ENC_CONT -> generación automatica\r\n   ");
 
                 entity.Property(e => e.IdEncCont)
                     .HasColumnName("ID_ENC_CONT")
@@ -727,6 +740,8 @@ namespace ConjuntosEntidades.Entidades
                 entity.HasKey(e => e.IdParametro);
 
                 entity.ToTable("PARAMETRO");
+
+                entity.HasComment("ID_MODULO = se va a utilizar para guardar el ID del Catalogo de un modulo en caso que aplique");
 
                 entity.Property(e => e.IdParametro)
                     .HasColumnName("ID_PARAMETRO")
@@ -1037,8 +1052,8 @@ namespace ConjuntosEntidades.Entidades
                 entity.ToTable("RESERVA_AREA");
 
                 entity.Property(e => e.IdReservaArea)
-                    .HasColumnName("ID_RESERVA_AREA")
-                    .HasDefaultValueSql("(newid())");
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID_RESERVA_AREA");
 
                 entity.Property(e => e.Apellido)
                     .HasMaxLength(50)
@@ -1120,6 +1135,8 @@ namespace ConjuntosEntidades.Entidades
                 entity.HasKey(e => e.IdTipoPersona);
 
                 entity.ToTable("TIPO_PERSONA");
+
+                entity.HasComment("ID_TIPO_PERSONA_DEPARTAMENTO: aqui se guarda el catalogo para identificar si la persona es Propietario o Arendatario (Condominio), los codigos de los catalogos son: \r\n   mdueño\r\n   opcInqui");
 
                 entity.Property(e => e.IdTipoPersona)
                     .HasColumnName("ID_TIPO_PERSONA")

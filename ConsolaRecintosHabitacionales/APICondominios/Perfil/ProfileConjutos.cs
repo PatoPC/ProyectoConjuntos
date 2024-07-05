@@ -15,6 +15,11 @@ namespace APICondominios.Perfil
             CreateMap<Conjunto, ConjuntoDTOCrear>();
             CreateMap<ConjuntoDTOCrear, Conjunto>().
                 ForMember(x => x.TelefonoConjunto, y => y.MapFrom(fuente => fuente.TelefonoConjunto));
+
+            CreateMap<Conjunto, ConjuntoDTOCrearArchivo>();
+            CreateMap<ConjuntoDTOCrearArchivo, Conjunto>().
+                ForMember(x => x.TelefonoConjunto, y => y.MapFrom(fuente => fuente.TelefonoConjunto));
+
             CreateMap<Torre, TorreDTOEditar>();
 
             CreateMap<Conjunto, ResultadoBusquedaConjuntos>();

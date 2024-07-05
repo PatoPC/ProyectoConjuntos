@@ -19,6 +19,10 @@ namespace APICondominios.Perfil
             CreateMap<DepartamentoDTOCrear, Departamento>().
                 ForMember(x => x.IdTorres, y => y.MapFrom(fuente => fuente.IdTorresCrearDepartamento));
 
+            CreateMap<Departamento, DepartamentoDTOCrearArchivo>();
+            CreateMap<DepartamentoDTOCrearArchivo, Departamento>().
+                ForMember(x => x.IdTorres, y => y.MapFrom(fuente => fuente.IdTorresCrearDepartamento));
+
 
             CreateMap<DepartamentoDTOEditar, Departamento>().
             ForMember(x => x.IdDepartamento, y => y.MapFrom(fuente => fuente.IdDeptoEditar)).

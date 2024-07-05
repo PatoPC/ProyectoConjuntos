@@ -3,6 +3,16 @@ using System.Collections.Generic;
 
 namespace ConjuntosEntidades.Entidades
 {
+    /// <summary>
+    /// 1 Ingreso/deposito
+    ///    2 egreso/pagos
+    ///    3 asientos de diarios
+    ///    9 comprobante generado automaticamente
+    ///    
+    ///    N_COMP_ENC_CONT -&gt; mes del año
+    ///    CONCEPTO_ENC_CONT -&gt; generación automatica
+    ///    
+    /// </summary>
     public partial class EncabezadoContabilidad
     {
         public EncabezadoContabilidad()

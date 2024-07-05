@@ -338,5 +338,20 @@ namespace Utilitarios
             int endIndex = Math.Min(max, words.Length);
             return string.Join(" ", words.Take(endIndex));
         }
+
+        public static string GenerarCodigo(int cantidad)
+        {
+            Random random = new Random();
+            const string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            char[] codigo = new char[cantidad];
+
+            for (int i = 0; i < codigo.Length; i++)
+            {
+                codigo[i] = caracteres[random.Next(caracteres.Length)];
+            }
+
+            return new string(codigo);
+        }
+
     }
 }

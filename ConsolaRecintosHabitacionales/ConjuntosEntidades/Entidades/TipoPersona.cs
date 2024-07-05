@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace ConjuntosEntidades.Entidades
 {
+    /// <summary>
+    /// ID_TIPO_PERSONA_DEPARTAMENTO: aqui se guarda el catalogo para identificar si la persona es Propietario o Arendatario (Condominio), los codigos de los catalogos son: 
+    ///    mdueño
+    ///    opcInqui
+    /// </summary>
     public partial class TipoPersona
     {
         public Guid IdTipoPersona { get; set; }

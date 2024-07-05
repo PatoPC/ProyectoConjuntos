@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace ConjuntosEntidades.Entidades
 {
+    /// <summary>
+    /// ESTADO = Para controlar si se debe generar el Adeudo del mes, porque puede estar en mantenimiento.
+    /// </summary>
     public partial class Departamento
     {
         public Departamento()

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace ConjuntosEntidades.Entidades
 {
+    /// <summary>
+    /// CTACONT_DET_CONT -&gt; cuenta contable de Adeudo
+    /// </summary>
     public partial class DetalleContabilidad
     {
         public Guid IdDetCont { get; set; }

@@ -26,6 +26,7 @@ namespace ConjuntosEntidades.Entidades
         public DateTime? FechaModificacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
+        public string? CtaGrupo { get; set; }
 
         public virtual ICollection<AreaComunal> AreaComunals { get; set; }
         public virtual ICollection<Comunicado> Comunicados { get; set; }

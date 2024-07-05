@@ -115,11 +115,9 @@ namespace RecintosHabitacionales.Models
                     }
                     catch (Exception ex)
                     {
-                    }
+                    }                    
 
-                    
-
-                        objDocumento.Nombre_Propietario = documentoLeido.GetCellValueAsString(numFila, 21).Trim();
+                    objDocumento.Nombre_Propietario = documentoLeido.GetCellValueAsString(numFila, 21).Trim();
                     objDocumento.Apellido_Propietario = documentoLeido.GetCellValueAsString(numFila, 22).Trim();
                     objDocumento.Telefono_Propietario = documentoLeido.GetCellValueAsString(numFila, 23).Trim();
                     objDocumento.Celular_Propietario = documentoLeido.GetCellValueAsString(numFila, 24).Trim();
@@ -145,6 +143,30 @@ namespace RecintosHabitacionales.Models
 
                                 HttpResponseMessage respuestaTipoExtra = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.getNombreExactoCatalogo + nombreCatalogo, HttpMethod.Get);
                                 var objCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaTipoExtra);
+
+                                if(objCatalogo == null)
+                                {
+                                    HttpResponseMessage tipoExtraPadre = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.padreTipoAreas, HttpMethod.Get);
+
+                                    var objCatalogoPadre = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(tipoExtraPadre);
+
+                                    CatalogoDTOCrear objCatalogoCrear = new CatalogoDTOCrear();
+
+                                    objCatalogoCrear.IdCatalogopadre = objCatalogoPadre.IdCatalogo;
+                                    objCatalogoCrear.Nombrecatalogo = nombreCatalogo;
+                                    objCatalogoCrear.UsuarioCreacion = usuarioCreacion;
+                                    objCatalogoCrear.Codigocatalogo = FuncionesUtiles.GenerarCodigo(6);
+                                    //objCatalogoCrear.IdConjunto = ;
+                                    //Patricio
+                                    objCatalogoCrear.NivelCatalogo = 1;
+
+                                    HttpResponseMessage respuestaCreacion = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.getGetCatalogosCreate, HttpMethod.Post, objCatalogoCrear);
+
+                                    CatalogoDTOResultadoBusqueda objTemporal = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCreacion);
+
+                                    objCatalogo = objTemporal;
+                                }
+
                                 posicionActual += 1;
                                 decimal valorExtra = FuncionesUtiles.convertirADecimal(documentoLeido.GetCellValueAsString(numFila, posicionActual).Replace(".", ","));
 

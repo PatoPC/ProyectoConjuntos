@@ -15,6 +15,7 @@ namespace ConjuntosEntidades.Entidades
         public string NombreProveedor { get; set; } = null!;
         public string RucProveedor { get; set; } = null!;
         public string? ContactoProveedor { get; set; }
+        public Guid IdCiudadProveedor { get; set; }
         public string DirecProveedor { get; set; } = null!;
         public string? TelefonosProveedor { get; set; }
         public string? EMailProveedor { get; set; }
@@ -25,7 +26,6 @@ namespace ConjuntosEntidades.Entidades
         public DateTime? FechaModificacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
         public string? UsuarioModificacion { get; set; }
-        public Guid? IdCiudadProveedor { get; set; }
         public Guid IdTipoContacto { get; set; }
 
         public virtual Conjunto IdConjuntoNavigation { get; set; } = null!;

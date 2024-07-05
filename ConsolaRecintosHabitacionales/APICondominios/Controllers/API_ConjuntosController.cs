@@ -87,7 +87,7 @@ namespace APICondominios.Controllers
         }
 
         [HttpPost("CrearListaConjuntos")]
-        public async Task<IActionResult> CrearListaConjuntos([FromBody] List<ConjuntoDTOCrear> objDTO)
+        public async Task<IActionResult> CrearListaConjuntos([FromBody] List<ConjuntoDTOCrearArchivo> objDTO)
         {
             try
             {

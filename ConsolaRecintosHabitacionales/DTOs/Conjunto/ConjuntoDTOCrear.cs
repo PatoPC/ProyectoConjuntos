@@ -19,4 +19,17 @@ namespace DTOs.Conjunto
         public List<TorreDTOCrear>? Torres { get; set; }
       
     }
+
+    public class ConjuntoDTOCrearArchivo
+    {
+        public string? NombreConjunto { get; set; }
+        public string? RucConjunto { get; set; }
+        public string? DireccionConjunto { get; set; }
+        public string? TelefonoConjunto { get; set; }
+        public string? MailConjunto { get; set; }
+        public string? UsuarioCreacion { get; set; }
+        public DateTime? FechaCreacion { get; set; }
+        public List<TorreDTOCrearArchivo>? Torres { get; set; }
+
+    }
 }

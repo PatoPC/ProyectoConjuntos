@@ -31,7 +31,7 @@ namespace RecintosHabitacionales.Controllers
 
         private readonly IServicioConsumoAPI<ConjuntoDTOCrear> _servicioConsumoAPICrear;
         private readonly IServicioConsumoAPI<UsuarioDTOCrear> UsuarioDTOCrearUsuario;
-        private readonly IServicioConsumoAPI<List<ConjuntoDTOCrear>> _servicioConsumoAPICrearLista;
+        private readonly IServicioConsumoAPI<List<ConjuntoDTOCrearArchivo>> _servicioConsumoAPICrearLista;
         private readonly IServicioConsumoAPI<UsuarioConjuntoDTO> _servicioConsumoAPIUsuarioConjunto;
         private readonly IServicioConsumoAPI<List<UsuarioConjuntoDTO>> _servicioConsumoAPIUsuarioConjuntoLista;
         private readonly IServicioConsumoAPI<ConjuntoDTOEditar> _servicioConsumoAPICrearEditar;
@@ -54,7 +54,7 @@ namespace RecintosHabitacionales.Controllers
 
         private readonly IServicioConsumoAPI<MaestroContableBusqueda> _servicioConsumoAPIBusquedaMaestro;
         private readonly IMapper _mapper;
-        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IServicioConsumoAPI<List<ConjuntoDTOCrear>> servicioConsumoAPICrearLista, IServicioConsumoAPI<List<UsuarioConjuntoDTO>> servicioConsumoAPIUsuarioConjuntoLista, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusquedaPersona, IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrearPersona, IServicioConsumoAPI<TipoPersonaDTO> servicioConsumoAPICrearTipoPersona, IMapper mapper, IServicioConsumoAPI<CatalogoDTOCrear> servicioConsumoAPICrearCatalogos, IServicioConsumoAPI<UsuarioDTOCrear> usuarioDTOCrearUsuario, IServicioConsumoAPI<BusquedaAreaComunal> servicioBusqueAreaComunal, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusquedaMaestro, CargarMaestroContable servicioMestroContable, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda)
+        public C_ConjuntosController(IServicioConsumoAPI<ConjuntoDTOCrear> servicioConsumoAPIConjunto, IServicioConsumoAPI<ConjuntoDTOEditar> servicioConsumoAPIConjuntoEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<DepartamentoDTOCrear> servicioConsumoAPIDepartamento, IServicioConsumoAPI<DepartamentoDTOEditar> servicioConsumoAPIDepartamentoEditar, IServicioConsumoAPI<UsuarioConjuntoDTO> servicioConsumoAPIUsuarioConjunto, IServicioConsumoAPI<CatalogoDTODropDown> servicioConsumoAPICatalogos, IServicioConsumoAPI<List<ConjuntoDTOCrearArchivo>> servicioConsumoAPICrearLista, IServicioConsumoAPI<List<UsuarioConjuntoDTO>> servicioConsumoAPIUsuarioConjuntoLista, IServicioConsumoAPI<ObjetoBusquedaPersona> servicioConsumoAPIBusquedaPersona, IServicioConsumoAPI<PersonaDTOCrear> servicioConsumoAPICrearPersona, IServicioConsumoAPI<TipoPersonaDTO> servicioConsumoAPICrearTipoPersona, IMapper mapper, IServicioConsumoAPI<CatalogoDTOCrear> servicioConsumoAPICrearCatalogos, IServicioConsumoAPI<UsuarioDTOCrear> usuarioDTOCrearUsuario, IServicioConsumoAPI<BusquedaAreaComunal> servicioBusqueAreaComunal, IServicioConsumoAPI<MaestroContableBusqueda> servicioConsumoAPIBusquedaMaestro, CargarMaestroContable servicioMestroContable, IServicioConsumoAPI<BusquedaConjuntos> servicioConsumoAPIBusqueda)
         {
             _servicioConsumoAPICrear = servicioConsumoAPIConjunto;
             _servicioConsumoAPICrearEditar = servicioConsumoAPIConjuntoEditar;
@@ -246,9 +246,10 @@ namespace RecintosHabitacionales.Controllers
 
                 if (objRol != null)
                 {
+                    
                     List<ModeloArchivoConjunto> listaArchivoLeido = await procesarExcelConjuntos(FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion));
 
-                    List<ConjuntoDTOCrear> listaConjuntos = construirConjuntos(objUsuarioSesion, listaArchivoLeido);
+                    List<ConjuntoDTOCrearArchivo> listaConjuntos = construirConjuntos(objUsuarioSesion, listaArchivoLeido);
 
                     HttpResponseMessage respuesta = await _servicioConsumoAPICrearLista.consumoAPI(ConstantesConsumoAPI.crearListaConjuntos, HttpMethod.Post, listaConjuntos);
 
@@ -674,13 +675,13 @@ namespace RecintosHabitacionales.Controllers
             return listaArchivoLeido;
         }
 
-        public List<ConjuntoDTOCrear> construirConjuntos(UsuarioSesionDTO objUsuarioSesion, List<ModeloArchivoConjunto> listaArchivoLeido)
+        public List<ConjuntoDTOCrearArchivo> construirConjuntos(UsuarioSesionDTO objUsuarioSesion, List<ModeloArchivoConjunto> listaArchivoLeido)
         {
             string usuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
-            List<ConjuntoDTOCrear> listaConjuntos = new List<ConjuntoDTOCrear>();
+            List<ConjuntoDTOCrearArchivo> listaConjuntos = new List<ConjuntoDTOCrearArchivo>();
 
             listaConjuntos = listaArchivoLeido.GroupBy(x => x.Nombre_Conjunto, (key, group) => group.First()).
-                          Select(x => new ConjuntoDTOCrear
+                          Select(x => new ConjuntoDTOCrearArchivo
                           {
                               NombreConjunto = x.Nombre_Conjunto,
                               RucConjunto = x.RUC,
@@ -693,12 +694,12 @@ namespace RecintosHabitacionales.Controllers
 
             foreach (var conjunto in listaConjuntos)
             {
-                List<TorreDTOCrear> listaTorres = new List<TorreDTOCrear>();
+                List<TorreDTOCrearArchivo> listaTorres = new List<TorreDTOCrearArchivo>();
 
                 var listaTorresTemporales = listaArchivoLeido.Where(x => x.Nombre_Conjunto == conjunto.NombreConjunto).ToList();
 
                 listaTorres = listaTorresTemporales.GroupBy(x => x.Torre, (key, group) => group.First()).
-                    Select(x => new TorreDTOCrear
+                    Select(x => new TorreDTOCrearArchivo
                     {
                         NombreTorres = x.Torre,
                         UsuarioCreacion = usuarioCreacion,
@@ -710,10 +711,10 @@ namespace RecintosHabitacionales.Controllers
 
                 foreach (var torre in listaTorres)
                 {
-                    List<DepartamentoDTOCrear> listaDepartamentos = new List<DepartamentoDTOCrear>();
+                    List<DepartamentoDTOCrearArchivo> listaDepartamentos = new List<DepartamentoDTOCrearArchivo>();
 
                     listaDepartamentos = listaArchivoLeido.Where(y => y.Torre == torre.NombreTorres).GroupBy(x => new { x.Nombre_Condomino, x.Torre }, (key, group) => group.First()).
-                        Select(x => new DepartamentoDTOCrear
+                        Select(x => new DepartamentoDTOCrearArchivo
                         {
                             CodigoDepartamento = x.Departamento,
                             MetrosDepartamento = x.Metros_Cuadrados,

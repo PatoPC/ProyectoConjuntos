@@ -12,6 +12,9 @@ namespace APICondominios.Perfil
             CreateMap<TorreDTOCrear, Torre>();
             CreateMap<Torre, TorreDTOCrear>();
 
+            CreateMap<TorreDTOCrearArchivo, Torre>();
+            CreateMap<Torre, TorreDTOCrearArchivo>();
+
             CreateMap<Torre, TorreDTOCompleto>().
                  ForMember(x => x.NombreConjunto, y => y.MapFrom(fuente => fuente.IdConjuntoNavigation.NombreConjunto));
             CreateMap<TorreDTOCompleto, Torre>();          

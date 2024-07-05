@@ -58,9 +58,6 @@ namespace Utilitarios
         public const string padreCiudades = "ECUADR";
         #endregion
 
-        #region Tipo Areas
-        public const string padreTipoAreas = "TIPAREAS";
-        #endregion
 
         #region MÓDULOS CONTABLES
         public const string padreModulosContables = "MDLSCONT"; //Padre
@@ -75,5 +72,9 @@ namespace Utilitarios
         public const string nombreRolCondominos = "Condomino";
         public const string nombrePadreParam = "PARAM";
 
+
+        #region Tipo Areas
+        public const string padreTipoAreas = "TIPAREAS";
+        #endregion
     }
 }
