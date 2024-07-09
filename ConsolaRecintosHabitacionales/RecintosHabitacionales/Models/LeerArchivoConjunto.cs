@@ -82,7 +82,7 @@ namespace RecintosHabitacionales.Models
 
                         if (!cedulaValida)
                         {
-                            objDocumento.Numero_Identificacion_Condomino = "Cédula no válida";
+                            objDocumento.Numero_Identificacion_Condomino = ConstantesAplicacion.CedulaNoValida;
                         }
                     }
                     catch (Exception ex)
@@ -110,7 +110,7 @@ namespace RecintosHabitacionales.Models
 
                         if (!cedulaValidaPropietario)
                         {
-                            objDocumento.Numero_Identificacion_Propietario = "Cédula no válida";
+                            objDocumento.Numero_Identificacion_Propietario = ConstantesAplicacion.CedulaNoValida;
                         }
                     }
                     catch (Exception ex)

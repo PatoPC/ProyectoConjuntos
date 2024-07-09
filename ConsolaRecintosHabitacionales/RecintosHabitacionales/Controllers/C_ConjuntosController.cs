@@ -21,6 +21,8 @@ using System.Net.Http;
 using DTOs.Parametro;
 using DTOs.MaestroContable;
 using DTOs.ConfiguracionCuenta;
+using XAct;
+using XAct.Library.Settings;
 
 namespace RecintosHabitacionales.Controllers
 {
@@ -238,91 +240,114 @@ namespace RecintosHabitacionales.Controllers
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (objUsuarioSesion != null)
+            if (objUsuarioSesion == null)
+                return RedirectToAction("Ingresar", "C_Ingreso");
+
+            HttpResponseMessage respuestaRol = await _servicioConsumoAPIBusquedaPersona.consumoAPI(ConstantesConsumoAPI.getRolPorNombreExacto + ConstantesAplicacion.nombreRolCondominos, HttpMethod.Get);
+
+            var objRol = await LeerRespuestas<RolDTOBusqueda>.procesarRespuestasConsultas(respuestaRol);
+
+            if (objRol != null)
             {
-                HttpResponseMessage respuestaRol = await _servicioConsumoAPIBusquedaPersona.consumoAPI(ConstantesConsumoAPI.getRolPorNombreExacto + ConstantesAplicacion.nombreRolCondominos, HttpMethod.Get);
+                List<ModeloArchivoConjunto> listaArchivoLeido = await procesarExcelConjuntos(FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion));
 
-                var objRol = await LeerRespuestas<RolDTOBusqueda>.procesarRespuestasConsultas(respuestaRol);
+                List<ModeloArchivoConjunto> cedulasInvalidasCondominos = listaArchivoLeido
+                    .Where(x => x.Numero_Identificacion_Condomino.Contains(ConstantesAplicacion.CedulaNoValida)).ToList();
 
-                if (objRol != null)
+                List<ModeloArchivoConjunto> cedulasInvalidasPropietarios = listaArchivoLeido
+                       .Where(x => x.Numero_Identificacion_Propietario.Contains(ConstantesAplicacion.CedulaNoValida)).ToList();
+
+                if (cedulasInvalidasCondominos.Count() > 0 || cedulasInvalidasPropietarios.Count() > 0)
                 {
-                    
-                    List<ModeloArchivoConjunto> listaArchivoLeido = await procesarExcelConjuntos(FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion));
+                    string mensajeTemporal = "";
 
-                    List<ConjuntoDTOCrearArchivo> listaConjuntos = construirConjuntos(objUsuarioSesion, listaArchivoLeido);
-
-                    HttpResponseMessage respuesta = await _servicioConsumoAPICrearLista.consumoAPI(ConstantesConsumoAPI.crearListaConjuntos, HttpMethod.Post, listaConjuntos);
-
-                    if (respuesta.IsSuccessStatusCode)
+                    foreach (ModeloArchivoConjunto item in cedulasInvalidasCondominos)
                     {
-                        List<ConjuntoDTOCompleto> ListaObjDTDOCreado = await LeerRespuestas<List<ConjuntoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+                        mensajeTemporal += " <b>Identificación incorrecta de Condomino:</b> <br/>" + item.Nombre_Condomino + " "
+                            + item.Apellido_Condomino + "<br/>";
+                    }
 
-                        var listaUsuariosConjuntos = ListaObjDTDOCreado.
-                                Select(x => new UsuarioConjuntoDTO
-                                {
-                                    IdUsuario = objUsuarioSesion.IdUsuario,
-                                    IdConjunto = x.IdConjunto,
-                                }).ToList();
+                    foreach (ModeloArchivoConjunto item in cedulasInvalidasPropietarios)
+                    {
+                        mensajeTemporal += " <b>Identificación incorrecta de Propietarios :</b> <br/>"
+                            + item.Nombre_Propietario + " " + item.Apellido_Propietario + "<br/>";
+                    }
 
-                        HttpResponseMessage respuestaConjuntoUsuarios = await _servicioConsumoAPIUsuarioConjuntoLista.consumoAPI(ConstantesConsumoAPI.getCreateUsuarioConjuntoLista, HttpMethod.Post, listaUsuariosConjuntos);
 
-                        List<PersonaDTOCompleto> listaPersonas = await construirPersonaConjuntos(objUsuarioSesion, listaArchivoLeido, ListaObjDTDOCreado);
 
-                        //Crear usuarios
-                        foreach (var objPersona in listaPersonas)
+                    return Json(new { success = true, message = mensajeTemporal, IsSuccess = false, state = "error" });
+                }
+
+                List<ConjuntoDTOCrearArchivo> listaConjuntos = construirConjuntos(objUsuarioSesion, listaArchivoLeido);
+
+                HttpResponseMessage respuesta = await _servicioConsumoAPICrearLista.consumoAPI(ConstantesConsumoAPI.crearListaConjuntos, HttpMethod.Post, listaConjuntos);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    List<ConjuntoDTOCompleto> ListaObjDTDOCreado = await LeerRespuestas<List<ConjuntoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+
+                    var listaUsuariosConjuntos = ListaObjDTDOCreado.
+                            Select(x => new UsuarioConjuntoDTO
+                            {
+                                IdUsuario = objUsuarioSesion.IdUsuario,
+                                IdConjunto = x.IdConjunto,
+                            }).ToList();
+
+                    HttpResponseMessage respuestaConjuntoUsuarios = await _servicioConsumoAPIUsuarioConjuntoLista.consumoAPI(ConstantesConsumoAPI.getCreateUsuarioConjuntoLista, HttpMethod.Post, listaUsuariosConjuntos);
+
+                    List<PersonaDTOCompleto> listaPersonas = await construirPersonaConjuntos(objUsuarioSesion, listaArchivoLeido, ListaObjDTDOCreado);
+
+                    //Crear usuarios
+                    foreach (var objPersona in listaPersonas)
+                    {
+                        UsuarioDTOCrear objDTO = new UsuarioDTOCrear();
+                        objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
+                        objDTO.Contrasena = FuncionesContrasena.encriptarContrasena(objPersona.IdentificacionPersona);
+
+                        //Encontrar conjunto del usuario 
+                        var listaPersonaCnjunto = listaArchivoLeido
+                            .Where(x =>
+                            x.Numero_Identificacion_Condomino.Trim() == objPersona.IdentificacionPersona.Trim()
+                            || x.Numero_Identificacion_Propietario.Trim() == objPersona.IdentificacionPersona.Trim()
+                            ).ToList();
+
+                        List<UsuarioConjuntoDTO> UsuarioConjuntos = new List<UsuarioConjuntoDTO>();
+
+                        foreach (var datos in listaPersonaCnjunto)
                         {
-                            UsuarioDTOCrear objDTO = new UsuarioDTOCrear();
-                            objDTO.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
-                            objDTO.Contrasena = FuncionesContrasena.encriptarContrasena(objPersona.IdentificacionPersona);
+                            ConjuntoDTOCompleto conjuntoTemporal = ListaObjDTDOCreado.Where(x => x.RucConjunto.Trim() == datos.RUC).FirstOrDefault();
 
-                            //Encontrar conjunto del usuario 
-                            var listaPersonaCnjunto = listaArchivoLeido
-                                .Where(x =>
-                                x.Numero_Identificacion_Condomino.Trim() == objPersona.IdentificacionPersona.Trim()
-                                || x.Numero_Identificacion_Propietario.Trim() == objPersona.IdentificacionPersona.Trim()
-                                ).ToList();
+                            UsuarioConjuntoDTO objConjuntoUsuario = new UsuarioConjuntoDTO();
 
-                            List<UsuarioConjuntoDTO> UsuarioConjuntos = new List<UsuarioConjuntoDTO>();
+                            objConjuntoUsuario.IdConjunto = conjuntoTemporal.IdConjunto;
+                            objDTO.IdConjuntoDefault = conjuntoTemporal.IdConjunto;
 
-                            foreach (var datos in listaPersonaCnjunto)
-                            {
-                                ConjuntoDTOCompleto conjuntoTemporal = ListaObjDTDOCreado.Where(x => x.RucConjunto.Trim() == datos.RUC).FirstOrDefault();
-
-                                UsuarioConjuntoDTO objConjuntoUsuario = new UsuarioConjuntoDTO();
-
-                                objConjuntoUsuario.IdConjunto = conjuntoTemporal.IdConjunto;
-                                objDTO.IdConjuntoDefault = conjuntoTemporal.IdConjunto;
-
-                                UsuarioConjuntos.Add(objConjuntoUsuario);
-                            }
-
-                            if (objRol != null)
-                            {
-                                objDTO.IdRol = objRol.IdRol;
-
-                                HttpResponseMessage respuestaPersona = await UsuarioDTOCrearUsuario.consumoAPI(ConstantesConsumoAPI.getCreateUsuario, HttpMethod.Post, objDTO);
-
-                                if (respuestaPersona.IsSuccessStatusCode)
-                                {
-
-                                }
-                            }
+                            UsuarioConjuntos.Add(objConjuntoUsuario);
                         }
 
-                        return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuestaConjuntoUsuarios, controladorActual, accionActual));
+                        if (objRol != null)
+                        {
+                            objDTO.IdRol = objRol.IdRol;
+
+                            HttpResponseMessage respuestaPersona = await UsuarioDTOCrearUsuario.consumoAPI(ConstantesConsumoAPI.getCreateUsuario, HttpMethod.Post, objDTO);
+
+                            if (respuestaPersona.IsSuccessStatusCode)
+                            {
+
+                            }
+                        }
                     }
-                    else
-                    {
-                        MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
-                        return new JsonResult(objMensajeRespuesta);
-                    }
+
+                    return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuestaConjuntoUsuarios, controladorActual, accionActual));
                 }
                 else
-                    return new JsonResult(MensajesRespuesta.errorNoExisteRol());
-
+                {
+                    MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                    return new JsonResult(objMensajeRespuesta);
+                }
             }
-
-            return RedirectToAction("Ingresar", "C_Ingreso");
+            else
+                return new JsonResult(MensajesRespuesta.errorNoExisteRol());
         }
 
 
@@ -410,37 +435,37 @@ namespace RecintosHabitacionales.Controllers
 
                                 //if (cuentaActual.Length == objConfigurar.Parametrizacion.Length)
                                 //{
-                                    string[] configuracion = cuentaActual.Split('.');
+                                string[] configuracion = cuentaActual.Split('.');
 
-                                    if (objCuentaPadre != null)
+                                if (objCuentaPadre != null)
+                                {
+                                    objCuentaAdeudo.IdConMstPadre = objCuentaPadre.IdConMst;
+
+                                    if (objCuentaPadre.InverseIdConMstPadreNavigation.Count > 0)
                                     {
-                                        objCuentaAdeudo.IdConMstPadre = objCuentaPadre.IdConMst;
+                                        var cuentasHijas = objCuentaPadre.InverseIdConMstPadreNavigation.Count;
 
-                                        if (objCuentaPadre.InverseIdConMstPadreNavigation.Count > 0)
-                                        {
-                                            var cuentasHijas = objCuentaPadre.InverseIdConMstPadreNavigation.Count;
+                                        cuentaAdeudo = cuentasHijas + 1;
 
-                                            cuentaAdeudo = cuentasHijas + 1;
-
-                                            if(cuentaAdeudo < 10)
-                                                nuevaCuentaAdeudo = dtoMaestroCompleto.CuentaCon+"0" + cuentaAdeudo.ToString();
-                                            else
-                                                nuevaCuentaAdeudo = dtoMaestroCompleto.CuentaCon + cuentaAdeudo.ToString();
-                                        }
+                                        if (cuentaAdeudo < 10)
+                                            nuevaCuentaAdeudo = dtoMaestroCompleto.CuentaCon + "0" + cuentaAdeudo.ToString();
                                         else
-                                        {
-                                            nuevaCuentaAdeudo = dtoMaestroCompleto.CuentaCon + "01";
-                                        }
-
-                                        //nuevaCuentaAdeudo = FuncionesUtiles.TruncarString(nuevaCuentaAdeudo, 4);
-                                        objCuentaAdeudo.CuentaCon = nuevaCuentaAdeudo;
-                                        objCuentaAdeudo.NombreCuenta = nombreNuevaCuenta;
-
-                                        objCuentaAdeudo.UsuarioCreacion = usuarioCreacion;
-                                        objCuentaAdeudo.UsuarioModificacion = usuarioCreacion;
-                                        objCuentaAdeudo.FechaCreacion = DateTime.Now;
-                                        objCuentaAdeudo.FechaModificacion = DateTime.Now;
+                                            nuevaCuentaAdeudo = dtoMaestroCompleto.CuentaCon + cuentaAdeudo.ToString();
                                     }
+                                    else
+                                    {
+                                        nuevaCuentaAdeudo = dtoMaestroCompleto.CuentaCon + "01";
+                                    }
+
+                                    //nuevaCuentaAdeudo = FuncionesUtiles.TruncarString(nuevaCuentaAdeudo, 4);
+                                    objCuentaAdeudo.CuentaCon = nuevaCuentaAdeudo;
+                                    objCuentaAdeudo.NombreCuenta = nombreNuevaCuenta;
+
+                                    objCuentaAdeudo.UsuarioCreacion = usuarioCreacion;
+                                    objCuentaAdeudo.UsuarioModificacion = usuarioCreacion;
+                                    objCuentaAdeudo.FechaCreacion = DateTime.Now;
+                                    objCuentaAdeudo.FechaModificacion = DateTime.Now;
+                                }
 
                                 //}
                             }
@@ -839,7 +864,7 @@ namespace RecintosHabitacionales.Controllers
 
             listaPersonasCrear = listaPersonasCrear.Distinct().ToList();
 
-            listaPersonasCrear = listaPersonasCrear.DistinctBy(x => x.CelularPersona).ToList();
+            //listaPersonasCrear = listaPersonasCrear.DistinctBy(x => x.CelularPersona).ToList();
 
             foreach (var personaCrear in listaPersonasCrear)
             {
@@ -884,7 +909,7 @@ namespace RecintosHabitacionales.Controllers
 
             foreach (var persona in listaPersonasCondominos)
             {
-                PersonaDTOCompleto objPersonaTemporal = listaPersonasCompleta.Where(x => x.IdentificacionPersona == persona.CelularPersona).FirstOrDefault();
+                PersonaDTOCompleto objPersonaTemporal = listaPersonasCompleta.Where(x => x.IdentificacionPersona == persona.IdentificacionPersona).FirstOrDefault();
 
                 if (objPersonaTemporal != null)
                 {

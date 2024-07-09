@@ -40,6 +40,8 @@ namespace Utilitarios
         public const string IdentificacionCedula = "Cédula";
         public const string CodigoCatalogoCedula = "CDULA";
         public const string IdentificacionPasaporte = "Pasaporte";
+        public const string CedulaNoValida = "Cédula no válida";
+
         #endregion
 
         #region Código Catalogos

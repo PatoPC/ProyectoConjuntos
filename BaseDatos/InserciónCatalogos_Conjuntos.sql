@@ -242,12 +242,13 @@ INSERT INTO Condominios_Permisos.dbo.USUARIO
 (ID_ROL, ID_PERSONA, ID_CONJUNTO_DEFAULT, ESTADO, CORREO_ELECTRONICO, CONTRASENA_INICIAL, CONTRASENA, INDICIO_CONTRASENA, FECHA_ULTIMO_INGRESO, FECHA_CREACION, FECHA_MODIFICACION, 
 USUARIO_CREACION, USUARIO_MODIFICACION)
 VALUES(
-(SELECT ID_ROL from Condominios_Permisos.dbo.ROL where NOMBRE_ROL ='Administrador'), 
+(SELECT ID_ROL from Condominios_Permisos.dbo.ROL where NOMBRE_ROL ='Condomino'), 
 (select ID_PERSONA  from Condominios.dbo.PERSONA WHERE IDENTIFICACION_PERSONA ='2200025787'), 
 (SELECT ID_CONJUNTO from Condominios.dbo.CONJUNTO WHERE NOMBRE_CONJUNTO ='Condominio'), 
 1, 'patricio.cordova@outlook.com',0, 
 '43fae6c11d7632acc6059de1cced9b09a58caaa878071308ad67f32ef6b11691004300fa00e600c1001d0076003200ac00c60005009d00e100cc00ed009b000900a5008c00aa00a8007800070013000800ad006700f3002e00f600',
 '', getdate(),getdate(), getdate(), 'admin', 'admin')
+
 
 SELECT *
 FROM Condominios_Permisos.dbo.USUARIO
@@ -342,7 +343,32 @@ from Condominios_Permisos.dbo.USUARIO_CONJUNTO
 where ID_USUARIO ='854A4AD5-2376-4F35-88A4-65AA621A45AD'
 
 
+SELECT *
+from Catalogo_Conjunto.dbo.CATALOGO c 
+where c.CODIGO_CATALOGO ='TIPAREAS'
+
+SELECT *
+from Catalogo_Conjunto.dbo.CATALOGO c 
+where c.ID_CATALOGOPADRE  ='FE6C838C-34DB-4E51-9056-642A8E694B35'
+
+INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
+(ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION)
+VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='TIPAREAS'), 
+0, 'Cédula', 'CEDULA', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin');
 
 
+SELECT *
+from Condominios.dbo.CONJUNTO c  
 
+SELECT *
+from Condominios_Permisos.dbo.ROL r 
+
+SELECT *
+from Condominios.dbo.PERSONA p 
+
+DELETE from Condominios.dbo.AREAS_DEPARTAMENTOS;
+DELETE from Condominios.dbo.TIPO_PERSONA;
+DELETE from Condominios.dbo.DEPARTAMENTOS;
+DELETE from Condominios.dbo.TORRES;
+SELECT * from Condominios.dbo.CONJUNTO; 
 

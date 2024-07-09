@@ -152,16 +152,39 @@ namespace RecintosHabitacionales.Controllers
 
             List<MaestroContableDTOCrear> lista = new List<MaestroContableDTOCrear>();
 
+
+            if (listaArchivoLeido != null)
+            {
+                if (listaArchivoLeido.Count() > 0)
+                {
+                    MaestroContableBusqueda objBusqueda = new MaestroContableBusqueda();
+                    objBusqueda.IdConjunto = objUsuarioSesion.IdConjuntoDefault;
+
+                    List<MaestroContableDTOCompleto> listaMestroConta = await _servicioMestroContable.recuperarMaestroContable(objBusqueda);
+
+                    if (listaMestroConta != null)
+                    {
+                        if (listaMestroConta.Count > 0)
+                        {
+                            foreach (var cuenta in listaMestroConta)
+                            {
+                                HttpResponseMessage respuestaEliminar = await _servicioConsumoAPICompleto.consumoAPI(ConstantesConsumoAPI.gestionarMaestroConableAPIEliminar + cuenta.IdConMst, HttpMethod.Post);
+
+                                if(respuestaEliminar != null)
+                                {
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             foreach (var cuenta in listaArchivoLeido)
             {
                 MaestroContableDTOCrear objCrearTemporal = new MaestroContableDTOCrear();
 
-                string cuentaFormateda = FuncionesUtiles.FormatearCadenaCuenta(cuenta.ctacont, objConfigurar.Parametrizacion);
-
-                if (cuentaFormateda == "2")
-                {
-
-                }
+                string cuentaFormateda = FuncionesUtiles.FormatearCadenaCuenta(cuenta.ctacont, objConfigurar.Parametrizacion);            
 
                 string[] partesCuenta = cuentaFormateda.Split('.');
 
