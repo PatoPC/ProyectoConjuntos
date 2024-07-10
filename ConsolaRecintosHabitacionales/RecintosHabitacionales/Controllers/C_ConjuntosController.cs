@@ -941,7 +941,7 @@ namespace RecintosHabitacionales.Controllers
 
             foreach (var persona in listaPersonasPropietarios)
             {
-                PersonaDTOCompleto objPersonaTemporal = listaPersonasCompleta.Where(x => x.IdentificacionPersona == persona.CelularPersona).FirstOrDefault();
+                PersonaDTOCompleto objPersonaTemporal = listaPersonasCompleta.Where(x => x.IdentificacionPersona == persona.IdentificacionPersona).FirstOrDefault();
 
                 if (objPersonaTemporal != null)
                 {
