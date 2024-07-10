@@ -218,8 +218,6 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
-
-
         [HttpGet("ObtenerTodosConjuntos")]
         public async Task<ActionResult<List<ResultadoBusquedaConjuntos>>> ObtenerTodosConjuntos()
         {
@@ -236,6 +234,31 @@ namespace APICondominios.Controllers
                 List<ResultadoBusquedaConjuntos> listaResultadoDTO = _mapper.Map<List<ResultadoBusquedaConjuntos>>(listaResultado);
 
                 return Ok(listaResultadoDTO);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+        [HttpGet("ObtenerConjuntoPorIDDepartamento")]
+        public async Task<ActionResult<ResultadoBusquedaConjuntos>> ObtenerConjuntoPorIDDepartamento(Guid idDepartamento)
+        {
+            try
+            {
+                Conjunto objConjunto = new Conjunto();
+
+                objConjunto = await _Conjuntos.obtenerConjuntoIdDepartamento(idDepartamento);
+
+
+                if (objConjunto == null)
+                    return NotFound(MensajesRespuesta.sinResultados());
+
+                ResultadoBusquedaConjuntos resultadoDTO = _mapper.Map<ResultadoBusquedaConjuntos>(objConjunto);
+
+                return Ok(resultadoDTO);
             }
             catch (Exception ex)
             {

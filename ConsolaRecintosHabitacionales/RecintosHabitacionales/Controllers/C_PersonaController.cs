@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DTOs.CatalogoGeneral;
+using DTOs.Conjunto;
 using DTOs.Persona;
 using DTOs.Select;
 using DTOs.Torre;
@@ -344,25 +345,34 @@ namespace RecintosHabitacionales.Controllers
                     {
                         listaResultado = await LeerRespuestas<List<PersonaDTOCompleto>>.procesarRespuestasConsultas(respuesta);
 
-                        foreach (var resultado in listaResultado)
+                        foreach (var objPersona in listaResultado)
                         {
-                            HttpResponseMessage respuestaUsuario = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getUsuarioByIDPersona + resultado.IdPersona, HttpMethod.Get);
+                            HttpResponseMessage respuestaUsuario = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getUsuarioByIDPersona + objPersona.IdPersona, HttpMethod.Get);
                             if (respuestaUsuario.IsSuccessStatusCode)
                             {
                                 UsuarioDTOCompleto objDTOUsuario = await LeerRespuestas<UsuarioDTOCompleto>.procesarRespuestasConsultas(respuestaUsuario);
 
-                                resultado.IdUsuario = objDTOUsuario.IdUsuario;
+                                objPersona.IdUsuario = objDTOUsuario.IdUsuario;
                             }
 
-                            if (resultado.TipoPersonas != null)
+                            if (objPersona.TipoPersonas != null)
                             {
-                                foreach (var item in resultado.TipoPersonas)
+                                foreach (var item in objPersona.TipoPersonas)
                                 {
                                     HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorIdCatalogo + item.IdTipoPersonaDepartamento, HttpMethod.Get);
 
                                     CatalogoDTOCompleto objCatalogo = await LeerRespuestas<CatalogoDTOCompleto>.procesarRespuestasConsultas(respuestaCatalogo);
 
                                     item.TipoPersona = objCatalogo.Nombrecatalogo;
+
+                                    HttpResponseMessage respuestaConjunto = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.obtenerConjuntoPorIDDepartamento + item.IdDepartamento, HttpMethod.Get);
+
+                                    if (respuestaConjunto.IsSuccessStatusCode)
+                                    {
+                                        ResultadoBusquedaConjuntos objConjunto = await LeerRespuestas<ResultadoBusquedaConjuntos>.procesarRespuestasConsultas(respuestaConjunto);
+
+                                        item.ConjuntoPersona = objConjunto.NombreConjunto; 
+                                    }
                                 }
                             }
                         }

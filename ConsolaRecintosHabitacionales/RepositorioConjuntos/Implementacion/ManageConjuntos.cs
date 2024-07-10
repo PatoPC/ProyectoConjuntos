@@ -42,6 +42,25 @@ namespace RepositorioConjuntos.Implementacion
 
         }
 
+        public async Task<Conjunto> obtenerConjuntoIdDepartamento(Guid idDepartamento)
+        {
+            try
+            {
+                var conjunto = await _context.Conjuntos
+                     .Where(c => c.Torres
+                         .Any(t => t.Departamentos
+                             .Any(d => d.IdDepartamento == idDepartamento)))
+                     .FirstOrDefaultAsync();
+
+                return conjunto;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return default;
+        }
         public async Task<List<Conjunto>> obtenerPorNombre(string nombreCondominio)
         {
             try

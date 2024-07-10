@@ -11,6 +11,7 @@ namespace RepositorioConjuntos.Interface
     public interface IManageConjuntos
     {
         public Task<Conjunto> obtenerPorIDConjuntos(Guid idCondominio);
+        public Task<Conjunto> obtenerConjuntoIdDepartamento(Guid idDepartamento);
         public Task<List<Conjunto>> obtenerPorNombre(string nombreCondominio);
         public Task<List<Conjunto>> obtenerPorRUC(string ruc);
         public Task<List<Conjunto>> busquedaAvanzada(BusquedaConjuntos ruc);

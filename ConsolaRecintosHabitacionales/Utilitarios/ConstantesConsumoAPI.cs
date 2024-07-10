@@ -17,6 +17,8 @@ namespace Utilitarios
         public const string EditarConjuntosPorID = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Editar?id=";
         public const string EditarConjuntosEliminar = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Eliminar?id=";
         public const string TodosConjuntos = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/ObtenerTodosConjuntos";
+
+        public const string obtenerConjuntoPorIDDepartamento = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/ObtenerConjuntoPorIDDepartamento?idDepartamento=";
         #endregion
 
         #region Torre
