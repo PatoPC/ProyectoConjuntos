@@ -12,8 +12,12 @@ namespace DTOs.Adeudo
         public string? Departamento { get; set; } = null;
         public Guid IdDepartamento { get; set; }
         public Guid IdPersona { get; set; }
-        public DateTime FechaAdeudos { get; set; }
-        public string Torre { get; set; } = null!;
+		public Guid IdCuentaDebe { get; set; }
+		public Guid IdCuentaHaber { get; set; }
+		public DateTime FechaAdeudos { get; set; }
+		public string NombreCuentaDebe { get; set; } = null!;
+		public string NombreCuentaHaber { get; set; } = null!;
+		public string Torre { get; set; } = null!;
         public string? NombresPersona { get; set; } = null!;
         public string? ApellidosPersona { get; set; } = null!;
         public decimal MontoAdeudos { get; set; }

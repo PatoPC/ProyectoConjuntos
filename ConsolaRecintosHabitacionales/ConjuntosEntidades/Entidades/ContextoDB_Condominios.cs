@@ -42,7 +42,7 @@ namespace ConjuntosEntidades.Entidades
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server=DESKTOP-26QEGBC\\SQLEXPRESS;database=Condominios;persist security info=True;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer("server=DESKTOP-6EB8AME\\SQLEXPRESS;database=Condominios;persist security info=True;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
             }
         }
 
@@ -72,6 +72,10 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_MODIFICACION");
 
+                entity.Property(e => e.IdCuentaDebe).HasColumnName("ID_CUENTA_DEBE");
+
+                entity.Property(e => e.IdCuentaHaber).HasColumnName("ID_CUENTA_HABER");
+
                 entity.Property(e => e.IdDepartamento)
                     .HasColumnName("ID_DEPARTAMENTO")
                     .HasDefaultValueSql("(newid())");
@@ -83,6 +87,16 @@ namespace ConjuntosEntidades.Entidades
                 entity.Property(e => e.MontoAdeudos)
                     .HasColumnType("money")
                     .HasColumnName("MONTO_ADEUDOS");
+
+                entity.Property(e => e.NombreCuentaDebe)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE_CUENTA_DEBE");
+
+                entity.Property(e => e.NombreCuentaHaber)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("NOMBRE_CUENTA_HABER");
 
                 entity.Property(e => e.SaldoPendiente)
                     .HasColumnType("money")
@@ -306,13 +320,9 @@ namespace ConjuntosEntidades.Entidades
 
                 entity.Property(e => e.Grupo).HasColumnName("GRUPO");
 
-                entity.Property(e => e.IdConMstPadre)
-                    .HasColumnName("ID_CON_MST_PADRE")
-                    .HasDefaultValueSql("(newid())");
+                entity.Property(e => e.IdConMstPadre).HasColumnName("ID_CON_MST_PADRE");
 
-                entity.Property(e => e.IdConjunto)
-                    .HasColumnName("ID_CONJUNTO")
-                    .HasDefaultValueSql("(newid())");
+                entity.Property(e => e.IdConjunto).HasColumnName("ID_CONJUNTO");
 
                 entity.Property(e => e.NombreCuenta)
                     .HasMaxLength(60)
@@ -430,7 +440,9 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_MODIFICACION");
 
-                entity.Property(e => e.IdConMst).HasColumnName("ID_CON_MST");
+                entity.Property(e => e.IdConMst)
+                    .HasColumnName("ID_CON_MST")
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.IdTorres)
                     .HasColumnName("ID_TORRES")

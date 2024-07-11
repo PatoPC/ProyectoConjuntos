@@ -150,6 +150,19 @@ namespace RecintosHabitacionales.Models
 
                                     var objCatalogoPadre = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(tipoExtraPadre);
 
+                                    if(objCatalogoPadre== null)
+                                    {
+										CatalogoDTOCrear objCatalogoCrearPadre = new CatalogoDTOCrear();
+
+										objCatalogoCrearPadre.Nombrecatalogo = "Tipo Areas";
+										objCatalogoCrearPadre.UsuarioCreacion = usuarioCreacion;
+										objCatalogoCrearPadre.Codigocatalogo = ConstantesAplicacion.padreTipoAreas;
+
+										HttpResponseMessage respuestaCreacionPadre = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.getGetCatalogosCreate, HttpMethod.Post, objCatalogoCrearPadre);
+
+										objCatalogoPadre = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaTipoExtra);
+									}
+
                                     CatalogoDTOCrear objCatalogoCrear = new CatalogoDTOCrear();
 
                                     objCatalogoCrear.IdCatalogopadre = objCatalogoPadre.IdCatalogo;

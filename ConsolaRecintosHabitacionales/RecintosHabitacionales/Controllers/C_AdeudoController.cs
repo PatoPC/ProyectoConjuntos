@@ -98,10 +98,32 @@ namespace RecintosHabitacionales.Controllers
                 List<AdeudoDTOCrear> listaAdeudos = new List<AdeudoDTOCrear>();
                 DateTime fechaADeudoActual = FuncionesUtiles.ObtenerUltimoDiaDelMes(variable.mes, variable.anio);
                 List<string> adeudoDuplicados = new List<string>();
+				MaestroContableDTOCompleto objCuentaHaber = new MaestroContableDTOCompleto();
 
-                if (variable.IdConjunto != null)
+				 if (variable.IdConjunto != null)
                 {
-                    BusquedaTorres objBusquedaTorres = new BusquedaTorres();
+
+					//Recuperar tipo de cuenta 
+					HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.adeudoModulosContables, HttpMethod.Get);
+
+					if (respuestaCatalogo.IsSuccessStatusCode)
+					{
+						CatalogoDTOResultadoBusqueda objAdeudo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogo);
+
+						HttpResponseMessage respuestaParametro = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.obtenerParametroPorCatalogo + objAdeudo.IdCatalogo, HttpMethod.Get);
+
+						if (respuestaParametro.IsSuccessStatusCode)
+						{
+							ParametroCompletoDTO objMaestroContable = await LeerRespuestas<ParametroCompletoDTO>.procesarRespuestasConsultas(respuestaParametro);
+
+							HttpResponseMessage httpCuentaContable = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarMaestroContableAPI + objMaestroContable.CtaCont2, HttpMethod.Get);
+							//Esta es la cuenta contable del HABER
+							objCuentaHaber = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(httpCuentaContable);
+
+						}
+					}
+
+					BusquedaTorres objBusquedaTorres = new BusquedaTorres();
                     objBusquedaTorres.IdConjunto = (Guid)variable.IdConjunto;
 
                     List<TorreDTOCompleto> listaResultado = new List<TorreDTOCompleto>();
@@ -147,7 +169,15 @@ namespace RecintosHabitacionales.Controllers
                                             objAdeudo.NombresPersona = departamento.TipoPersonas.FirstOrDefault().NombrePersona;
                                         }
 
-                                        listaAdeudos.Add(objAdeudo);
+                                        objAdeudo.IdCuentaHaber = objCuentaHaber.IdConMst;
+                                        objAdeudo.NombreCuentaHaber = objCuentaHaber.NombreCuenta;
+
+
+										objAdeudo.IdCuentaDebe = objCuentaHaber.IdConMst;
+										objAdeudo.NombreCuentaDebe = objCuentaHaber.NombreCuenta;
+
+
+										listaAdeudos.Add(objAdeudo);
                                     }
                                 }
                             }
@@ -189,8 +219,8 @@ namespace RecintosHabitacionales.Controllers
                             foreach (var adeudo in listaAdeudos)
                             {
 								//Detalle Contabilidad 
-								HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.adeudoModulosContables, HttpMethod.Get);
-								CatalogoDTOResultadoBusqueda objAdeudo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogo);
+								HttpResponseMessage respuestaCatalogoTemporal = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.adeudoModulosContables, HttpMethod.Get);
+								CatalogoDTOResultadoBusqueda objAdeudo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogoTemporal);
 
 								HttpResponseMessage respuestaParametro = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.obtenerParametroPorCatalogo + objAdeudo.IdCatalogo, HttpMethod.Get);
 
@@ -204,8 +234,7 @@ namespace RecintosHabitacionales.Controllers
 
 								PersonaDTOCompleto objDTOPersona = await LeerRespuestas<PersonaDTOCompleto>.procesarRespuestasConsultas(httpPersona);
 
-								//Aqui deberia recuperar la cuenta contable creada con el numero de cédula del Adeudo/Inquilino/Arrendatario
-								var cuentaAdeudo = objCuentaAdeudo.InverseIdConMstPadreNavigation.Where(x => x.NombreCuenta == objDTOPersona.IdentificacionPersona).FirstOrDefault();
+								
 
 								//Adeudos Por cobrar que deben ir al DEBE
 
@@ -219,10 +248,10 @@ namespace RecintosHabitacionales.Controllers
 								objDetalleTemporal.UsuarioCreacion = adeudo.UsuarioCreacion;
 								objDetalleTemporal.UsuarioModificacion = adeudo.UsuarioCreacion;
 								objDetalleTemporal.DebitoDetCont = adeudo.MontoAdeudos;
-								objDetalleTemporal.IdCuentaContable = cuentaAdeudo.IdConMst;
+                                objDetalleTemporal.IdCuentaContable = objCuentaHaber.IdConMst;
 								objDetalleTemporal.NroDepartmentoCont = adeudo.Departamento;
 
-								objDetalleTemporal.DetalleDetCont = "GENERACIÓN DE " + fechaADeudoActual.ToString("MMMM").ToUpper() + " " + cuentaAdeudo.NombreCuenta;
+								objDetalleTemporal.DetalleDetCont = "GENERACIÓN DE " + fechaADeudoActual.ToString("MMMM").ToUpper() + " " + objCuentaHaber.NombreCuenta;
 								listaDetallesHaber.Add(objDetalleTemporal);
 								//Fin Detalle Contabilidad
 							}
@@ -257,42 +286,21 @@ namespace RecintosHabitacionales.Controllers
                                 objDTOCabecera.UsuarioCreacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
 								//Esta es la cuenta contable del HABER
-								DetalleContabilidadCrear objDetalle = new DetalleContabilidadCrear();
+								//DetalleContabilidadCrear objDetalle = new DetalleContabilidadCrear();
 
-                                objDetalle.FechaDetCont = fechaADeudoActual;
-                                objDetalle.DetalleDetCont = "Generación " + fechaADeudoActual.ToString("dd-MMM-yyyy");
+        //                        objDetalle.FechaDetCont = fechaADeudoActual;
+        //                        objDetalle.DetalleDetCont = "Generación " + fechaADeudoActual.ToString("dd-MMM-yyyy");
 
-                                objDetalle.FechaCreacion = DateTime.Now;
-                                objDetalle.FechaModificacion = DateTime.Now;
-                                objDetalle.UsuarioCreacion = objDTOCabecera.UsuarioCreacion;
-                                objDetalle.UsuarioModificacion = objDTOCabecera.UsuarioCreacion;
-                                objDetalle.CreditoDetCont = listaAdeudos.Sum(x => x.MontoAdeudos);
+        //                        objDetalle.FechaCreacion = DateTime.Now;
+        //                        objDetalle.FechaModificacion = DateTime.Now;
+        //                        objDetalle.UsuarioCreacion = objDTOCabecera.UsuarioCreacion;
+        //                        objDetalle.UsuarioModificacion = objDTOCabecera.UsuarioCreacion;
+        //                        objDetalle.CreditoDetCont = listaAdeudos.Sum(x => x.MontoAdeudos);
 
-                                //Recuperar tipo de cuenta 
-                                HttpResponseMessage respuestaCatalogo = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.adeudoModulosContables, HttpMethod.Get);
-
-                                if (respuestaCatalogo.IsSuccessStatusCode)
-                                {
-                                    CatalogoDTOResultadoBusqueda objAdeudo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogo);
-
-                                    HttpResponseMessage respuestaParametro = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.obtenerParametroPorCatalogo + objAdeudo.IdCatalogo, HttpMethod.Get);
-
-                                    if (respuestaParametro.IsSuccessStatusCode)
-                                    {
-                                        ParametroCompletoDTO objMaestroContable = await LeerRespuestas<ParametroCompletoDTO>.procesarRespuestasConsultas(respuestaParametro);
-
-                                        HttpResponseMessage httpCuentaContable = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.gestionarMaestroContableAPI + objMaestroContable.CtaCont2, HttpMethod.Get);
-
-                                        MaestroContableDTOCompleto objCuenta = await LeerRespuestas<MaestroContableDTOCompleto>.procesarRespuestasConsultas(httpCuentaContable);
-
-                                        //Esta es la cuenta contable del HABER
-                                        objDetalle.IdCuentaContable = (Guid)objMaestroContable.CtaCont2;
-                                        objDetalle.DetalleDetCont = objCuenta.NombreCuenta;
-                                    }
-                                }
+                               
 
                                 objDTOCabecera.DetalleContabilidads = new List<DetalleContabilidadCrear>();
-                                listaDetallesHaber.Add(objDetalle);
+                                //listaDetallesHaber.Add(objDetalle);
                                 objDTOCabecera.DetalleContabilidads = listaDetallesHaber;
 
                                 HttpResponseMessage httpCrearCabecera = await _servicioConsumoEncabezado.consumoAPI(ConstantesConsumoAPI.CabeceraContabilidad, HttpMethod.Post, objDTOCabecera);

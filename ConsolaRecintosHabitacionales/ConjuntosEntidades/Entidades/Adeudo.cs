@@ -16,6 +16,10 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioCreacion { get; set; } = null!;
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
+        public Guid IdCuentaDebe { get; set; }
+        public Guid IdCuentaHaber { get; set; }
+        public string NombreCuentaDebe { get; set; } = null!;
+        public string NombreCuentaHaber { get; set; } = null!;
 
         public virtual Departamento IdDepartamentoNavigation { get; set; } = null!;
         public virtual Persona IdPersonaNavigation { get; set; } = null!;
