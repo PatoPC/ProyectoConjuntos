@@ -44,8 +44,8 @@ VALUES( 0, 'Modulos', 'MDLS', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin
 
 
 INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
-(NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA,   FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ICONO)
-VALUES( 1, 'Configuración', 'CONFG', 'Padre configuraciones', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','fas fa-wrench');
+(ID_CATALOGOPADRE, NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA,   FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ICONO)
+VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='CONFG'),1, 'Configuración', 'CONFG', 'Padre configuraciones', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','fas fa-wrench');
 
 INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
 (ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL)
@@ -56,7 +56,11 @@ VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CAT
 INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
 (ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL)
 VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='CONFG'), 
-2 'Catálogos', 'CATLGS', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','/C_Catalogo/GestionCatalogos');
+2, 'Catálogos', 'CATLGS', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','/C_Catalogo/GestionCatalogos');
+
+select *
+from Catalogo_Conjunto.dbo.CATALOGO c
+where c.CODIGO_CATALOGO ='CATLGS'
 
 INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
 (ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL)
@@ -122,6 +126,11 @@ INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
 (ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL)
 VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='GCRCON'), 
 2, ' Comprobantes', 'CONTCONT', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','/C_Contabilidad/Comprobantes');
+
+INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
+(ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL)
+VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='GCRCON'), 
+2, ' Formato Cuentas', 'FORCUNT', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','/C_ConfigCuenta/GestionarConfiguracion');
 
 INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
 (ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL)
@@ -199,11 +208,11 @@ VALUES((select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATA
 'Patricio', 'Córdova', '2200025787', '0982119036', 'patricio.cordova@outlook.com', '', getdate(), getdate(), 'admin', 'admin');
 
 SELECT *
-from Condominios.dbo.PERSONA
+from Condominios.dbo.PERSONA;
 
 INSERT INTO Condominios_Permisos.dbo.ROL
 (NOMBRE_ROL, ESTADO, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, ACCESO_TODOS, ROL_RESTRINGIDO)
-VALUES('Administrador', 1, getdate(), getdate(), 'admin', 'admin', 1, 1);
+VALUES('Condomino', 1, getdate(), getdate(), 'admin', 'admin', 1, 1);
 
 SELECT ID_ROL from Condominios_Permisos.dbo.ROL where NOMBRE_ROL ='Administrador'
 SELECT * from Condominios_Permisos.dbo.ROL
@@ -222,7 +231,9 @@ VALUES(
 (SELECT ID_MODULO  from Condominios_Permisos.dbo.MODULO where NOMBRE ='Configuración'), 
 'Catálogos', '/C_Catalogo/GestionCatalogos', '');
 
-SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBREMENU ='Catálogos'
+SELECT *  from Condominios_Permisos.dbo.MENU
+
+SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='Catálogos'
 
 
 INSERT INTO Condominios_Permisos.dbo.PERMISOS
@@ -234,9 +245,16 @@ values
 ((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='Catálogos'),'Búsquedas', 1, 'badge badge-dark'),
 ((SELECT ID_MENU  from Condominios_Permisos.dbo.MENU where NOMBRE_MENU ='Catálogos'),'Edici�n', 1, 'badge badge-success')
 
+select *
+from Condominios_Permisos.dbo.PERMISOS
+
+
 INSERT INTO Condominios.dbo.CONJUNTO
 (NOMBRE_CONJUNTO, RUC_CONJUNTO, DIRECCION_CONJUNTO, TELEFONO_CONJUNTO, MAIL_CONJUNTO, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION)
 VALUES ('Condominio','2100025787001','esa misma','068264564','conjunto@conjunto.com',getdate(),getdate(),'admin','admin')
+
+select *
+from Condominios.dbo.CONJUNTO;
 
 INSERT INTO Condominios_Permisos.dbo.USUARIO
 (ID_ROL, ID_PERSONA, ID_CONJUNTO_DEFAULT, ESTADO, CORREO_ELECTRONICO, CONTRASENA_INICIAL, CONTRASENA, INDICIO_CONTRASENA, FECHA_ULTIMO_INGRESO, FECHA_CREACION, FECHA_MODIFICACION, 

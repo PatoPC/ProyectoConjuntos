@@ -182,7 +182,6 @@ namespace APICondominios.Controllers
             try
             {
                 List<Parametro> listaResultado = new List<Parametro>();
-                //listaResultado = await _Parametro.busquedaTodosProveedor(idConjuunto);
 
                 if (listaResultado.Count < 1)                
                     return NotFound(MensajesRespuesta.sinResultados());                
