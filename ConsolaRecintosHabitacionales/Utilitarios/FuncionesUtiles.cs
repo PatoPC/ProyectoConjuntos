@@ -321,7 +321,14 @@ namespace Utilitarios
             return ultimoDiaDelMesActual;
         }
 
-        public static string ResumirString(string texto, int max, int min = 5)
+		public static DateTime ObtenerPrimerDiaDelMes(int mes, int año)
+		{			
+			DateTime primerDiaDelMes = new DateTime(año, mes, 1);
+
+			return primerDiaDelMes;
+		}
+
+		public static string ResumirString(string texto, int max, int min = 5)
         {
             if (string.IsNullOrWhiteSpace(texto))
             {

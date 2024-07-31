@@ -119,7 +119,21 @@ namespace RecintosHabitacionales.Controllers
 
             ConfiguraCuentasDTOCompleto objConfigurar = await recuperarRegistro(IdConjunto);
 
-            List<ModeloArchivoMaestro> listaArchivoLeido = await construirMaestroArchivo(FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion));
+
+			if (string.IsNullOrEmpty(objConfigurar.Parametrizacion))
+			{
+				MensajesRespuesta objMensajeRespuesta = new MensajesRespuesta();
+
+                objMensajeRespuesta.message = "No se encontró la Formato de cuentas.";
+                objMensajeRespuesta.status = 0;
+                objMensajeRespuesta.state = "error";
+                objMensajeRespuesta.icon = "error";
+                objMensajeRespuesta.IsSuccess = false;
+
+				return new JsonResult(objMensajeRespuesta);
+			}
+
+			List<ModeloArchivoMaestro> listaArchivoLeido = await construirMaestroArchivo(FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion));
 
             HttpResponseMessage respuesta = await construirDTOMaestroMayor(objUsuarioSesion, listaArchivoLeido, IdConjunto, objConfigurar);
 

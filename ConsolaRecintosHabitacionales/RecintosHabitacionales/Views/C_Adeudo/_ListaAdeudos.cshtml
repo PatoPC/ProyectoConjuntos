@@ -81,7 +81,17 @@
                                     @item.FechaAdeudos.ToString("dd-MMM-yyyy")
                                 </td>
                                 <td data-title="Estado">
-                                    @item.EstadoAdeudos
+                                    @if (item.EstadoAdeudos)
+                                    {
+                                        <span>Pagado</span>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            Pendiente
+                                        </span>
+                                    }
+
                                 </td>
 
                             </tr>

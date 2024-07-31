@@ -5,9 +5,9 @@ using DTOs.Torre;
 
 namespace APICondominios.Perfil
 {
-    public class ProfileConjutos : Profile
+    public class ProfileConjuntos : Profile
     {
-        public ProfileConjutos()
+        public ProfileConjuntos()
         {
             CreateMap<Conjunto, ConjuntoDTOCompleto>();
             CreateMap<ConjuntoDTOCompleto, Conjunto>();

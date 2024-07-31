@@ -3885,7 +3885,7 @@ PhysOpts=
 
 [ModelOptions\Default Opts\FRMESOB&lt;&lt;WorkloadGroup&gt;&gt;]
 PhysOpts=</a:ModelOptionsText>
-<a:RepositoryFilename>F:\VisualStudio\Personal\Roberto-Conjuntos\ProyectoConjuntos\BaseDatos\CORDOVA\CONJUNTO_H.pdm</a:RepositoryFilename>
+<a:RepositoryFilename>C:\Visual\Proyecto_Roberto\BaseDatos\CORDOVA\CONJUNTO_H.pdm</a:RepositoryFilename>
 <c:DBMS>
 <o:Shortcut Id="o3">
 <a:ObjectID>7B970BF8-2436-4D5A-B071-DC8BD099D349</a:ObjectID>
@@ -7735,9 +7735,8 @@ opcInqui</a:Comment>
 <a:Code>ID_CON_MST_PADRE</a:Code>
 <a:CreationDate>1697758109</a:CreationDate>
 <a:Creator>patri</a:Creator>
-<a:ModificationDate>1697758138</a:ModificationDate>
-<a:Modifier>patri</a:Modifier>
-<a:DefaultValue>newid()</a:DefaultValue>
+<a:ModificationDate>1721880781</a:ModificationDate>
+<a:Modifier>PatricioCordova</a:Modifier>
 <a:DataType>uniqueidentifier</a:DataType>
 <a:AutoMigrated>1</a:AutoMigrated>
 </o:Column>
