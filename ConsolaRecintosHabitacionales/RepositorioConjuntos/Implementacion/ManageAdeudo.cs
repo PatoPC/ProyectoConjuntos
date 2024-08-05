@@ -25,15 +25,35 @@ namespace RepositorioConjuntos.Implementacion
             try
             {
                 List<Adeudo> listaAdeudos = new List<Adeudo>();
-                
-                listaAdeudos = await _context.Adeudos
-                    .Where(x => x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto && 
+
+                if (objBusqueda.EstadoPago == null)
+                {
+                    listaAdeudos = await _context.Adeudos
+                    .Where(x => x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto &&
                     x.FechaAdeudos == objBusqueda.fechaADeudoActual)
                     .Include(x => x.IdDepartamentoNavigation)
                     .ThenInclude(x => x.IdTorresNavigation)
                     .ThenInclude(x => x.IdConjuntoNavigation)
                     .Include(x => x.IdPersonaNavigation)
-                    .ToListAsync();               
+                    .ToListAsync();
+                }
+                else
+                {
+                    listaAdeudos = await _context.Adeudos.
+                        Where(x => x.EstadoAdeudos 
+                        && x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto 
+                        && x.FechaAdeudos == objBusqueda.fechaADeudoActual)
+                    .Include(x => x.IdDepartamentoNavigation)
+                    .ThenInclude(x => x.IdTorresNavigation)
+                    .ThenInclude(x => x.IdConjuntoNavigation)
+                    .Include(x => x.IdPersonaNavigation)
+                    .ToListAsync();
+                }
+
+                if (!string.IsNullOrEmpty(objBusqueda.numeroDepartamento))
+                {
+                    listaAdeudos = listaAdeudos.Where(x => x.IdDepartamentoNavigation.CodigoDepartamento.Trim() == objBusqueda.numeroDepartamento.Trim()).ToList();
+                }
 
                 return listaAdeudos;
             }
@@ -43,6 +63,19 @@ namespace RepositorioConjuntos.Implementacion
             }
 
             return default;
+        }
+
+        public async Task<Adeudo> obtenerAdeudosAvanzado(Guid IdAdeudos)
+        {
+            var objAdeudo = await _context.Adeudos.Where(x => x.IdAdeudos == IdAdeudos)
+                .Include(x => x.IdDepartamentoNavigation)
+                    .ThenInclude(x => x.IdTorresNavigation)
+                    .ThenInclude(x => x.IdConjuntoNavigation)
+                    .Include(x => x.IdPersonaNavigation)
+                    .Include(x => x.PagoAdeudos)
+                .FirstOrDefaultAsync();
+
+            return objAdeudo;
         }
     }
 }

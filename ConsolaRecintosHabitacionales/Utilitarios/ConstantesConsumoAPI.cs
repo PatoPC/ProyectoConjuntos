@@ -116,7 +116,7 @@ namespace Utilitarios
 
         #region Adeudo
         public const string gestionarAdeudoAPI = ConstantesAplicacion.pathAPI + "/api/adeudo/";
-        //public const string gestionarPersonaAPIEditar = ConstantesAplicacion.pathAPI + "/api/persona/Editar?id=";
+        public const string gestionarAdeudoEditar = ConstantesAplicacion.pathAPI + "/api/adeudo/Editar?id=";
         //public const string gestionarPersonaAPIEliminar = ConstantesAplicacion.pathAPI + "/api/persona/Eliminar?id=";
         public const string buscarAdeudoAvanzado = ConstantesAplicacion.pathAPI + "/api/adeudo/BusquedaAvanzadaAdeudo";
         

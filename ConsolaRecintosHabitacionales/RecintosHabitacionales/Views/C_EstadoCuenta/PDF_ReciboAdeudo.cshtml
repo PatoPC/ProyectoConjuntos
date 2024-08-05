@@ -1,0 +1,113 @@
+﻿@model DTOs.Adeudo.AdeudoDTOCompleto
+@{
+
+}
+
+
+
+<div id="divReporte" style="margin-left:5%;margin-right:5%;">
+
+    <!--begin::Container Cabecera Rol-->
+    <table border="0" width="100%">
+        <tr style="border-bottom:solid; border-top:solid;">
+            <td width="100%">
+                <center>
+                    <div style="font-size:20px; font-weight:bold">RECIBO</div><br />
+
+                </center>
+            </td>
+        </tr>
+    </table>
+
+    <table border="0" width="100%">
+        <tr>
+            <td width="10%">
+                <center><b>Fecha</b></center>
+            </td>
+            <td width="40%">
+                <center>  @Model.FechaCreacion.ToString("dd-MMMM-yyyy HH:mm").ToUpper()</center>
+            </td>
+            <td width="10%">
+                <center><b>NOMBRE:</b></center>
+            </td>
+            <td width="40%">
+                <center>  @Model.Nombre @Model.Apellido</center>
+            </td>
+        </tr>
+
+        <tr>
+            <td width="10%">
+                <center><b>Departamento</b></center>
+            </td>
+            <td width="40%">
+                <center>  @Model.Departamento</center>
+            </td>
+        </tr>
+
+    </table>
+
+    @foreach (var pago in Model.PagoAdeudos)
+    {
+        <table border="0" width="100%">
+
+            <tr>
+                <td>
+                    VALOR PAGO
+                </td>
+                <td>
+                    @pago.ValorPago.ToString("#.##")
+                </td>
+                <td>
+                    CONCEPTO
+                </td>
+                <td>
+                    @{
+                        string concepto = "Generación de " + Model.FechaAdeudos.ToString("dd MMMM yyyy") + " del departamento " + Model.Departamento;
+                    }
+                    <span>@concepto</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    SALDO PENDIENTE
+                </td>
+                <td>
+                    @pago.SaldoPendiente.ToString("#.##")
+                </td>
+                <td>
+                    TIPO PAGO
+                </td>
+                <td>
+                    @pago.NombreTipoPago
+                </td>
+            </tr>
+
+
+
+
+        </table>
+    }
+
+
+
+    <!--begin::Container Datos Pie de pagina  -->
+    <table border="0" width="100%" style="margin-top:10px;">
+        <tr>
+
+            <td width="100%">
+                <table width="100%">
+                    <tr style="border-top:solid;">
+                        <td>
+                            <center><b>RECIBE CONFORME - FECHA: @DateTime.Now.ToString("dd/M/yyyy HH:mm:ss")</b></center>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="5%"></td>
+        </tr>
+    </table>
+</div>
+
+
+

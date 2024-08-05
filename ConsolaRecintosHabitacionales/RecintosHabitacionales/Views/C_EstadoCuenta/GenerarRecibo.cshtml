@@ -1,0 +1,261 @@
+﻿@model DTOs.Adeudo.AdeudoDTOCompleto
+
+@{
+    decimal totalPagar = Model.MontoAdeudos + Model.SaldoPendiente;
+}
+
+<div class="card mb-10 mb-xl-12">
+    <div class="card-header card-header-stretch">
+        <div class="card-title d-flex align-items-center">
+            <div class="row">
+                <div class="col-md-9">
+                    <h3 class="fw-bolder m-0 text-gray-800">
+                        <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
+                        Recibo
+                    </h3>
+                </div>
+                <div class="col-md-12">
+                    <a class="btn btn-success" asp-action="AdministracionEstadoCuenta"><i class="fas fa-undo-alt"></i><b> Regresar</b></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body border-top">
+
+        <div class="row p-lg-10">
+            <form asp-action="GenerarRecibo" id="FormCrear">
+                @Html.HiddenFor(x => x.IdDepartamento)
+                @Html.HiddenFor(x => x.IdAdeudos)
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="NombreProveedor" class="control-label required">
+                                            Fecha
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" asp-for="FechaAdeudos" class="form-control form-control-solid" value="@Model.FechaAdeudos.ToString("dd-MMMM-yyyy").ToUpper()" readonly="readonly" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Titulo" class="control-label required">
+                                            Departamento
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" asp-for="Departamento" class="form-control form-control-solid" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Nombre" class="control-label required">
+                                            Nombre
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" asp-for="Nombre" class="form-control form-control-solid" value="@Model.Nombre @Model.Apellido" readonly="readonly" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label class="control-label required">
+                                            Valor
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" asp-for="MontoAdeudos" class="form-control form-control-solid" value="@Model.MontoAdeudos" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label class="control-label required">
+                                            Concepto
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-9 fv-row">
+                                    @{
+                                        string concepto = "Generación de " + Model.FechaAdeudos.ToString("dd MMMM yyyy") + " del departamento " + Model.Departamento;
+                                    }
+
+                                    <input type="text" class="form-control form-control-solid" value="@concepto" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label class="control-label required">
+                                            Saldo Pendiente
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input asp-for="SaldoPendiente" type="text" class="form-control form-control-solid" value="@Model.SaldoPendiente" readonly="readonly" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Estado" class="control-label required">
+                                            Forma pago
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    @Html.DropDownList("IdFormapago", ViewData["listaFormasPago"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label class="control-label required">
+                                            Valor Pagar
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" name="valorPagar" id="valorPagar" class="form-control form-control-solid" value="@totalPagar" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Estado" class="control-label">
+                                            Comentarios
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <textarea asp-for="Observacion" class="form-control">
+
+                                   </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label class="control-label required">
+                                            Valor Pagar
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" name="valorPagar" id="valorPagar" class="form-control form-control-solid" value="@totalPagar" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-xl-12 fv-row">
+                        <center>
+                            <button type="button" onclick="sendFormAjax(this, 'FormCrear', undefined,undefined,'btn_CrearProveedor')" class="btn btn-primary" id="btn_CrearProveedor">
+                                <span class="indicator-label">
+                                    <i class="fas fa-money-bill-wave"></i>Registrar Pago                                    
+                                </span>
+                                <span class="indicator-progress">
+                                    Por favor espere... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </center>
+                    </div>
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/site.js"></script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            //const select = document.querySelector('#IdConjunto');
+            //if (select.options.length === 1) {
+            //    select.selectedIndex = 0;
+            //}
+        })
+
+    </script>
+}

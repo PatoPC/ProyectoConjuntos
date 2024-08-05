@@ -22,8 +22,6 @@ public partial class ContextoDB_Papelera : DbContext
          //=> optionsBuilder.UseSqlServer("server=DESKTOP-6EB8AME\\SQLEXPRESS;database=Papelera_Conjuntos;persist security info=True; Encrypt=False;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
          => optionsBuilder.UseSqlServer("server=DESKTOP-26QEGBC\\SQLEXPRESS;database=LogsConjuntos;persist security info=True; Encrypt=False;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
     //=> optionsBuilder.UseSqlServer("server=PCPATOTI\\SQLEXPRESS;database=Papelera_Conjuntos;persist security info=True; Encrypt=False;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
-        //=> optionsBuilder.UseSqlServer("server=DESKTOP-6EB8AME\\SQLEXPRESS;database=Papelera_Conjuntos;persist security info=True; Encrypt=False;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
-        => optionsBuilder.UseSqlServer("server=DESKTOP-6EB8AME\\SQLEXPRESS;database=Papelera_Conjuntos;persist security info=True; Encrypt=False;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

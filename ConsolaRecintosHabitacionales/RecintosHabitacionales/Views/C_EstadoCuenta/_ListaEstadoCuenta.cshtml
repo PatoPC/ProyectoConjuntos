@@ -1,0 +1,120 @@
+﻿@model IEnumerable<DTOs.Adeudo.AdeudoDTOCompleto>
+@using Utilitarios;
+
+@{
+    Layout = "";
+    List<string> adeudosEliminados = (List<string>)TempData["adeudoDuplicados"];
+}
+
+
+<div class="card card-flush">
+    <div class="card card-body">
+        @await Html.PartialAsync("_MensajesBusqueda", Model.Count())
+
+        @if (adeudosEliminados != null)
+        {
+            <div><b>No se ha insertado los siguientes adeudos debido a que ya existian.</b></div>
+            <ul>
+                @foreach (var adeudoTemp in adeudosEliminados)
+                {
+                    <li><span>@adeudoTemp</span></li>
+                }
+            </ul>
+        }
+
+        @if (Model.Count() > 0)
+        {
+            <table border="1" id="idTablaAdeudos" class="table align-middle table-row-dashed fs-6 gy-5">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                        <th>
+                            <span class="badge badge-light text-dark">Conjunto</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Torre</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Depart.</span>
+                        </th>
+
+                        <th>
+                            <span class="badge badge-light text-dark">Nombres</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Valor</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Fecha</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Estado</span>
+                        </th>
+                        <th>
+                            <span class="badge badge-light text-dark">Acción</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="fw-bold text-gray-600">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td data-title="Conjunto">
+                                    @item.NombreConjunto
+                                </td>
+                                <td data-title="Torre">
+                                    @item.Torre
+                                </td>
+                                <td data-title="Depart.">
+                                    @item.Departamento
+                                </td>
+
+                                <td data-title="Nombres Apellido">
+                                    <span>@item.Nombre</span>
+                                    <span>@item.Apellido</span>
+                                </td>
+                                <td data-title="Valor">
+                                    <div>
+                                        @item.MontoAdeudos.ToString("N2")
+                                    </div>
+
+                                </td>
+                                <td data-title="Fecha">
+                                    @item.FechaAdeudos.ToString("dd-MMM-yyyy")
+                                </td>
+                                <td data-title="Estado">
+                                    @if (item.EstadoAdeudos)
+                                    {
+                                        <span>Pagado</span>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            Pendiente
+                                        </span>
+                                    }
+                                </td>
+
+                                <td data-title="Acción">
+                                    @if (item.EstadoAdeudos)
+                                    {
+                                        <div>
+                                            <a href="~/C_EstadoCuenta/PDF_ReciboAdeudo?IdAdeudos=@item.IdAdeudos" target="_blank" class="badge badge-light-primary">Ver Recibo<i class="far fa-edit" style="color: #009ef7; cursor:pointer"></i></a>
+                                        </div>
+                                    }
+                                    else
+                                        {
+                                        <div>
+                                            <a href="~/C_EstadoCuenta/GenerarRecibo?IdAdeudos=@item.IdAdeudos" target="_blank" class="badge badge-light-primary">Pagar<i class="far fa-edit" style="color: #009ef7; cursor:pointer"></i></a>
+                                        </div>                                            
+                                        }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

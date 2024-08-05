@@ -5,6 +5,11 @@ namespace ConjuntosEntidades.Entidades
 {
     public partial class Adeudo
     {
+        public Adeudo()
+        {
+            PagoAdeudos = new HashSet<PagoAdeudo>();
+        }
+
         public Guid IdAdeudos { get; set; }
         public Guid IdDepartamento { get; set; }
         public Guid IdPersona { get; set; }
@@ -16,12 +21,9 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioCreacion { get; set; } = null!;
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
-        public Guid IdCuentaDebe { get; set; }
-        public Guid IdCuentaHaber { get; set; }
-        public string NombreCuentaDebe { get; set; } = null!;
-        public string NombreCuentaHaber { get; set; } = null!;
 
         public virtual Departamento IdDepartamentoNavigation { get; set; } = null!;
         public virtual Persona IdPersonaNavigation { get; set; } = null!;
+        public virtual ICollection<PagoAdeudo> PagoAdeudos { get; set; }
     }
 }

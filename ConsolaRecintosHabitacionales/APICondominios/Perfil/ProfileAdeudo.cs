@@ -13,6 +13,12 @@ namespace APICondominios.Perfil
             CreateMap<Adeudo, AdeudoDTOCrear>();                
             CreateMap<AdeudoDTOCrear, Adeudo>();
 
+            CreateMap<AdeudoDTOEditar, Adeudo>();
+            CreateMap<Adeudo, AdeudoDTOEditar>();
+
+            CreateMap<PagoAdeudo, PagoAdeudoDTOCompleto>();
+            CreateMap<PagoAdeudoDTOCompleto, PagoAdeudo>();
+
             CreateMap<Adeudo, AdeudoDTOCompleto>()
                 .ForMember(x => x.Nombre, y => y.MapFrom(fuente => fuente.IdPersonaNavigation.NombresPersona))
                 .ForMember(x => x.Apellido, y => y.MapFrom(fuente => fuente.IdPersonaNavigation.ApellidosPersona))

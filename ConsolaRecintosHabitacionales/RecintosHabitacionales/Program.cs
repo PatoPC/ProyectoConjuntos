@@ -22,6 +22,7 @@ using RecintosHabitacionales.Conexiones;
 using RecintosHabitacionales.Servicio;
 using RecintosHabitacionales.Servicio.Implementar;
 using RecintosHabitacionales.Servicio.Interface;
+using Rotativa.AspNetCore;
 using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -118,6 +119,7 @@ builder.Services.AddScoped(typeof(CargarMaestroContable));
 
 builder.Services.AddScoped(typeof(EncabezContDTOCrear));
 builder.Services.AddScoped(typeof(BusquedaContabilidad));
+builder.Services.AddScoped(typeof(AdeudoDTOEditar));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -152,9 +154,13 @@ app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseRotativa();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=C_Ingreso}/{action=Ingresar}/{id?}");
 
 app.Run();
+
+//Rotativa.AspNetCore.RotativaConfiguration.Setup(app.Environment.WebRootPath, "../Rotativa");
+

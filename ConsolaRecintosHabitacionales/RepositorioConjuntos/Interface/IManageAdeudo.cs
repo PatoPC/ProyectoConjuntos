@@ -11,5 +11,6 @@ namespace RepositorioConjuntos.Interface
     public interface IManageAdeudo
     {
         public Task<List<Adeudo>> obtenerAdeudosAvanzado(GenerarAdeudo objBusqueda);
+        public Task<Adeudo> obtenerAdeudosAvanzado(Guid IdAdeudos);
     }
 }

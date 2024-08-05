@@ -27,6 +27,7 @@ namespace ConjuntosEntidades.Entidades
         public virtual DbSet<DetalleContabilidad> DetalleContabilidads { get; set; } = null!;
         public virtual DbSet<EncabezadoContabilidad> EncabezadoContabilidads { get; set; } = null!;
         public virtual DbSet<FacturaCompra> FacturaCompras { get; set; } = null!;
+        public virtual DbSet<PagoAdeudo> PagoAdeudos { get; set; } = null!;
         public virtual DbSet<Parametro> Parametros { get; set; } = null!;
         public virtual DbSet<Persona> Personas { get; set; } = null!;
         public virtual DbSet<Proveedore> Proveedores { get; set; } = null!;
@@ -42,10 +43,7 @@ namespace ConjuntosEntidades.Entidades
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                //optionsBuilder.UseSqlServer("server=DESKTOP-26QEGBC\\SQLEXPRESS;database=Condominios;persist security info=True;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
-                 optionsBuilder.UseSqlServer("server=PCPATOTI\\SQLEXPRESS;database=Condominios;persist security info=True;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
-
-                optionsBuilder.UseSqlServer("server=DESKTOP-6EB8AME\\SQLEXPRESS;database=Condominios;persist security info=True;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer("server=DESKTOP-26QEGBC\\SQLEXPRESS;database=Condominios;persist security info=True;user id=AdminSQLUser;password=1915.*@Ort.;MultipleActiveResultSets=True");
             }
         }
 
@@ -75,10 +73,6 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_MODIFICACION");
 
-                entity.Property(e => e.IdCuentaDebe).HasColumnName("ID_CUENTA_DEBE");
-
-                entity.Property(e => e.IdCuentaHaber).HasColumnName("ID_CUENTA_HABER");
-
                 entity.Property(e => e.IdDepartamento)
                     .HasColumnName("ID_DEPARTAMENTO")
                     .HasDefaultValueSql("(newid())");
@@ -90,16 +84,6 @@ namespace ConjuntosEntidades.Entidades
                 entity.Property(e => e.MontoAdeudos)
                     .HasColumnType("money")
                     .HasColumnName("MONTO_ADEUDOS");
-
-                entity.Property(e => e.NombreCuentaDebe)
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .HasColumnName("NOMBRE_CUENTA_DEBE");
-
-                entity.Property(e => e.NombreCuentaHaber)
-                    .HasMaxLength(100)
-                    .IsUnicode(false)
-                    .HasColumnName("NOMBRE_CUENTA_HABER");
 
                 entity.Property(e => e.SaldoPendiente)
                     .HasColumnType("money")
@@ -325,7 +309,9 @@ namespace ConjuntosEntidades.Entidades
 
                 entity.Property(e => e.IdConMstPadre).HasColumnName("ID_CON_MST_PADRE");
 
-                entity.Property(e => e.IdConjunto).HasColumnName("ID_CONJUNTO");
+                entity.Property(e => e.IdConjunto)
+                    .HasColumnName("ID_CONJUNTO")
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.NombreCuenta)
                     .HasMaxLength(60)
@@ -443,9 +429,7 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_MODIFICACION");
 
-                entity.Property(e => e.IdConMst)
-                    .HasColumnName("ID_CON_MST")
-                    .HasDefaultValueSql("(newid())");
+                entity.Property(e => e.IdConMst).HasColumnName("ID_CON_MST");
 
                 entity.Property(e => e.IdTorres)
                     .HasColumnName("ID_TORRES")
@@ -748,6 +732,65 @@ namespace ConjuntosEntidades.Entidades
                     .WithMany(p => p.FacturaCompras)
                     .HasForeignKey(d => d.IdProveedor)
                     .HasConstraintName("FK_FACTURA__REFERENCE_PROVEEDO");
+            });
+
+            modelBuilder.Entity<PagoAdeudo>(entity =>
+            {
+                entity.HasKey(e => e.IdPagoAdeudo);
+
+                entity.ToTable("PAGO_ADEUDO");
+
+                entity.Property(e => e.IdPagoAdeudo)
+                    .HasColumnName("ID_PAGO_ADEUDO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.EstadoImpreso).HasColumnName("ESTADO_IMPRESO");
+
+                entity.Property(e => e.FechaCreacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_CREACION");
+
+                entity.Property(e => e.FechaModificacion)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_MODIFICACION");
+
+                entity.Property(e => e.FechaPago)
+                    .HasColumnType("datetime")
+                    .HasColumnName("FECHA_PAGO");
+
+                entity.Property(e => e.IdAdeudos)
+                    .HasColumnName("ID_ADEUDOS")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdTipoPago).HasColumnName("ID_TIPO_PAGO");
+
+                entity.Property(e => e.Observacion)
+                    .HasColumnType("text")
+                    .HasColumnName("OBSERVACION");
+
+                entity.Property(e => e.SaldoPendiente)
+                    .HasColumnType("money")
+                    .HasColumnName("SALDO_PENDIENTE");
+
+                entity.Property(e => e.UsuarioCreacion)
+                    .HasMaxLength(60)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_CREACION");
+
+                entity.Property(e => e.UsuarioModificacion)
+                    .HasMaxLength(60)
+                    .IsUnicode(false)
+                    .HasColumnName("USUARIO_MODIFICACION");
+
+                entity.Property(e => e.ValorPago)
+                    .HasColumnType("money")
+                    .HasColumnName("VALOR_PAGO");
+
+                entity.HasOne(d => d.IdAdeudosNavigation)
+                    .WithMany(p => p.PagoAdeudos)
+                    .HasForeignKey(d => d.IdAdeudos)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PAGO_ADE_REFERENCE_ADEUDOS");
             });
 
             modelBuilder.Entity<Parametro>(entity =>

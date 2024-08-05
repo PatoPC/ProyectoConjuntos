@@ -11,6 +11,16 @@ namespace Utilitarios
 {
     public class FuncionesUtiles
     {
+        public static IEnumerable<int> obtenerAnios()
+        {
+            int currentYear = DateTime.Now.Year;
+            while (currentYear >= 2023)
+            {
+                yield return currentYear;
+                currentYear--;
+            }
+        }
+
         public static string TruncarString(string input, int length)
         {
             if (input.Length <= length)
