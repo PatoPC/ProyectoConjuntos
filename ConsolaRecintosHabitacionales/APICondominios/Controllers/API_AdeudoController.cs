@@ -146,6 +146,12 @@ namespace APICondominios.Controllers
 
                 List<AdeudoDTOCompleto> listaResultadoDTO = _mapper.Map<List<AdeudoDTOCompleto>>(listaResultado);
 
+                if (!string.IsNullOrEmpty(objBusqueda.nombrePersona))
+                {
+                    listaResultadoDTO = listaResultadoDTO.Where(x => x.Nombre.ToUpper().Contains(objBusqueda.nombrePersona.ToUpper()) 
+                                    || x.Apellido.ToUpper().Contains(objBusqueda.nombrePersona.ToUpper())).ToList();
+                }
+
                 return Ok(listaResultadoDTO);
             }
             catch (Exception ex)

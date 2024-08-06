@@ -616,6 +616,42 @@ namespace RecintosHabitacionales.Controllers
 
         public async Task<IActionResult> RecuperarListaTorresPorConjuntoID(Guid idConjunto)
         {
+            List<TorreDTOCompleto> listaResultado = await cargarTorresIdConjunto(idConjunto);
+
+
+            if (listaResultado != null)
+            {
+                return View("Torre/_ListaTorres", listaResultado);
+            }
+
+            return View("Torre/_ListaTorres", new List<TorreDTOCompleto>());
+        }
+
+
+        public async Task<JsonResult> cargarSelectTorres(Guid idConjunto)
+        {
+            List<CatalogoDTODropDown> listaFinal = new List<CatalogoDTODropDown>();
+
+            try
+            {
+                List<TorreDTOCompleto> listaTorres = await cargarTorresIdConjunto(idConjunto);                
+
+                listaFinal = listaTorres.Select(x => new CatalogoDTODropDown
+                {
+                    IdCatalogo = x.IdTorres,
+                    Nombrecatalogo = x.NombreTorres
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                listaFinal = new List<CatalogoDTODropDown>();
+            }
+
+            return new JsonResult(listaFinal);
+        }
+
+        private async Task<List<TorreDTOCompleto>> cargarTorresIdConjunto(Guid idConjunto)
+        {
             BusquedaTorres objBusquedaTorres = new BusquedaTorres();
 
             objBusquedaTorres.IdConjunto = idConjunto;
@@ -627,13 +663,10 @@ namespace RecintosHabitacionales.Controllers
             if (listaResultado == null)
                 listaResultado = new List<TorreDTOCompleto>();
 
-            if (listaResultado != null)
-            {
-                return View("Torre/_ListaTorres", listaResultado);
-            }
-
-            return View("Torre/_ListaTorres", new List<TorreDTOCompleto>());
+            return listaResultado;
         }
+
+
 
         public async Task<IActionResult> RecuperarListaAreaComunalPorConjuntoID(Guid idConjunto)
         {

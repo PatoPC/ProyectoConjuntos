@@ -11,7 +11,7 @@ namespace DTOs.Adeudo
         public Guid IdPagoAdeudo { get; set; }
         public Guid IdAdeudos { get; set; }
         public DateTime FechaPago { get; set; }
-        public string NombreTipoPago { get; set; }
+        public string? NombreTipoPago { get; set; }
         public decimal SaldoPendiente { get; set; }
         public decimal ValorPago { get; set; }
         public Guid IdTipoPago { get; set; }

@@ -40,7 +40,7 @@ namespace RepositorioConjuntos.Implementacion
                 else
                 {
                     listaAdeudos = await _context.Adeudos.
-                        Where(x => x.EstadoAdeudos 
+                        Where(x => x.EstadoAdeudos == objBusqueda.EstadoPago
                         && x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto 
                         && x.FechaAdeudos == objBusqueda.fechaADeudoActual)
                     .Include(x => x.IdDepartamentoNavigation)
@@ -53,6 +53,11 @@ namespace RepositorioConjuntos.Implementacion
                 if (!string.IsNullOrEmpty(objBusqueda.numeroDepartamento))
                 {
                     listaAdeudos = listaAdeudos.Where(x => x.IdDepartamentoNavigation.CodigoDepartamento.Trim() == objBusqueda.numeroDepartamento.Trim()).ToList();
+                }
+
+                if (objBusqueda.IdTorre != null)
+                {
+                    listaAdeudos = listaAdeudos.Where(x => x.IdDepartamentoNavigation.IdTorres == objBusqueda.IdTorre).ToList();
                 }
 
                 return listaAdeudos;

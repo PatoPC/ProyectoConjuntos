@@ -10,6 +10,7 @@ using RecintosHabitacionales.Servicio.Interface;
 using Rotativa.AspNetCore;
 using Rotativa;
 using Utilitarios;
+using DTOs.Torre;
 
 namespace RecintosHabitacionales.Controllers
 {
@@ -17,17 +18,19 @@ namespace RecintosHabitacionales.Controllers
     {
         private readonly IServicioConsumoAPI<GenerarAdeudo> _servicioConsumoBusqueda;
         private readonly IServicioConsumoAPI<AdeudoDTOEditar> _servicioConsumoAPIEditar;
+        private readonly IServicioConsumoAPI<BusquedaTorres> _servicioConsumoAPIBusquedaTorres;
 
-        public C_EstadoCuentaController(IServicioConsumoAPI<GenerarAdeudo> servicioConsumoBusqueda, IServicioConsumoAPI<AdeudoDTOEditar> servicioConsumoAPIEditar)
+        public C_EstadoCuentaController(IServicioConsumoAPI<GenerarAdeudo> servicioConsumoBusqueda, IServicioConsumoAPI<AdeudoDTOEditar> servicioConsumoAPIEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres)
         {
             _servicioConsumoBusqueda = servicioConsumoBusqueda;
             _servicioConsumoAPIEditar = servicioConsumoAPIEditar;
+            _servicioConsumoAPIBusquedaTorres = servicioConsumoAPIBusquedaTorres;
         }
 
         string controladorActual = "C_EstadoCuenta";
         string accionActual = "AdministracionEstadoCuenta";
 
-        public IActionResult AdministracionEstadoCuenta()
+        public async Task<ActionResult> AdministracionEstadoCuenta()
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
@@ -38,6 +41,22 @@ namespace RecintosHabitacionales.Controllers
 
             ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
             ViewData["listaAnios"] = listaAnios;
+
+
+            BusquedaTorres objBusquedaTorres = new BusquedaTorres();
+
+            objBusquedaTorres.IdConjunto = objUsuarioSesion.IdConjuntoDefault;
+
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusquedaTorres.consumoAPI(ConstantesConsumoAPI.buscarTorresAvanzado, HttpMethod.Get, objBusquedaTorres);
+
+            List<TorreDTOCompleto> listaResultado = await LeerRespuestas<List<TorreDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+
+            if (listaResultado == null)
+                listaResultado = new List<TorreDTOCompleto>();
+
+            SelectList listSelecTorres = new SelectList(listaResultado, "IdTorres", "NombreConjunto");
+
+            ViewData["listaTorres"] = listSelecTorres;
 
             return View();
         }

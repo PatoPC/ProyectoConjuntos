@@ -47,12 +47,17 @@
                     <div class="row">
                         <label class="fs-6 form-label fw-bolder text-dark">Datos</label>
                         <div class="col-md-3">
-                            @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                            @Html.DropDownList("IdConjunto", ViewData["listaConjuntos"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg", @onchange = "consultarDesdeAPIControlador('IdConjunto','IdTorre','C_Conjuntos','cargarSelectTorres','idConjunto')" })
                         </div>
+
+                        <div class="col-md-3">
+                            @Html.DropDownList("IdTorre", ViewData["listaTorres"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                         </div>
 
                         <div class="col-md-3">
                             <input name="numeroDepartamento" type="text" class="form-control form-control-solid" placeholder="# Departamento" />
                         </div>
+
                         <div class="col-md-3">
                             <select name="anio" id="anio" aria-label="Selecionar" data-control="select2" , data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
                                 @foreach (var anio in listaAnios)
@@ -85,11 +90,15 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <select id="estadoPago" name="estadoPago" aria-label="Selecionar" data-control="select2" data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
+                            <select id="tipoGeneracion" name="tipoGeneracion" aria-label="Selecionar" data-control="select2" data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
                                 <option value="0">Todos</option>
                                 <option value="1">Pagado</option>
                                 <option value="2">Pendiente</option>
                             </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <input id="nombrePersona" name="nombrePersona" type="text" class="form-control form-control-solid" placeholder="Nombre" />
                         </div>
 
                         <div>
