@@ -25,12 +25,43 @@ namespace RepositorioConjuntos.Implementacion
             try
             {
                 List<Adeudo> listaAdeudos = new List<Adeudo>();
-
-                if (objBusqueda.EstadoPago == null)
+                if (objBusqueda.fechaADeudoActual == DateTime.MinValue && objBusqueda.IdConjunto == null)
+                {
+                    listaAdeudos = await _context.Adeudos
+                    .Where(x => x.IdDepartamento == objBusqueda.IdDepartamento
+                    && x.EstadoAdeudos== objBusqueda.EstadoPago)
+                    .Include(x => x.IdDepartamentoNavigation)
+                    .ThenInclude(x => x.IdTorresNavigation)
+                    .ThenInclude(x => x.IdConjuntoNavigation)
+                    .Include(x => x.IdPersonaNavigation)
+                    .ToListAsync();
+                }
+                else if (objBusqueda.EstadoPago == null && objBusqueda.fechaADeudoActual == DateTime.MinValue)
+                {
+                    listaAdeudos = await _context.Adeudos
+                    .Where(x => x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto)
+                    .Include(x => x.IdDepartamentoNavigation)
+                    .ThenInclude(x => x.IdTorresNavigation)
+                    .ThenInclude(x => x.IdConjuntoNavigation)
+                    .Include(x => x.IdPersonaNavigation)
+                    .ToListAsync();
+                }
+                else if (objBusqueda.EstadoPago == null)
                 {
                     listaAdeudos = await _context.Adeudos
                     .Where(x => x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto &&
                     x.FechaAdeudos == objBusqueda.fechaADeudoActual)
+                    .Include(x => x.IdDepartamentoNavigation)
+                    .ThenInclude(x => x.IdTorresNavigation)
+                    .ThenInclude(x => x.IdConjuntoNavigation)
+                    .Include(x => x.IdPersonaNavigation)
+                    .ToListAsync();
+                }
+                else if(objBusqueda.fechaADeudoActual == DateTime.MinValue && objBusqueda.IdDepartamento != null )
+                {
+                    listaAdeudos = await _context.Adeudos.
+                        Where(x => x.EstadoAdeudos == objBusqueda.EstadoPago
+                        && x.IdDepartamento == objBusqueda.IdDepartamento)
                     .Include(x => x.IdDepartamentoNavigation)
                     .ThenInclude(x => x.IdTorresNavigation)
                     .ThenInclude(x => x.IdConjuntoNavigation)

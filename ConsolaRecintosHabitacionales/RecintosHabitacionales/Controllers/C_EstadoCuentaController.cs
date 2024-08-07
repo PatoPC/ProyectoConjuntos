@@ -71,6 +71,8 @@ namespace RecintosHabitacionales.Controllers
             
             List<AdeudoDTOCompleto> listaResultado = await recuperarListaAdeudos(variable);
 
+            listaResultado = listaResultado.OrderBy(x => x.FechaAdeudos).ToList();
+
             return View("_ListaEstadoCuenta", listaResultado);
         }
 
@@ -83,11 +85,19 @@ namespace RecintosHabitacionales.Controllers
                 DateTime fechaADeudoActual = FuncionesUtiles.ObtenerPrimerDiaDelMes(variable.mes, variable.anio);
 
                 variable.fechaADeudoActual = fechaADeudoActual;
+            }
+            catch (Exception ex)
+            {
+                variable.fechaADeudoActual = DateTime.MinValue;
+            }
 
+            try
+            {
                 HttpResponseMessage respuesta = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.buscarAdeudoAvanzado, HttpMethod.Get, variable);
 
                 if (respuesta.IsSuccessStatusCode)
                     listaResultado = await LeerRespuestas<List<AdeudoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+
             }
             catch (Exception ex)
             {
@@ -120,6 +130,14 @@ namespace RecintosHabitacionales.Controllers
             HttpResponseMessage respuesta = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoAPI + IdAdeudos, HttpMethod.Get);
 
             AdeudoDTOCompleto objAdeudo = await LeerRespuestas<AdeudoDTOCompleto>.procesarRespuestasConsultas(respuesta);
+
+            GenerarAdeudo objBusquedaAdeudos = new GenerarAdeudo();
+
+            objBusquedaAdeudos.IdDepartamento = objAdeudo.IdDepartamento;
+            objBusquedaAdeudos.tipoGeneracion = 2;
+
+            List<AdeudoDTOCompleto> listaResultado = await recuperarListaAdeudos(objBusquedaAdeudos);
+
 
             return View(objAdeudo);
         }

@@ -16,8 +16,9 @@ namespace DTOs.Adeudo
         public Guid? IdTorre { get; set; } = null!;
         public int  anio { get; set; }
         public int mes { get; set; }
+
         
-         public int tipoGeneracion { get; set; }
+        public int tipoGeneracion { get; set; }
          public string? nombrePersona { get; set; }
          public string? numeroDepartamento { get; set; }
         public DateTime fechaADeudoActual { get; set; }
