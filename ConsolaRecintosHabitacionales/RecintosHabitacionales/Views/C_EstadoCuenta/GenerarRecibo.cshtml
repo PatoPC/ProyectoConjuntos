@@ -1,7 +1,8 @@
-﻿@model DTOs.Adeudo.AdeudoDTOCompleto
+﻿@model List<DTOs.Adeudo.AdeudoDTOCompleto>
 
 @{
-    decimal totalPagar = Model.MontoAdeudos + Model.SaldoPendiente;
+    DTOs.Adeudo.AdeudoDTOCompleto objAdeudo = Model.FirstOrDefault();
+    int contadorAdeudo = 0;
 }
 
 <div class="card mb-10 mb-xl-12">
@@ -11,7 +12,7 @@
                 <div class="col-md-9">
                     <h3 class="fw-bolder m-0 text-gray-800">
                         <i class="fa-solid fa-building-wheat text-primary fs-2qx"></i>
-                        Recibo
+                        Recibo Ingreso
                     </h3>
                 </div>
                 <div class="col-md-12">
@@ -25,9 +26,7 @@
 
         <div class="row p-lg-10">
             <form asp-action="GenerarRecibo" id="FormCrear">
-                @Html.HiddenFor(x => x.IdDepartamento)
-                @Html.HiddenFor(x => x.IdAdeudos)
-
+                
                 <div class="row">
                     <div class="col-md-6">
                         <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
@@ -40,8 +39,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    <input type="text" asp-for="FechaAdeudos" class="form-control form-control-solid" />
-
+                                    <input type="text" name="FechaCobro" id="FechaCobro" class="form-control form-control-solid" required="required" />
                                 </div>
                             </div>
                         </div>
@@ -58,72 +56,13 @@
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    <input type="text" asp-for="Departamento" class="form-control form-control-solid" readonly="readonly" />
+                                    <input type="text" class="form-control form-control-solid" readonly="readonly" value="@objAdeudo.Departamento" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
-                            <div class="row mb-12">
-                                <div class="col-xl-2">
-                                    <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="Nombre" class="control-label required">
-                                            Nombre
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-xl-8 fv-row">
-                                    <input type="text" asp-for="Nombre" class="form-control form-control-solid" value="@Model.Nombre @Model.Apellido" readonly="readonly" />
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <hr />
-                <div class="row">
-                    <div class="col-md-12 fs-3 mb-3">
-                        <center>@Model.FechaAdeudos.ToString("dd MMMM yyyy").ToString().ToUpper()</center>
-                    </div>
-                </div>
-                <div class="row mb-7">
-                    <div class="col-md-2">
-                        <label class="control-label required">
-                            Valor
-                        </label>
-                        <input type="text" asp-for="MontoAdeudos" class="form-control form-control-solid" value="@Model.MontoAdeudos.ToString("#.##")" readonly="readonly" />
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="control-label required">
-                            Concepto
-                        </label>
-                        <input type="text" class="form-control form-control-solid" required="required" />
-                    </div>
-
-                    <div class="col-md-3">
-                        <label class="control-label required">
-                            Saldo Pendiente
-                        </label>
-                        @{
-                            string saldoPendienteTemp = "0.00";
-                            if (Model.SaldoPendiente != 0)
-                            {
-                                saldoPendienteTemp = Model.SaldoPendiente.ToString("#.##");
-                            }
-                        }
-                        
-
-                        <input asp-for="SaldoPendiente" type="text" class="form-control form-control-solid" value="@saldoPendienteTemp" readonly="readonly" />
-                    </div>
-                </div>
-
-                <hr />
 
                 <div class="row">
                     <div class="col-md-6">
@@ -147,13 +86,13 @@
                             <div class="row mb-12">
                                 <div class="col-xl-2">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label class="control-label required">
+                                        <label for="valorPagar" class="control-label required">
                                             Valor Pagar
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    <input type="text" name="valorPagar" id="valorPagar" class="form-control form-control-solid" value="@totalPagar.ToString("#.##")" />
+                                    <input type="text" name="valorPagar" id="valorPagar" class="form-control form-control-solid" value="" />
                                 </div>
                             </div>
                         </div>
@@ -166,23 +105,81 @@
                             <div class="row mb-12">
                                 <div class="col-xl-2">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
-                                        <label for="Estado" class="control-label">
-                                            Comentarios
+                                        <label for="Concepto" class="control-label">
+                                            Concepto
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-xl-8 fv-row">
-                                    <textarea asp-for="Observacion" class="form-control" required="required">
+                                    <input name="Concepto" id="Concepto" class="form-control" required="required" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Observacion" class="control-label">
+                                            Observacion
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <textarea name="Observacion" id="Observacion" class="form-control" required="required">
 
                                    </textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
 
+                <hr />
+
+                @foreach(var adeudoTemp in Model)
+                {
+                    contadorAdeudo++;
+                    string nombreCampoMonto = "montoAdeudo" + contadorAdeudo;
+                    string saldoPendiente = "saldoPendienteAdeudo" + contadorAdeudo;
+
+                    <div class="row">
+                        <div class="col-md-12 fs-3 mb-3">
+                            <center>@adeudoTemp.FechaAdeudos.ToString("dd MMMM yyyy").ToString().ToUpper()</center>
+                        </div>
+                    </div>
+                    <div class="row mb-7">
+                        <div class="col-md-4">
+                            <div class="col-md-12">
+                                <label class="control-label required">
+                                    Nombre
+                                </label>
+                                <input type="text" class="form-control form-control-solid" value="@adeudoTemp.Nombre @adeudoTemp.Apellido" readonly="readonly" />
+                            </div>
+                            </div>
+                        <div class="col-md-2">
+                            <label class="control-label required">
+                                Valor
+                            </label>
+                            <input type="text" class="form-control form-control-solid" id="@nombreCampoMonto" value="@adeudoTemp.MontoAdeudos.ToString("F2")" readonly="readonly" />
+                        </div>                       
+
+                        <div class="col-md-2">
+                            <label class="control-label required">
+                                Saldo Pendiente
+                            </label>
+                            <input type="text" class="form-control form-control-solid" id="@saldoPendiente" name="@saldoPendiente" value="@adeudoTemp.SaldoPendiente.ToString("F2")" readonly="readonly" />
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="listaIDAdeudos" value="@adeudoTemp.IdAdeudos" />
+                }
+
+                <input id="contadorAdeudos" type="hidden" value="@contadorAdeudo" />
+                <hr />
 
                 <div class="row">
                     <div class="col-xl-12 fv-row">
@@ -213,14 +210,31 @@
 
 
         $(document).ready(function () {
-            //const select = document.querySelector('#IdConjunto');
-            //if (select.options.length === 1) {
-            //    select.selectedIndex = 0;
-            //}
+
+            document.getElementById('valorPagar').addEventListener('input', function () {
+                const totalAdeudos = parseInt(document.getElementById('contadorAdeudos').value);
+                let valorPagar = parseFloat(this.value.replace(',', '.')) || 0; // Reemplazar coma por punto
+                let saldoPendiente = valorPagar;
+
+                for (let i = 1; i <= totalAdeudos; i++) {
+                    const adeudoElement = document.getElementById('montoAdeudo' + i);
+                    const adeudoValue = parseFloat(adeudoElement.value.replace(',', '.')); // Reemplazar coma por punto
+
+                    if (saldoPendiente >= adeudoValue) {
+                        saldoPendiente -= adeudoValue; // Marca como pagado
+                        document.getElementById('saldoPendienteAdeudo' + i).value = '0.00';
+                    } else {
+                        document.getElementById('saldoPendienteAdeudo' + i).value = (adeudoValue - saldoPendiente).toFixed(2);
+                        saldoPendiente = 0;
+                    }
+                }
+            });
+
         })
 
 
-        $("#FechaAdeudos").flatpickr({
+
+        $("#FechaCobro").flatpickr({
             defaultDate: "today"
         });
     </script>

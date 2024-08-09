@@ -44,6 +44,9 @@
                             <span class="badge badge-light text-dark">Valor</span>
                         </th>
                         <th>
+                            <span class="badge badge-light text-dark">Saldo Pendiente</span>
+                        </th>
+                        <th>
                             <span class="badge badge-light text-dark">Fecha</span>
                         </th>
                         <th>
@@ -77,6 +80,12 @@
                                 <td data-title="Valor">
                                     <div>
                                         @item.MontoAdeudos.ToString("N2")
+                                    </div>
+
+                                </td>
+                                <td data-title="Valor">
+                                    <div>
+                                        @item.SaldoPendiente.ToString("N2")
                                     </div>
 
                                 </td>
