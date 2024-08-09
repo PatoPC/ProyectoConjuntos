@@ -138,17 +138,38 @@ namespace RecintosHabitacionales.Controllers
 
             List<AdeudoDTOCompleto> listaResultado = await recuperarListaAdeudos(objBusquedaAdeudos);
 
+            listaResultado = listaResultado.OrderBy(x => x.FechaAdeudos).ToList();
 
-            return View(objAdeudo);
+            return View(listaResultado);
         }
 
         [HttpPost]
-        public async Task<ActionResult> GenerarRecibo(Guid IdAdeudos, AdeudoDTOEditar objEstadoCuenta)
+        public async Task<ActionResult> GenerarRecibo(Guid IdAdeudos, AdeudoDTOEditar objEstadoCuenta, List<Guid> listaIDAdeudos, decimal valorPagar)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
             if (objUsuarioSesion == null)
                 return RedirectToAction("Ingresar", "C_Ingreso");
+
+            decimal valorRestante = valorPagar;
+
+            foreach (var idAdeudo in listaIDAdeudos)
+            {
+                HttpResponseMessage respuestaTemp = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoAPI + IdAdeudos, HttpMethod.Get);
+
+                AdeudoDTOCompleto objAdeudo = await LeerRespuestas<AdeudoDTOCompleto>.procesarRespuestasConsultas(respuestaTemp);
+
+                decimal valorDeudaActual = objAdeudo.MontoAdeudos;
+
+                valorRestante = valorRestante - valorDeudaActual;
+
+                if(valorRestante > 0)
+                {
+
+                }
+
+            }
+
 
             objEstadoCuenta.FechaPago = DateTime.Now;
             objEstadoCuenta.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
