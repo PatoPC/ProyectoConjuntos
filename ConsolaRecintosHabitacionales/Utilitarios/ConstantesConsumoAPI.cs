@@ -43,6 +43,7 @@ namespace Utilitarios
         public const string gestionarPersonaAPI = ConstantesAplicacion.pathAPI + "/api/persona/";
         public const string gestionarPersonaAPIEditar = ConstantesAplicacion.pathAPI + "/api/persona/Editar?id=";
         public const string gestionarPersonaAPIEliminar = ConstantesAplicacion.pathAPI + "/api/persona/Eliminar?id=";
+        public const string obtenerPersonaIdentificacion = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaIdentificacion?numeroIdentificacion=";
         public const string buscarPersonaAvanzado = ConstantesAplicacion.pathAPI + "/api/persona/ObtenerPersonaAvanzado";
         public const string crearPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/CrearPersonaDepartamento";
         public const string consultaTipoPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/ConsultaPersonaDepartamento";
@@ -117,7 +118,8 @@ namespace Utilitarios
         #region Adeudo
         public const string gestionarAdeudoAPI = ConstantesAplicacion.pathAPI + "/api/adeudo/";
         public const string gestionarAdeudoEditar = ConstantesAplicacion.pathAPI + "/api/adeudo/Editar?id=";
-        //public const string gestionarPersonaAPIEliminar = ConstantesAplicacion.pathAPI + "/api/persona/Eliminar?id=";
+        public const string gestionarEditarAdeudoPago = ConstantesAplicacion.pathAPI + "/api/adeudo/EditarAdeudoPago?id=";
+        
         public const string buscarAdeudoAvanzado = ConstantesAplicacion.pathAPI + "/api/adeudo/BusquedaAvanzadaAdeudo";
         
         //public const string crearPersonaDepartamento = ConstantesAplicacion.pathAPI + "/api/persona/CrearPersonaDepartamento";
@@ -182,6 +184,13 @@ namespace Utilitarios
         //public const string EditarConjuntosPorID = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Editar?id=";
         //public const string EditarConjuntosEliminar = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/Eliminar?id=";
         //public const string TodosConjuntos = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/ObtenerTodosConjuntos";
+        #endregion
+
+          #region Contabilidad
+        public const string ComprobantePago = ConstantesAplicacion.pathAPI + "/api/ComprobantePago/";
+        
+
+       
         #endregion
 
 

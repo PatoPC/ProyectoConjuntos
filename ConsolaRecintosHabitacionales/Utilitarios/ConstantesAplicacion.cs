@@ -55,6 +55,10 @@ namespace Utilitarios
 
         //Tipos Cabecera Tipo Transacción
         public const string tipoTransaccion = "PTTCOTP";
+
+
+        //Ingreso Adeudos
+        public const string ingresoAdeudos = "TPINGAD";
         #endregion
 
         #region Ciudades

@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ConjuntosEntidades.Entidades
+namespace DTOs.Comprobantes
 {
-    public partial class PagoAdeudo
+    public class ComprobantePagoDTOCompleto
     {
-        public Guid IdPagoAdeudo { get; set; }
-        public Guid IdAdeudos { get; set; }
+        public Guid IdComprobantePago { get; set; }
+        public Guid IdTipoPago { get; set; }
         public DateTime FechaPago { get; set; }
         public decimal SaldoPendiente { get; set; }
         public decimal ValorPago { get; set; }
-        public Guid IdTipoPago { get; set; }
+        public string? UrlConsumaTablaDeuda { get; set; } = null!;
+        public string? Concepto { get; set; } = null!;
         public string? Observacion { get; set; }
         public bool EstadoImpreso { get; set; }
         public DateTime FechaCreacion { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
-
-        public virtual Adeudo IdAdeudosNavigation { get; set; } = null!;
+        public List<DetalleComprobantePagoDTOCompleto> DetalleComprobantePagos { get; set; }
     }
 }

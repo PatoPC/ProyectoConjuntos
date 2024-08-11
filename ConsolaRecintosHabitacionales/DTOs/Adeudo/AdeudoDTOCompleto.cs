@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DTOs.Comprobantes;
 
 namespace DTOs.Adeudo
 {
@@ -25,7 +26,7 @@ namespace DTOs.Adeudo
         public string UsuarioCreacion { get; set; } = null!;
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
-        public List<PagoAdeudoDTOCompleto> PagoAdeudos { get; set; }
+        public List<ComprobantePagoDTOCompleto> PagoAdeudos { get; set; }
 
     }
 }

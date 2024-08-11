@@ -1,6 +1,7 @@
 using DTOs.Adeudo;
 using DTOs.AreaComunal;
 using DTOs.CatalogoGeneral;
+using DTOs.Comprobantes;
 using DTOs.Comunicado;
 using DTOs.ConfiguracionCuenta;
 using DTOs.Conjunto;
@@ -120,6 +121,8 @@ builder.Services.AddScoped(typeof(CargarMaestroContable));
 builder.Services.AddScoped(typeof(EncabezContDTOCrear));
 builder.Services.AddScoped(typeof(BusquedaContabilidad));
 builder.Services.AddScoped(typeof(AdeudoDTOEditar));
+builder.Services.AddScoped(typeof(AdeudoDTOPagar));
+builder.Services.AddScoped(typeof(ComprobantePagoDTOCompleto));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();

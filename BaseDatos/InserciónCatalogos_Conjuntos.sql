@@ -70,6 +70,11 @@ VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CAT
 INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
 (ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL)
 VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='CONFG'), 
+2, 'Usuarios', 'USUARIOS', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','/C_Usuario/GestionUsuarios');
+
+INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
+(ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL)
+VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='CONFG'), 
 2, 'Roles', 'ROLES', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','/C_Rol/AdministracionRol');
 
 /**Páginas de Inicio */
@@ -167,6 +172,18 @@ INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
 (ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL)
 VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='FRPGO'), 
 1, 'Cheque', 'FPCHEQ', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','');
+
+
+/*TIPO INGRESOS */
+INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
+(NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL,DESCRIPCION)
+VALUES( 0, 'Ingresos', 'TPINGRE', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','','Para guardar los diferentes ingresos que se van a generar como comprobantes dentro del sistema');
+
+
+INSERT INTO Catalogo_Conjunto.dbo.CATALOGO
+(ID_CATALOGOPADRE,NIVEL_CATALOGO, NOMBRE_CATALOGO, CODIGO_CATALOGO, DESCRIPCION, EDITABLE, ESTADO, TIENE_VIGENCIA, FECHA_CREACION, FECHA_MODIFICACION, USUARIO_CREACION, USUARIO_MODIFICACION, DATO_ADICIONAL,DESCRIPCION)
+VALUES( (select ID_CATALOGO from Catalogo_Conjunto.dbo.CATALOGO where CODIGO_CATALOGO ='TIPINGRE'), 
+1, 'Ingreso Adeudos', 'TPINGAD', '', 0, 1, 0, getdate(), getdate(), 'admin', 'admin','','Con este tipo se van a guardar los diferentes comprobantes cuando un adeudo pague.');
 
 /****************************************************/
 
@@ -426,6 +443,26 @@ DELETE from Condominios.dbo.DETALLE_CONTABILIDAD
 DELETE from Condominios.dbo.SECUENCIAL_CABECERA_CONT 
 DELETE from Condominios.dbo.ENCABEZADO_CONTABILIDAD
 DELETE from Condominios.dbo.ADEUDOS 
+
+
+select *
+from Condominios.dbo.PERSONA p 
+where p.ID_PERSONA = '2f6ac336-68d8-438a-b027-efa32b8d8253'
+
+select *
+from Condominios_Permisos.dbo.USUARIO u 
+where u.ID_PERSONA = '2f6ac336-68d8-438a-b027-efa32b8d8253'
+
+SELECT *
+from Catalogo_Conjunto.dbo.CATALOGO c 
+where c.CODIGO_CATALOGO ='PTTCOTP'
+
+SELECT *
+from Catalogo_Conjunto.dbo.CATALOGO c 
+where c.ID_CATALOGOPADRE ='8ED2CAD3-84BA-4EA8-BC31-F83463F058AF'
+
+SELECT *
+from Condominios.dbo.ENCABEZADO_CONTABILIDAD ec 
 
 
 

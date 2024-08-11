@@ -109,6 +109,35 @@ namespace APICondominios.Controllers
 
             return StatusCode(StatusCodes.Status406NotAcceptable);
         }
+
+        [HttpPost("EditarAdeudoPago")]
+        public async Task<IActionResult> EditarAdeudoPago(Guid id, AdeudoDTOPagar objDTO)
+        {
+            try
+            {
+                Adeudo objRepository = await _ConsultaAdeudo.obtenerAdeudosAvanzado(id);
+                _mapper.Map(objDTO, objRepository);
+
+                _CRUD_Adeudo.Edit(objRepository);
+
+                var result = await _CRUD_Persona.save();
+
+                if (result.estado)
+                    return NoContent();
+                else
+                    await guardarLogs(JsonConvert.SerializeObject(objDTO), result.mensajeError);
+
+
+                return BadRequest(MensajesRespuesta.guardarError());
+            }
+            catch (Exception ExValidation)
+            {
+                await guardarLogs(JsonConvert.SerializeObject(objDTO), ExValidation.ToString());
+            }
+
+            return StatusCode(StatusCodes.Status406NotAcceptable);
+        }
+
         #endregion
 
         #region Eliminar

@@ -107,8 +107,7 @@ namespace RepositorioConjuntos.Implementacion
                 .Include(x => x.IdDepartamentoNavigation)
                     .ThenInclude(x => x.IdTorresNavigation)
                     .ThenInclude(x => x.IdConjuntoNavigation)
-                    .Include(x => x.IdPersonaNavigation)
-                    .Include(x => x.PagoAdeudos)
+                    .Include(x => x.IdPersonaNavigation)                    
                 .FirstOrDefaultAsync();
 
             return objAdeudo;

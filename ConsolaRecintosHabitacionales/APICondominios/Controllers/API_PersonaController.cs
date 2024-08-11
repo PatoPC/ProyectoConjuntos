@@ -218,6 +218,30 @@ namespace APICondominios.Controllers
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
+        [HttpGet("ObtenerPersonaIdentificacion")]
+        public async Task<ActionResult<PersonaDTOCompleto>> ObtenerPersonaIdentificacion(string numeroIdentificacion)
+        {
+            try
+            {
+                List<Persona> listaResultado = new List<Persona>();
+
+                listaResultado = await _ConsultasPersonas.obtenerPersonaPoNumeroIdentificacion(numeroIdentificacion);
+
+                if (listaResultado.Count < 1)
+                    return NotFound(MensajesRespuesta.sinResultados());
+
+                List<PersonaDTOCompleto> listaResultadoDTO = _mapper.Map<List<PersonaDTOCompleto>>(listaResultado);
+
+                return Ok(listaResultadoDTO);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
         [HttpGet("ObtenerPersonaAutoCompletar")]
         public async Task<ActionResult<List<PersonaDTOCompleto>>> ObtenerPersonaAutoCompletar(string termino)
         {

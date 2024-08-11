@@ -56,6 +56,8 @@ builder.Services.AddScoped<IManageParametro, ManageParametro>();
 builder.Services.AddScoped<IManageConfiguracionCuenta, ManageConfiguracionCuenta>();
 builder.Services.AddScoped<IManageContabilidad, ManageContabilidad>();
 builder.Services.AddScoped<IManageReservaArea, ManageReservaArea>();
+builder.Services.AddScoped<IManageComprobantePago, ManageComprobantePago>();
+
         
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

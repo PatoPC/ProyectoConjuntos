@@ -10,6 +10,7 @@ namespace DTOs.Usuarios
     {
         public Guid? IdRol { get; set; }
         public Guid? IdConjunto { get; set; }
+        public List<Guid> IdPersona { get; set; }
         public string? numeroIdentificacion { get; set; }
         public string? nombres { get; set; }
         public string? apellidos { get; set; }

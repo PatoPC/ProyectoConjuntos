@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ConjuntosEntidades.Entidades;
 using DTOs.Adeudo;
+using DTOs.Comprobantes;
 using DTOs.Persona;
 using DTOs.Torre;
 
@@ -16,8 +17,12 @@ namespace APICondominios.Perfil
             CreateMap<AdeudoDTOEditar, Adeudo>();
             CreateMap<Adeudo, AdeudoDTOEditar>();
 
-            CreateMap<PagoAdeudo, PagoAdeudoDTOCompleto>();
-            CreateMap<PagoAdeudoDTOCompleto, PagoAdeudo>();
+            CreateMap<Adeudo, AdeudoDTOPagar>();
+            CreateMap<AdeudoDTOPagar, Adeudo>();
+
+            CreateMap<ComprobantePago, ComprobantePagoDTOCompleto>();
+            CreateMap<ComprobantePagoDTOCompleto, ComprobantePago>();
+            
 
             CreateMap<Adeudo, AdeudoDTOCompleto>()
                 .ForMember(x => x.Nombre, y => y.MapFrom(fuente => fuente.IdPersonaNavigation.NombresPersona))
@@ -26,7 +31,8 @@ namespace APICondominios.Perfil
                 .ForMember(x => x.Torre, y => y.MapFrom(fuente => fuente.IdDepartamentoNavigation.IdTorresNavigation.NombreTorres))
                 .ForMember(x => x.Departamento, y => y.MapFrom(fuente => fuente.IdDepartamentoNavigation.CodigoDepartamento));
 
-
+            CreateMap<DetalleComprobantePago, DetalleComprobantePagoDTOCompleto>();
+            CreateMap<DetalleComprobantePagoDTOCompleto, DetalleComprobantePago>();
 
         }
        

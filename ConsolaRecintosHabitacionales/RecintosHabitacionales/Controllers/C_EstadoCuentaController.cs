@@ -11,6 +11,7 @@ using Rotativa.AspNetCore;
 using Rotativa;
 using Utilitarios;
 using DTOs.Torre;
+using DTOs.Comprobantes;
 
 namespace RecintosHabitacionales.Controllers
 {
@@ -19,12 +20,16 @@ namespace RecintosHabitacionales.Controllers
         private readonly IServicioConsumoAPI<GenerarAdeudo> _servicioConsumoBusqueda;
         private readonly IServicioConsumoAPI<AdeudoDTOEditar> _servicioConsumoAPIEditar;
         private readonly IServicioConsumoAPI<BusquedaTorres> _servicioConsumoAPIBusquedaTorres;
+        private readonly IServicioConsumoAPI<AdeudoDTOPagar> _servicioConsumoAPIAdeudoDTOPagar;
+        private readonly IServicioConsumoAPI<ComprobantePagoDTOCompleto> _servicioConsumoAPIComprobante;
 
-        public C_EstadoCuentaController(IServicioConsumoAPI<GenerarAdeudo> servicioConsumoBusqueda, IServicioConsumoAPI<AdeudoDTOEditar> servicioConsumoAPIEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres)
+        public C_EstadoCuentaController(IServicioConsumoAPI<GenerarAdeudo> servicioConsumoBusqueda, IServicioConsumoAPI<AdeudoDTOEditar> servicioConsumoAPIEditar, IServicioConsumoAPI<BusquedaTorres> servicioConsumoAPIBusquedaTorres, IServicioConsumoAPI<AdeudoDTOPagar> servicioConsumoAPIAdeudoDTOPagar, IServicioConsumoAPI<ComprobantePagoDTOCompleto> servicioConsumoAPIComprobante)
         {
             _servicioConsumoBusqueda = servicioConsumoBusqueda;
             _servicioConsumoAPIEditar = servicioConsumoAPIEditar;
             _servicioConsumoAPIBusquedaTorres = servicioConsumoAPIBusquedaTorres;
+            _servicioConsumoAPIAdeudoDTOPagar = servicioConsumoAPIAdeudoDTOPagar;
+            _servicioConsumoAPIComprobante = servicioConsumoAPIComprobante;
         }
 
         string controladorActual = "C_EstadoCuenta";
@@ -54,7 +59,7 @@ namespace RecintosHabitacionales.Controllers
             if (listaResultado == null)
                 listaResultado = new List<TorreDTOCompleto>();
 
-            SelectList listSelecTorres = new SelectList(listaResultado, "IdTorres", "NombreConjunto");
+            SelectList listSelecTorres = new SelectList(listaResultado, "IdTorres", "NombreTorres");
 
             ViewData["listaTorres"] = listSelecTorres;
 
@@ -143,66 +148,70 @@ namespace RecintosHabitacionales.Controllers
             return View(listaResultado);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> GenerarRecibo(Guid IdAdeudos, AdeudoDTOEditar objEstadoCuenta, List<Guid> listaIDAdeudos, decimal valorPagar)
+     
+            [HttpPost]
+        public async Task<ActionResult> GenerarRecibo(ComprobantePagoDTOCompleto objComprobante)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
             if (objUsuarioSesion == null)
                 return RedirectToAction("Ingresar", "C_Ingreso");
 
-            decimal valorRestante = valorPagar;
+            decimal valorRestantePagado = objComprobante.ValorPago;
 
-            foreach (var idAdeudo in listaIDAdeudos)
+            foreach (var objDetalle in objComprobante.DetalleComprobantePagos)
             {
-                HttpResponseMessage respuestaTemp = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoAPI + IdAdeudos, HttpMethod.Get);
+                AdeudoDTOPagar objAdeudoEditar = new AdeudoDTOPagar();
+
+                HttpResponseMessage respuestaTemp = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoAPI + objDetalle.IdTablaDeuda, HttpMethod.Get);
 
                 AdeudoDTOCompleto objAdeudo = await LeerRespuestas<AdeudoDTOCompleto>.procesarRespuestasConsultas(respuestaTemp);
 
                 decimal valorDeudaActual = objAdeudo.MontoAdeudos;
 
-                valorRestante = valorRestante - valorDeudaActual;
+                valorRestantePagado = valorRestantePagado - valorDeudaActual;
 
-                if(valorRestante > 0)
+                if(valorRestantePagado < 0)
+                {
+                    objAdeudoEditar.SaldoPendiente = valorRestantePagado * -1;
+                    objAdeudoEditar.EstadoAdeudos = false;
+                }
+                else
+                {
+                    objAdeudoEditar.EstadoAdeudos = true;
+                    objAdeudoEditar.SaldoPendiente = 0;
+                }
+
+                objAdeudoEditar.FechaModificacion = DateTime.Now;
+                objAdeudoEditar.UsuarioModificacion = objUsuarioSesion.NombreUsuario;
+                objAdeudoEditar.IdFormapago = objComprobante.IdTipoPago;
+
+                HttpResponseMessage respuestaEditar = await _servicioConsumoAPIAdeudoDTOPagar.consumoAPI(ConstantesConsumoAPI.gestionarEditarAdeudoPago + objAdeudo.IdAdeudos, HttpMethod.Post, objAdeudoEditar);
+
+                if (respuestaEditar.IsSuccessStatusCode)
                 {
 
                 }
-
             }
 
+            objComprobante.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
-            objEstadoCuenta.FechaPago = DateTime.Now;
-            objEstadoCuenta.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
-            var deudaTotal = objEstadoCuenta.MontoAdeudos + objEstadoCuenta.SaldoPendiente;
+            HttpResponseMessage respuesta = await _servicioConsumoAPIAdeudoDTOPagar.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.ingresoAdeudos, HttpMethod.Get);
 
-            var nuevoSaldoPendiente = deudaTotal - objEstadoCuenta.valorPagar;
+            var objCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuesta);
+            
+            objComprobante.IdTipoPago = objCatalogo.IdCatalogo;
+            objComprobante.UrlConsumaTablaDeuda = ConstantesConsumoAPI.gestionarAdeudoAPI;
+            objComprobante.EstadoImpreso = false;
+            objComprobante.SaldoPendiente = valorRestantePagado < 0 ? valorRestantePagado * -1 : valorRestantePagado;
+            objComprobante.UsuarioCreacion = objUsuarioSesion.NombreUsuario;
+            objComprobante.UsuarioModificacion = objUsuarioSesion.NombreUsuario;
 
-            objEstadoCuenta.SaldoPendiente = nuevoSaldoPendiente;
+          
+            HttpResponseMessage respuestaComprobante = await _servicioConsumoAPIComprobante.consumoAPI(ConstantesConsumoAPI.ComprobantePago, HttpMethod.Post, objComprobante);
 
-            PagoAdeudoDTOCompleto objPagoAdeudo = new PagoAdeudoDTOCompleto();
-
-            objPagoAdeudo.FechaCreacion = objEstadoCuenta.FechaPago;
-            objPagoAdeudo.FechaModificacion = objEstadoCuenta.FechaPago;
-            objPagoAdeudo.UsuarioCreacion = objEstadoCuenta.UsuarioModificacion;
-            objPagoAdeudo.FechaPago = objEstadoCuenta.FechaPago;
-            objPagoAdeudo.IdTipoPago = objEstadoCuenta.IdFormapago;
-            objPagoAdeudo.UsuarioModificacion = objEstadoCuenta.UsuarioModificacion;
-            objPagoAdeudo.ValorPago = objEstadoCuenta.valorPagar;
-            objPagoAdeudo.SaldoPendiente = objEstadoCuenta.SaldoPendiente;
-            objPagoAdeudo.Observacion = objEstadoCuenta.Observacion;
-            objPagoAdeudo.EstadoImpreso = false;
-
-            objEstadoCuenta.PagoAdeudos = new List<PagoAdeudoDTOCompleto>();
-
-            objEstadoCuenta.PagoAdeudos.Add(objPagoAdeudo);
-
-            if (objPagoAdeudo.SaldoPendiente == 0)
-                objEstadoCuenta.EstadoAdeudos = true;
-
-            HttpResponseMessage respuesta = await _servicioConsumoAPIEditar.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoEditar + IdAdeudos, HttpMethod.Post, objEstadoCuenta);
-
-            if (respuesta.IsSuccessStatusCode)
+            if (respuestaComprobante.IsSuccessStatusCode)
                 return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));            
             else
             {
@@ -228,7 +237,7 @@ namespace RecintosHabitacionales.Controllers
 
                     var objCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogo);
 
-                    pago.NombreTipoPago = objCatalogo.NombreCatalogo;
+                    //pago.NombreTipoPago = objCatalogo.NombreCatalogo;
                 }
 
                 return new ViewAsPdf("PDF_ReciboAdeudo", objAdeudo)

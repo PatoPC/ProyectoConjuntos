@@ -129,6 +129,14 @@ namespace RepositorioGestionUsuarios.Implementacion
                     listUser = listUser.Where(x => x.IdConjuntoDefault == objBusqueda.IdConjunto).ToList();
                 }
 
+                if (objBusqueda.IdPersona != null)
+                {
+                    if (objBusqueda.IdPersona.Count>0)
+                    {
+                        listUser = listUser.Where(x => objBusqueda.IdPersona.Any(id => id == x.IdPersona)).ToList();                        
+                    }
+                }
+
             }
             catch (Exception ex)
             {

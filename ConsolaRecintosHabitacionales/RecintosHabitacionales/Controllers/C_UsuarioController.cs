@@ -223,7 +223,7 @@ namespace RecintosHabitacionales.Controllers
 
         #endregion CRUD
 
-        public async Task<ActionResult> BusquedaAvanzadaPersona(ObjetoBusquedaUsuarios objDTO)
+        public async Task<ActionResult> BusquedaAvanzadaPersona(ObjetoBusquedaUsuarios objDTOBusqueda)
         {
             List<UsuarioResultadoBusquedaDTO> listaResultado = new List<UsuarioResultadoBusquedaDTO>();
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
@@ -233,7 +233,25 @@ namespace RecintosHabitacionales.Controllers
 
                 try
                 {
-                    HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getAdvancedSearch, HttpMethod.Get, objDTO);
+                    if (!string.IsNullOrEmpty(objDTOBusqueda.numeroIdentificacion))
+                    {
+                        HttpResponseMessage respuestaPersona = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.obtenerPersonaIdentificacion + objDTOBusqueda.numeroIdentificacion, HttpMethod.Get);
+
+                        if (respuestaPersona.IsSuccessStatusCode)
+                        {
+                            List<PersonaDTOCompleto> listaPersonas = await LeerRespuestas<List<PersonaDTOCompleto>>.procesarRespuestasConsultas(respuestaPersona);
+
+                            if (listaPersonas != null)
+                            {
+                                if (listaPersonas.Count > 0)
+                                {
+                                    objDTOBusqueda.IdPersona = listaPersonas.Select(x => x.IdPersona).ToList();
+                                }
+                            }
+                        }
+                    }
+
+                    HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.getAdvancedSearch, HttpMethod.Get, objDTOBusqueda);
 
                     if (respuesta.IsSuccessStatusCode)
                         listaResultado = await LeerRespuestas<List<UsuarioResultadoBusquedaDTO>>.procesarRespuestasConsultas(respuesta);

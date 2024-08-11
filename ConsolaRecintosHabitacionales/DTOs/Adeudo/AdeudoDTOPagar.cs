@@ -7,17 +7,12 @@ using DTOs.Comprobantes;
 
 namespace DTOs.Adeudo
 {
-    public class AdeudoDTOEditar
+    public class AdeudoDTOPagar
     {
         public Guid IdFormapago { get; set; }
-        public decimal MontoAdeudos { get; set; }
         public decimal SaldoPendiente { get; set; }
-        public decimal valorPagar { get; set; }
         public bool EstadoAdeudos { get; set; }
-        public string Observacion { get; set; }
         public DateTime? FechaModificacion { get; set; }
-        public string UsuarioModificacion { get; set; }
-        public DateTime FechaPago { get; set; }
-        public virtual List<ComprobantePagoDTOCompleto> PagoAdeudos { get; set; }
+        public string? UsuarioModificacion { get; set; }
     }
 }
