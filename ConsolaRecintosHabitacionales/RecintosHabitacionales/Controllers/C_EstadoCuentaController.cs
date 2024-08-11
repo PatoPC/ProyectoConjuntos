@@ -73,7 +73,7 @@ namespace RecintosHabitacionales.Controllers
 
             if (objUsuarioSesion == null)
                 return RedirectToAction("Ingresar", "C_Ingreso");
-            
+
             List<AdeudoDTOCompleto> listaResultado = await recuperarListaAdeudos(variable);
 
             listaResultado = listaResultado.OrderBy(x => x.FechaAdeudos).ToList();
@@ -131,7 +131,6 @@ namespace RecintosHabitacionales.Controllers
 
             ViewData["listaFormasPago"] = selectFormasPago;
 
-
             HttpResponseMessage respuesta = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoAPI + IdAdeudos, HttpMethod.Get);
 
             AdeudoDTOCompleto objAdeudo = await LeerRespuestas<AdeudoDTOCompleto>.procesarRespuestasConsultas(respuesta);
@@ -148,8 +147,8 @@ namespace RecintosHabitacionales.Controllers
             return View(listaResultado);
         }
 
-     
-            [HttpPost]
+
+        [HttpPost]
         public async Task<ActionResult> GenerarRecibo(ComprobantePagoDTOCompleto objComprobante)
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
@@ -167,11 +166,16 @@ namespace RecintosHabitacionales.Controllers
 
                 AdeudoDTOCompleto objAdeudo = await LeerRespuestas<AdeudoDTOCompleto>.procesarRespuestasConsultas(respuestaTemp);
 
-                decimal valorDeudaActual = objAdeudo.MontoAdeudos;
+                decimal valorDeudaActual = Convert.ToDecimal("0.00");
+                
+                if(objAdeudo.SaldoPendiente==0)
+                    valorDeudaActual = objAdeudo.MontoAdeudos;
+                else
+                    valorDeudaActual = objAdeudo.SaldoPendiente;
 
                 valorRestantePagado = valorRestantePagado - valorDeudaActual;
 
-                if(valorRestantePagado < 0)
+                if (valorRestantePagado < 0)
                 {
                     objAdeudoEditar.SaldoPendiente = valorRestantePagado * -1;
                     objAdeudoEditar.EstadoAdeudos = false;
@@ -200,7 +204,7 @@ namespace RecintosHabitacionales.Controllers
             HttpResponseMessage respuesta = await _servicioConsumoAPIAdeudoDTOPagar.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.ingresoAdeudos, HttpMethod.Get);
 
             var objCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuesta);
-            
+
             objComprobante.IdTipoPago = objCatalogo.IdCatalogo;
             objComprobante.UrlConsumaTablaDeuda = ConstantesConsumoAPI.gestionarAdeudoAPI;
             objComprobante.EstadoImpreso = false;
@@ -208,11 +212,11 @@ namespace RecintosHabitacionales.Controllers
             objComprobante.UsuarioCreacion = objUsuarioSesion.NombreUsuario;
             objComprobante.UsuarioModificacion = objUsuarioSesion.NombreUsuario;
 
-          
+
             HttpResponseMessage respuestaComprobante = await _servicioConsumoAPIComprobante.consumoAPI(ConstantesConsumoAPI.ComprobantePago, HttpMethod.Post, objComprobante);
 
             if (respuestaComprobante.IsSuccessStatusCode)
-                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));            
+                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
             else
             {
                 MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
@@ -230,7 +234,7 @@ namespace RecintosHabitacionales.Controllers
                 HttpResponseMessage respuesta = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoAPI + IdAdeudos, HttpMethod.Get);
 
                 AdeudoDTOCompleto objAdeudo = await LeerRespuestas<AdeudoDTOCompleto>.procesarRespuestasConsultas(respuesta);
-                
+
                 foreach (var pago in objAdeudo.PagoAdeudos)
                 {
                     HttpResponseMessage respuestaCatalogo = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorIdCatalogo + pago.IdTipoPago, HttpMethod.Get);

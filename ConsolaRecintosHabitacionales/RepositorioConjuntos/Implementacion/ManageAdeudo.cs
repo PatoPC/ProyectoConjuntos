@@ -72,8 +72,7 @@ namespace RepositorioConjuntos.Implementacion
                 {
                     listaAdeudos = await _context.Adeudos.
                         Where(x => x.EstadoAdeudos == objBusqueda.EstadoPago
-                        && x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto 
-                        && x.FechaAdeudos == objBusqueda.fechaADeudoActual)
+                        && x.IdDepartamentoNavigation.IdTorresNavigation.IdConjunto == objBusqueda.IdConjunto)
                     .Include(x => x.IdDepartamentoNavigation)
                     .ThenInclude(x => x.IdTorresNavigation)
                     .ThenInclude(x => x.IdConjuntoNavigation)

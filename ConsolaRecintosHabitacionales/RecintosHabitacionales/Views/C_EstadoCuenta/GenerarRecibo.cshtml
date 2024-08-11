@@ -50,6 +50,42 @@
                             <div class="row mb-12">
                                 <div class="col-xl-2">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label class="control-label">
+                                            Conjunto
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" class="form-control form-control-solid" readonly="readonly" value="@objAdeudo.NombreConjunto" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label class="control-label required">
+                                            Torre
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    <input type="text" class="form-control form-control-solid" value="@objAdeudo.Torre" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
                                         <label for="Titulo" class="control-label">
                                             Departamento
                                         </label>
@@ -62,7 +98,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="row">
                     <div class="col-md-6">
@@ -148,10 +183,12 @@
 
                     string nombreCampoMonto = "montoAdeudo" + contadorAdeudo;
                     string saldoPendiente = "saldoPendienteAdeudo" + contadorAdeudo;
+                    string saldoPendienteReal = "saldoPendienteReal" + contadorAdeudo;
 
                     <input type="hidden" name="@nombreCampoIdDeuda" value="@adeudoTemp.IdAdeudos" />
                     <input type="hidden" name="@nombreCampoValorPendiente" value="@adeudoTemp.MontoAdeudos" />
                     <input type="hidden" name="@nombreFechaDeuda" value="@adeudoTemp.FechaAdeudos.ToString("yyyy-MM-dd")" />
+                    <input type="hidden" name="@saldoPendienteReal" id="@saldoPendienteReal" value="@adeudoTemp.SaldoPendiente.ToString("F2")" />
 
                     <div class="row">
                         <div class="col-md-12 fs-3 mb-3">
@@ -231,18 +268,32 @@
 
             document.getElementById('ValorPago').addEventListener('input', function () {
                 const totalAdeudos = parseInt(document.getElementById('contadorAdeudos').value);
-                let ValorPago = parseFloat(this.value.replace(',', '.')) || 0; // Reemplazar coma por punto
+                let valorActual = this.value.replace('.', ',')
+
+                this.value = valorActual
+
+                let ValorPago = parseFloat(this.value.replace(',', '.')) || 0; 
                 let saldoPendiente = ValorPago;
 
                 for (let i = 1; i <= totalAdeudos; i++) {
-                    const adeudoElement = document.getElementById('montoAdeudo' + i);
-                    const adeudoValue = parseFloat(adeudoElement.value.replace(',', '.')); // Reemplazar coma por punto
+                    let adeudoElement = document.getElementById('montoAdeudo' + i);
+                    let valorAdeudoActual = parseFloat(adeudoElement.value.replace(',', '.')); 
 
-                    if (saldoPendiente >= adeudoValue) {
-                        saldoPendiente -= adeudoValue; // Marca como pagado
+                    let saldoPendienteElement = document.getElementById('saldoPendienteAdeudo' + i);
+                    let valorSaldoPendiente = parseFloat(saldoPendienteElement.value.replace(',', '.'));
+
+                    let saldoPendienteElementReal = document.getElementById('saldoPendienteReal' + i);
+                    let valorSaldoPendienteReal = parseFloat(saldoPendienteElementReal.value.replace(',', '.'));
+
+                    if(valorSaldoPendienteReal !="0,00"){
+                        valorAdeudoActual = valorSaldoPendienteReal
+                    }
+
+                    if (saldoPendiente >= valorAdeudoActual) {
+                        saldoPendiente -= valorAdeudoActual; // Marca como pagado
                         document.getElementById('saldoPendienteAdeudo' + i).value = '0.00';
                     } else {
-                        document.getElementById('saldoPendienteAdeudo' + i).value = (adeudoValue - saldoPendiente).toFixed(2);
+                        document.getElementById('saldoPendienteAdeudo' + i).value = (valorAdeudoActual - saldoPendiente).toFixed(2);
                         saldoPendiente = 0;
                     }
                 }
