@@ -10,6 +10,7 @@ namespace RepositorioConjuntos.Interface
     public interface IManageComprobantePago
     {
         public Task<ComprobantePago> obtenerComprobanteID(Guid IdComprobantePago);        
+        public Task<ComprobantePago> obtenerComprobanteIDDetalle(Guid IdAdeudo);
 
         
     }

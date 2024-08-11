@@ -285,7 +285,7 @@
                     let saldoPendienteElementReal = document.getElementById('saldoPendienteReal' + i);
                     let valorSaldoPendienteReal = parseFloat(saldoPendienteElementReal.value.replace(',', '.'));
 
-                    if(valorSaldoPendienteReal !="0,00"){
+                    if(valorSaldoPendienteReal != 0 ){
                         valorAdeudoActual = valorSaldoPendienteReal
                     }
 

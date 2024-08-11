@@ -77,6 +77,27 @@ namespace APICondominios.Controllers
         }
 
 
+        [HttpGet("GetComprobanteByIDDetalle")]
+        public async Task<IActionResult> GetComprobanteByIDDetalle(Guid idAdeudo)
+        {
+            try
+            {
+                ComprobantePago objRepositorio = await _consultaComprobantes.obtenerComprobanteIDDetalle(idAdeudo);
+
+                if (objRepositorio == null)
+                    return NotFound(MensajesRespuesta.sinResultados());
+
+                ComprobantePagoDTOCompleto objDTO = _mapper.Map<ComprobantePagoDTOCompleto>(objRepositorio);
+
+                return Ok(objDTO);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
         #region Varios
         private async Task guardarLogs(string objetoJSON, string mensajeError)
         {

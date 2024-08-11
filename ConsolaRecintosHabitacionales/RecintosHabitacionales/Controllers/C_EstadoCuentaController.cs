@@ -167,8 +167,8 @@ namespace RecintosHabitacionales.Controllers
                 AdeudoDTOCompleto objAdeudo = await LeerRespuestas<AdeudoDTOCompleto>.procesarRespuestasConsultas(respuestaTemp);
 
                 decimal valorDeudaActual = Convert.ToDecimal("0.00");
-                
-                if(objAdeudo.SaldoPendiente==0)
+
+                if (objAdeudo.SaldoPendiente == 0)
                     valorDeudaActual = objAdeudo.MontoAdeudos;
                 else
                     valorDeudaActual = objAdeudo.SaldoPendiente;
@@ -228,29 +228,39 @@ namespace RecintosHabitacionales.Controllers
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
-            if (objUsuarioSesion != null)
+            if (objUsuarioSesion == null)
+                return RedirectToAction("Ingresar", "C_Ingreso");
+
+            HttpResponseMessage respuesta = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.GetComprobanteByIDDetalle + IdAdeudos, HttpMethod.Get);
+
+            ComprobantePagoDTOCompleto objComprobante = await LeerRespuestas<ComprobantePagoDTOCompleto>.procesarRespuestasConsultas(respuesta);
+
+            //Recuperar texto Forma Pago
+            HttpResponseMessage respuestaCatalogo = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorIdCatalogo + objComprobante.IdTipoPago, HttpMethod.Get);
+
+            var objCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogo);
+
+            objComprobante.TipoPago = objCatalogo.NombreCatalogo;
+
+            //Recuperar datos Adeudo
+
+            foreach(var detalle in objComprobante.DetalleComprobantePagos)
             {
+                HttpResponseMessage respuestaAdeudo = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoAPI + detalle.IdTablaDeuda, HttpMethod.Get);
 
-                HttpResponseMessage respuesta = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoAPI + IdAdeudos, HttpMethod.Get);
+                AdeudoDTOCompleto objAdeudo = await LeerRespuestas<AdeudoDTOCompleto>.procesarRespuestasConsultas(respuestaAdeudo);
 
-                AdeudoDTOCompleto objAdeudo = await LeerRespuestas<AdeudoDTOCompleto>.procesarRespuestasConsultas(respuesta);
+                detalle.NombrePersona = objAdeudo.Nombre + " " + objAdeudo.Apellido;
 
-                foreach (var pago in objAdeudo.PagoAdeudos)
-                {
-                    HttpResponseMessage respuestaCatalogo = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorIdCatalogo + pago.IdTipoPago, HttpMethod.Get);
-
-                    var objCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaCatalogo);
-
-                    //pago.NombreTipoPago = objCatalogo.NombreCatalogo;
-                }
-
-                return new ViewAsPdf("PDF_ReciboAdeudo", objAdeudo)
-                {
-                    PageSize = Rotativa.AspNetCore.Options.Size.Legal,
-                };
+                objComprobante.Conjunto = objAdeudo.NombreConjunto;
+                objComprobante.Torre = objAdeudo.Torre;
+                objComprobante.Departamento = objAdeudo.Departamento;
             }
 
-            return RedirectToAction("Ingresar", "C_Ingreso");
+            return new ViewAsPdf("PDF_ReciboAdeudo", objComprobante)
+            {
+                PageSize = Rotativa.AspNetCore.Options.Size.Legal,
+            };
         }
 
     }

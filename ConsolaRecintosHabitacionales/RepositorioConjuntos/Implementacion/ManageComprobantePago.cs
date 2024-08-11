@@ -24,5 +24,26 @@ namespace RepositorioConjuntos.Implementacion
 
             return objComprobante;
         }
+
+        public async Task<ComprobantePago> obtenerComprobanteIDDetalle(Guid IdAdeudo)
+        {
+            //DetalleComprobantePago objDetalle = await _context.DetalleComprobantePagos.Where(x => x.IdTablaDeuda == IdAdeudo).FirstOrDefaultAsync();
+
+            //ComprobantePago objComprobanteTemp = await _context.ComprobantePagos
+            //    .Where(x => x.IdComprobantePago == objDetalle.IdComprobantePago)
+            //    .Include(x => x.DetalleComprobantePagos).FirstOrDefaultAsync();
+
+            //ComprobantePago objComprobanteTemp2 = await _context.ComprobantePagos
+            // .Where(x => x.DetalleComprobantePagos.Where( y => y.IdTablaDeuda == IdAdeudo).Count()>0)
+            // .Include(x => x.DetalleComprobantePagos).FirstOrDefaultAsync();
+
+            ComprobantePago objComprobante = await _context.ComprobantePagos
+             .Include(x => x.DetalleComprobantePagos)
+             .FirstOrDefaultAsync(x => x.DetalleComprobantePagos.Any(y => y.IdTablaDeuda == IdAdeudo));
+
+
+
+            return objComprobante;
+        }
     }
 }

@@ -1,9 +1,13 @@
-﻿@model DTOs.Adeudo.AdeudoDTOCompleto
+﻿@model DTOs.Comprobantes.ComprobantePagoDTOCompleto
 @{
-
+    Layout = "";
 }
 
-
+<style>
+     td {
+      padding: 10px 0; /* 10px de padding arriba y abajo, 0px a los lados */
+    }
+</style>
 
 <div id="divReporte" style="margin-left:5%;margin-right:5%;">
 
@@ -19,77 +23,79 @@
         </tr>
     </table>
 
-    <table border="0" width="100%">
+    <table border="0" width="100%" rowspan>
         <tr>
-            <td width="10%">
-                <center><b>Fecha</b></center>
+            <td width="20%">
+               <b>FECHA:</b>
             </td>
-            <td width="40%">
-                <center>  @Model.FechaCreacion.ToString("dd-MMMM-yyyy HH:mm").ToUpper()</center>
+            <td width="30%">
+                @Model.FechaPago.ToString("dd-MMMM-yyyy HH:mm").ToUpper()
             </td>
-            <td width="10%">
-                <center><b>NOMBRE:</b></center>
+            <td width="20%">
+                <b>NOMBRE:</b>
             </td>
-            <td width="40%">
-                <center>  @Model.Nombre @Model.Apellido</center>
+            <td width="30%">
+                @Model.DetalleComprobantePagos.FirstOrDefault().NombrePersona
+            </td>
+        </tr>
+        <tr>
+            <td width="20%">
+                <b>CONJUNTO:</b>
+            </td>
+            <td width="30%">
+                 @Model.Conjunto
+            </td>
+            <td width="20%">
+                <b>TORRE:</b>
+            </td>
+            <td width="30%">
+                @Model.Torre
             </td>
         </tr>
 
         <tr>
-            <td width="10%">
-                <center><b>Departamento</b></center>
+            <td width="20%">
+                <b>DEPARTAMENTO</b>
             </td>
-            <td width="40%">
-                <center>  @Model.Departamento</center>
+            <td width="30%">
+                @Model.Departamento
+            </td>
+        </tr>
+    
+
+        <tr>
+            <td width="20%">
+                <b>VALOR PAGO</b>
+            </td>
+            <td width="30%">
+                @Model.ValorPago.ToString("F2")
+            </td>
+            <td width="20%">
+                <b>CONCEPTO</b>
+            </td>
+            <td width="30%">
+                <span>@Model.Concepto</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td width="20%">
+                <b>SALDO PENDIENTE</b>
+            </td>
+            <td width="30%">
+                @Model.SaldoPendiente.ToString("F2")
+            </td>
+            <td width="20%">
+                <b>TIPO PAGO</b>
+            </td>
+            <td width="30%">
+                @Model.TipoPago
             </td>
         </tr>
 
     </table>
 
-    @foreach (var pago in Model.PagoAdeudos)
-    {
-        <table border="0" width="100%">
-
-            <tr>
-                <td>
-                    VALOR PAGO
-                </td>
-                <td>
-                    @pago.ValorPago.ToString("#.##")
-                </td>
-                <td>
-                    CONCEPTO
-                </td>
-                <td>
-                    @{
-                        string concepto = "Generación de " + Model.FechaAdeudos.ToString("dd MMMM yyyy") + " del departamento " + Model.Departamento;
-                    }
-                    <span>@concepto</span>
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    SALDO PENDIENTE
-                </td>
-                <td>
-                    @pago.SaldoPendiente.ToString("#.##")
-                </td>
-                <td>
-                    TIPO PAGO
-                </td>
-                <td>
-                    @*@pago.NombreTipoPago*@
-                </td>
-            </tr>
-
-
-
-
-        </table>
-    }
-
-
+    <br/>
 
     <!--begin::Container Datos Pie de pagina  -->
     <table border="0" width="100%" style="margin-top:10px;">
