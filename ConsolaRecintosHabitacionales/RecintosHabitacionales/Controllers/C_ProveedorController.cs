@@ -286,9 +286,9 @@ namespace RecintosHabitacionales.Controllers
 
             if (idCiudad!=null)
             {
-                HttpResponseMessage respuestaHijos = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.padrePais, HttpMethod.Get);
+                HttpResponseMessage respuestaHijosCiudad = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosHermanosPorID + idCiudad, HttpMethod.Get);
 
-                var listaCiudades = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuestaHijos);
+                var listaCiudades = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuestaHijosCiudad);
                 objCatalogoProvincia = listaCiudades.Where(x => x.IdCatalogo == idCiudad).FirstOrDefault();
 
                 SelectList objSelectListCiudades = new SelectList(listaCiudades, "IdCatalogo", "NombreCatalogo", idCiudad);
@@ -296,9 +296,11 @@ namespace RecintosHabitacionales.Controllers
                 ViewData["listaCiudades"] = objSelectListCiudades;
             }
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.padreCiudades, HttpMethod.Get);
+            HttpResponseMessage respuestaHijos = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.padrePais, HttpMethod.Get);
 
-            var listaProvincias = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuesta);
+            var pais = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaHijos);
+            var listaProvincias = pais.InverseIdCatalogopadreNavigation;
+
             var objSelectList = new SelectList(Enumerable.Empty<SelectListItem>());
 
             if (objCatalogoProvincia != null)            
