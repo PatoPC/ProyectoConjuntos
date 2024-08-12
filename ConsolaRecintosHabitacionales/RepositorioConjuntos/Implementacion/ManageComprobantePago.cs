@@ -39,11 +39,28 @@ namespace RepositorioConjuntos.Implementacion
 
             ComprobantePago objComprobante = await _context.ComprobantePagos
              .Include(x => x.DetalleComprobantePagos)
+             .Include(x => x.SecuencialComprobantePagos)
              .FirstOrDefaultAsync(x => x.DetalleComprobantePagos.Any(y => y.IdTablaDeuda == IdAdeudo));
 
 
 
             return objComprobante;
+        }
+
+        public int GetSecuencialComprobantePago()
+        {
+            try
+            {
+                int objAnexo = (int)_context.SecuencialComprobantePagos.Max(x => x.SecuencialComprobante);
+
+                return objAnexo;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return 0;
         }
     }
 }

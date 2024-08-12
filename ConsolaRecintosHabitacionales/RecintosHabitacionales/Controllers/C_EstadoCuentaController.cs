@@ -12,6 +12,7 @@ using Rotativa;
 using Utilitarios;
 using DTOs.Torre;
 using DTOs.Comprobantes;
+using DTOs.Contabilidad;
 
 namespace RecintosHabitacionales.Controllers
 {
@@ -212,6 +213,17 @@ namespace RecintosHabitacionales.Controllers
             objComprobante.UsuarioCreacion = objUsuarioSesion.NombreUsuario;
             objComprobante.UsuarioModificacion = objUsuarioSesion.NombreUsuario;
 
+            //Recuperar Secuencial
+            HttpResponseMessage respuestaSecuencial = await _servicioConsumoAPIAdeudoDTOPagar.consumoAPI(ConstantesConsumoAPI.GetSecuencialComprobantePago, HttpMethod.Get);
+
+            var secuencialMaximo = await LeerRespuestas<string>.procesarRespuestasConsultas(respuesta);
+            int nuevoSecuencial = Convert.ToInt32(secuencialMaximo) + 1;
+
+            SecuencialComprobantePagoDTO objSecuencial = new SecuencialComprobantePagoDTO();
+            objSecuencial.SecuencialComprobante = nuevoSecuencial;
+
+            objComprobante.SecuencialComprobantePagos = new List<SecuencialComprobantePagoDTO>();
+            objComprobante.SecuencialComprobantePagos.Add(objSecuencial);
 
             HttpResponseMessage respuestaComprobante = await _servicioConsumoAPIComprobante.consumoAPI(ConstantesConsumoAPI.ComprobantePago, HttpMethod.Post, objComprobante);
 

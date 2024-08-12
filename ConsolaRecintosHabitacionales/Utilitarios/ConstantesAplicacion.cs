@@ -29,16 +29,17 @@ namespace Utilitarios
 
 
         #region Códigos Persona
-        public const string padreTipoIdentificacion = "TIPIDENT";
+        public const string padreTipoIdentificacion = "TPIDENT";
+        public const string padrePais = "ECUADR";
 		#endregion
 		
 		#region Códigos Proveedor
-		public const string padreTipoIdentificacionProveedor = "tidenprv";
+		
         #endregion
 
         #region Tipo Identificación
         public const string IdentificacionCedula = "Cédula";
-        public const string CodigoCatalogoCedula = "CDULA";
+        public const string CodigoCatalogoCedula = "CEDULA";
         public const string IdentificacionPasaporte = "Pasaporte";
         public const string CedulaNoValida = "Cédula no válida";
 

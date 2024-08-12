@@ -75,6 +75,8 @@ namespace RecintosHabitacionales.Controllers
                 detalle.CuentaContable = cuentaActual;
             }
 
+            objCabecera.DetalleContabilidads = objCabecera.DetalleContabilidads.OrderBy(x => x.DetalleDetCont).ToList();
+
             return new JsonResult(objCabecera);
         }
 

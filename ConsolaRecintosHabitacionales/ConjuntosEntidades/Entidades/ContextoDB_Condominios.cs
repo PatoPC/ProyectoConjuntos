@@ -36,6 +36,7 @@ namespace ConjuntosEntidades.Entidades
         public virtual DbSet<ReciboDetalle> ReciboDetalles { get; set; } = null!;
         public virtual DbSet<ReservaArea> ReservaAreas { get; set; } = null!;
         public virtual DbSet<SecuencialCabeceraCont> SecuencialCabeceraConts { get; set; } = null!;
+        public virtual DbSet<SecuencialComprobantePago> SecuencialComprobantePagos { get; set; } = null!;
         public virtual DbSet<TipoPersona> TipoPersonas { get; set; } = null!;
         public virtual DbSet<Torre> Torres { get; set; } = null!;
 
@@ -1216,6 +1217,29 @@ namespace ConjuntosEntidades.Entidades
                     .WithMany(p => p.SecuencialCabeceraConts)
                     .HasForeignKey(d => d.IdEncCont)
                     .HasConstraintName("FK_SECUENCI_REFERENCE_ENCABEZA");
+            });
+
+            modelBuilder.Entity<SecuencialComprobantePago>(entity =>
+            {
+                entity.HasKey(e => e.IdSecuencialComprobantePago);
+
+                entity.ToTable("SECUENCIAL_COMPROBANTE_PAGO");
+
+                entity.Property(e => e.IdSecuencialComprobantePago)
+                    .HasColumnName("ID_SECUENCIAL_COMPROBANTE_PAGO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.IdComprobantePago)
+                    .HasColumnName("ID_COMPROBANTE_PAGO")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.SecuencialComprobante).HasColumnName("SECUENCIAL_COMPROBANTE");
+
+                entity.HasOne(d => d.IdComprobantePagoNavigation)
+                    .WithMany(p => p.SecuencialComprobantePagos)
+                    .HasForeignKey(d => d.IdComprobantePago)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SECUENCI_REFERENCE_COMPROBA");
             });
 
             modelBuilder.Entity<TipoPersona>(entity =>

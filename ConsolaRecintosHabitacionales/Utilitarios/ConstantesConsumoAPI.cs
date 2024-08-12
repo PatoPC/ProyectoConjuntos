@@ -186,10 +186,10 @@ namespace Utilitarios
         //public const string TodosConjuntos = ConstantesAplicacion.pathAPI + "/api/API_Conjuntos/ObtenerTodosConjuntos";
         #endregion
 
-        #region Contabilidad
+        #region Contabilidad - Estado de Cuenta - Comprobante
         public const string ComprobantePago = ConstantesAplicacion.pathAPI + "/api/ComprobantePago/";
         public const string GetComprobanteByIDDetalle = ConstantesAplicacion.pathAPI + "/api/ComprobantePago/GetComprobanteByIDDetalle?idAdeudo=";
-
+        public const string GetSecuencialComprobantePago = ConstantesAplicacion.pathAPI + "/api/ComprobantePago/GetSecuencialComprobantePago";
 
         #endregion
 

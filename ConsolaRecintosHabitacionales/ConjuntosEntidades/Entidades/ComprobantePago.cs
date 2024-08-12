@@ -8,6 +8,7 @@ namespace ConjuntosEntidades.Entidades
         public ComprobantePago()
         {
             DetalleComprobantePagos = new HashSet<DetalleComprobantePago>();
+            SecuencialComprobantePagos = new HashSet<SecuencialComprobantePago>();
         }
 
         public Guid IdComprobantePago { get; set; }
@@ -25,5 +26,6 @@ namespace ConjuntosEntidades.Entidades
         public string? UsuarioModificacion { get; set; }
 
         public virtual ICollection<DetalleComprobantePago> DetalleComprobantePagos { get; set; }
+        public virtual ICollection<SecuencialComprobantePago> SecuencialComprobantePagos { get; set; }
     }
 }

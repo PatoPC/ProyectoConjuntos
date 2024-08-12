@@ -235,14 +235,17 @@ namespace RecintosHabitacionales.Controllers
 
                             CatalogoDTOResultadoBusqueda objCataGeneracion = await recuperarCatalogoPorCodigo(ConstantesAplicacion.tipoTransaccion);
 
+                            //Recuperar Secuencial
                             HttpResponseMessage respuestaSecuencial = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.SecuencialContabilidad, HttpMethod.Get);
 
                             var secuencialMaximo = await LeerRespuestas<string>.procesarRespuestasConsultas(respuesta);
                             int nuevoSecuencial = Convert.ToInt32(secuencialMaximo) + 1;
 
-                            //Recuperar Cuenta contable
                             SecuencialCabeceraContDTO objSecuencial = new SecuencialCabeceraContDTO();
                             objSecuencial.Secuencial = nuevoSecuencial;
+
+                            //Recuperar Cuenta contable
+
 
                             EncabezContDTOCrear objDTOCabecera = new EncabezContDTOCrear();
 

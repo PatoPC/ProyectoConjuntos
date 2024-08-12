@@ -76,6 +76,21 @@ namespace APICondominios.Controllers
             return BadRequest(MensajesRespuesta.guardarError());
         }
 
+        [HttpGet("GetSecuencialComprobantePago")]
+        public ActionResult<int> GetSecuencialComprobantePago()
+        {
+            try
+            {
+                int secuencialMaximo = _consultaComprobantes.GetSecuencialComprobantePago();
+
+                return Ok(secuencialMaximo);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
 
         [HttpGet("GetComprobanteByIDDetalle")]
         public async Task<IActionResult> GetComprobanteByIDDetalle(Guid idAdeudo)

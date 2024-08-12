@@ -26,5 +26,6 @@ namespace DTOs.Comprobantes
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
         public List<DetalleComprobantePagoDTOCompleto> DetalleComprobantePagos { get; set; }
+        public List<SecuencialComprobantePagoDTO> SecuencialComprobantePagos { get; set; }
     }
 }

@@ -32,30 +32,36 @@
                 @Model.FechaPago.ToString("dd-MMMM-yyyy HH:mm").ToUpper()
             </td>
             <td width="20%">
+                <b># RECIBO:</b>
+            </td>
+            <td width="30%">
+                @Model.SecuencialComprobantePagos.FirstOrDefault().SecuencialComprobante
+            </td>
+        </tr>
+        <tr>
+            <td width="20%">
                 <b>NOMBRE:</b>
             </td>
             <td width="30%">
                 @Model.DetalleComprobantePagos.FirstOrDefault().NombrePersona
             </td>
-        </tr>
-        <tr>
             <td width="20%">
                 <b>CONJUNTO:</b>
             </td>
             <td width="30%">
                  @Model.Conjunto
-            </td>
+            </td>            
+        </tr>
+
+        <tr>
             <td width="20%">
                 <b>TORRE:</b>
             </td>
             <td width="30%">
                 @Model.Torre
             </td>
-        </tr>
-
-        <tr>
             <td width="20%">
-                <b>DEPARTAMENTO</b>
+                <b>DEPARTAMENTO:</b>
             </td>
             <td width="30%">
                 @Model.Departamento
@@ -65,13 +71,13 @@
 
         <tr>
             <td width="20%">
-                <b>VALOR PAGO</b>
+                <b>VALOR PAGO:</b>
             </td>
             <td width="30%">
                 @Model.ValorPago.ToString("F2")
             </td>
             <td width="20%">
-                <b>CONCEPTO</b>
+                <b>CONCEPTO:</b>
             </td>
             <td width="30%">
                 <span>@Model.Concepto</span>
@@ -80,16 +86,26 @@
 
         <tr>
             <td width="20%">
-                <b>SALDO PENDIENTE</b>
+                <b>SALDO PENDIENTE:</b>
             </td>
             <td width="30%">
                 @Model.SaldoPendiente.ToString("F2")
             </td>
             <td width="20%">
-                <b>TIPO PAGO</b>
+                <b>TIPO PAGO:</b>
             </td>
             <td width="30%">
                 @Model.TipoPago
+            </td>
+        </tr>
+
+
+        <tr>
+            <td width="20%">
+                <b>OBSERVACIÓN:</b>
+            </td>
+            <td colspan="2">
+                @Model.Observacion
             </td>
         </tr>
 

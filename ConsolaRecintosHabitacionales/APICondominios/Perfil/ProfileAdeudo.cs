@@ -34,6 +34,8 @@ namespace APICondominios.Perfil
             CreateMap<DetalleComprobantePago, DetalleComprobantePagoDTOCompleto>();
             CreateMap<DetalleComprobantePagoDTOCompleto, DetalleComprobantePago>();
 
+            CreateMap<SecuencialComprobantePagoDTO, SecuencialComprobantePago>();
+            CreateMap<SecuencialComprobantePago, SecuencialComprobantePagoDTO>();
         }
        
     }

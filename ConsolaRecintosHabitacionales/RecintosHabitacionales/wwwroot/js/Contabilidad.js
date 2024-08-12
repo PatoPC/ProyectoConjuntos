@@ -44,32 +44,41 @@ async function mostrarDetallesContabilidad(idModal, idEquipoDespacho) {
         let totalCredito= 0
         detalleContabilidad.forEach(function (dato) {
             var fila = tbody.insertRow();
-            var celdaContador = fila.insertCell(0);
+            var celdaNumeroCuenta = fila.insertCell(0);
             var celdaConcepto = fila.insertCell(1);
             var celdaDetalle = fila.insertCell(2);
             var celdaDebito = fila.insertCell(3);
             var celdaCredito = fila.insertCell(4);
 
-            celdaContador.innerText = dato.cuentaContable;
+            celdaNumeroCuenta.innerText = dato.cuentaContable;
             celdaConcepto.innerText = dato.nroDepartmentoCont;
             celdaDetalle.innerText = dato.detalleDetCont;
             celdaDebito.innerText = dato.debitoDetCont;
             celdaCredito.innerText = dato.creditoDetCont;
 
-            //if (dato.debitoDetCont != undefined) {
-            //    totalCredito = totalCredito + dato.debitoDetCont
-            //}
-            //if (dato.creditoDetCont != undefined) {
-            //    totalCredito = totalCredito + dato.creditoDetCont
-            //}
+            if (dato.debitoDetCont != undefined) {
+                totalDebito = totalDebito + dato.debitoDetCont
+            }
+            if (dato.creditoDetCont != undefined) {
+                totalCredito = totalCredito + dato.creditoDetCont
+            }
 
             contador++; // Incrementar el contador
         });
 
-        //var fila = tbody.insertRow();
+        var filaTotal = tbody.insertRow();
 
-        // var celdaCredito = fila.insertCell(4);
+        var celdaBlanco1 = filaTotal.insertCell(0);
+        var celdaBlanco2 = filaTotal.insertCell(1);
+        var celdaTotal = filaTotal.insertCell(2);
+        var celdaTotalDebito = filaTotal.insertCell(3);
+        var celdaTotalCredito = filaTotal.insertCell(4);
+
+        celdaTotal.innerText = "TOTAL";
+        celdaTotalDebito.innerText = totalDebito.toFixed(2)
+        celdaTotalCredito.innerText = totalCredito.toFixed(2)
     }
 
     MostrarModal(idModal)
+
 }

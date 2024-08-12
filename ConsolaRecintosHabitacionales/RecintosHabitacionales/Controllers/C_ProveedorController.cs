@@ -249,7 +249,7 @@ namespace RecintosHabitacionales.Controllers
         {
             List<ProveedorDTOCompleto> listaResultado = new List<ProveedorDTOCompleto>();
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
-
+            
             if (objUsuarioSesion != null)
             {
                 try
@@ -283,9 +283,10 @@ namespace RecintosHabitacionales.Controllers
         public async Task DatosInciales(Guid? idCiudad=null)
         {
             CatalogoDTOResultadoBusqueda objCatalogoProvincia = new CatalogoDTOResultadoBusqueda();
+
             if (idCiudad!=null)
             {
-                HttpResponseMessage respuestaHijos = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosHermanosPorID + idCiudad, HttpMethod.Get);
+                HttpResponseMessage respuestaHijos = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.padrePais, HttpMethod.Get);
 
                 var listaCiudades = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuestaHijos);
                 objCatalogoProvincia = listaCiudades.Where(x => x.IdCatalogo == idCiudad).FirstOrDefault();
@@ -295,26 +296,20 @@ namespace RecintosHabitacionales.Controllers
                 ViewData["listaCiudades"] = objSelectListCiudades;
             }
 
-
-            HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreCiudades, HttpMethod.Get);
+            HttpResponseMessage respuesta = await _servicioConsumoAPICrear.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.padreCiudades, HttpMethod.Get);
 
             var listaProvincias = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuesta);
             var objSelectList = new SelectList(Enumerable.Empty<SelectListItem>());
 
-            if (objCatalogoProvincia != null)
-            {
-                objSelectList = new SelectList(listaProvincias, "IdCatalogo", "NombreCatalogo", objCatalogoProvincia.IdCatalogopadre);
-            }                
-            else
-            {
-                objSelectList = new SelectList(listaProvincias, "IdCatalogo", "NombreCatalogo");
-            }
+            if (objCatalogoProvincia != null)            
+                objSelectList = new SelectList(listaProvincias, "IdCatalogo", "NombreCatalogo", objCatalogoProvincia.IdCatalogopadre);            
+            else            
+                objSelectList = new SelectList(listaProvincias, "IdCatalogo", "NombreCatalogo");            
                 
 
             ViewData["listaProvincias"] = objSelectList;
 
-            ViewData["listaTipoIdentificacion"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoIdentificacionProveedor, "IdCatalogo", "Nombrecatalogo");
-
+            ViewData["listaTipoIdentificacion"] = await DropDownsCatalogos<CatalogoDTODropDown>.cargarListaDropDownGenerico(_servicioConsumoAPICatalogos, ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.padreTipoIdentificacion, "IdCatalogo", "Nombrecatalogo");
         }
 
     }

@@ -12,6 +12,6 @@ namespace RepositorioConjuntos.Interface
         public Task<ComprobantePago> obtenerComprobanteID(Guid IdComprobantePago);        
         public Task<ComprobantePago> obtenerComprobanteIDDetalle(Guid IdAdeudo);
 
-        
+        public int GetSecuencialComprobantePago();
     }
 }
