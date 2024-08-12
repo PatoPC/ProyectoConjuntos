@@ -189,7 +189,7 @@ namespace RecintosHabitacionales.Controllers
 
                 objAdeudoEditar.FechaModificacion = DateTime.Now;
                 objAdeudoEditar.UsuarioModificacion = objUsuarioSesion.NombreUsuario;
-                objAdeudoEditar.IdFormapago = objComprobante.IdTipoPago;
+
 
                 HttpResponseMessage respuestaEditar = await _servicioConsumoAPIAdeudoDTOPagar.consumoAPI(ConstantesConsumoAPI.gestionarEditarAdeudoPago + objAdeudo.IdAdeudos, HttpMethod.Post, objAdeudoEditar);
 
@@ -202,11 +202,6 @@ namespace RecintosHabitacionales.Controllers
             objComprobante.UsuarioModificacion = FuncionesUtiles.construirUsuarioAuditoria(objUsuarioSesion);
 
 
-            HttpResponseMessage respuesta = await _servicioConsumoAPIAdeudoDTOPagar.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + ConstantesAplicacion.ingresoAdeudos, HttpMethod.Get);
-
-            var objCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuesta);
-
-            objComprobante.IdTipoPago = objCatalogo.IdCatalogo;
             objComprobante.UrlConsumaTablaDeuda = ConstantesConsumoAPI.gestionarAdeudoAPI;
             objComprobante.EstadoImpreso = false;
             objComprobante.SaldoPendiente = valorRestantePagado < 0 ? valorRestantePagado * -1 : valorRestantePagado;
@@ -216,7 +211,7 @@ namespace RecintosHabitacionales.Controllers
             //Recuperar Secuencial
             HttpResponseMessage respuestaSecuencial = await _servicioConsumoAPIAdeudoDTOPagar.consumoAPI(ConstantesConsumoAPI.GetSecuencialComprobantePago, HttpMethod.Get);
 
-            var secuencialMaximo = await LeerRespuestas<string>.procesarRespuestasConsultas(respuesta);
+            var secuencialMaximo = await LeerRespuestas<string>.procesarRespuestasConsultas(respuestaSecuencial);
             int nuevoSecuencial = Convert.ToInt32(secuencialMaximo) + 1;
 
             SecuencialComprobantePagoDTO objSecuencial = new SecuencialComprobantePagoDTO();
@@ -228,10 +223,10 @@ namespace RecintosHabitacionales.Controllers
             HttpResponseMessage respuestaComprobante = await _servicioConsumoAPIComprobante.consumoAPI(ConstantesConsumoAPI.ComprobantePago, HttpMethod.Post, objComprobante);
 
             if (respuestaComprobante.IsSuccessStatusCode)
-                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuesta, controladorActual, accionActual));
+                return new JsonResult(LeerRespuestas<MensajesRespuesta>.procesarRespuestaCRUD(respuestaComprobante, controladorActual, accionActual));
             else
             {
-                MensajesRespuesta objMensajeRespuesta = await respuesta.ExceptionResponse();
+                MensajesRespuesta objMensajeRespuesta = await respuestaComprobante.ExceptionResponse();
                 return new JsonResult(objMensajeRespuesta);
             }
         }
