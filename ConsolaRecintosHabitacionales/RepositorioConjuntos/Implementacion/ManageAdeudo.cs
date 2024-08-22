@@ -85,7 +85,7 @@ namespace RepositorioConjuntos.Implementacion
                     listaAdeudos = listaAdeudos.Where(x => x.IdDepartamentoNavigation.CodigoDepartamento.Trim() == objBusqueda.numeroDepartamento.Trim()).ToList();
                 }
 
-                if (objBusqueda.IdTorre != null)
+                if (objBusqueda.IdTorre != null && objBusqueda.IdTorre != Guid.Empty)
                 {
                     listaAdeudos = listaAdeudos.Where(x => x.IdDepartamentoNavigation.IdTorres == objBusqueda.IdTorre).ToList();
                 }

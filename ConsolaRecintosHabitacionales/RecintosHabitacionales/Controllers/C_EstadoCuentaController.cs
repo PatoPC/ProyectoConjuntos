@@ -59,6 +59,16 @@ namespace RecintosHabitacionales.Controllers
 
             if (listaResultado == null)
                 listaResultado = new List<TorreDTOCompleto>();
+            else
+            {
+                listaResultado = listaResultado.OrderBy(x => x.NombreTorres).ToList();
+
+                TorreDTOCompleto torreTodos = new TorreDTOCompleto();
+                torreTodos.IdTorres = Guid.Empty;
+                torreTodos.NombreTorres = "Todas";
+
+                listaResultado.Insert(0, torreTodos);
+            }
 
             SelectList listSelecTorres = new SelectList(listaResultado, "IdTorres", "NombreTorres");
 

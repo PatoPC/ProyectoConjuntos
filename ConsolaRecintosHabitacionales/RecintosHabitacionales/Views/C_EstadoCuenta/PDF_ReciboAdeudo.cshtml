@@ -1,6 +1,9 @@
 ﻿@model DTOs.Comprobantes.ComprobantePagoDTOCompleto
 @{
     Layout = "";
+
+    decimal sumaPagoAcumulado = 0;
+    decimal saldoPendienteAcumulado = 0;
 }
 
 <style>
@@ -68,29 +71,49 @@
             </td>
         </tr>
     
-
         <tr>
             <td width="20%">
-                <b>VALOR PAGO:</b>
+                <b>CONCEPTO:</b>
             </td>
-            <td width="30%">
-                @Model.ValorPago.ToString("F2")
-            </td>
+        </tr>
+        
+        @foreach(var mes in Model.DetalleComprobantePagos){
+            sumaPagoAcumulado += mes.ValorPendiente;
+
+            saldoPendienteAcumulado = Model.ValorPago - mes.ValorPendiente;
+
+            <tr>
+                <td width="20%">
+                    @mes.FechaDetalleDeuda.ToString("MMMM yyyy").ToUpper();
+                </td>
+                <td width="30%">
+                    <b>VALOR:</b>
+                </td>
+                <td width="20%">
+                    <span>@mes.ValorPendiente.ToString("F2")</span>
+                </td>
+                
+                <td width="30%">
+                    <b>SALDO PENDIENTE: </b>
+                    @if(saldoPendienteAcumulado>=0){
+                        <span>0.00</span>
+                    }
+                    else{
+                        <span>@(saldoPendienteAcumulado * -1).ToString("F2")</span>
+                    }
+                </td>
+            </tr>
+        }
+        
+
+        <tr>
             <td width="20%">
                 <b>CONCEPTO:</b>
             </td>
             <td width="30%">
-                <span>@Model.Concepto</span>
+                @Model.TipoPago
             </td>
-        </tr>
 
-        <tr>
-            <td width="20%">
-                <b>SALDO PENDIENTE:</b>
-            </td>
-            <td width="30%">
-                @Model.SaldoPendiente.ToString("F2")
-            </td>
             <td width="20%">
                 <b>TIPO PAGO:</b>
             </td>
