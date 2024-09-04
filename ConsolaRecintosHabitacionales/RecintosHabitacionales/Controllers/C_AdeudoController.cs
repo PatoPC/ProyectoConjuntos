@@ -63,7 +63,12 @@ namespace RecintosHabitacionales.Controllers
 
             List<AdeudoDTOCompleto> listaResultado = await recuperarListaAdeudos(variable);
 
-            return View("_ListaAdeudos", listaResultado);
+            listaResultado = listaResultado
+                .OrderBy(x => x.Torre)
+                .ThenBy(x => x.Departamento)
+                .ToList();
+
+			return View("_ListaAdeudos", listaResultado);
         }
 
         [HttpGet]
