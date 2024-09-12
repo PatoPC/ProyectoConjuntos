@@ -50,13 +50,40 @@ namespace RecintosHabitacionales.Controllers
 
             listaMestroConta = listaMestroConta.Where(x => x.IdConMstPadre == Guid.Empty).ToList();
 
-			listaMestroConta = listaMestroConta.OrderBy(x => x.CuentaCon).ToList();
+			listaMestroConta = listaMestroConta.OrderBy(x => x.CuentaContable).ToList();
 
-			ViewData["listaCuentas"] = listaMestroConta;
+			
+            
+
+            List<MaestroContableDTOCompleto> listaPlana = new List<MaestroContableDTOCompleto>();
+
+            // Aplanar todas las estructuras jerárquicas en una lista
+            foreach (var item in listaMestroConta)
+            {
+                listaPlana.AddRange(FlattenList(item));
+            }
+
+            listaPlana = listaPlana.OrderBy(x => x.CuentaContable).ToList();
+
+            // Ordenar por CuentaContable
             ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
+            ViewData["listaCuentas"] = listaPlana;
 
             return View();
         }
+
+        public static List<MaestroContableDTOCompleto> FlattenList(MaestroContableDTOCompleto maestro)
+        {
+            List<MaestroContableDTOCompleto> result = new List<MaestroContableDTOCompleto> { maestro };
+
+            foreach (var child in maestro.InverseIdConMstPadreNavigation.OrderBy(x => x.CuentaContable))
+            {
+                result.AddRange(FlattenList(child));
+            }
+
+            return result;
+        }
+
         #region CRUD
 
         #region Crear

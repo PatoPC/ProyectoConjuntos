@@ -12,6 +12,7 @@ namespace ConjuntosEntidades.Entidades
         public Guid IdComprobantePago { get; set; }
         public Guid IdTablaDeuda { get; set; }
         public decimal ValorPendiente { get; set; }
+        public DateTime FechaDetalleDeuda { get; set; }
 
         public virtual ComprobantePago IdComprobantePagoNavigation { get; set; } = null!;
     }

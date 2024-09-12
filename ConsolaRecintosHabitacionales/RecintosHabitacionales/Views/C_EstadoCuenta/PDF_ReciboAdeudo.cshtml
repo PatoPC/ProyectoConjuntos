@@ -84,7 +84,7 @@
 
             <tr>
                 <td width="20%">
-                    @mes.FechaDetalleDeuda.ToString("MMMM yyyy").ToUpper();
+                    @mes.FechaDetalleDeuda.ToString("MMMM-yyyy").ToUpper()
                 </td>
                 <td width="30%">
                     <b>VALOR:</b>
@@ -118,7 +118,14 @@
                 <b>TIPO PAGO:</b>
             </td>
             <td width="30%">
-                @Model.TipoPago
+                @if(!string.IsNullOrEmpty(Model.TipoPago))
+                {
+                    <span>@Model.TipoPago.ToUpper()</span>
+                }
+                else
+                {
+                    <span>-</span>
+                }
             </td>
         </tr>
 
@@ -128,7 +135,14 @@
                 <b>OBSERVACIÓN:</b>
             </td>
             <td colspan="2">
-                @Model.Observacion
+                @if (!string.IsNullOrEmpty(Model.Observacion))
+                {
+                    <span>@Model.Observacion.ToUpper()</span>
+                }
+                else
+                {
+                    <span>-</span>
+                }
             </td>
         </tr>
 

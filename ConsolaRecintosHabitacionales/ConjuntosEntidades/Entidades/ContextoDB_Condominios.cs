@@ -538,6 +538,10 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnName("ID_DETALLE_COMPROBANTE")
                     .HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.FechaDetalleDeuda)
+                    .HasColumnType("date")
+                    .HasColumnName("FECHA_DETALLE_DEUDA");
+
                 entity.Property(e => e.IdComprobantePago)
                     .HasColumnName("ID_COMPROBANTE_PAGO")
                     .HasDefaultValueSql("(newid())");

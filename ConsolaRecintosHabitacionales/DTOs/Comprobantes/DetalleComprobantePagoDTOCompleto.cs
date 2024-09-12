@@ -12,7 +12,7 @@ namespace DTOs.Comprobantes
         public Guid IdComprobantePago { get; set; }
         public Guid IdTablaDeuda { get; set; }
         public decimal ValorPendiente { get; set; }
-        public DateTime FechaDetalleDeuda { get; set; }
-        public string? NombrePersona { get; set; }
+		public DateTime FechaDetalleDeuda { get; set; }
+		public string? NombrePersona { get; set; }
     }
 }

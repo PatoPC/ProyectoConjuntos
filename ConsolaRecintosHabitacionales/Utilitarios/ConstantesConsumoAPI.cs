@@ -34,7 +34,7 @@ namespace Utilitarios
         public const string gestionarDepartamentoAPI = ConstantesAplicacion.pathAPI + "/api/APIDepartamento/";
         public const string gestionarDepartamentoAPIEditar = ConstantesAplicacion.pathAPI + "/api/APIDepartamento/Editar?id=";
         public const string gestionarDepartamentoAPIEliminar = ConstantesAplicacion.pathAPI + "/api/APIDepartamento/Eliminar?id=";
-        public const string buscarDepartamentoAvanzado = ConstantesAplicacion.pathAPI + "/api/ APIDepartamento/ObtenerTorresAvanzado";
+        public const string buscarDepartamentoAvanzado = ConstantesAplicacion.pathAPI + "/api/APIDepartamento/ObtenerTorresAvanzado";
         public const string buscarDepartamentosPorIDTorre = ConstantesAplicacion.pathAPI + "/api/APIDepartamento/ObtenerDepartamentoPorIDTorre?idTorre=";
 
         #endregion

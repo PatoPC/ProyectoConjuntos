@@ -30,9 +30,8 @@ namespace RepositorioConjuntos.Implementacion
                 if(!string.IsNullOrEmpty(objBusquedaDepartamento.CoigoDepto))
                     listaRepositorio = listaRepositorio.Where(x => x.CodigoDepartamento == objBusquedaDepartamento.CoigoDepto).ToList();
 
-                if(objBusquedaDepartamento.IdDepto!=Guid.NewGuid())
+                if(objBusquedaDepartamento.IdDepto!=Guid.Empty && objBusquedaDepartamento.IdDepto != null)
                     listaRepositorio = listaRepositorio.Where(x => x.IdDepartamento==objBusquedaDepartamento.IdDepto).ToList();
-
 
                 return listaRepositorio;
             }

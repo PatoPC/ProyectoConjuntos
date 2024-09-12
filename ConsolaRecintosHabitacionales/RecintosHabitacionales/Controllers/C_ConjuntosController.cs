@@ -567,11 +567,12 @@ namespace RecintosHabitacionales.Controllers
             return tipoPersonas;
         }
 
-        #endregion
 
-        #region Consultas
+		#endregion
 
-        [HttpGet]
+		#region Consultas
+
+		[HttpGet]
         public IActionResult AdministrarConjuntos()
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
@@ -608,9 +609,6 @@ namespace RecintosHabitacionales.Controllers
                 listaResultado = new List<ResultadoBusquedaConjuntos>();
 
             return View("_ListaConjutos", listaResultado);
-
-
-
         }
 
 

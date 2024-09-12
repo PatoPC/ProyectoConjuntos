@@ -158,7 +158,44 @@ namespace RecintosHabitacionales.Controllers
         }
 
 
-        [HttpGet]
+		public async Task<JsonResult> cargarSelectDepartamento(Guid idTorre)
+		{
+			List<CatalogoDTODropDown> listaFinal = new List<CatalogoDTODropDown>();
+
+			try
+			{
+				DepartamentoBusquedaDTO objBusquedaDepartamento = new DepartamentoBusquedaDTO(idTorre);
+
+				List<DepartamentoDTOCompleto> listaResultado = new List<DepartamentoDTOCompleto>();
+
+				HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarDepartamentoAvanzado, HttpMethod.Get, objBusquedaDepartamento);
+
+				if (respuesta.IsSuccessStatusCode)
+                {
+					listaResultado = await LeerRespuestas<List<DepartamentoDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+
+					listaFinal = listaResultado.Select(x => new CatalogoDTODropDown
+					{
+						IdCatalogo = x.IdDepartamento,
+						Nombrecatalogo = x.CodigoDepartamento
+					}).ToList();
+                }
+                else
+                {
+					listaFinal = new List<CatalogoDTODropDown>();
+				}
+			}
+			catch (Exception ex)
+			{
+				listaFinal = new List<CatalogoDTODropDown>();
+			}
+
+			return new JsonResult(listaFinal);
+		}
+
+
+
+		[HttpGet]
         public async Task<JsonResult> BusquedaPorDepartamentoID(Guid IdDepartamento)
         {
             DepartamentoDTOCompleto objResultado = new DepartamentoDTOCompleto();

@@ -18,10 +18,10 @@ namespace DTOs.Departamento
             CoigoDepto = coigoDepto;
         }
 
-        public Guid IdDepto { get; set; }
-        public Guid IdTorres { get; set; }
+        public Guid? IdDepto { get; set; }
+        public Guid? IdTorres { get; set; }
         
-        public string CoigoDepto { get; set; } = null!;
+        public string? CoigoDepto { get; set; } = null!;
 
         
     }
