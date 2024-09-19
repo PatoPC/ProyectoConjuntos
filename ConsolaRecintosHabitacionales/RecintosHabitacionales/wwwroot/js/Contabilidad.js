@@ -45,12 +45,14 @@ async function mostrarDetallesContabilidad(idModal, idEquipoDespacho) {
         detalleContabilidad.forEach(function (dato) {
             var fila = tbody.insertRow();
             var celdaNumeroCuenta = fila.insertCell(0);
-            var celdaConcepto = fila.insertCell(1);
-            var celdaDetalle = fila.insertCell(2);
-            var celdaDebito = fila.insertCell(3);
-            var celdaCredito = fila.insertCell(4);
+            var celdaNombreCuenta = fila.insertCell(1);
+            var celdaConcepto = fila.insertCell(2);
+            var celdaDetalle = fila.insertCell(3);
+            var celdaDebito = fila.insertCell(4);
+            var celdaCredito = fila.insertCell(5);
 
             celdaNumeroCuenta.innerText = dato.cuentaContable;
+            celdaNombreCuenta.innerText = dato.nombreCuentaContable;
             celdaConcepto.innerText = dato.nroDepartmentoCont;
             celdaDetalle.innerText = dato.detalleDetCont;
             celdaDebito.innerText = dato.debitoDetCont;
@@ -70,9 +72,10 @@ async function mostrarDetallesContabilidad(idModal, idEquipoDespacho) {
 
         var celdaBlanco1 = filaTotal.insertCell(0);
         var celdaBlanco2 = filaTotal.insertCell(1);
-        var celdaTotal = filaTotal.insertCell(2);
-        var celdaTotalDebito = filaTotal.insertCell(3);
-        var celdaTotalCredito = filaTotal.insertCell(4);
+        var celdaBlanco3 = filaTotal.insertCell(2);
+        var celdaTotal = filaTotal.insertCell(3);
+        var celdaTotalDebito = filaTotal.insertCell(4);
+        var celdaTotalCredito = filaTotal.insertCell(5);
 
         celdaTotal.innerText = "TOTAL";
         celdaTotalDebito.innerText = totalDebito.toFixed(2)

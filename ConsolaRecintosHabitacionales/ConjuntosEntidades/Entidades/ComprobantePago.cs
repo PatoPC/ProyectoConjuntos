@@ -24,6 +24,7 @@ namespace ConjuntosEntidades.Entidades
         public string UsuarioCreacion { get; set; } = null!;
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
+        public Guid? IdBancoComprobante { get; set; }
 
         public virtual ICollection<DetalleComprobantePago> DetalleComprobantePagos { get; set; }
         public virtual ICollection<SecuencialComprobantePago> SecuencialComprobantePagos { get; set; }

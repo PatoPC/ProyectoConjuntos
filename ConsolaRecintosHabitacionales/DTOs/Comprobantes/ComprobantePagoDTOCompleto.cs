@@ -22,7 +22,9 @@ namespace DTOs.Comprobantes
         public string? Conjunto { get; set; } = null!;
         public string? Torre { get; set; } = null!;
         public string? Departamento { get; set; } = null!;
-        public string UsuarioCreacion { get; set; } = null!;
+		public Guid? IdBancoComprobante { get; set; }
+		public string? NombreBancoComprobante { get; set; }
+		public string UsuarioCreacion { get; set; } = null!;
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }
         public List<DetalleComprobantePagoDTOCompleto> DetalleComprobantePagos { get; set; }

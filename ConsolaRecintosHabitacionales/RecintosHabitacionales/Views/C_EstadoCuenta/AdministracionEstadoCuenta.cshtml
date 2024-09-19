@@ -51,15 +51,29 @@
                         </div>
 
                         <div class="col-md-3">
-                            @Html.DropDownList("IdTorre", ViewData["listaTorres"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                            @Html.DropDownList("IdTorre", ViewData["listaTorres"] as SelectList, htmlAttributes: new
+                                {
+                                    @aria_label = "Torre",
+                                    @data_control = "select2",
+                                    @data_placeholder = "Torre",
+                                    @class = "form-select form-select-solid form-select-lg",
+                                    @onchange = "consultarDesdeAPIControlador('IdTorre','IdDepartamento','C_Departamento','cargarSelectDepartamento','idTorre')"
+                                })
+
                          </div>
 
                         <div class="col-md-3">
-                            <input name="numeroDepartamento" type="text" class="form-control form-control-solid" placeholder="# Departamento" />
+                            @Html.DropDownList("IdDepartamento", ViewData["listaDepartamento"] as SelectList, htmlAttributes: new
+                                {
+                                    @aria_label = "Departamento",
+                                    @data_control = "select2",
+                                    @data_placeholder = "Departamento",
+                                    @class = "form-select form-select-solid form-select-lg"
+                                })
                         </div>
 
                         <div class="col-md-3">
-                            <select name="anio" id="anio" aria-label="Selecionar" data-control="select2" , data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
+                            <select name="anio" id="anio" aria-label="Año" data-control="select2" , data-placeholder="Año" class="form-select form-select-solid form-select-lg">
                                 @foreach (var anio in listaAnios)
                                 {
                                     if (anio == anioActual)
@@ -74,7 +88,7 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <select name="mes" id="mes" aria-label="Selecionar" data-control="select2" data-placeholder="Seleccionar" class="form-select form-select-solid form-select-lg">
+                            <select name="mes" id="mes" aria-label="Mes" data-control="select2" data-placeholder="Mes" class="form-select form-select-solid form-select-lg">
                                 <option value="0">Todos</option>
                                 <option value="1">Enero</option>
                                 <option value="2">Febrero</option>

@@ -23,6 +23,7 @@ namespace DTOs.Adeudo
         public string Departamento { get; set; } = null!;
         public string Observacion { get; set; } = null!;
         public string Torre { get; set; } = null!;
+        public Guid? IdBancoComprobante { get; set; }
         public string UsuarioCreacion { get; set; } = null!;
         public DateTime? FechaModificacion { get; set; }
         public string? UsuarioModificacion { get; set; }

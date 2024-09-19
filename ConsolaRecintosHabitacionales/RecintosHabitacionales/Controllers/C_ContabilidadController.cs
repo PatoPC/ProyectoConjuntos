@@ -73,6 +73,7 @@ namespace RecintosHabitacionales.Controllers
                 string cuentaActual = FuncionesUtiles.FormatearCadenaCuenta(objCuentaAdeudo.CuentaCon, objConfigurar.Parametrizacion);
 
                 detalle.CuentaContable = cuentaActual;
+                detalle.NombreCuentaContable = objCuentaAdeudo.NombreCuenta;
             }
 
             objCabecera.DetalleContabilidads = objCabecera.DetalleContabilidads.OrderBy(x => x.DetalleDetCont).ToList();

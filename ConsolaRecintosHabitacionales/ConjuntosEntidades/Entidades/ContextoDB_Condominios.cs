@@ -253,6 +253,8 @@ namespace ConjuntosEntidades.Entidades
                     .HasColumnType("datetime")
                     .HasColumnName("FECHA_PAGO");
 
+                entity.Property(e => e.IdBancoComprobante).HasColumnName("ID_BANCO_COMPROBANTE");
+
                 entity.Property(e => e.IdTipoPago).HasColumnName("ID_TIPO_PAGO");
 
                 entity.Property(e => e.Observacion)

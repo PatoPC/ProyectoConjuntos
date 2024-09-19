@@ -28,7 +28,8 @@ namespace DTOs.MaestroContable
                 {
                     if (!string.IsNullOrEmpty(CuentaCon))
                     {
-                        nuevaCuenta = Convert.ToInt32(CuentaCon);
+                        string temporal = CuentaCon.Replace(".","");
+                        nuevaCuenta = Convert.ToInt32(temporal);
                     }
                 }
                 catch

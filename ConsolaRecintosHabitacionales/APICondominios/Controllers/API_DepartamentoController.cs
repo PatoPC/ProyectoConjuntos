@@ -159,7 +159,9 @@ namespace APICondominios.Controllers
 
 			List<DepartamentoDTOCompleto> listaResultadoDTO = _mapper.Map<List<DepartamentoDTOCompleto>>(listaResultado);
 
-			return Ok(listaResultadoDTO);
+            listaResultadoDTO = listaResultadoDTO.OrderBy(x => x.CodigoDepartamento).ToList();
+
+            return Ok(listaResultadoDTO);
 		}
 
 		[HttpGet("ObtenerDepartamentoPorIDTorre")]

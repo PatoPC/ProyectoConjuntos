@@ -53,6 +53,7 @@ namespace Utilitarios
         public const string tipoPersonaCondomino = "OPCINQUI";
         public const string tipoPersonaPropietario = "MDUEÑO";
         public const string tipoFormaPago = "FRPGO";
+        public const string tipoBancoFormaPago = "TPRECIB";
 
         //Tipos Cabecera Tipo Transacción
         public const string tipoTransaccion = "PTTCOTP";

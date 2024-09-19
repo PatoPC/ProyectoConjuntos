@@ -138,11 +138,12 @@ namespace APICondominios.Controllers
             List<Torre> listaResultado = await _Torres.busquedaAvanzada(objBusqueda);
 
             if (listaResultado.Count < 1)            
-                return NotFound(MensajesRespuesta.sinResultados());
-            
+                return NotFound(MensajesRespuesta.sinResultados());            
 
             List<TorreDTOCompleto> listaResultadoDTO = _mapper.Map<List<TorreDTOCompleto>>(listaResultado);
 
+            listaResultadoDTO = listaResultadoDTO
+                .OrderBy(x => x.NombreTorres).ToList();                
 
             return Ok(listaResultadoDTO);
         }

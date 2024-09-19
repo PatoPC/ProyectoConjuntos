@@ -63,7 +63,18 @@ namespace RecintosHabitacionales.Controllers
                 listaPlana.AddRange(FlattenList(item));
             }
 
-            listaPlana = listaPlana.OrderBy(x => x.CuentaContable).ToList();
+            // Ordenamos la lista principal
+            listaPlana = listaPlana
+                .OrderBy(x => x.CuentaContable) // Ordenamos por CuentaContable
+                .ToList();
+
+            // Ahora, ordenamos cada lista interna InverseIdConMstPadreNavigation
+            foreach (var item in listaPlana)
+            {
+                item.InverseIdConMstPadreNavigation = item.InverseIdConMstPadreNavigation
+                    .OrderBy(y => y.CuentaContable) // Ordenamos cada lista interna por CuentaContable
+                    .ToList();
+            }
 
             // Ordenar por CuentaContable
             ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;

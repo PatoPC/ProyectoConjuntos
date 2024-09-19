@@ -90,6 +90,11 @@ namespace RepositorioConjuntos.Implementacion
                     listaAdeudos = listaAdeudos.Where(x => x.IdDepartamentoNavigation.IdTorres == objBusqueda.IdTorre).ToList();
                 }
 
+                if (objBusqueda.IdDepartamento != null && objBusqueda.IdDepartamento != Guid.Empty)
+                {
+                    listaAdeudos = listaAdeudos.Where(x => x.IdDepartamentoNavigation.IdDepartamento == objBusqueda.IdDepartamento).ToList();
+                }
+
                 return listaAdeudos;
             }
             catch (Exception ex)

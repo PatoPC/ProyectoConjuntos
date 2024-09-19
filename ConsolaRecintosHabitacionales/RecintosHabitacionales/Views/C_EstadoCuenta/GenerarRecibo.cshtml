@@ -141,6 +141,23 @@
                                 <div class="col-xl-2">
                                     <div class="fs-6 fw-bold mt-2 mb-3">
                                         <label for="Concepto" class="control-label required">
+                                            Banco
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-8 fv-row">
+                                    @Html.DropDownList("IdBancoComprobante", ViewData["listaTipoPagoBanco"] as SelectList, htmlAttributes: new { @aria_label = "Selecionar", @data_control = "select2", @data_placeholder = "Seleccionar", @class = "form-select form-select-solid form-select-lg" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
+                            <div class="row mb-12">
+                                <div class="col-xl-2">
+                                    <div class="fs-6 fw-bold mt-2 mb-3">
+                                        <label for="Concepto" class="control-label required">
                                             Concepto
                                         </label>
                                     </div>
@@ -151,7 +168,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div class="row">
                     <div class="col-md-6">
                         <div class="h-100 d-flex flex-column justify-content-between pe-lg-6 mb-lg-0 mb-10">
                             <div class="row mb-12">

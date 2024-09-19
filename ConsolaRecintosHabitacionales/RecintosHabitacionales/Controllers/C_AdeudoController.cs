@@ -40,7 +40,7 @@ namespace RecintosHabitacionales.Controllers
             _servicioConsumoAPIDepartamento = servicioConsumoAPIDepartamento;
         }
 
-        public IActionResult GestionarAdeudo()
+        public async Task<ActionResult> GestionarAdeudo()
         {
             var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
 
@@ -51,6 +51,25 @@ namespace RecintosHabitacionales.Controllers
                 ViewData["listaAnios"] = listaAnios;
 
                 ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
+
+                List<TorreDTOCompleto> listaTorres = await recuperarListaTorres(objUsuarioSesion.IdConjuntoDefault);
+
+                var idTorre = listaTorres.FirstOrDefault().IdTorres;
+
+                SelectList listSelecTorres = new SelectList(listaTorres, "IdTorres", "NombreTorres");
+
+                ViewData["listaTorres"] = listSelecTorres;
+
+                List<DepartamentoDTOCompleto> listaDepartamentosTodos = new List<DepartamentoDTOCompleto>();
+
+                DepartamentoDTOCompleto objTemporalDepar = new DepartamentoDTOCompleto();
+                objTemporalDepar.CodigoDepartamento = "Todos";
+
+                listaDepartamentosTodos.Add(objTemporalDepar); 
+
+                SelectList listSelecDepartamento = new SelectList(listaDepartamentosTodos, "IdDepartamento", "CodigoDepartamento");
+
+                ViewData["listaDepartamento"] = listSelecDepartamento;
 
                 return View();
             }
@@ -89,24 +108,11 @@ namespace RecintosHabitacionales.Controllers
 
                 ViewData["listaConjuntos"] = objUsuarioSesion.ConjuntosAccesoSelect;
 
-                BusquedaTorres objBusquedaTorres = new BusquedaTorres();
+                List<TorreDTOCompleto> listaTorres = await recuperarListaTorres(objUsuarioSesion.IdConjuntoDefault);
 
-                objBusquedaTorres.IdConjunto = objUsuarioSesion.IdConjuntoDefault;
+                var idTorre = listaTorres.FirstOrDefault().IdTorres;
 
-                HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarTorresAvanzado, HttpMethod.Get, objBusquedaTorres);
-
-                List<TorreDTOCompleto> listaResultado = await LeerRespuestas<List<TorreDTOCompleto>>.procesarRespuestasConsultas(respuesta);
-
-                if (listaResultado == null)
-                    listaResultado = new List<TorreDTOCompleto>();
-                else
-                {
-                    listaResultado = listaResultado.OrderBy(x => x.NombreTorres).ToList();
-                }
-
-                var idTorre = listaResultado.FirstOrDefault().IdTorres;
-
-                SelectList listSelecTorres = new SelectList(listaResultado, "IdTorres", "NombreTorres");
+                SelectList listSelecTorres = new SelectList(listaTorres, "IdTorres", "NombreTorres", idTorre);
 
                 ViewData["listaTorres"] = listSelecTorres;
 
@@ -378,6 +384,33 @@ namespace RecintosHabitacionales.Controllers
             }
 
             return View();
+        }
+
+        private async Task<List<TorreDTOCompleto>> recuperarListaTorres(Guid idConjuntoDefault)
+        {
+            BusquedaTorres objBusquedaTorres = new BusquedaTorres();
+
+            objBusquedaTorres.IdConjunto = idConjuntoDefault;
+
+            HttpResponseMessage respuesta = await _servicioConsumoAPIBusqueda.consumoAPI(ConstantesConsumoAPI.buscarTorresAvanzado, HttpMethod.Get, objBusquedaTorres);
+
+            List<TorreDTOCompleto> listaTorres = await LeerRespuestas<List<TorreDTOCompleto>>.procesarRespuestasConsultas(respuesta);
+
+            if (listaTorres == null)
+                listaTorres = new List<TorreDTOCompleto>();
+            else
+            {
+                TorreDTOCompleto torreTodos = new TorreDTOCompleto();
+                torreTodos.IdTorres = Guid.Empty;
+                torreTodos.NombreTorres = "Todas";               
+
+                listaTorres = listaTorres.OrderBy(x => x.NombreTorres).ToList();
+
+                listaTorres.Insert(0, torreTodos);
+            }
+                
+
+            return listaTorres;
         }
 
         private async Task<AdeudoDTOCrear> recuperarTipoPersonaDepartamento(DepartamentoDTOCompleto departamento, AdeudoDTOCrear objAdeudo)

@@ -104,7 +104,6 @@
                 </td>
             </tr>
         }
-        
 
         <tr>
             <td width="20%">
@@ -118,7 +117,7 @@
                 <b>TIPO PAGO:</b>
             </td>
             <td width="30%">
-                @if(!string.IsNullOrEmpty(Model.TipoPago))
+                @if (!string.IsNullOrEmpty(Model.TipoPago))
                 {
                     <span>@Model.TipoPago.ToUpper()</span>
                 }
@@ -129,6 +128,14 @@
             </td>
         </tr>
 
+        <tr>
+            <td width="20%">
+                <b>BANCO:</b>
+            </td>
+            <td width="30%">
+                @Model.NombreBancoComprobante
+            </td>            
+        </tr>
 
         <tr>
             <td width="20%">
@@ -153,17 +160,26 @@
     <!--begin::Container Datos Pie de pagina  -->
     <table border="0" width="100%" style="margin-top:10px;">
         <tr>
-
-            <td width="100%">
+            <td width="50%">
                 <table width="100%">
                     <tr style="border-top:solid;">
                         <td>
+                            <hr />
+                            <center><b>ADMINISTRADOR</b></center>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="50%">
+                <table width="100%">
+                    <tr style="border-top:solid;">
+                        <td>
+                            <hr/>
                             <center><b>RECIBE CONFORME</b></center>
                         </td>
                     </tr>
                 </table>
             </td>
-            <td width="5%"></td>
         </tr>
     </table>
 </div>

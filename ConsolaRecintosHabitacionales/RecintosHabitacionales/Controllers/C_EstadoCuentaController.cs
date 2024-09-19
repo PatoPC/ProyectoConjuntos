@@ -13,6 +13,7 @@ using Utilitarios;
 using DTOs.Torre;
 using DTOs.Comprobantes;
 using DTOs.Contabilidad;
+using DTOs.Departamento;
 
 namespace RecintosHabitacionales.Controllers
 {
@@ -73,6 +74,17 @@ namespace RecintosHabitacionales.Controllers
             SelectList listSelecTorres = new SelectList(listaResultado, "IdTorres", "NombreTorres");
 
             ViewData["listaTorres"] = listSelecTorres;
+
+            List<DepartamentoDTOCompleto> listaDepartamentosTodos = new List<DepartamentoDTOCompleto>();
+
+            DepartamentoDTOCompleto objTemporalDepar = new DepartamentoDTOCompleto();
+            objTemporalDepar.CodigoDepartamento = "Todos";
+
+            listaDepartamentosTodos.Add(objTemporalDepar);
+
+            SelectList listSelecDepartamento = new SelectList(listaDepartamentosTodos, "IdDepartamento", "CodigoDepartamento");
+
+            ViewData["listaDepartamento"] = listSelecDepartamento;
 
             return View();
         }
@@ -158,6 +170,16 @@ namespace RecintosHabitacionales.Controllers
 
             listaResultado = listaResultado.OrderBy(x => x.FechaAdeudos).ToList();
 
+            HttpResponseMessage tipoPagoBanco = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + ConstantesAplicacion.tipoBancoFormaPago, HttpMethod.Get);
+
+            var listaTipoBanco = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(tipoPagoBanco);
+
+            listaTipoBanco = listaTipoBanco.OrderBy(x => x.NombreCatalogo).ToList();
+
+            var selectTipoPago = new SelectList(listaTipoBanco, "IdCatalogo", "NombreCatalogo");
+
+            ViewData["listaTipoPagoBanco"] = selectTipoPago;
+
             return View(listaResultado);
         }
 
@@ -217,6 +239,7 @@ namespace RecintosHabitacionales.Controllers
 
             objComprobante.UrlConsumaTablaDeuda = ConstantesConsumoAPI.gestionarAdeudoAPI;
             objComprobante.EstadoImpreso = false;
+            objComprobante.IdBancoComprobante = objComprobante.IdBancoComprobante;
             objComprobante.SaldoPendiente = valorRestantePagado < 0 ? valorRestantePagado * -1 : valorRestantePagado;
             objComprobante.UsuarioCreacion = objUsuarioSesion.NombreUsuario;
             objComprobante.UsuarioModificacion = objUsuarioSesion.NombreUsuario;
@@ -262,9 +285,16 @@ namespace RecintosHabitacionales.Controllers
 
             objComprobante.TipoPago = objCatalogo.NombreCatalogo;
 
+            //Recuperar texto Banco, en donde se va a colocar el dinero 
+            HttpResponseMessage respuestaBancoPago = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.getGetCatalogosPorIdCatalogo + objComprobante.IdBancoComprobante, HttpMethod.Get);
+
+            var objCatalogoBancoPago = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuestaBancoPago);
+
+            objComprobante.NombreBancoComprobante = objCatalogoBancoPago.NombreCatalogo;
+
             //Recuperar datos Adeudo
 
-            foreach(var detalle in objComprobante.DetalleComprobantePagos)
+            foreach (var detalle in objComprobante.DetalleComprobantePagos)
             {
                 HttpResponseMessage respuestaAdeudo = await _servicioConsumoBusqueda.consumoAPI(ConstantesConsumoAPI.gestionarAdeudoAPI + detalle.IdTablaDeuda, HttpMethod.Get);
 
