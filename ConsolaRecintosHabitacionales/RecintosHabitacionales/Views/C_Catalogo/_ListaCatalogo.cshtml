@@ -1,7 +1,51 @@
 ﻿@model IEnumerable<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda>
+@using Utilitarios;
 @{
     Layout = "";
     int i = 0;
+
+    async Task<string> IterarCatalogos(List<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda> listaCatalogo)
+    {
+        if (listaCatalogo.Count > 0)
+        {
+            foreach (var subCatalogo in listaCatalogo)
+            {
+                string rutaEditar = ConstantesAplicacion.pathConsola + "/C_Catalogo/EditarCatalogo?idCatalogo=" + subCatalogo.IdCatalogo;
+                string rutaDetalle = ConstantesAplicacion.pathConsola + "/C_Catalogo/DetalleCatalogo?idCatalogo=" + subCatalogo.IdCatalogo;
+                string rutaGraficoHijo = ConstantesAplicacion.pathConsola + "/C_Catalogo/BusquedaCatalogoGrafico?codigoCatalogo=" + subCatalogo.Codigocatalogo;
+                string rutaGraficoPadre = ConstantesAplicacion.pathConsola + "/C_Catalogo/BusquedaCatalogoGrafico?codigoCatalogo=" + subCatalogo.CodigoCatalogoPadre;
+
+                <tr>
+                    <td>@subCatalogo.NombreCatalogo</td>
+                    <td>
+                        <a href="@rutaGraficoHijo" target="_blank">
+                            @subCatalogo.Codigocatalogo
+                        </a>
+                    </td>
+                    <td>@subCatalogo.NombreConjunto</td>
+                    <td> @await Html.PartialAsync("_TextoActivadoDesactivado", subCatalogo.Estado)</td>
+                    <td>@subCatalogo.NombreCatalogoPadre</td>
+                    <td>
+                        <a href="@rutaGraficoPadre" target="_blank">
+                            @subCatalogo.CodigoCatalogoPadre
+                        </a>
+
+                    </td>
+                    <td>
+                        <a href="@rutaEditar" target="_self" class="badge badge-light-primary">Editar<i class="far fa-edit"></i></a>
+                        <a href="@rutaDetalle" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
+                    </td>
+                </tr>
+                if (subCatalogo.InverseIdCatalogopadreNavigation != null)
+                {
+                    await IterarCatalogos(subCatalogo.InverseIdCatalogopadreNavigation);
+                }
+            }
+
+        }
+
+        return "";
+    }
 }
 
 <div id="kt_project_users_card_pane" class="tab-pane fade show active">
@@ -19,12 +63,14 @@
                             <thead>
                                 <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                                     <th>
-                                        <span class="badge badge-light text-dark">Catalogo
-                                            </span>
+                                        <span class="badge badge-light text-dark">
+                                            Catálogo
+                                        </span>
                                     </th>
                                     <th>
-                                        <span class="badge badge-light text-dark">Código</span></th>
-                                    <th><span class="badge badge-light text-dark">Conjunto</span></th>
+                                        <span class="badge badge-light text-dark">Código</span>
+                                    </th>
+                                    <th><span class="badge badge-light text-dark">Empresa</span></th>
                                     <th><span class="badge badge-light text-dark">Estado</span></th>
                                     <th><span class="badge badge-light text-dark">Padre</span></th>
                                     <th><span class="badge badge-light text-dark">C. P</span></th>
@@ -36,79 +82,26 @@
                                 {
                                     <tr class="text-dark fw-bolder text-hover-primary mb-1 fs-6">
                                         <td>@catalogo.NombreCatalogo</td>
-                                        <td>@catalogo.Codigocatalogo</td>
+                                        <td>
+                                            <a href="~/C_Catalogo/BusquedaCatalogoGrafico?codigoCatalogo=@catalogo.Codigocatalogo" target="_blank">
+                                                @catalogo.Codigocatalogo
+                                            </a>
+                                        </td>
                                         <td>@catalogo.NombreConjunto</td>
-                                        <td> @await Html.PartialAsync("_TextoActivadoDesactivado", catalogo.Estado)
+                                        <td>
+                                            @await Html.PartialAsync("_TextoActivadoDesactivado", catalogo.Estado)
                                         </td>
                                         <td>@catalogo.NombreCatalogoPadre</td>
                                         <td>@catalogo.CodigoCatalogoPadre</td>
                                         <td>
-                                            <div>
-                                                <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@catalogo.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
-                                            </div>
-                                            <div>
-                                                <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@catalogo.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
-                                            </div>
+                                            <a href="@ConstantesAplicacion.urlConsola/C_Catalogo/EditarCatalogo?idCatalogo=@catalogo.IdCatalogo" target="_self" class="badge badge-light-primary">Editar<i class="far fa-edit"></i></a>
+                                            <a href="@ConstantesAplicacion.urlConsola/C_Catalogo/DetalleCatalogo?idCatalogo=@catalogo.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
 
                                         </td>
                                     </tr>
-                                    foreach (var subCatalogo in catalogo.InverseIdCatalogopadreNavigation)
+                                    @if (catalogo.InverseIdCatalogopadreNavigation != null)
                                     {
-                                        <tr>
-                                            <td>@subCatalogo.NombreCatalogo</td>
-                                            <td>@subCatalogo.Codigocatalogo</td>
-                                            <td>@subCatalogo.NombreConjunto</td>
-                                            <td> @await Html.PartialAsync("_TextoActivadoDesactivado", subCatalogo.Estado)</td>
-                                            <td>@subCatalogo.NombreCatalogoPadre</td>
-                                            <td>@subCatalogo.CodigoCatalogoPadre</td>
-                                            <td>
-                                                <div>
-                                                    <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@subCatalogo.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
-                                                </div>
-                                                <div>
-                                                    <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@subCatalogo.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        foreach (var subCatalogoM in subCatalogo.InverseIdCatalogopadreNavigation)
-                                        {
-                                            <tr>
-                                                <td>@subCatalogoM.NombreCatalogo</td>
-                                                <td>@subCatalogoM.Codigocatalogo</td>
-                                                <td>@subCatalogoM.NombreConjunto</td>
-                                                <td> @await Html.PartialAsync("_TextoActivadoDesactivado", subCatalogoM.Estado)</td>
-                                                <td>@subCatalogoM.NombreCatalogoPadre</td>
-                                                <td>@subCatalogoM.CodigoCatalogoPadre</td>
-                                                <td>
-                                                    <div>
-                                                        <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@subCatalogoM.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
-                                                    </div>
-                                                    <div>
-                                                        <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@subCatalogoM.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            foreach (var subCatalogoD in subCatalogoM.InverseIdCatalogopadreNavigation)
-                                            {
-                                                <tr>
-                                                    <td>@subCatalogoD.NombreCatalogo</td>
-                                                    <td>@subCatalogoD.Codigocatalogo</td>
-                                                    <td>@subCatalogoD.NombreConjunto</td>
-                                                    <td> @await Html.PartialAsync("_TextoActivadoDesactivado", subCatalogoD.Estado)</td>
-                                                    <td>@subCatalogoD.NombreCatalogoPadre</td>
-                                                    <td>@subCatalogoD.CodigoCatalogoPadre</td>
-                                                    <td>
-                                                       <div>
-                                                            <a href="~/C_Catalogo/EditarCatalogo?idCatalogo=@subCatalogoD.IdCatalogo" target="_self" class="badge badge-light-danger">Editar<i class="far fa-edit"></i></a>
-                                                        </div>
-                                                        <div>
-                                                            <a href="~/C_Catalogo/DetalleCatalogo?idCatalogo=@subCatalogoD.IdCatalogo" target="_self" class="badge badge-light-success">Detalle<i class="far fa-eye"></i></a>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-
+                                        await IterarCatalogos(catalogo.InverseIdCatalogopadreNavigation);
                                     }
                                 }
                             </tbody>

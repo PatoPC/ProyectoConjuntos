@@ -249,7 +249,7 @@ namespace RecintosHabitacionales.Controllers
 
             //HttpResponseMessage respuestaCatalogos = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.obtenerTodosLosCatalogo, HttpMethod.Get);
 
-            //List<CatalogoResultadoBusqueda> listaCatalogoSinEmpresa = await LeerRespuestas<List<CatalogoResultadoBusqueda>>.procesarRespuestasConsultas(respuestaCatalogos);
+            //List<CatalogoDTOResultadoBusqueda> listaCatalogoSinEmpresa = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuestaCatalogos);
 
             //listaCatalogo = listaCatalogo.Union(listaCatalogoSinEmpresa).ToList();
 
@@ -342,6 +342,62 @@ namespace RecintosHabitacionales.Controllers
             List<CatalogoDTODropDown> listaCatalogos = await LeerRespuestas<List<CatalogoDTODropDown>>.procesarRespuestasConsultas(respuestaCatalogo);
 
             return listaCatalogos;
+        }
+        #endregion
+
+        [HttpGet]
+        public ActionResult BusquedaCatalogoGrafico(string codigoCatalogo)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            ViewData["codigoCatalogo"] = codigoCatalogo;
+
+            if (objUsuarioSesion != null)
+                return View();
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+
+        #region Llenar niveles Catalogos
+        [HttpGet]
+        public async Task<ActionResult> BusquedaCodigoCatalogo(string CodigoCatalogo)
+        {
+            var objUsuarioSesion = Sesion<UsuarioSesionDTO>.recuperarSesion(HttpContext.Session, ConstantesAplicacion.nombreSesion);
+
+            if (objUsuarioSesion != null)
+            {
+
+                HttpResponseMessage respuesta = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.getCodigoCatalogo + CodigoCatalogo, HttpMethod.Get);
+
+                CatalogoDTOResultadoBusqueda listaCatalogo = await LeerRespuestas<CatalogoDTOResultadoBusqueda>.procesarRespuestasConsultas(respuesta);
+
+                foreach (var catalogo in listaCatalogo.InverseIdCatalogopadreNavigation)
+                {
+                    await LlenarNivelesCatalogo(catalogo);
+                }
+
+                return View("_MostrarCatalogoGrafico", listaCatalogo);
+
+            }
+
+            return RedirectToAction("Ingresar", "C_Ingreso");
+        }
+
+        private async Task LlenarNivelesCatalogo(CatalogoDTOResultadoBusqueda catalogo)
+        {
+            HttpResponseMessage respuestaHijo = await _servicioConsumoAPI.consumoAPI(ConstantesConsumoAPI.getGetCatalogosHijosPorCodigoPadre + catalogo.Codigocatalogo, HttpMethod.Get);
+
+            if (respuestaHijo.IsSuccessStatusCode)
+            {
+                List<CatalogoDTOResultadoBusqueda> listaHijos = await LeerRespuestas<List<CatalogoDTOResultadoBusqueda>>.procesarRespuestasConsultas(respuestaHijo);
+
+                catalogo.InverseIdCatalogopadreNavigation = listaHijos;
+
+                foreach (var hijo in listaHijos)
+                {
+                    await LlenarNivelesCatalogo(hijo);
+                }
+            }
         }
         #endregion
     }

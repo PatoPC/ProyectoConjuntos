@@ -1,0 +1,104 @@
+﻿@model DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda
+@using Utilitarios;
+@{
+    Layout = "";
+    int CalculateColumnSize(int totalChildren)
+    {
+        if (totalChildren <= 0)
+            return 12; // Tamaño máximo de columna para el último nivel
+
+        int columnSize = 12 / totalChildren;
+        return columnSize;
+    }
+
+
+    string GenerateFlowChart(List<DTOs.CatalogoGeneral.CatalogoDTOResultadoBusqueda> hijos, int nivel)
+    {
+        if (hijos.Count > 0)
+        {
+            var columnSize = CalculateColumnSize(hijos.Count);
+
+            <div class="row">
+                @foreach (var hijo in hijos)
+                {
+                    var cssClass = hijo.NivelCatalogo == 0 ? "level-0" : hijo.NivelCatalogo == 1 ? "level-1" : hijo.NivelCatalogo == 2 ? "level-2" : "level-3";
+                    string url = ConstantesAplicacion.pathConsola + "/C_Catalogo/EditarCatalogo?idCatalogo=" + hijo.IdCatalogo;
+                    <div class="col-md-@columnSize">
+                        <div class="flow-chart-node">
+                            <div class="flow-chart-text @cssClass">
+                                <div style="font-weight:bold">
+                                    <a href="@url" target="_blank" class="badge badge-light-danger">
+                                        @hijo.NombreCatalogo
+                                    </a>
+                                </div>
+                                <div>
+                                    @hijo.Codigocatalogo
+                                </div>
+                                @GenerateFlowChart(hijo.InverseIdCatalogopadreNavigation, nivel + 1)
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            </div>
+
+
+        }
+        return "";
+    }
+}
+<style>
+    .level-0 {
+        font-weight: bold;
+        color: blue;
+    }
+
+    .level-1 {
+        font-weight: bold;
+        color: green;
+    }
+
+    .level-2 {
+        color: black;
+    }
+
+    .flow-chart-node {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .flow-chart-text {
+        padding: 10px;
+        border: 1px solid #000;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .flow-chart-connector {
+        width: 2px;
+        height: 20px;
+        background-color: #000;
+        margin: 0 auto;
+    }
+</style>
+
+<div class="flow-chart">
+    @{
+        string urlPadre = ConstantesAplicacion.pathConsola + "/C_Catalogo/EditarCatalogo?idCatalogo=" + Model.IdCatalogo;
+    }
+    <div class="flow-chart-node">
+        <div class="flow-chart-text level-0">
+
+            <a href="@urlPadre" target="_blank">
+                @Model.NombreCatalogo
+            </a><br />
+            (@Model.Codigocatalogo)
+        </div>
+        @{
+            GenerateFlowChart(Model.InverseIdCatalogopadreNavigation, (int)Model.NivelCatalogo);
+        }
+    </div>
+
+</div>

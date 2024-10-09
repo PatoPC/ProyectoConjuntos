@@ -11,6 +11,7 @@ namespace DTOs.CatalogoGeneral
         public Guid IdCatalogo { get; set; }
         public Guid? IdCatalogopadre { get; set; }
         public Guid? IdConjunto { get; set; }
+        public int? NivelCatalogo { get; set; }
         public string? NombreCatalogo { get; set; }
         public string? NombreConjunto { get; set; }
         public string? Codigocatalogo { get; set; }

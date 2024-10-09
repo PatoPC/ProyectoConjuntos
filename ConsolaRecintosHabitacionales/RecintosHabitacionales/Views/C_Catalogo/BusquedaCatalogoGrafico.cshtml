@@ -1,0 +1,72 @@
+﻿@using Utilitarios;
+
+
+@{
+    string codigoCatTemporal = "";
+
+    if (ViewData["codigoCatalogo"] != null)
+        codigoCatTemporal = ViewData["codigoCatalogo"].ToString();
+}
+
+<div class="post d-flex flex-column-fluid" id="kt_post">
+
+    <div id="kt_content_container" class="container-xxl">
+        <form action="@ConstantesAplicacion.pathConsola/C_Catalogo/BusquedaCodigoCatalogo"
+              data-ajax="true"
+              data-ajax-method="Get"
+              data-ajax-loading="#imagenCargando"
+              data-ajax-update="#resultSearch"
+              data-ajax-begin="emptyLastResults('resultSearch')"
+              id="AjaxFormSend"
+              method="post">
+
+            <div class="card mb-10">
+                <div class="card-header card-header-stretch">
+                    <div class="card-title d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="fw-bolder m-0 text-gray-800">
+                                    <i class="fas fa-project-diagram text-primary fs-2qx"></i>
+                                    Búsqueda Catálogo Gráfico
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body border-top p-9">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="fs-6 form-label fw-bolder text-dark">Código Catálogo</label>
+                            <div class="col-md-2">
+                                <input name="CodigoCatalogo" class="form-control form-control-solid" required="required" value="@codigoCatTemporal" />
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"><span class="fas fa-search"></span> Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <center><img src="~/assets/media/cargando_transparente.svg" id="imagenCargando" name="imagenCargando" style="display:none" /></center>
+
+        </form>
+
+        <div id="resultSearch">
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    @* <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>*@
+
+    <script type="text/javascript">
+        function emptyLastResults(divEmpty) {
+            $("#" + divEmpty).html("");
+        }
+    </script>
+}

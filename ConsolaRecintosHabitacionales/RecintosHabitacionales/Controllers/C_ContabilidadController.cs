@@ -42,6 +42,8 @@ namespace RecintosHabitacionales.Controllers
 
             List<EncabezContDTOCompleto> listaEncabezado = await LeerRespuestas<List<EncabezContDTOCompleto>>.procesarRespuestasConsultas(respuesta);
 
+            listaEncabezado = listaEncabezado.OrderBy(x => x.FechaEncCont).ToList();
+
             return View("_ListaEncabezado", listaEncabezado);
         }
 
